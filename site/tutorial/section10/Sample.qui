@@ -1,0 +1,9 @@
+<Control name="Sample">
+	<h1>QuickUI sample</h1>
+	<Greet content="Alice" />
+	<Greet content="Bob" punctuation="!" />
+	<Greet punctuation="?">
+		<i>Carol</i>
+	</Greet>
+</Control>
+

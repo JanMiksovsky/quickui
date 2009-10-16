@@ -1,0 +1,60 @@
+<Control name="SourceCode">
+
+<prototype>
+	<pre id="SourceCode_content" />
+	<div id="_divLink">
+		<a id="link">→ <span id="linkText"/></a>
+	</div>
+</prototype>
+
+<style>
+
+{
+	position: relative;
+}
+
+#_divLink {
+	top: 5px;
+	position: absolute;
+	right: 8px;
+	text-align: right;
+	width: 100%;
+}
+
+a#link {
+	border: none !important;
+}
+
+</style>
+
+<script>
+$.extend(SourceCode.prototype, {
+	
+	content: Property.element("SourceCode_content"),
+	
+	fileName: function(path) {
+		var pathNames = path.split("/");
+		return (pathNames.length == 0)
+			? null
+			: pathNames[pathNames.length - 1];
+	},
+	
+	sourceFile: Property(function(value) {
+		var self = this;
+		// Load the file.
+		$.get(value, function(data) {
+			// Using $.text() escapes the HTML/XML.
+			$(self.SourceCode_content).text(self.tabsToSpaces(data));
+		});
+		$(this.link).attr("href", value);
+		$(this.linkText).html(this.fileName(value));
+	}),
+	
+	tabsToSpaces: function(s) {
+		return s.replace(/\t/g, "    ");
+	}
+	
+});
+</script>
+
+</Control>

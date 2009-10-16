@@ -1,0 +1,215 @@
+/*** CodeOutput ***/
+
+.CodeOutput #CodeOutput_content {
+	border-top: 1px dotted #d7c5b4;
+	border-bottom: 1px dotted #d7c5b4;
+	font-family: Times, serif;
+	margin: 0 20px;
+	padding: 10px;
+}
+
+.CodeOutput h1 {
+	font-family: Times, serif !important;
+	margin-top: 0;
+}
+
+.CodeOutput #_label {
+	color: #b49d87;
+	font-size: 10pt;
+	text-align: right;
+	width: 100%;
+}
+
+/*** Link ***/
+
+.Link {
+	display: inline;
+}
+
+/*** NavigationBar ***/
+
+.NavigationBar .NavigationLink {
+	font-size: 12pt;
+	margin-right: 20px;
+}
+
+.NavigationBar a:hover {
+	background-color: #47aaf0;
+}
+
+/*** NavigationLink ***/
+
+.NavigationLink a {
+	border: none !important;
+	color: white !important;
+	padding: 2px 5px;
+}
+
+.NavigationLink.highlight a {
+	font-weight: bold;
+}
+
+/*** SitePage ***/
+
+.SitePage {
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+}
+
+.SitePage #tableMain {
+	border-collapse: collapse;
+	height: 100%;
+	width: 100%;
+}
+
+.SitePage td {
+	padding: 20px;
+	vertical-align: top;
+}
+
+.SitePage #topRow {
+	background-image: url(/Qui/site/resources/water.jpg);
+	background-repeat: no-repeat;
+	background-color: #2d7ab0;
+	border-bottom: 1px solid #391c01;
+	color: white;
+}
+
+.SitePage #logoCell {
+	vertical-align: bottom;
+	width: 260px;
+}
+
+.SitePage #logotype a {
+	border: none !important;
+	color: white !important;
+	font-size: 24pt;
+	font-weight: bold;
+}
+
+.SitePage .bracket {
+	color: #D7C5B4;
+	font-weight: normal;
+}
+
+.SitePage #tagline {
+	font-size: 10pt;
+}
+
+.SitePage #topNavigation {
+	padding-left: 40px;
+	vertical-align: bottom;
+}
+
+.SitePage #leftNavigation {
+	background-color: #391c01;
+	height: 100%;
+	width: 0;
+}
+
+.SitePage #pageCanvas {
+	/* font-family: Times, serif; */
+	font-size: 11pt;
+	padding-left: 40px;
+}
+
+.SitePage #SitePage_area {
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	font-size: smaller;
+	font-variant: small-caps;
+	letter-spacing: 2px;
+}
+
+.SitePage #SitePage_content {
+	max-width: 800px;
+}
+
+.SitePage h1 {
+	color: #391c01;
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 16pt;
+	margin-top: 2em;
+}
+
+.SitePage h1:first-child {
+	margin-top: .5em;
+}
+
+.SitePage h2 {
+	color: #928274;
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 12pt;
+	margin-top: 1.5em;
+}
+
+.SitePage a {
+	border-bottom: 1px dotted #2d7ab0;
+	color: #2d7ab0;
+	text-decoration: none;
+}
+
+.SitePage a:hover {
+	border-bottom: 1px solid #d7761b;
+	color: #d7761b;
+}
+
+.SitePage pre {
+	background-color: #faf3ed;
+	border: 1px solid #d7c5b4;
+	font-family: Consolas, Lucida Console, Courier, Courier New, monospace;
+	font-size: 11pt;
+	padding: 10px;
+}
+
+.SitePage .CodeOutput {
+	margin: 5px 0 10px 0;
+}
+
+.SitePage li {
+	margin-bottom: 6px;
+}
+
+/*** SourceCode ***/
+
+.SourceCode {
+	position: relative;
+}
+
+.SourceCode #_divLink {
+	top: 5px;
+	position: absolute;
+	right: 8px;
+	text-align: right;
+	width: 100%;
+}
+
+.SourceCode a#link {
+	border: none !important;
+}
+
+/*** Tag ***/
+
+.Tag {
+	display: inline;
+	font-family: Consolas, Lucida Console, Courier, Courier New, monospace;
+}
+
+.Tag #Tag_content {
+	display: inline;
+}
+
+/*** TutorialNavigator ***/
+
+.TutorialNavigator h1 {
+	margin-top: 0;
+}
+
+.TutorialNavigator .Link {
+	display: block;
+	margin: 7px 0;
+}
+
+.TutorialNavigator a:hover {
+	background-color: #928274;
+}
+

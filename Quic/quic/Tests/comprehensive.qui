@@ -1,0 +1,43 @@
+<!-- Comprehensive control tests a bunch of compiler features. -->
+
+<Control name="Comprehensive" >
+
+<prototype>
+  <SampleBaseClass>
+    <Simple id="message">
+      Hello, <i>world</i>!
+    </Simple>
+    <div>
+      <p id="Comprehensive_content" />
+    </div>
+  </SampleBaseClass>
+</prototype>
+
+<style>
+
+/* Base control style */
+{
+    font-family: "Arial";
+}
+
+p {
+    font-family: "Times New Roman";
+}
+
+.Comprehensive.combo {
+    color: red;
+}
+
+</style>
+
+<script>
+$.extend(Comprehensive.prototype, {
+  content: Property.element("Comprehensive_content"),
+  foo: function()
+  {
+      alert("Hello, world!");
+  }
+});
+</script>
+
+</Control>

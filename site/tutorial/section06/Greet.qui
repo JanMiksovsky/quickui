@@ -1,0 +1,13 @@
+<Control name="Greet">
+	
+	Hello, <i><span id="Greet_content"/></i>!
+
+<script>
+$.extend(Greet.prototype, {
+	content: function(value) {
+		return $(this.Greet_content).html(value);
+	}
+});
+</script>
+
+</Control>

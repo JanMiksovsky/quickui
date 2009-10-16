@@ -1,0 +1,20 @@
+<Control name="Sample">
+
+<prototype>
+	<h1>QuickUI sample</h1>
+	<Greet content="Alice" />
+	<Greet id="bob" content="Bob" punctuation="!" />
+	<Greet punctuation="?">
+		<i>Carol</i>
+	</Greet>
+</prototype>
+
+<style>
+#bob {
+	color: darkred;
+	font-weight: bold;
+}
+</style>
+
+</Control>
+

@@ -1,0 +1,72 @@
+/*** Overlay ***/
+
+.Overlay {
+	display: none;
+	position: fixed;
+	z-index: 1;
+}
+
+/*** ButtonBase ***/
+
+.ButtonBase {
+	cursor: pointer;
+	display: inline-block;
+}
+
+/*** Dialog ***/
+
+.Dialog {
+	background-color: white;
+	border: 1px solid black;
+}
+
+/*** DockPanel ***/
+
+.DockPanel {
+	/* border: 1px solid #f0f0f0; */
+	display: table;
+	width: 100%;
+}
+
+.DockPanel > * {
+	/* border: 1px solid #f0f0f0; */
+	display: table-row;
+}
+
+.DockPanel #centerTable {
+	display: table;
+	height: 100%;
+	width: 100%;
+}
+
+.DockPanel #centerTable > * {
+	/* border: 1px solid #f0f0f0; */
+	display: table-cell;
+	vertical-align: top;
+}
+
+.DockPanel .panel {
+	width: 0;
+}
+
+/*** Page ***/
+
+.Page.fill {
+    height: 100%;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+/*** VerticalAlign ***/
+
+.VerticalAlign {
+	display: table;
+	height: 100%;
+}
+
+.VerticalAlign > * {
+	display: table-cell;
+	vertical-align: middle;
+}
+

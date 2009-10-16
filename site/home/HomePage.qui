@@ -1,0 +1,68 @@
+<Control name="HomePage">
+
+<SitePage area="Home" title="Introduction to QuickUI">
+
+<p>
+QuickUI (Quick User Interface) is a framework that simplifies the design, construction,
+and maintenance of web-based user interfaces. The easiest way to describe QuickUI is
+that it lets you write HTML as if you could create your own tags.
+</p>
+<p>	
+In QuickUI, the tags you create are called controls. Each control can include HTML markup
+(including other Quick controls), CSS styling, and JavaScript scripting. You can easily
+bundle together a group of controls to create a new control.
+At its core, QuickUI includes a design-time tool that compiles your markup into
+regular JavaScript and CSS files. The JavaScript makes use of the
+<Link href="http://jquery.com">jQuery</Link>
+library to
+build the web user interface on demand.
+</p>
+
+<h2>A quick example</h2>
+
+<p>
+	The following Quick markup defines a simple control called “Greet”.
+</p>
+
+<SourceCode sourceFile="Greet.qui" />
+
+<p>
+This control definition gives you a new tag
+<Tag>Greet</Tag> that can be used in other Quick markup like this:
+</p>
+
+<SourceCode sourceFile="Sample.qui" />
+
+<p>
+Of course you need a way to kick things off, which you can do in JavaScript
+via a jQuery extension:
+</p>
+
+<pre>
+$("div").control(Sample);
+</pre>
+
+<p>
+Running this will embed output like the following into the web page:
+</p>
+
+<CodeOutput>
+	<Sample/>
+</CodeOutput>
+
+<p>
+This is a trivial example. Most controls will include more complex
+contents, styling, and interactive behavior. When combined with the ability to
+compose and subclass controls, things can quickly become very interesting.
+</p>
+
+<h2>Get started</h2>
+
+<ul>
+	<li><Link href="/downloads/default.html">Download QuickUI</Link></li>
+	<li><Link href="/tutorial/section01/default.html">Read the Tutorial</Link></li>
+</ul>
+
+</SitePage>
+
+</Control>

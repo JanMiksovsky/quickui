@@ -1,0 +1,20 @@
+<Control name="TutorialPage">
+
+<prototype>
+	<SitePage area="Tutorial">
+		<navigator>
+			<TutorialNavigator id="tutorialNavigator"/>
+		</navigator>
+	</SitePage>
+</prototype>
+
+<script>
+$.extend(TutorialPage.prototype, {
+	ready: function() {
+		TutorialPage.superProto.ready.call(this);
+		$(this.tutorialNavigator).control().highlightCurrentPage();
+	}
+});
+</script>
+
+</Control>

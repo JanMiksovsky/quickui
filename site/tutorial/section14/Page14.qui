@@ -1,0 +1,63 @@
+<Control name="Page14">
+
+<TutorialPage title="Subclassing controls">
+
+<h2>Factoring aspects of a control instance into a new subclass</h2>
+
+<p>
+If a particular control class instance — with properties filled out a particular way,
+say, or with particular styling — is likely to be repeated elsewhere, the instance can itself
+become the prototype for a new class of control. For example, in our Sample control,
+the Greet instance with the ID “bob” is a particular emphatic greeting, with an
+exclamation point as punctuation, and bold red styling. We can lift out these aspects
+and create a new subclass of Greet called GreetEmphatic (and stored in GreetEmphatic.qui):
+</p>
+
+<SourceCode sourceFile="GreetEmphatic.qui" />
+
+<p>
+As discussed in the section on <Link href="/tutorial/section6b/default.html">control prototypes</Link>,
+a single child of the <Tag>prototype</Tag> tag defines a control’s parent class. Here,
+the GreetEmphatic class will derive from Greet. (Specifically, the JavaScript function
+GreetEmphatic() will use an instance of Greet as its JavaScript prototype. This ensures that,
+for example, calls to GreetEmphatic.content() will ultimately invoke the function
+Greet.content().
+</p>
+
+<p>
+Having factored this information into its own class, we can apply that class to the
+original “bob” control element, and simplify the definition of the Sample control. Let’s
+also add an additional instance of the GreetEmphatic class at the end:
+</p>
+
+<SourceCode sourceFile="Sample.qui" />
+
+<p>
+All instances of our new GreetEmphatic class receive the same styling and content
+(the exclamation mark as punctuation):
+</p>
+
+<CodeOutput>
+	<Sample/>
+</CodeOutput>
+
+<p>
+Signficantly, we’re deriving behavior here, not copying and pasting it. If we make further
+modifications to the Greet class, those will be automatically picked up by the GreetEmphatic
+class.
+</p>
+
+<h2>Conclusion</h2>
+
+<p>
+This concludes this introduction to some of the features of QuickUI. The samples shown here
+are just toys, but they illustrate how QuickUI extends the same benefits of modular,
+object-oriented development to the realm of user interfaces created with standard web
+technologies: HTML, CSS, and JavaScript.
+</p>
+
+<Link href="/home/default.html">Return to Home</Link>
+
+</TutorialPage>
+
+</Control>

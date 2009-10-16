@@ -1,0 +1,174 @@
+<Control name="SitePage">
+
+<prototype>
+	<Page fill="true">
+		<table id="tableMain">
+			<tr id="topRow">
+				<td id="logoCell">
+					<Link href="/home/default.html" id="logotype">
+						<span class="bracket">&lt;</span>QuickUI<span class="bracket">&gt;</span>
+					</Link>
+					<div id="tagline">Modular web control framework</div>
+				</td>
+				<td id="topNavigation"><NavigationBar id="navigationBar"/></td>
+			</tr>
+			<tr>
+				<td id="leftNavigation"><div id="SitePage_navigator" /></td>
+				<td id="pageCanvas">
+					<h1 id="SitePage_title" />
+					<div id="SitePage_content" />
+				</td>
+			</tr>
+		</table>
+	</Page>
+</prototype>
+
+<style>
+
+{
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+}
+
+#tableMain {
+	border-collapse: collapse;
+	height: 100%;
+	width: 100%;
+}
+
+td {
+	padding: 20px;
+	vertical-align: top;
+}
+
+#topRow {
+	background-image: url(/Qui/site/resources/water.jpg);
+	background-repeat: no-repeat;
+	background-color: #2d7ab0;
+	border-bottom: 1px solid #391c01;
+	color: white;
+}
+
+#logoCell {
+	vertical-align: bottom;
+	width: 260px;
+}
+
+#logotype a {
+	border: none !important;
+	color: white !important;
+	font-size: 24pt;
+	font-weight: bold;
+}
+
+.bracket {
+	color: #D7C5B4;
+	font-weight: normal;
+}
+
+#tagline {
+	font-size: 10pt;
+}
+
+#topNavigation {
+	padding-left: 40px;
+	vertical-align: bottom;
+}
+
+#leftNavigation {
+	background-color: #391c01;
+	height: 100%;
+	width: 0;
+}
+
+#pageCanvas {
+	/* font-family: Times, serif; */
+	font-size: 11pt;
+	padding-left: 40px;
+}
+
+#SitePage_area {
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	font-size: smaller;
+	font-variant: small-caps;
+	letter-spacing: 2px;
+}
+
+#SitePage_content {
+	max-width: 800px;
+}
+
+h1 {
+	color: #391c01;
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 16pt;
+	margin-top: 2em;
+}
+
+h1:first-child {
+	margin-top: .5em;
+}
+
+h2 {
+	color: #928274;
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 12pt;
+	margin-top: 1.5em;
+}
+
+a {
+	border-bottom: 1px dotted #2d7ab0;
+	color: #2d7ab0;
+	text-decoration: none;
+}
+
+a:hover {
+	border-bottom: 1px solid #d7761b;
+	color: #d7761b;
+}
+
+pre {
+	background-color: #faf3ed;
+	border: 1px solid #d7c5b4;
+	font-family: Consolas, Lucida Console, Courier, Courier New, monospace;
+	font-size: 11pt;
+	padding: 10px;
+}
+
+.CodeOutput {
+	margin: 5px 0 10px 0;
+}
+
+li {
+	margin-bottom: 6px;
+}
+	
+</style>
+
+<script>
+$.extend(SitePage.prototype, {
+	
+	area: Property(),
+	content: Property.element("SitePage_content"),
+	navigator: Property.element("SitePage_navigator"),
+	
+	ready: function() {
+		$(this.navigationBar).control().highlightCurrentArea();
+	},
+	
+	title: function(value) {
+		if (value !== undefined)
+		{
+			$(this.SitePage_title).html(value);
+			return SitePage.superProto.title.call(this, value + " - QuickUI");
+		}
+		else
+		{
+			return SitePage.superProto.title.call(this);
+		}
+	}
+	
+});
+</script>
+
+</Control>

@@ -1,0 +1,77 @@
+<!-- General base class for pages. -->
+
+<Control name="Page">
+
+<style>
+.Page.fill {
+    height: 100%;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+</style>
+
+<script>
+<![CDATA[
+
+/*
+ * General page utility functions.
+ */
+$.extend(Page.prototype, {
+	
+	// If true, have the page fill its container.
+	fill: Property.bool(function(value) {
+		$(this.element).toggleClass("fill");
+	}),
+	
+	// Return the parameter with the given name from the current URL, or null if not found.
+	getUrlParameter: function(parameterName) {
+		return Page.getUrlParameter(parameterName);
+	},	
+	
+	// Gets or sets the title of the page.
+	title: function(value) {
+		if (value !== undefined)
+		{
+			document.title = value;
+		}
+		return document.title;
+	},
+
+});
+
+$.extend(Page, {
+	
+	// Return the parameter with the given name from the current URL, or null if not found.
+	getUrlParameter: function(parameterName) {
+		parameterName = parameterName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+		var regexS = "[\\?&]"+parameterName+"=([^&#]*)";
+		var regex = new RegExp( regexS );
+		var results = regex.exec( window.location.href );
+		return (results == null) ? null : results[1];
+	},
+	
+});
+
+/*
+ * General utility functions made available to all controls.
+ */
+$.extend(QuickControl.prototype, {
+	
+	/*
+	 * Look up the page hosting a control.
+	 */
+	page: function() {
+		// Get the containing DOM element subclassing Page that contains the element
+		var pages = $(this.element).closest(".Page");
+		
+		// From the DOM element, get the associated QuickUI control.
+		return (pages.length > 0) ? pages.control() : null;
+	}
+
+});
+
+]]>
+</script>
+
+</Control>

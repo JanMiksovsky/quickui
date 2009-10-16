@@ -1,0 +1,68 @@
+<Control name="Dialog">
+
+<prototype>
+	<Overlay dismissOnOutsideClick="false" />
+</prototype>
+
+<style>
+
+{
+	background-color: white;
+	border: 1px solid black;
+}
+
+</style>
+
+<script>
+<![CDATA[
+	
+$.extend(Dialog, {
+	show: function(dialogClass, arguments) {
+		var dialog = $("body")
+			.append("<div/>")
+			.find(":last")
+			.control(dialogClass)
+			.control();
+		dialog.setProperties(arguments);
+		dialog.show();
+	}
+});
+
+$.extend(Dialog.prototype, {
+	
+	ready: function() {
+		Dialog.superProto.ready.call(this);
+		var self = this;
+		$(this.element).keydown(function(event) {
+			if (event.keyCode == 27)
+			{
+				self.cancel();
+			}
+		});
+	},
+
+	cancel: function() {
+		this.hide();
+		$(this.element).trigger("cancel");
+	},
+	
+	close: function() {
+		this.hide();
+		$(this.element).trigger("ok");
+	},
+	
+	position: function() {
+		// Center dialog horizontally and vertically.
+		var left = ($(document).width() - $(this.element).outerWidth()) / 2;
+		var top = ($(document).height() - $(this.element).outerHeight()) / 2;
+		$(this.element).css({
+			left: left,
+			top: top
+		});
+	}
+});
+
+]]>
+</script>
+
+</Control>

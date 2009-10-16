@@ -1,0 +1,23 @@
+<!-- A link used in the site's main navigation elements -->
+
+<Control name="NavigationLink">
+
+<prototype>
+	<Link/>
+</prototype>
+
+<style>
+
+a {
+	border: none !important;
+	color: white !important;
+	padding: 2px 5px;
+}
+
+.NavigationLink.highlight a {
+	font-weight: bold;
+}
+
+</style>
+
+</Control>

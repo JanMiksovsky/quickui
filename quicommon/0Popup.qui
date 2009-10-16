@@ -1,0 +1,7 @@
+<Control name="Popup">
+
+<prototype>
+	<Overlay dismissOnInsideClick="true"/>
+</prototype>
+
+</Control>

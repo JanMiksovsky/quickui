@@ -1,0 +1,78 @@
+<Control name="Page07">
+
+<TutorialPage title="Compact property definition">
+
+<h2>Defining a property concisely with the Property helper class</h2>
+<p>
+Defining a control property like Greet.content is so common, the QuickUI framework
+includes some JavaScript helper functions to more concisely define common types of properties.
+The Greet.content property in this example is a very common type of property:
+a control property backed by a specific HTML element.
+</p>
+
+<p>
+The function Property.element() is one of a number of helper functions defined by the Qui
+framework’s Property class for quickly constructing common types of control properties.
+In its basic form, it’s equivalent to the code we wrote previously to define Greet.content().
+So we can replace this:
+</p>
+
+<pre>
+content: function(value) {
+    return $(this.Greet_content).html(value);
+}
+</pre>
+
+<p>
+with this:
+</p>
+
+<pre>
+content: Property.element("Greet_content")
+</pre>
+
+<p>
+This reduces the amount of code required, and correspondingly reduces the chances for bugs.
+There are several other Property helper functions for defining common types of control
+properties.
+</p>
+
+<h2>Defining multiple “slots” with additional properties</h2>
+
+<p>
+Let’s adapt our Greet control to use the Property.element() helper function above.
+And since it’s so easy to define new control properties, let’s extend our Greet control
+with an additional property to control the type of punctuation used at the end of the
+greeting:
+</p>
+
+<SourceCode sourceFile="Greet.qui" />
+
+<p>
+We can then use the new slot like this:
+</p>
+
+<SourceCode sourceFile="Sample.qui" />
+
+<p>
+This produces:
+</p>
+
+<CodeOutput>
+	<Sample/>
+</CodeOutput>
+
+<p>
+Both the control content and the additional punctuation can be set separately.
+In this way, you can easily define various “slots” for content which can then be filled in by
+consumers of your control. A common use for this is to create templates of various kinds:
+templates for chunks of content that vary only in certain places, templates for entire pages,
+etc.
+</p>
+
+
+<Link href="/tutorial/section08/default.html">Next ></Link>
+
+</TutorialPage>
+
+</Control>

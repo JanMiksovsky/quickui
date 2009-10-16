@@ -1,0 +1,108 @@
+<Control name="Page04">
+
+<TutorialPage title="Referencing control elements">
+
+<p>
+Even the fixed HTML content we’ve been dealing with thus far has some utility, but controls
+obviously get much more interesting when their content is dynamic. As a trivial example, let’s
+change our Greet control so that someone using that control can have the Greet control
+refer to a specific person by name. The name will be able to vary from control instance
+to control instance.
+</p>
+<p>
+When we’re finished, we’ll be able to set a property on a control through JavaScript:
+</p>
+<pre>
+var g = $("div").control(Greet);
+g.content("Alice");
+</pre>
+<p>
+and through Quick markup:
+</p>
+<pre>
+&lt;Greet&gt;Alice&lt;/Greet&gt;
+</pre>
+
+<p>
+with the goal that either of the above would output something like, “Hello, Alice!”
+</p>
+
+<h2>Identifying control elements with IDs</h2>
+<p>
+First we need to identify where the name should be rendered in the control content by using a
+standard HTML “id” attribute. We can replace the static text “world” used earlier with a
+<Tag>span</Tag> that has an ID:
+</p>
+
+<SourceCode sourceFile="Greet.qui" />
+
+<p>
+(We could make this more efficient by assigning the ID to the <Tag>i</Tag> tag itself,
+but the above arrangement is more convenient for some modifications we’ll make later.)
+</p>
+	
+<p>
+At compile time, the quic compiler traverses the Quick markup looking for HTML tags or QuickUI class
+tags with “id” attributes. Any IDs found in this way will be compiled into JavaScript properties
+on the control class. The key property assignment to this.Greet_content can be found halfway through
+the generated code:
+</p>
+
+<SourceCode sourceFile="build/Greet.js" />
+
+<p>
+The key expression is
+</p>
+
+<![CDATA[
+<pre>
+this.Greet_content = $("&lt;span id=&frasl;"Greet_content&frasl;" /&gt;")[0]
+</pre>
+]]>
+
+<p>
+This refers to the same literal name “Greet_content” twice, but in completely different
+worlds. The right hand side of the expression takes place in the DOM world; the left hand
+side in the JavaScript world. The Quick markup created an implicit association between
+those two worlds by specifiying an ID on markup element.
+</p>
+
+<p>
+There’s no semantic value to the identifier name Greet_content — we could have called it
+anything — but including the class name in the identifier simplifies debugging. If we need
+to examine the DOM at run time, it’ll be clear what role the <Tag>span</Tag> is playing
+and which class put that element there.
+</p>
+
+<h2>Using element references</h2>
+
+<p>
+The above property assignment to this.Greet_content is made at the moment the relevant <Tag>span</Tag>
+is created. This guarantees that each instance of the Greet control will hold a reference to the
+proper <Tag>span</Tag> element defined within its own DOM, and not to any other span.
+</p>
+
+<p>
+When the render() method executes, properties defined in Quick markup are set on the corresponding
+JavaScript objects. So if the JavaScript variable “g” holds a reference to a Greet control,
+then g.Greet_content will hold a reference to the HTMLSpanElement which is the <Tag>span</Tag> above.
+This is the direct HTML DOM element. If we wish to manipulate that element with jQuery, we can wrap it
+in a call to the jQuery function: $(g.Greet_content).
+</p>
+<p>
+Once the control has saved references to the DOM elements it cares about, we can largely dispense with
+hunting through the DOM later. It is still possible to obtain a reference to the <Tag>span</Tag>, for
+example with jQuery functions like find("#Greet_content"), and there are some cases where that can
+still be useful. The primary disadvantage of such a run-time search is that the
+search isn’t guaranteed to find the right element we’re looking for. If there are multiple
+instances of the same control type on the same page, we might accidentally obtain a
+reference to the wrong <Tag>span</Tag>. The problem can also arise if another control
+class happens to define a property with the same name. It’s much safer to access elements through
+references that were saved at the moment the elements were created.
+</p>
+
+<Link href="/tutorial/section05/default.html">Next ></Link>
+
+</TutorialPage>
+
+</Control>

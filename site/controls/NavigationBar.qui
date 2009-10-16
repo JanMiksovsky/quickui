@@ -1,0 +1,43 @@
+<Control name="NavigationBar">
+
+<prototype>
+	<NavigationLink href="/home/default.html">Home</NavigationLink>
+	<NavigationLink href="/downloads/default.html">Download</NavigationLink>
+	<NavigationLink href="/tutorial/section01/default.html">Tutorial</NavigationLink>
+	<!-- <NavigationLink>Discuss</NavigationLink> -->
+	<NavigationLink href="http://code.google.com/p/quickui/">Contribute</NavigationLink>
+</prototype>
+
+<style>
+.NavigationLink {
+	font-size: 12pt;
+	margin-right: 20px;
+}
+
+a:hover {
+	background-color: #47aaf0;
+}
+
+</style>
+
+<script>
+<![CDATA[
+$.extend(NavigationBar.prototype, {
+
+	highlightCurrentArea: function() {
+		// Highlight the link for the area we're in.
+		var area = this.page() && this.page().area();
+		if (area != null) {
+			this.$(".Link").each(function() {
+				var control = $(this).control();
+				$(this).toggleClass("highlight", control.content() == area);
+			});
+		}
+	}
+	
+});
+]]>
+</script>
+
+</Control>
+

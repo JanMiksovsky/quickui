@@ -1,0 +1,152 @@
+<Control name="Page01">
+
+<TutorialPage title="Hello, world">
+
+<p>
+	This tutorial walks quickly through the construction of a simple QuickUI control,
+	touching on the framework’s fundamental capabilities.
+</p>
+
+<h2>Setting up</h2>
+
+<p>	
+	You can
+	<Link href="/downloads/default.html">download QuickUI</Link> and then follow
+	along yourself, or you can read through this first to get a feel for what it’s like
+	to develop in QuickUI.
+</p>
+
+<p>
+	If you do want to build the sample as you read along, first do the following:
+	<ol>
+		<li>Create a new folder called “demo” for your QuickUI project.</li>
+		<li>
+			Copy the jQuery library jquery.js into the demo folder.
+			(You can obtain this from <Link href="http://jquery.com/">jquery.com</Link>.)
+		</li>
+		<li>
+			Copy the core QuickUI library qui.js into the demo folder.
+			(You can find qui.js in the folder where you installed QuickUI,
+			inside the /lib subfolder).
+		</li>
+	</ol>
+</p>
+
+<h2>Creating a Quick markup file</h2>
+<p>
+	Let’s begin with a minimal Quick control. Enter the following Quick markup into a
+	new file called Greet.qui and save it in the same folder. (You can copy and paste the text below,
+	or grab the file by clicking the link to the original source code.)
+</p>
+
+<SourceCode sourceFile="Greet.qui" />
+
+<p>
+	This defines a Quick control called “Greet”. It does very little: it will cause
+	a fixed text string to be substituted wherever the tag <Tag>Greet</Tag> is found in 
+	Quick markup. It can also be invoked with JavaScript in a regular HTML file.
+	In this capacity, it can function as a simple HTML macro.
+</p>
+
+<h2>Compiling the control</h2>
+<p>
+	If the above Quick markup is stored in a file named Greet.qui, then it can be compiled with the QuickUI
+	compiler. The simplest way to do this is by invoking the QuickUI build tool, qb, from the command line
+	(in the same directory where you put Greet.qui):
+</p>
+<pre>
+$ qb
+Greet.qui
+demo.js
+demo.css
+$ 
+</pre>
+
+<p>
+	The qb build tool compiles batches of Quick markup files into JavaScript and CSS files.
+	(The qb tool invokes a more elemental QuickUI compiler tool called quic, which
+	operates on individual files. Quic can be invoked directly if you want to integrate QuickUI
+	into an existing build process.)
+</p>
+
+<p>
+	The qb output above indicates that a single Quick markup file, Greet.qui, was found
+	and compiled. As a result of this build pass, two project output files were created:
+	demo.js and demo.css. (The name for this file is taken from the name of the folder.)
+	These project outputs contain the generated JavaScript and CSS for our project,
+	respectively.
+</p>
+
+<h2>Incremental project buildes</h2>
+
+<p>
+	The qb build tool is an incremental build tool, so invoking it once more has no effect
+	until you modify Greet.qui again.
+</p>
+
+<pre>
+$ qb
+$ 
+</pre>
+
+<p>
+	The qb tool stores intermediate compiled files in a subfolder it creates called “build”.
+	This folder contains two files for each Quick markup file in the project:
+</p>
+
+<pre>
+$ ls build
+Greet.css	Greet.js
+$ 
+</pre>
+
+<p>
+	From Greet.qui, the quic compiler generated both the JavaScript in Greet.js and the
+	CSS in Greet.css. (Our Greet control does not yet contain styling, so Greet.css
+	is empty for now.) All the intermediate .js and .css files in the build subfolder
+	are concatenated to create the overall project outputs, demo.js and demo.css
+</p>
+
+<h2>Instantiating the control</h2>
+
+<p>
+	Once the project has built with the qb build tool, the generated project output files
+	can be included in an HTML page. Create a new html file called demo.html with the
+	following contents:
+</p>
+
+<SourceCode sourceFile="demo.html"/>
+
+<p>
+	This demo.html file references three required JavaScript files: the jQuery library
+	used by the QuickUI framework, the core QuickUI library qui.js, and the generated
+	demo.js file we generated above. As a preemptive measure, demo.html also includes a
+	reference to the stylesheet in Greet.css, although this file is empty for now.
+</p>
+
+<p>
+	The <Tag>script</Tag> tag above uses the jQuery function $() to run code when the document
+	is loaded. That code invokes a QuickUI jQuery extension called $.control(), which
+	takes care of the details of creating an instance of our new Greet control.
+	Here it will turn the page's <Tag>body</Tag> into an instance of Greet.
+</p>
+
+<h2>Viewing the result</h2>
+
+If you now open demo.html in a web browser (for now, Firefox works best), you should
+see output which looks like this:
+
+<CodeOutput>
+	<Greet/>
+</CodeOutput>
+
+<p>
+As with any user interface framework, we’ve had to jump through a number of hoops
+to produce a trivial result, but now we’ve laid the foundation for more complex results.
+</p>
+
+<Link href="/tutorial/section02/default.html">Next ></Link>
+
+</TutorialPage>
+
+</Control>

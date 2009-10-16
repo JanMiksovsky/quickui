@@ -1,0 +1,125 @@
+<Control name="Page08">
+
+<TutorialPage title="Markup within properties">
+
+<p>
+The control property values we’ve used so far have only been strings: “Alice”, “!”, etc.
+QuickUI markup also allows the use of full HTML to be used in setting a property value.
+Since XML tag attributes are limited to strings, we’ll need to use different markup
+syntax to set properties to arbitrary HTML.
+</p>
+
+<h2>Three different ways to set control properties</h2>
+<p>
+Quick markup provides three ways of setting a control property:
+</p>
+<ol>
+
+<li>
+Setting an attribute on the control’s tag. This is what we’ve done in the examples so far.
+<pre>
+&lt;Greet content="Alice" /&gt;
+</pre>
+
+</li>
+
+<li>
+Using a property tag. We create a new tag inside of the control tag, and give the interior
+tag the name of the property we want to set. (Take care to give the name of the property
+tag an initial lowercase letter so the quick compiler will recognize it as a property tag.)
+<pre>
+&lt;Greet&gt;
+    &lt;content&gt;
+        Alice
+    &lt;/content&gt;
+&lt;/Greet&gt;
+</pre>
+The elements within the property tag can be a simple string, or arbitrarily complex
+Quick markup—any mixture of HTML and additional QuickUI controls.
+</li>
+
+<li>
+Setting the inner content of a control tag to the desired value of the control’s content()
+property. Setting the control’s content is such a common scenario that Quick markup provides
+a concise syntax for setting it. Any elements nested inside a control tag (and which are
+outside of the scope of property tags as described above) are passed to the control’s
+content() property function. In other words, the content property is the default property
+that is set when no other property is specified.
+
+<pre>
+&lt;Greet&gt;
+    Alice
+&lt;/Greet&gt;
+</pre>
+
+Note that QuickUI doesn’t define a standard <i>meaning</i> for the special content()
+property; QuickUI simply defines a convenient way of setting it. Since you can only define
+one content property per control, you should consider which of the control’s properties
+is really it’s core “content”. In the case of our Greet control, it seems reasonable
+to treat the name used by the control as the control's core content.
+
+</li>
+
+</ol>
+
+<p>
+All three of the above mechanisms produce the same result. The first option can only accept
+string values. The last two can both accept arbitrary complex QuickUI markup. The last option
+can only be used to set the special property called “content”.
+</p>
+
+<p>
+Using more than one of the above methods is used to assign multiple values to the same
+property is legal (but discouraged). The assignments will be made in the order numbered
+above. Content specified via method two will overwrite that specified by method one,
+and similarly method three overwrites content specified by method two.
+</p>
+
+<h2>Using Quick markup in property values</h2>
+
+<p>
+We can now apply the above knowledge to our controls.
+Until now, our sample Greet control has styled the designated name content in italics.
+Rather than baking italics into the control, we can let the control caller decide when
+and where italics are appropriate. First, we’ll remove the italics from the Greet control:
+</p>
+
+<SourceCode sourceFile="Greet.qui" />
+
+<p>
+Next, we’ll rewrite the Sample control to set the content of the various Greet instances
+using the property tag syntax. And let’s take advantage of the ability to embed arbitrary
+content by setting just the name of the third Greet instance in italics:
+</p>
+
+<SourceCode sourceFile="Sample.qui" />
+
+<p>
+This produces:
+</p>
+
+<CodeOutput>
+	<Sample/>
+</CodeOutput>
+
+<h2>Factoring a user interface with QuickUI</h2>
+
+<p>
+The flexibility of arbitrary markup in property values allows you to build very rich
+controls. Each control on the page can focus on a very particular set of responsibilities,
+and leave the rest of the presentation to consumers of the control.
+</p>
+
+<p>
+This is nothing more or less than applying good principles of code factoring
+to a user interface. Above we rewrote our Greet control to factor out the hard-coded
+italic presentation and focus the Greet control just on simply displaying content according
+to a very simple template. We then worked that italic presentation into just one instance
+of the Greet control where we felt we really wanted it.
+</p>
+
+<Link href="/tutorial/section09/default.html">Next ></Link>
+
+</TutorialPage>
+
+</Control>

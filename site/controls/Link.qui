@@ -1,0 +1,47 @@
+<Control name="Link">
+
+<prototype>
+	<a id="Link_content" href="javascript:" />
+</prototype>
+
+<style>
+{
+	display: inline;
+}
+</style>
+
+<script>
+<![CDATA[
+$.extend(Link.prototype, {
+	
+	content: Property.element("Link_content"),
+	href: Property(),
+	
+	ready: function() {
+		var self = this;
+		$(this.Link_content).click(function() {
+			self.navigate();
+		});
+	},
+	
+	navigate: function() {
+		
+		var href = this.href();
+		if (href == null) {
+			return;
+		}
+		
+		// HACK for testing under Aptana preview server.
+		if (window.location.hostname == "127.0.0.1" &&
+			href.substr(0,7) != "http://")
+		{
+			href = "/Qui/site" + href;
+		}
+		window.location.href = href;
+	},
+});
+
+]]>
+</script>
+
+</Control>

@@ -1,0 +1,12 @@
+<Control name="Greet">
+	
+	Hello, <i><span id="Greet_content"/></i><span id="Greet_punctuation">.</span>
+
+<script>
+$.extend(Greet.prototype, {
+	content: Property.element("Greet_content"),
+	punctuation: Property.element("Greet_punctuation")
+});
+</script>
+
+</Control>

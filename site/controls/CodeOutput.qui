@@ -1,0 +1,38 @@
+<Control name="CodeOutput">
+
+<prototype>
+	<div id="CodeOutput_content"/>
+	<!-- <div id="_label">(live control)</div> -->
+</prototype>
+
+<style>
+
+#CodeOutput_content {
+	border-top: 1px dotted #d7c5b4;
+	border-bottom: 1px dotted #d7c5b4;
+	font-family: Times, serif;
+	margin: 0 20px;
+	padding: 10px;
+}
+
+h1 {
+	font-family: Times, serif !important;
+	margin-top: 0;
+}
+
+#_label {
+	color: #b49d87;
+	font-size: 10pt;
+	text-align: right;
+	width: 100%;
+}
+
+</style>
+
+<script>
+$.extend(CodeOutput.prototype, {
+	content: Property.element("CodeOutput_content")
+})
+</script>
+
+</Control>

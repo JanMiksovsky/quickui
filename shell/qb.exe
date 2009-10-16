@@ -1,0 +1,2 @@
+#!/bin/bash
+/usr/bin/mono /Users/Jan/Documents/Projects/Qui2/Quic/qb/bin/release/qb.exe $1 $2 $3

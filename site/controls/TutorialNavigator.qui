@@ -1,0 +1,57 @@
+<Control name="TutorialNavigator">
+
+<prototype>
+	<h1>Tutorial</h1> <!-- h1 won't actually appear, just used for space -->
+
+	<NavigationLink href="/tutorial/section01/default.html">Hello, world</NavigationLink>
+	<NavigationLink href="/tutorial/section02/default.html">How QuickUI works</NavigationLink>
+	<NavigationLink href="/tutorial/section03/default.html">Composing controls</NavigationLink>
+	<NavigationLink href="/tutorial/section04/default.html">Referencing control elements</NavigationLink>
+	<NavigationLink href="/tutorial/section05/default.html">Defining control properties</NavigationLink>
+	<NavigationLink href="/tutorial/section06/default.html">Setting control properties</NavigationLink>
+	<NavigationLink href="/tutorial/section07/default.html">Compact property definition</NavigationLink>
+	<NavigationLink href="/tutorial/section08/default.html">Markup within properties</NavigationLink>
+	<NavigationLink href="/tutorial/section09/default.html">Control prototypes</NavigationLink>
+	<NavigationLink href="/tutorial/section10/default.html">Styling controls</NavigationLink>
+	<NavigationLink href="/tutorial/section11/default.html">More on styling</NavigationLink>
+	<NavigationLink href="/tutorial/section12/default.html">Defining interactivity</NavigationLink>
+	<NavigationLink href="/tutorial/section13/default.html">Controlling behavior</NavigationLink>
+	<NavigationLink href="/tutorial/section14/default.html">Subclassing controls</NavigationLink>
+</prototype>
+
+<style>
+
+h1 {
+	margin-top: 0;
+}
+
+.Link {
+	display: block;
+	margin: 7px 0;
+}
+
+a:hover {
+	background-color: #928274;
+}
+
+</style>
+
+<script>
+<![CDATA[
+$.extend(TutorialNavigator.prototype, {
+
+	highlightCurrentPage: function() {
+		// Highlight the link for the page we're on.
+		var pageHref = window.location.href;
+		this.$(".Link").each(function() {
+			var linkHref = $(this).control().href();
+			var pageHrefRight = pageHref.substring(pageHref.length - linkHref.length)
+			$(this).toggleClass("highlight", pageHrefRight == linkHref);
+		});
+	}
+	
+});
+]]>
+</script>
+
+</Control>

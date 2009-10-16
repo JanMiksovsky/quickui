@@ -1,0 +1,140 @@
+<Control name="Page02">
+
+<TutorialPage title="How QuickUI works">
+
+<h2>Quick markup</h2>
+
+<p>
+QuickUI controls are deinfed with Quick markup, an XML format with no predefined schema
+(or, rather, a very loose one). This parallels the dynamic nature of JavaScript.
+There are no fixed class definitions in JavaScript, so it would be impossible
+to statically determine at compile time which elements in markup are classes or properties.
+Rather, the quic compiler relies on some simple syntactic conventions to parse
+Quick markup.
+</p>
+
+<p>
+Quick markup is comprised of the following element types, each identified by simple rules:
+</p>
+
+<ol>
+	<li>
+		A single outer <Tag>Control</Tag> tag. This is analogous to an <Tag>html</Tag> tag for a document.
+		The tag name, “Control”, must be capitalized.
+	</li>
+	<li>
+		HTML body elements. Any standard HTML 5 tag (<Tag>p</Tag>, <Tag>input</Tag>, etc.)
+		that can be used within the <Tag>body</Tag> of an HTML document is recognized
+		as HTML. The standard HTML tags are considered reserved in Quick markup, and may
+		not be used to define custom members (below). HTML tags that are only valid outside
+		the <Tag>body</Tag>, such as <Tag>head</Tag>, <Tag>title</Tag>, etc., are not
+		reserved in Quick markup.
+	</li>
+	<li>
+		Quick class tags. These allow you to instantiate one Quick control inside another.
+		They correspond to JavaScript classes that derive from the Quick control base class,
+		QuickControl. Quick class tags begin with an uppercase letter, e.g., <Tag>Greet</Tag>.
+		This corresponds to the common JavaScript convention in which class names follow
+		Pascal casing. A class tag may not the name of a standard HTML body element (above).
+	</li>
+	<li>
+		Quick property tags. As their name suggests, these correspond to JavaScript properties.
+		Quick property tags begin with an lowercase letter, e.g., <Tag>name</Tag>.
+		This corresponds to the JavaScript convention in which property names follow camel casing.
+		A property tag may not the name of a standard HTML body element (above).
+	</li>
+</ol>
+
+<p>
+These rules are straightforward, easy to remember in practice, and allow for efficient
+compilation.
+</p>
+
+<h2>Embedding HTML</h2>
+
+<p>
+In our sample Greet control, the <Tag>Control</Tag> tag is a Quick class tag because it's
+not a valid HTML tag, and it starts with an uppercase letter. Meanwhile, anywhere we
+have content we can embed plain HTML. Here we can extend our minimal Greet control
+to set one word in italics with an <Tag>i</Tag> tag:
+</p>
+
+<SourceCode sourceFile="Greet.qui" />
+
+<h2>Control rendering</h2>
+
+<p>
+If we recompile the updated file above and open the generated Greet.js file,
+we'll see the JavaScript which the quic compiler has generated:
+</p>
+<SourceCode sourceFile="build/Greet.js" />
+<p>
+	This code defines a class using a typical JavaScript prototype-based
+	inheritance scheme. The above JavaScript creates a new class called Greet
+	that inherits from a class called QuickControl., the base class from which all
+	QuickUI controls eventually derive. The Greet class defines two new members:
+	a className variable that affords run-time access to the name of the class, and a
+	render() method which is invoked whenever someone creates an instance
+	of a Greet control.
+</p>
+<p>
+	The render() method is the compiled version of the original Quick markup above.
+	Here it simply states that the control’s content should be a static HTML string. 
+	As we’ll see, the contents of a control can become considerably more complex.
+	The key point is that the Quick markup is getting compiled down to JavaScript code.
+	Although it’s not visible in the code above, the generated code ultimately invokes
+	jQuery methods to populate the page DOM with the desired elements.
+</p>
+
+<p>
+Earlier we saw how the Greet class could be instantiated via a call like:
+
+<pre>
+$("body").control(Greet);
+</pre>
+
+This code creates a jQuery object pointing to a particular DOM element (here, the page
+<Tag>body</Tag>), and then calls the QuickUI jQuery extension control().
+In this case, the extension instantiates the indicated Greet class,
+and invokes the method Greet.render() in the generated Greet.js file above.
+This produces the desired output, now with italics:
+</p>
+
+<CodeOutput>
+	<Greet />
+</CodeOutput>
+
+<h2>QuickUI classes as HTML element classes</h2>
+<p>
+Inspecting the DOM at run time for the above output (e.g., via a tool such as
+<a href="www.getfirebug.com">Firebug</a>) reveals the following: 
+</p>
+<pre>
+&lt;html&gt;
+&lt;body class="Greet QuickControl"&gt;
+    Hello, 
+    &lt;i&gt;world&lt;/i&gt;
+    !
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>
+The Greet.render() method has added the control’s contents to the DOM.
+The <Tag>body</Tag> has also been stamped with two class names: Greet and QuickControl.
+This operation was automatically performed by the QuickUI $.control() extension.
+When that call instantiates a control class, it adds the name of that class and
+the names of all its parent classes to the “class” attribute of the element on which
+the control was instantiated.
+</p>
+<p>
+This is done for two reasons. First, it’s much easier to debug controls at run time
+if it’s clear which HTML elements were created by which QuickUI controls.
+Second, this allows us to style QuickUI control contents effectively via CSS
+(more on that later).
+</p>
+
+<Link href="/tutorial/section03/default.html">Next ></Link>
+
+</TutorialPage>
+
+</Control>

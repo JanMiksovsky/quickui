@@ -1,0 +1,22 @@
+<Control name="Tag">
+
+<prototype>&lt;<div id="Tag_content" />&gt;</prototype>
+
+<style>
+{
+	display: inline;
+	font-family: Consolas, Lucida Console, Courier, Courier New, monospace;
+}
+
+#Tag_content {
+	display: inline;
+}
+</style>
+
+<script>
+$.extend(Tag.prototype, {
+	content: Property.element("Tag_content")
+});
+</script>
+
+</Control>

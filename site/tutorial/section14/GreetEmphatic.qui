@@ -1,0 +1,14 @@
+<Control name="GreetEmphatic">
+
+<prototype>
+	<Greet punctuation="!" />
+</prototype>
+
+<style>
+{
+	color: darkred;
+	font-weight: bold;
+}
+</style>
+
+</Control>

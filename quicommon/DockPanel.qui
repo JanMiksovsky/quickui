@@ -1,0 +1,94 @@
+<!-- A block of content with auto-sizing panels on all four sides. -->
+
+<Control name="DockPanel">
+
+<prototype>
+	<div id="DockPanel_top" />
+	<div id="rowCenter">
+		<div id="centerTable">
+			<div id="DockPanel_left" class="panel" />
+			<div id="DockPanel_content"/>
+			<div id="DockPanel_right" class="panel" />
+		</div>
+	</div>
+	<div id="DockPanel_bottom" />
+</prototype>
+
+<style>
+<![CDATA[
+{
+	/* border: 1px solid #f0f0f0; */
+	display: table;
+	width: 100%;
+}
+
+> * {
+	/* border: 1px solid #f0f0f0; */
+	display: table-row;
+}
+
+#centerTable {
+	display: table;
+	height: 100%;
+	width: 100%;
+}
+
+#centerTable > * {
+	/* border: 1px solid #f0f0f0; */
+	display: table-cell;
+	vertical-align: top;
+}
+
+.panel {
+	width: 0;
+}
+
+]]>
+</style>
+
+<script>
+$.extend(DockPanel.prototype, {
+	
+	content: Property.element("DockPanel_content"),	
+	left: Property.element("DockPanel_left"),
+	right: Property.element("DockPanel_right"),
+	
+	ready: function() {
+		/*
+		var self = this;
+		$(this.element).click(function() {
+			self.recalc();
+		})
+		*/
+		// this.recalc();
+	},
+	
+	bottom: Property.element("DockPanel_bottom", function(value) {
+		this.recalc(this.DockPanel_bottom);
+	}),
+	
+	top: Property.element("DockPanel_top", function(value) {
+		this.recalc(this.DockPanel_top);
+	}),
+	
+	recalc: function(element) {
+		
+		if (element === undefined)
+		{
+			this.recalc(this.DockPanel_top);
+			this.recalc(this.DockPanel_bottom);
+			return;
+		}
+		
+		var height = 0;
+		$(element).children().each(function() {
+			height += $(this).outerHeight();
+		});
+		$(element).css("height", height + "px");
+		
+	}
+	
+});
+</script>
+
+</Control>

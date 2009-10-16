@@ -1,0 +1,46 @@
+<!-- Button base class. Handles mouse events, abstract styles. -->
+
+<Control name="ButtonBase">
+
+<style>
+{
+	cursor: pointer;
+	display: inline-block;
+}
+</style>
+
+<script>
+$.extend(ButtonBase.prototype, {
+	
+	ready: function()
+	{
+		var self = this;
+		$(this.element).blur(function() {
+				$(self.element).removeClass("focused");
+			})
+			.focus(function() { $(self.element).addClass("focused"); })
+			.hover(
+				function() {
+					$(self.element).addClass("hovered");
+				},
+				function() {
+					$(self.element).removeClass("focused")
+						.removeClass("hovered")
+						.removeClass("pressed");
+			})
+			.mousedown(function() {
+				$(self.element).addClass("pressed");
+			})
+			.mouseup(function() {
+				$(self.element).removeClass("pressed");
+			});
+	},
+
+	disabled: Property.bool(function(value) {
+		$(this.element).toggleClass("disabled", value);
+	})
+
+});
+</script>
+
+</Control>

@@ -1,0 +1,58 @@
+<Control name="Page12">
+
+<TutorialPage title="Defining interactivity">
+
+<p>
+Earlier we saw how additional properties could be defined in the <Tag>script</Tag> tag.
+We can include arbitrary JavaScript in a <Tag>script</Tag> tag, including code that defines
+a control’s interactive behavior. As a trivial example, let’s give the Greet the ability to let
+the user click on the name and supply a new value for it.
+</p>
+<p>
+To do this, we’ll create an event handler for a click event on the <Tag>span</Tag>
+that holds the name. The most convenient time to wire up the event handler is after
+the control’s markup has been fully rendered, when the <Tag>span</Tag> is guaranteed to exist.
+The QuickUI invokes a method for this purpose called QuickControl.ready(), similar to the document
+ready() method invoked by jQuery when a document has finished loading. By overriding a
+control’s ready() function, a control can have its own code execute when the control is
+instantiated.
+</p>
+
+<SourceCode sourceFile="Greet.qui" />
+
+*** Guard against script injection ***
+
+<p>
+Here the ready() function creates a click handler for the <Tag>span</Tag> identified
+by this.Greet_content. As we saw earlier, that property holds a reference to a
+HTMLSpanElement. We can pass that reference to the jQuery $() function and invoke its
+click method to create an event handler.
+</p>
+<p>
+Our event handler reads the current value of the control’s content (i.e., the current name),
+gives the user a chance to override that, then saves the result back as the new content.
+This is done via calls to the property’s setter/getter function.
+</p>
+
+<p>
+With this in place, the user can now click on a name to change it. (The example below is
+interactive.)
+</p>
+
+<CodeOutput>
+	<Sample/>
+</CodeOutput>
+
+<p>
+Note that above we also added a bit of styling to the <Tag>span</Tag> to change the mouse
+cursor for that element to help confirm that it’s clickable. We might eventually consider
+replacing that <Tag>span</Tag> with a real <Tag>a</Tag> tag. Since we’ve factored our
+user interface controls well, we could do that without needing to rewrite controls like
+Sample that host the Greet control.
+</p>
+
+<Link href="/tutorial/section13/default.html">Next ></Link>
+
+</TutorialPage>
+
+</Control>
