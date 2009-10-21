@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "qb", "..\qb\qb.csproj", "{A
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{92F2D324-E2A7-445F-98F6-CC6F06E76154}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quic", "..\quic\Quic.csproj", "{FDCDE62B-250B-4333-A8E6-55E49662D765}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "qc", "..\qc\qc.csproj", "{FDCDE62B-250B-4333-A8E6-55E49662D765}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
