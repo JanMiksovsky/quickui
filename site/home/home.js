@@ -26,7 +26,7 @@ HomePage = SitePage.extend({
 				$("<p />")
 				.append(
 					QuickControl.nodes(
-						" In QuickUI, the tags you create are called controls. Each control can include HTML markup (including other Quick controls), CSS styling, and JavaScript scripting. You can easily bundle together a group of controls to create a new control. At its core, QuickUI includes a design-time tool that compiles your markup into regular JavaScript and CSS files. The JavaScript makes use of the ",
+						" In QuickUI, the tags you create are called controls. Each control can include HTML markup (including other Quick controls), CSS styling, and JavaScript scripting. You can easily bundle together a group of controls to create a new control. At its core, QuickUI includes a design-time tool that compiles your markup into regular JavaScript and CSS files. This tool runs on Windows and OS/X. The generated JavaScript makes use of the ",
 						QuickControl.create(Link, {
 							content: "jQuery",
 							href: "http://jquery.com",

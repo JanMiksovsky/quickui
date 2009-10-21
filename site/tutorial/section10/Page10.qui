@@ -12,7 +12,7 @@ through the addition of a <Tag>style</Tag> tag, much as you can in HTML:
 <SourceCode sourceFile="Greet.qui" />
 
 <p>
-When the control is built, the quic compiler will extract the contents of the
+When the control is built, the qc compiler will extract the contents of the
 <Tag>style</Tag> tag and emit a standard CSS file to hold those style rules:
 </p>
 

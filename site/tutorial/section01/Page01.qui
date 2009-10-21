@@ -64,8 +64,8 @@ $
 
 <p>
 	The qb build tool compiles batches of Quick markup files into JavaScript and CSS files.
-	(The qb tool invokes a more elemental QuickUI compiler tool called quic, which
-	operates on individual files. Quic can be invoked directly if you want to integrate QuickUI
+	(The qb build tool invokes a more elemental Quick markup compiler called qc, which
+	operates on individual files. The qc compiler can be invoked directly if you want to integrate QuickUI
 	into an existing build process.)
 </p>
 

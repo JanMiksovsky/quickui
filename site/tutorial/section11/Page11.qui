@@ -29,7 +29,7 @@ element and everything it contains.
 <p>
 In general, all CSS rules enclosed in a QuickUI control’s <Tag>style</Tag> tag will have
 the control’s class name prepended to it. One exception: if a CSS rule already begins
-with the control’s class name, then the quic compiler leaves the rule as is.
+with the control’s class name, then the qc compiler leaves the rule as is.
 </p>
 
 <h2>Styling a control instance</h2>

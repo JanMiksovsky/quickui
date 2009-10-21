@@ -42,7 +42,7 @@ but the above arrangement is more convenient for some modifications we’ll make
 </p>
 	
 <p>
-At compile time, the quic compiler traverses the Quick markup looking for HTML tags or QuickUI class
+At compile time, the qc compiler traverses the Quick markup looking for HTML tags or QuickUI class
 tags with “id” attributes. Any IDs found in this way will be compiled into JavaScript properties
 on the control class. The key property assignment to this.Greet_content can be found halfway through
 the generated code:

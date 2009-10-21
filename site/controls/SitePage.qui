@@ -42,7 +42,7 @@ td {
 }
 
 #topRow {
-	background-image: url(/Qui/site/resources/water.jpg);
+	background-image: url(/QuickUI/site/resources/water.jpg);
 	background-repeat: no-repeat;
 	background-color: #2d7ab0;
 	border-bottom: 1px solid #391c01;

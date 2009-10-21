@@ -9,7 +9,7 @@ QuickUI controls are deinfed with Quick markup, an XML format with no predefined
 (or, rather, a very loose one). This parallels the dynamic nature of JavaScript.
 There are no fixed class definitions in JavaScript, so it would be impossible
 to statically determine at compile time which elements in markup are classes or properties.
-Rather, the quic compiler relies on some simple syntactic conventions to parse
+Rather, qc (the Quick markup compiler) relies on some simple syntactic conventions to parse
 Quick markup.
 </p>
 
@@ -35,13 +35,13 @@ Quick markup is comprised of the following element types, each identified by sim
 		They correspond to JavaScript classes that derive from the Quick control base class,
 		QuickControl. Quick class tags begin with an uppercase letter, e.g., <Tag>Greet</Tag>.
 		This corresponds to the common JavaScript convention in which class names follow
-		Pascal casing. A class tag may not the name of a standard HTML body element (above).
+		Pascal casing. A class tag may not the name of a standard HTML element (see above).
 	</li>
 	<li>
 		Quick property tags. As their name suggests, these correspond to JavaScript properties.
 		Quick property tags begin with an lowercase letter, e.g., <Tag>name</Tag>.
 		This corresponds to the JavaScript convention in which property names follow camel casing.
-		A property tag may not the name of a standard HTML body element (above).
+		A property tag may not the name of a standard HTML element (see above).
 	</li>
 </ol>
 

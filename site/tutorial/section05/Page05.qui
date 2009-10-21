@@ -19,7 +19,7 @@ to put this code: embed it directly in the markup inside a <Tag>script</Tag> tag
 <SourceCode sourceFile="Greet.qui" />
 
 <p>
-The quic compiler leaves the contents of a control’s <Tag>script</Tag> tag untouched, and simply appends
+The qc compiler leaves the contents of a control’s <Tag>script</Tag> tag untouched, and simply appends
 the tag’s contents to the bottom of the generated JavaScript output, as shown below.
 (QuickUI can also be used with a “code behind” approach, described later.)
 </p>

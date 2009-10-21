@@ -26,7 +26,7 @@ Setting an attribute on the control’s tag. This is what we’ve done in the ex
 <li>
 Using a property tag. We create a new tag inside of the control tag, and give the interior
 tag the name of the property we want to set. (Take care to give the name of the property
-tag an initial lowercase letter so the quick compiler will recognize it as a property tag.)
+tag an initial lowercase letter so the qc compiler will recognize it as a property tag.)
 <pre>
 &lt;Greet&gt;
     &lt;content&gt;
