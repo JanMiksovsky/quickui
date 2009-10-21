@@ -7,7 +7,7 @@ using System.Text;
 using NUnit.Framework;
 #endif
 
-namespace Quic
+namespace qc
 {
     // UNDONE: Rename to avoid confusion with XNode?
     public abstract class Node

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Quic
+namespace qc
 {
     public class Template
     {

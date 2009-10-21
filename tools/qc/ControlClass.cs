@@ -8,7 +8,7 @@ using System.Linq;
 using NUnit.Framework;
 #endif
 
-namespace Quic
+namespace qc
 {
     /// <summary>
     /// A Quick control class declaration.
@@ -271,7 +271,7 @@ namespace Quic
                 };
                 c.Prototype.Properties.Add("content", new HtmlNode("<span id=\"Simple_content\" />", "Simple_content"));
 
-                CompileControlAndCompareOutput("Quic.Tests.simple.qui.js", c);
+                CompileControlAndCompareOutput("qc.Tests.simple.qui.js", c);
             }
 
             static void CompileControlAndCompareOutput(string expectedCompilationFileName, ControlClass control)

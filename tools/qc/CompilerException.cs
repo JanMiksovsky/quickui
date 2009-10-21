@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Quic
+namespace qc
 {
     public class CompilerException : Exception
     {

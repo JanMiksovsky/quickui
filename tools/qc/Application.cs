@@ -5,7 +5,7 @@ using System.IO;
 using NUnit.Framework;
 #endif
 
-namespace Quic
+namespace qc
 {
     class Application
     {
@@ -29,7 +29,7 @@ namespace Quic
 
         static void WriteError(string message)
         {
-            Console.Error.WriteLine(String.Format("quic: Error: {0}", message));
+            Console.Error.WriteLine(String.Format("qc: Error: {0}", message));
         }
     }
 

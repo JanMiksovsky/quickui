@@ -11,7 +11,7 @@ using System.Xml.Linq;
 using NUnit.Framework;
 #endif
 
-namespace Quic
+namespace qc
 {
     class ControlParser
     {
@@ -505,7 +505,7 @@ namespace Quic
             [Test]
             public void SimpleControl()
             {
-                ControlClass c = ParseControlFromEmbeddedFile("Quic.Tests.simple.qui");
+                ControlClass c = ParseControlFromEmbeddedFile("qc.Tests.simple.qui");
                 Assert.AreEqual("Simple", c.Name);
                 Assert.AreEqual("QuickControl", c.Prototype.ClassName);
                 Assert.AreEqual(1, c.Prototype.Properties.Count);
@@ -519,7 +519,7 @@ namespace Quic
             [Test]
             public void SimpleHostControl()
             {
-                ControlClass controlClass = ParseControlFromEmbeddedFile("Quic.Tests.simplehost.qui");
+                ControlClass controlClass = ParseControlFromEmbeddedFile("qc.Tests.simplehost.qui");
                 Assert.AreEqual("SimpleHost", controlClass.Name);
                 Assert.IsInstanceOf<NodeCollection>(controlClass.Prototype["content"]);
                 List<Node> nodes = new List<Node>((NodeCollection) controlClass.Prototype["content"]);

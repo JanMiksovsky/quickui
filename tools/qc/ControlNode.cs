@@ -7,7 +7,7 @@ using System.Text;
 using NUnit.Framework;
 #endif
 
-namespace Quic
+namespace qc
 {
     /// <summary>
     /// An instance of a control found in Quick markup.

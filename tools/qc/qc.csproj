@@ -8,11 +8,11 @@
     <ProjectGuid>{FDCDE62B-250B-4333-A8E6-55E49662D765}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Quic</RootNamespace>
-    <AssemblyName>quic</AssemblyName>
+    <RootNamespace>qc</RootNamespace>
+    <AssemblyName>qc</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <StartupObject>Quic.Application</StartupObject>
+    <StartupObject>qc.Application</StartupObject>
     <TargetFrameworkSubset>
     </TargetFrameworkSubset>
   </PropertyGroup>

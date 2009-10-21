@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using NUnit.Framework;
 #endif
 
-namespace Quic
+namespace qc
 {
     public static class ControlCssEmitter
     {
@@ -139,7 +139,7 @@ namespace Quic
             [Test]
             public void ComprehensiveControl()
             {
-                CompareCompilation("Quic.Tests.comprehensive.qui.css", "Quic.Tests.comprehensive.qui");
+                CompareCompilation("qc.Tests.comprehensive.qui.css", "qc.Tests.comprehensive.qui");
             }
 
             static void CompareCompilation(string expectedCompilationFileName, string sourceFileName)

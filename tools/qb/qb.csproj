@@ -101,9 +101,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\quic\Quic.csproj">
+    <ProjectReference Include="..\qc\qc.csproj">
       <Project>{FDCDE62B-250B-4333-A8E6-55E49662D765}</Project>
-      <Name>Quic</Name>
+      <Name>qc</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

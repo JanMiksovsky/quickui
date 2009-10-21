@@ -8,7 +8,7 @@ using System.Text;
 using NUnit.Framework;
 #endif
 
-namespace Quic
+namespace qc
 {
     public class NodeCollection : Node, IEnumerable<Node>
     {

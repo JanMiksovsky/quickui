@@ -7,7 +7,7 @@ using System.Xml.Linq;
 using NUnit.Framework;
 #endif
 
-namespace Quic
+namespace qc
 {
     public class ControlCompiler
     {
@@ -73,10 +73,10 @@ namespace Quic
                 return node.EmitJavaScript();
             }
 
-            [TestCase("Quic.Tests.simple.qui.js", "Quic.Tests.simple.qui")]
-            [TestCase("Quic.Tests.content.qui.js", "Quic.Tests.content.qui")]
-            [TestCase("Quic.Tests.simplehost.qui.js", "Quic.Tests.simplehost.qui")]
-            [TestCase("Quic.Tests.comprehensive.qui.js", "Quic.Tests.comprehensive.qui")]
+            [TestCase("qc.Tests.simple.qui.js", "qc.Tests.simple.qui")]
+            [TestCase("qc.Tests.content.qui.js", "qc.Tests.content.qui")]
+            [TestCase("qc.Tests.simplehost.qui.js", "qc.Tests.simplehost.qui")]
+            [TestCase("qc.Tests.comprehensive.qui.js", "qc.Tests.comprehensive.qui")]
             public void Compile(string fileNameExpectedOutput, string fileNameSource)
             {
                 ControlClass c = ControlParser.ParseControlClass(Utilities.GetEmbeddedFileReader(fileNameSource));

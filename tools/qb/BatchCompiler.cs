@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-using Quic;
+using qc;
 
 namespace qb
 {
@@ -97,7 +97,7 @@ namespace qb
             }
             catch (Exception e)
             {
-                Console.Error.WriteLine("quic: " + e.Message);
+                Console.Error.WriteLine("qc: " + e.Message);
                 return false;
             }
         }

@@ -8,7 +8,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Text;
 
-namespace Quic
+namespace qc
 {
     static class Utilities
     {

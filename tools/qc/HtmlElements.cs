@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using NUnit.Framework;
 #endif
 
-namespace Quic
+namespace qc
 {
     public static class HtmlElements
     {
@@ -16,7 +16,7 @@ namespace Quic
             {
                 if (elements == null)
                 {
-                    elements = new ArrayList(Utilities.DeserializeXml<string[]>("Quic.HtmlElements.xml"));
+                    elements = new ArrayList(Utilities.DeserializeXml<string[]>("qc.HtmlElements.xml"));
                 }
 
                 return elements;

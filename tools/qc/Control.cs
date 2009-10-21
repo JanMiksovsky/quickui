@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Quic
+namespace qc
 {
     /// <summary>
     /// An instance of a Quick control.
