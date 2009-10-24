@@ -65,12 +65,11 @@ namespace qc
             return (ChildNodes == null)
                 ? String.Empty
                 : Template.Format(
-                    "\n{Tabs}.append(\n{TabsPlusOne}{ChildNodes}\n{Tabs})",
+                    ".setContents(\n{ChildNodes}{Tabs})",
                     new
                     {
-                        ChildNodes = ChildNodes.EmitJavaScript(indentLevel + 1),
-                        Tabs = Tabs(indentLevel),
-                        TabsPlusOne = Tabs(indentLevel + 1)
+                        ChildNodes = ChildNodes.EmitItems(indentLevel + 1),
+                        Tabs = Tabs(indentLevel)
                     });
         }
 
@@ -112,12 +111,9 @@ namespace qc
                     })
                 };
                 Assert.AreEqual(
-                    "$(\"<div />\")\n" +
-                    ".append(\n" +
-                    "\tQuickControl.nodes(\n" +
-                    "\t\t\"<h1 />\",\n" +
-                    "\t\tthis.content = $(\"<p id=\\\"content\\\">Hello</p>\")[0]\n" +
-                    "\t)\n" +
+                    "$(\"<div />\").setContents(\n" +
+                    "\t\"<h1 />\",\n" +
+                    "\tthis.content = $(\"<p id=\\\"content\\\">Hello</p>\")[0]\n" +
                     ")[0]",
                     node.EmitJavaScript());
             }

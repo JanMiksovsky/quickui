@@ -151,7 +151,7 @@ namespace qc
             switch (node.NodeType)
             {
                 case XmlNodeType.CDATA:
-                    return ParseText((XCData) node);
+                    return ParseCData((XCData) node);
 
                 case XmlNodeType.Element:
                     return HtmlElements.IsHtmlElement((XElement) node)
@@ -218,6 +218,11 @@ namespace qc
         {
             string s = node.Value;
 
+            // Browsers like WebKit don't like seeing "<" in text.
+            // Undo any entity replacement made by the parser in a text node
+            // so that at run-time the text can be added as-is to the HTML.
+            s = s.Replace("<", "&lt;");
+
             // Remove extra white space for most text nodes.
             // Exception: leave <style/> and <script/> tags alone.
             string parentName =
@@ -228,6 +233,14 @@ namespace qc
             }
 
             return new HtmlNode(s);
+        }
+
+        /// <summary>
+        /// Parse the CDATA node at the given element.
+        /// </summary>
+        static HtmlNode ParseCData(XCData node)
+        {
+            return new HtmlNode(node.Value);
         }
 
         /// <summary>

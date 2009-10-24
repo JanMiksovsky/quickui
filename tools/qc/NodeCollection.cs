@@ -20,23 +20,23 @@ namespace qc
         }
 
         /// <summary>
-        /// Return the JavaScript that can generate this collection at runtime.
+        /// Return the JavaScript for the collection as an array.
         /// </summary>
         public override string EmitJavaScript(int indentLevel)
         {
             return Template.Format(
-                "QuickControl.nodes(\n{Nodes}{Tabs})",
+                "[\n{Items}{Tabs}]",
                 new
                 {
-                    Nodes = EmitNodesInCollection(indentLevel + 1),
+                    Items = EmitItems(indentLevel + 1),
                     Tabs = Tabs(indentLevel)
                 });
         }
 
         /// <summary>
-        /// Return the JavaScript for the set of nodes in the collection.
+        /// Return just the items in the collection.
         /// </summary>
-        private string EmitNodesInCollection(int indentLevel)
+        public string EmitItems(int indentLevel)
         {
             // We have to jump through some hoops to ensure the last element of
             // the collection does *not* get a comma after it. This means we can't
@@ -93,10 +93,10 @@ namespace qc
                 });
 
                 Assert.AreEqual(
-                    "QuickControl.nodes(\n" +
+                    "[\n" +
                     "\t\"Hi, \",\n" +
                     "\tthis.content = $(\"<span id=\\\"content\\\"/>\")[0]\n" +
-                    ")",
+                    "]",
                     node.EmitJavaScript());
             }
         }

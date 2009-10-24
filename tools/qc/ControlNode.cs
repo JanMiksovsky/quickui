@@ -31,7 +31,7 @@ namespace qc
         public override string EmitJavaScript(int indentLevel)
         {
             return Template.Format(
-                "{VariableDeclaration}QuickControl.create({ClassName}{ControlConstructorArguments})[0]",
+                "{VariableDeclaration}QuickControl.create({ClassName}{ControlConstructorArguments})",
                 new
                 {
                     VariableDeclaration = EmitVariableDeclaration(),
@@ -110,7 +110,7 @@ namespace qc
                     "this.foo = QuickControl.create(Simple, {\n" +
                     "\tcontent: \"Hello\",\n" +
                     "\tid: \"foo\",\n" +
-                    "})[0]",
+                    "})",
                     node.EmitJavaScript());
             }
         }

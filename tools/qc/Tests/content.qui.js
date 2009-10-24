@@ -6,17 +6,17 @@ Content = QuickControl.extend({
 	render: function() {
 		QuickControl.prototype.render.call(this);
 		this.setClassProperties(QuickControl, {
-			content: QuickControl.nodes(
+			content: [
 				QuickControl.create(Simple, {
 					content: "Hello",
-				})[0],
+				}),
 				QuickControl.create(Simple, {
 					content: "There",
-				})[0],
+				}),
 				QuickControl.create(Simple, {
 					content: " World ",
-				})[0]
-			),
+				})
+			],
 		});
 	}
 });

@@ -6,18 +6,15 @@ Comprehensive = SampleBaseClass.extend({
 	render: function() {
 		SampleBaseClass.prototype.render.call(this);
 		this.setClassProperties(SampleBaseClass, {
-			content: QuickControl.nodes(
+			content: [
 				this.message = QuickControl.create(Simple, {
 					content: " Hello, <i>world</i>! ",
 					id: "message",
-				})[0],
-				$("<div />")
-				.append(
-					QuickControl.nodes(
-						this.Comprehensive_content = $("<p id=\"Comprehensive_content\" />")[0]
-					)
+				}),
+				$("<div />").setContents(
+					this.Comprehensive_content = $("<p id=\"Comprehensive_content\" />")[0]
 				)[0]
-			),
+			],
 		});
 	}
 });

@@ -6,12 +6,12 @@ SimpleHost = QuickControl.extend({
 	render: function() {
 		QuickControl.prototype.render.call(this);
 		this.setClassProperties(QuickControl, {
-			content: QuickControl.nodes(
+			content: [
 				" Text ",
 				QuickControl.create(Simple, {
 					content: "Hello, world!",
-				})[0]
-			),
+				})
+			],
 		});
 	}
 });

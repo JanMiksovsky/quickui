@@ -221,23 +221,17 @@ DockPanel = QuickControl.extend({
 	render: function() {
 		QuickControl.prototype.render.call(this);
 		this.setClassProperties(QuickControl, {
-			content: QuickControl.nodes(
+			content: [
 				this.DockPanel_top = $("<div id=\"DockPanel_top\" />")[0],
-				this.rowCenter = $("<div id=\"rowCenter\" />")
-				.append(
-					QuickControl.nodes(
-						this.centerTable = $("<div id=\"centerTable\" />")
-						.append(
-							QuickControl.nodes(
-								this.DockPanel_left = $("<div id=\"DockPanel_left\" class=\"panel\" />")[0],
-								this.DockPanel_content = $("<div id=\"DockPanel_content\" />")[0],
-								this.DockPanel_right = $("<div id=\"DockPanel_right\" class=\"panel\" />")[0]
-							)
-						)[0]
-					)
+				this.rowCenter = $("<div id=\"rowCenter\" />").setContents(
+					this.centerTable = $("<div id=\"centerTable\" />").setContents(
+						this.DockPanel_left = $("<div id=\"DockPanel_left\" class=\"panel\" />")[0],
+						this.DockPanel_content = $("<div id=\"DockPanel_content\" />")[0],
+						this.DockPanel_right = $("<div id=\"DockPanel_right\" class=\"panel\" />")[0]
+					)[0]
 				)[0],
 				this.DockPanel_bottom = $("<div id=\"DockPanel_bottom\" />")[0]
-			),
+			],
 		});
 	}
 });
