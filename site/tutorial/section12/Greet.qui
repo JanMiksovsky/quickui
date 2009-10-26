@@ -24,7 +24,7 @@ $.extend(Greet.prototype, {
 	ready: function() {
 		var self = this;
 		$(this.Greet_content).click(function() {
-			var newName = prompt("Enter name:", self.content());
+			var newName = escape(prompt("Enter name:", self.content()));
 			if (newName != null)
 			{
 				self.content(newName);

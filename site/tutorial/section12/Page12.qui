@@ -20,8 +20,6 @@ instantiated.
 
 <SourceCode sourceFile="Greet.qui" />
 
-*** Guard against script injection ***
-
 <p>
 Here the ready() function creates a click handler for the <Tag>span</Tag> identified
 by this.Greet_content. As we saw earlier, that property holds a reference to a

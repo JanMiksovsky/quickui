@@ -26,7 +26,7 @@ $.extend(Greet.prototype, {
 		var self = this;
 		$(this.Greet_content).click(function() {
 			if (!self.disabled()) {
-				var newName = prompt("Enter name:", self.content());
+			var newName = escape(prompt("Enter name:", self.content()));
 				if (newName != null) {
 					self.content(newName);
 				}
