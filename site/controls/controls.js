@@ -1,4 +1,23 @@
 //
+// AddThis
+//
+AddThis = QuickControl.extend({
+	className: "AddThis",
+	render: function() {
+		QuickControl.prototype.render.call(this);
+		this.setClassProperties(QuickControl, {
+			content: "<div class=\"addthis_toolbox addthis_default_style\"><a href=\"http://www.addthis.com/bookmark.php?v=250&amp;pub=janmiksovsky\" class=\"addthis_button_compact\">Share</a><span class=\"addthis_separator\">|</span><a class=\"addthis_button_twitter\"></a><a class=\"addthis_button_facebook\"></a><a class=\"addthis_button_email\"></a><a class=\"addthis_button_favorites\"></a><a class=\"addthis_button_print\"></a></div>",
+		});
+	}
+});
+var addthis_share = {
+	templates:
+	{
+		twitter: "QuickUI creates modular jQuery controls that can be used like new HTML tags {{url}}",
+	}
+};
+
+//
 // CodeOutput
 //
 CodeOutput = QuickControl.extend({

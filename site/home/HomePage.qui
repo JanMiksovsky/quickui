@@ -1,6 +1,6 @@
 <Control name="HomePage">
 
-<SitePage area="Home" title="Introduction to QuickUI">
+<SitePage area="Home" title="QuickUI: Modular Web Control Framework">
 
 <p>
 QuickUI (Quick User Interface) is a framework that simplifies the design, construction,
@@ -64,6 +64,8 @@ compose and subclass controls, things can quickly become very interesting.
 	<li><Link href="/downloads/default.html">Download QuickUI</Link></li>
 	<li><Link href="/tutorial/section01/default.html">Read the Tutorial</Link></li>
 </ul>
+
+<AddThis/>
 
 </SitePage>
 

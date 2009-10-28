@@ -20,7 +20,7 @@ HomePage = SitePage.extend({
 		SitePage.prototype.render.call(this);
 		this.setClassProperties(SitePage, {
 			area: "Home",
-			title: "Introduction to QuickUI",
+			title: "QuickUI: Modular Web Control Framework",
 			content: [
 				"<p>\r\nQuickUI (Quick User Interface) is a framework that simplifies the design, construction,\r\nand maintenance of web-based user interfaces. The easiest way to describe QuickUI is\r\nthat it lets you write HTML as if you could create your own tags.\r\n</p>",
 				"<p>\t\r\nIn QuickUI, the tags you create are called controls. Each control can include HTML markup\r\n(including other Quick controls), CSS styling, and JavaScript scripting. You can easily\r\nbundle together a group of controls to create a new control.\r\n</p>",
@@ -68,7 +68,8 @@ HomePage = SitePage.extend({
 							href: "/tutorial/section01/default.html",
 						})
 					)[0]
-				)[0]
+				)[0],
+				QuickControl.create(AddThis)
 			],
 		});
 	}

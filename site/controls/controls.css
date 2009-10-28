@@ -1,3 +1,13 @@
+/*** AddThis ***/
+
+.AddThis a {
+	border: none !important;
+}
+
+.AddThis a:hover {
+	border: none !important;
+}
+
 /*** CodeOutput ***/
 
 .CodeOutput #CodeOutput_content {
