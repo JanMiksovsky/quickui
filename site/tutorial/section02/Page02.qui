@@ -38,8 +38,8 @@ Quick markup is comprised of the following element types, each identified by sim
 		Pascal casing. A class tag may not the name of a standard HTML element (see above).
 	</li>
 	<li>
-		Quick property tags. As their name suggests, these correspond to JavaScript properties.
-		Quick property tags begin with an lowercase letter, e.g., <Tag>name</Tag>.
+		Quick property tags. As their name suggests, these correspond to JavaScript properties
+		(instance variables). Quick property tags begin with an lowercase letter, e.g., <Tag>name</Tag>.
 		This corresponds to the JavaScript convention in which property names follow camel casing.
 		A property tag may not the name of a standard HTML element (see above).
 	</li>
@@ -65,7 +65,7 @@ to set one word in italics with an <Tag>i</Tag> tag:
 
 <p>
 If we recompile the updated file above and open the generated Greet.js file,
-we'll see the JavaScript which the quic compiler has generated:
+we'll see the JavaScript which the qc compiler has generated:
 </p>
 <SourceCode sourceFile="build/Greet.js" />
 <p>

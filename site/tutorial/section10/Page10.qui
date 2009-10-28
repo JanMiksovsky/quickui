@@ -17,7 +17,7 @@ When the control is built, the qc compiler will extract the contents of the
 </p>
 
 <pre>
-$ qb
+$ <b>qb</b>
 Greet.qui
 demo.js
 demo.css
@@ -25,8 +25,8 @@ $
 </pre>
 
 <p>
-Building the QuickUI project emits Greet.css (in the /build folder),
-plus a combined demo.css to hold the CSS from all the QuickUI controls in the project.
+Building the QuickUI project emits build/Greet.css, which gets put into the 
+combined demo.css that holds CSS from all the QuickUI controls in the project.
 Until now, the file Greet.css was empty, but it will now include the CSS defined
 in the <Tag>style</Tag> tag above. Since we have only defined style information for
 one control, Greet, for now Greet.css and the combined demo.css will be identical.
@@ -50,7 +50,7 @@ Opening demo.html now shows the indicated styling applied to the Greet controlâ€
 
 <h2>Automatic scoping of control styles</h2>
 <p>
-If we inspect the contents of generated Greet.css file, you can see the <Tag>style</Tag>
+If we inspect the contents of generated Greet.css file, we can see the <Tag>style</Tag>
 tag contents extracted from Greet.qui â€” along with a small but important transformation:
 </p>
 

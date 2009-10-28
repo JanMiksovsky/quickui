@@ -34,7 +34,7 @@
 
 <h2>Creating a Quick markup file</h2>
 <p>
-	Let’s begin with a minimal Quick control. Enter the following Quick markup into a
+	Let’s begin with a minimal QuickUI control. Enter the following Quick markup into a
 	new file called Greet.qui and save it in the same folder. (You can copy and paste the text below,
 	or grab the file by clicking the link to the original source code.)
 </p>
@@ -42,7 +42,7 @@
 <SourceCode sourceFile="Greet.qui" />
 
 <p>
-	This defines a Quick control called “Greet”. It does very little: it will cause
+	This defines a QuickUI control called “Greet”. It does very little: it will cause
 	a fixed text string to be substituted wherever the tag <Tag>Greet</Tag> is found in 
 	Quick markup. It can also be invoked with JavaScript in a regular HTML file.
 	In this capacity, it can function as a simple HTML macro.
@@ -50,12 +50,23 @@
 
 <h2>Compiling the control</h2>
 <p>
-	If the above Quick markup is stored in a file named Greet.qui, then it can be compiled with the QuickUI
-	compiler. The simplest way to do this is by invoking the QuickUI build tool, qb, from the command line
-	(in the same directory where you put Greet.qui):
+	If the above Quick markup is stored in a file named Greet.qui, then it can be compiled
+	with qb, the build tool. Qb compiles sets of Quick markup files into JavaScript and CSS
+	files. The qb build tool invokes a more elemental Quick markup compiler	called qc,
+	which operates on individual files. The qc compiler can be invoked directly if you want
+	to integrate QuickUI into an existing build process.)
 </p>
+
+<p>	
+	The simplest way to use the qb build tool is to invoke it from the command line
+	in the same directory where your Quick markup file(s). In the example below,
+	qb is invoked in a folder called “demo” containing Greet.qui. (For convention’s sake,
+	the terminal sessions shown throughout this tutorial are represented in Unix fashion.
+	Results across all supported operating systems are essentially identical.)
+</p>
+
 <pre>
-$ qb
+$ <b>qb</b>
 Greet.qui
 demo.js
 demo.css
@@ -63,21 +74,14 @@ $
 </pre>
 
 <p>
-	The qb build tool compiles batches of Quick markup files into JavaScript and CSS files.
-	(The qb build tool invokes a more elemental Quick markup compiler called qc, which
-	operates on individual files. The qc compiler can be invoked directly if you want to integrate QuickUI
-	into an existing build process.)
-</p>
-
-<p>
 	The qb output above indicates that a single Quick markup file, Greet.qui, was found
 	and compiled. As a result of this build pass, two project output files were created:
-	demo.js and demo.css. (The name for this file is taken from the name of the folder.)
-	These project outputs contain the generated JavaScript and CSS for our project,
-	respectively.
+	demo.js and demo.css. (The name for this project was assumed from the name of the folder,
+	“demo”.) These project outputs respectively contain the generated JavaScript and CSS for
+	the project.
 </p>
 
-<h2>Incremental project buildes</h2>
+<h2>Incremental project builds</h2>
 
 <p>
 	The qb build tool is an incremental build tool, so invoking it once more has no effect
@@ -85,7 +89,7 @@ $
 </p>
 
 <pre>
-$ qb
+$ <b>qb</b>
 $ 
 </pre>
 
@@ -95,7 +99,7 @@ $
 </p>
 
 <pre>
-$ ls build
+$ <b>ls build</b>
 Greet.css	Greet.js
 $ 
 </pre>

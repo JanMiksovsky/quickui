@@ -11,7 +11,7 @@ Comprehensive = SampleBaseClass.extend({
 					content: " Hello, <i>world</i>! ",
 					id: "message",
 				}),
-				$("<div />").setContents(
+				$("<div />").items(
 					this.Comprehensive_content = $("<p id=\"Comprehensive_content\" />")[0]
 				)[0]
 			],

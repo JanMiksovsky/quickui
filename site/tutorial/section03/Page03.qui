@@ -20,7 +20,7 @@ We can save the above markup in a file called Sample.qui and rebuild our project
 </p>
 
 <pre>
-$ qb
+$ <b>qb</b>
 Sample.qui
 demo.js
 demo.css
@@ -28,9 +28,10 @@ $
 </pre>
 
 <p>
-The QuickUI compiler has created Sample.js, which now defined our new Sample class.
-We can rewrite the key <Tag>script</Tag> tag contents in demo.html to instantiate the
-Sample control class (instead of the original Greet class):
+The qb build tool has found Sample.qui, and used this to generate build/Sample.js,
+which now defines our new Sample class. We can rewrite the key <Tag>script</Tag> tag
+contents in demo.html to instantiate the Sample control class
+(instead of the original Greet class):
 </p>
 
 <pre>

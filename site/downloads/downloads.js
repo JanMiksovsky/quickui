@@ -10,8 +10,8 @@ DownloadPage = SitePage.extend({
 			title: "Download QuickUI",
 			content: [
 				"<h2>Windows</h2>",
-				$("<ol />").setContents(
-					$("<li />").setContents(
+				$("<ol />").items(
+					$("<li />").items(
 						QuickControl.create(Link, {
 							content: "Download installer",
 							href: "/downloads/QuickUI%20Setup.msi",
@@ -20,7 +20,7 @@ DownloadPage = SitePage.extend({
 					"<li>Add the QuickUI tools folder (e.g., C:\\Program Files\\QuickUI\\bin) to your path.</li>"
 				)[0],
 				"<div style=\"color: lightgray\"><h2>Mac OS/X</h2><ol><li>Download Mono</li><li>Download package</li><li>Add the QuickUI shell folder to your path.</li></ol></div>",
-				$("<p />").setContents(
+				$("<p />").items(
 					"After downloading, you can run through the quick ",
 					QuickControl.create(Link, {
 						content: "tutorial",
@@ -29,6 +29,7 @@ DownloadPage = SitePage.extend({
 					"."
 				)[0],
 				"<h1>Integrate QuickUI into a development environment</h1>",
+				"<p>\r\nQuick markup files use the .qui extension. You can associate this extension with your\r\nprefered XML or HTML editor. (An HTML editor will likely complain about some unknown elements,\r\nbut you’ll pick up syntax highlighting, auto-completion, etc., for CSS rules and JavaScript\r\nembedded in the Quick markup.)\r\n</p>",
 				"<h2>Aptana Studio</h2>",
 				" You can configure ",
 				QuickControl.create(Link, {

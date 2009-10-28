@@ -115,9 +115,9 @@ SitePage = Page.extend({
 		Page.prototype.render.call(this);
 		this.setClassProperties(Page, {
 			fill: "true",
-			content: this.tableMain = $("<table id=\"tableMain\" />").setContents(
-				this.topRow = $("<tr id=\"topRow\" />").setContents(
-					this.logoCell = $("<td id=\"logoCell\" />").setContents(
+			content: this.tableMain = $("<table id=\"tableMain\" />").items(
+				this.topRow = $("<tr id=\"topRow\" />").items(
+					this.logoCell = $("<td id=\"logoCell\" />").items(
 						this.logotype = QuickControl.create(Link, {
 							content: "<span class=\"bracket\">&lt;</span>QuickUI<span class=\"bracket\">&gt;</span>",
 							href: "/home/default.html",
@@ -125,17 +125,17 @@ SitePage = Page.extend({
 						}),
 						this.tagline = $("<div id=\"tagline\">Modular web control framework</div>")[0]
 					)[0],
-					this.topNavigation = $("<td id=\"topNavigation\" />").setContents(
+					this.topNavigation = $("<td id=\"topNavigation\" />").items(
 						this.navigationBar = QuickControl.create(NavigationBar, {
 							id: "navigationBar",
 						})
 					)[0]
 				)[0],
-				$("<tr />").setContents(
-					this.leftNavigation = $("<td id=\"leftNavigation\" />").setContents(
+				$("<tr />").items(
+					this.leftNavigation = $("<td id=\"leftNavigation\" />").items(
 						this.SitePage_navigator = $("<div id=\"SitePage_navigator\" />")[0]
 					)[0],
-					this.pageCanvas = $("<td id=\"pageCanvas\" />").setContents(
+					this.pageCanvas = $("<td id=\"pageCanvas\" />").items(
 						this.SitePage_title = $("<h1 id=\"SitePage_title\" />")[0],
 						this.SitePage_content = $("<div id=\"SitePage_content\" />")[0]
 					)[0]
@@ -178,8 +178,8 @@ SourceCode = QuickControl.extend({
 		this.setClassProperties(QuickControl, {
 			content: [
 				this.SourceCode_content = $("<pre id=\"SourceCode_content\" />")[0],
-				$("<div id=\"_divLink\" />").setContents(
-					this.link = $("<a id=\"link\" />").setContents(
+				$("<div id=\"_divLink\" />").items(
+					this.link = $("<a id=\"link\" />").items(
 						"→ ",
 						this.linkText = $("<span id=\"linkText\" />")[0]
 					)[0]

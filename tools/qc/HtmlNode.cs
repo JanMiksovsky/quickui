@@ -65,7 +65,7 @@ namespace qc
             return (ChildNodes == null)
                 ? String.Empty
                 : Template.Format(
-                    ".setContents(\n{ChildNodes}{Tabs})",
+                    ".items(\n{ChildNodes}{Tabs})",
                     new
                     {
                         ChildNodes = ChildNodes.EmitItems(indentLevel + 1),
@@ -111,7 +111,7 @@ namespace qc
                     })
                 };
                 Assert.AreEqual(
-                    "$(\"<div />\").setContents(\n" +
+                    "$(\"<div />\").items(\n" +
                     "\t\"<h1 />\",\n" +
                     "\tthis.content = $(\"<p id=\\\"content\\\">Hello</p>\")[0]\n" +
                     ")[0]",

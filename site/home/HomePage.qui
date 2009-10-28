@@ -11,12 +11,14 @@ that it lets you write HTML as if you could create your own tags.
 In QuickUI, the tags you create are called controls. Each control can include HTML markup
 (including other Quick controls), CSS styling, and JavaScript scripting. You can easily
 bundle together a group of controls to create a new control.
-At its core, QuickUI includes a design-time tool that compiles your markup into
-regular JavaScript and CSS files. This tool runs on Windows and OS/X.
-The generated JavaScript makes use of the
-<Link href="http://jquery.com">jQuery</Link>
-library to
-build the web user interface on demand.
+</p>
+<p>
+QuickUI includes tools that compile your markup into regular JavaScript and CSS files.
+These tools run on Windows and OS/X (via the Mono project). The generated JavaScript
+makes use of the <Link href="http://jquery.com">jQuery</Link> library to
+build the web user interface on demand. QuickUI also includes a run-time library.
+Overall QuickUI is targetted at and tested against the mainstream browsers:
+Apple Safari 4.x, Google Chrome 3.x, Internet Explorer 8.x, and Mozilla Firefox 3.x.
 </p>
 
 <h2>A quick example</h2>
@@ -35,8 +37,7 @@ This control definition gives you a new tag
 <SourceCode sourceFile="Sample.qui" />
 
 <p>
-Of course you need a way to kick things off, which you can do in JavaScript
-via a jQuery extension:
+Kicking everything off is accomplished in JavaScript via a jQuery extension:
 </p>
 
 <pre>
@@ -44,7 +45,7 @@ $("div").control(Sample);
 </pre>
 
 <p>
-Running this will embed output like the following into the web page:
+The div below shows the sample control above instantiated on this page:
 </p>
 
 <CodeOutput>

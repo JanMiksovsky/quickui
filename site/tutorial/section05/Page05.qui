@@ -88,7 +88,7 @@ data is stored, so long its storage semantics are consistent.
 The specific name “content” is the standard name for the property on a QuickUI control that
 holds the control’s core variable content. We could just as easily have called the
 property “foo”, and most of the above would still hold true. It turns out, as we’ll see
-in a minute, that the property called “content” has a specific meaning to the quic compiler
+in a minute, that the property called “content” has a specific meaning to the qc compiler
 that is useful in setting control content.
 </p>
 
