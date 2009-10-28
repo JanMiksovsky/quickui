@@ -5,7 +5,7 @@
 <h2>Windows</h2>
 
 <ol>
-	<li><Link href="/downloads/QuickUI%20Setup.msi">Download installer</Link></li>
+	<li><Link href="/downloads/QuickUI%20Setup.msi">Download the installer</Link>.</li>
 	<li>Add the QuickUI tools folder (e.g., C:\Program Files\QuickUI\bin) to your path.</li>
 </ol>
 

@@ -13,8 +13,8 @@ a control property backed by a specific HTML element.
 <p>
 The function Property.element() is one of a number of helper functions defined by the Qui
 framework’s Property class for quickly constructing common types of control properties.
-In its basic form, it’s equivalent to the code we wrote previously to define Greet.content().
-So we can replace this:
+In its basic form, Property.element() defines a new function very similar in behavior
+to the code we wrote previously to define Greet.content(). So we can replace this:
 </p>
 
 <pre>

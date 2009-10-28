@@ -13,9 +13,10 @@ DownloadPage = SitePage.extend({
 				$("<ol />").items(
 					$("<li />").items(
 						QuickControl.create(Link, {
-							content: "Download installer",
+							content: "Download the installer",
 							href: "/downloads/QuickUI%20Setup.msi",
-						})
+						}),
+						"."
 					)[0],
 					"<li>Add the QuickUI tools folder (e.g., C:\\Program Files\\QuickUI\\bin) to your path.</li>"
 				)[0],

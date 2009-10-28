@@ -61,23 +61,17 @@ independent copy of the contents defined for the Greet class earlier:
     &lt;h1&gt;QuickUI Sample&lt;/h1&gt;
     &lt;div class="Greet QuickControl"&gt;
         Hello,
-        &lt;i&gt;
-            world
-        &lt;/i&gt;
+        &lt;i&gt;world&lt;/i&gt;
         !
     &lt;/div&gt;
     &lt;div class="Greet QuickControl"&gt;
         Hello,
-        &lt;i&gt;
-            world
-        &lt;/i&gt;
+        &lt;i&gt;world&lt;/i&gt;
         !
     &lt;/div&gt;
     &lt;div class="Greet QuickControl"&gt;
         Hello,
-        &lt;i&gt;
-            world
-        &lt;/i&gt;
+        &lt;i&gt;world&lt;/i&gt;
         !
     &lt;/div&gt;
 &lt;/body&gt;

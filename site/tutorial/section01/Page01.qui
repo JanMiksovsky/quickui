@@ -35,7 +35,7 @@
 <h2>Creating a Quick markup file</h2>
 <p>
 	Let’s begin with a minimal QuickUI control. Enter the following Quick markup into a
-	new file called Greet.qui and save it in the same folder. (You can copy and paste the text below,
+	new file called Greet.qui and save it in the “demo” folder. (You can copy and paste the text below,
 	or grab the file by clicking the link to the original source code.)
 </p>
 
@@ -105,7 +105,7 @@ $
 </pre>
 
 <p>
-	From Greet.qui, the quic compiler generated both the JavaScript in Greet.js and the
+	From Greet.qui, the qc compiler generated both the JavaScript in Greet.js and the
 	CSS in Greet.css. (Our Greet control does not yet contain styling, so Greet.css
 	is empty for now.) All the intermediate .js and .css files in the build subfolder
 	are concatenated to create the overall project outputs, demo.js and demo.css
@@ -137,8 +137,10 @@ $
 
 <h2>Viewing the result</h2>
 
-If you now open demo.html in a web browser (for now, Firefox works best), you should
+<p>
+If you now open demo.html in a web browser, you should
 see output which looks like this:
+</p>
 
 <CodeOutput>
 	<Greet/>
