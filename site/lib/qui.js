@@ -501,7 +501,7 @@ $.extend(ElementPropertyFactory.prototype, {
 	 * Like $.toggle(), but if no value is supplied, the current visibility is returned
 	 * (rather than toggling the element's visibility).
 	 */
-	visible: function() {
+	visibility: function() {
 		var elementId = this.elementId;
 		return function(value) {
 			var $element = ElementPropertyFactory.$getElement(this, elementId);

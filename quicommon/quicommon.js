@@ -237,9 +237,9 @@ DockPanel = QuickControl.extend({
 });
 $.extend(DockPanel.prototype, {
 	
-	content: Property.element("DockPanel_content"),	
-	left: Property.element("DockPanel_left"),
-	right: Property.element("DockPanel_right"),
+	content: Property.element("DockPanel_content").content(),	
+	left: Property.element("DockPanel_left").content(),
+	right: Property.element("DockPanel_right").content(),
 	
 	ready: function() {
 		/*
@@ -251,11 +251,11 @@ $.extend(DockPanel.prototype, {
 		// this.recalc();
 	},
 	
-	bottom: Property.element("DockPanel_bottom", function(value) {
+	bottom: Property.element("DockPanel_bottom").content(function(value) {
 		this.recalc(this.DockPanel_bottom);
 	}),
 	
-	top: Property.element("DockPanel_top", function(value) {
+	top: Property.element("DockPanel_top").content(function(value) {
 		this.recalc(this.DockPanel_top);
 	}),
 	
@@ -290,9 +290,7 @@ Page = QuickControl.extend({
 $.extend(Page.prototype, {
 	
 	// If true, have the page fill its container.
-	fill: Property.bool(function(value) {
-		$(this.element).toggleClass("fill");
-	}),
+	fill: Property.element().applyClass("fill"),
 	
 	// Return the parameter with the given name from the current URL, or null if not found.
 	getUrlParameter: function(parameterName) {

@@ -20,9 +20,7 @@
 $.extend(Page.prototype, {
 	
 	// If true, have the page fill its container.
-	fill: Property.bool(function(value) {
-		$(this.element).toggleClass("fill");
-	}),
+	fill: Property.element().applyClass("fill"),
 	
 	// Return the parameter with the given name from the current URL, or null if not found.
 	getUrlParameter: function(parameterName) {

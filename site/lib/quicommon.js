@@ -223,8 +223,8 @@ DockPanel = QuickControl.extend({
 		this.setClassProperties(QuickControl, {
 			content: [
 				this.DockPanel_top = $("<div id=\"DockPanel_top\" />")[0],
-				this.rowCenter = $("<div id=\"rowCenter\" />").setContents(
-					this.centerTable = $("<div id=\"centerTable\" />").setContents(
+				this.rowCenter = $("<div id=\"rowCenter\" />").items(
+					this.centerTable = $("<div id=\"centerTable\" />").items(
 						this.DockPanel_left = $("<div id=\"DockPanel_left\" class=\"panel\" />")[0],
 						this.DockPanel_content = $("<div id=\"DockPanel_content\" />")[0],
 						this.DockPanel_right = $("<div id=\"DockPanel_right\" class=\"panel\" />")[0]
@@ -290,9 +290,7 @@ Page = QuickControl.extend({
 $.extend(Page.prototype, {
 	
 	// If true, have the page fill its container.
-	fill: Property.bool(function(value) {
-		$(this.element).toggleClass("fill");
-	}),
+	fill: Property.element().applyClass("fill"),
 	
 	// Return the parameter with the given name from the current URL, or null if not found.
 	getUrlParameter: function(parameterName) {
