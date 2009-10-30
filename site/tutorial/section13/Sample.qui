@@ -4,7 +4,7 @@
 	<h1>QuickUI sample</h1>
 	<Greet content="Alice" />
 	<Greet id="bob" content="Bob" punctuation="!" />
-	<Greet punctuation="?" disabled="true">
+	<Greet punctuation="?" enabled="false">
 		<i>Carol</i>
 	</Greet>
 </prototype>

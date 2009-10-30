@@ -28,10 +28,12 @@ a:hover {
 
 <script>
 var addthis_share = {
-	templates:
-	{
+	content: "Hello, world!",
+	templates: {
 		twitter: "QuickUI creates modular jQuery controls that can be used like new HTML tags {{url}}",
-	}
+	},
+	title: "QuickUI",
+	url: "http://quickui.org"
 };
 </script>
 

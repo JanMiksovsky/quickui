@@ -13,8 +13,8 @@
 
 <script>
 $.extend(Greet.prototype, {
-	content: Property.element("Greet_content"),
-	punctuation: Property.element("Greet_punctuation")
+	content: Property.element("Greet_content").content(),
+	punctuation: Property.element("Greet_punctuation").content()
 });
 </script>
 

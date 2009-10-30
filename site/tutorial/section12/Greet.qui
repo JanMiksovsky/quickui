@@ -18,20 +18,21 @@
 <script>
 $.extend(Greet.prototype, {
 	
-	content: Property.element("Greet_content"),
-	punctuation: Property.element("Greet_punctuation"),
+	content: Property.element("Greet_content").content(),
+	punctuation: Property.element("Greet_punctuation").content(),
+	text: Property.element("Greet_content").text(),
 
 	ready: function() {
 		var self = this;
 		$(this.Greet_content).click(function() {
-			var newName = escape(prompt("Enter name:", self.content()));
-			if (newName != null)
-			{
-				self.content(newName);
+			if (self.enabled()) {
+				var newName = prompt("Enter name:", self.text());
+				if (newName != null) {
+					self.text(escape(newName));
+				}
 			}
 		});
-	}
-	
+	}	
 });
 </script>
 

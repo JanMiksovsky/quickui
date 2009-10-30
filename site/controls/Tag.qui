@@ -15,7 +15,7 @@
 
 <script>
 $.extend(Tag.prototype, {
-	content: Property.element("Tag_content")
+	content: Property.element("Tag_content").content()
 });
 </script>
 

@@ -28,7 +28,7 @@ with this:
 </p>
 
 <pre>
-content: Property.element("Greet_content")
+content: Property.element("Greet_content").content()
 </pre>
 
 <p>

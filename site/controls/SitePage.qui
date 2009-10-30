@@ -149,8 +149,8 @@ li {
 $.extend(SitePage.prototype, {
 	
 	area: Property(),
-	content: Property.element("SitePage_content"),
-	navigator: Property.element("SitePage_navigator"),
+	content: Property.element("SitePage_content").content(),
+	navigator: Property.element("SitePage_navigator").content(),
 	
 	ready: function() {
 		$(this.navigationBar).control().highlightCurrentArea();

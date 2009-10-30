@@ -11,10 +11,12 @@ AddThis = QuickControl.extend({
 	}
 });
 var addthis_share = {
-	templates:
-	{
+	content: "Hello, world!",
+	templates: {
 		twitter: "QuickUI creates modular jQuery controls that can be used like new HTML tags {{url}}",
-	}
+	},
+	title: "QuickUI",
+	url: "http://quickui.org"
 };
 
 //
@@ -30,7 +32,7 @@ CodeOutput = QuickControl.extend({
 	}
 });
 $.extend(CodeOutput.prototype, {
-	content: Property.element("CodeOutput_content")
+	content: Property.element("CodeOutput_content").content()
 })
 
 //
@@ -47,7 +49,7 @@ Link = QuickControl.extend({
 });
 $.extend(Link.prototype, {
 	
-	content: Property.element("Link_content"),
+	content: Property.element("Link_content").content(),
 	href: Property(),
 	
 	ready: function() {
@@ -166,8 +168,8 @@ SitePage = Page.extend({
 $.extend(SitePage.prototype, {
 	
 	area: Property(),
-	content: Property.element("SitePage_content"),
-	navigator: Property.element("SitePage_navigator"),
+	content: Property.element("SitePage_content").content(),
+	navigator: Property.element("SitePage_navigator").content(),
 	
 	ready: function() {
 		$(this.navigationBar).control().highlightCurrentArea();
@@ -209,7 +211,7 @@ SourceCode = QuickControl.extend({
 });
 $.extend(SourceCode.prototype, {
 	
-	content: Property.element("SourceCode_content"),
+	content: Property.element("SourceCode_content").content(),
 	
 	fileName: function(path) {
 		var pathNames = path.split("/");
@@ -252,7 +254,7 @@ Tag = QuickControl.extend({
 	}
 });
 $.extend(Tag.prototype, {
-	content: Property.element("Tag_content")
+	content: Property.element("Tag_content").content()
 });
 
 //

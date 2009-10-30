@@ -19,25 +19,22 @@
 <script>
 $.extend(Greet.prototype, {
 	
-	content: Property.element("Greet_content"),
-	punctuation: Property.element("Greet_punctuation"),
+	content: Property.element("Greet_content").content(),
+	enabled: Property.element("Greet_content").applyClass("enabled"),
+	punctuation: Property.element("Greet_punctuation").content(),
+	text: Property.element("Greet_content").text(),
 
 	ready: function() {
 		var self = this;
 		$(this.Greet_content).click(function() {
-			if (!self.disabled()) {
-			var newName = escape(prompt("Enter name:", self.content()));
+			if (self.enabled()) {
+				var newName = prompt("Enter name:", self.text());
 				if (newName != null) {
-					self.content(newName);
+					self.text(escape(newName));
 				}
 			}
 		});
-	},
-	
-	disabled: Property.bool(function(value) {
-		$(this.Greet_content).toggleClass("enabled", !value);
-	})
-	
+	}
 });
 </script>
 

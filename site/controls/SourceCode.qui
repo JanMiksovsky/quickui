@@ -30,7 +30,7 @@ a#link {
 <script>
 $.extend(SourceCode.prototype, {
 	
-	content: Property.element("SourceCode_content"),
+	content: Property.element("SourceCode_content").content(),
 	
 	fileName: function(path) {
 		var pathNames = path.split("/");
