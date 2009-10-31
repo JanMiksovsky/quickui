@@ -29,7 +29,9 @@ click method to create an event handler.
 <p>
 Our event handler reads the current value of the control’s content (i.e., the current name),
 gives the user a chance to override that, then saves the result back as the new content.
-This is done via calls to the property’s setter/getter function.
+For this particular bit of interaction, we want to restrict display and input of the content
+as text, which we accomplish by defining a new property Greet.text(). This behaves 
+like the Greet.content() property, but will only return or accept plain text.
 </p>
 
 <p>

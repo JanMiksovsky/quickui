@@ -16,7 +16,7 @@ and create a new subclass of Greet called GreetEmphatic (and stored in GreetEmph
 <SourceCode sourceFile="GreetEmphatic.qui" />
 
 <p>
-As discussed in the section on <Link href="/tutorial/section6b/default.html">control prototypes</Link>,
+As discussed in the section on <Link href="/tutorial/section09/default.html">control prototypes</Link>,
 a single child of the <Tag>prototype</Tag> tag defines a control’s parent class. Here,
 the GreetEmphatic class will derive from Greet. (Specifically, the JavaScript function
 GreetEmphatic() will use an instance of Greet as its JavaScript prototype. This ensures that,

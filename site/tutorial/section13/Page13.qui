@@ -13,38 +13,33 @@ modify control behavior.
 
 <p>
 If we find there are cases where we don’t want our Greet control to be clickable, we
-can govern that behavior by defining a “disabled” property. When this property is set
-to true, the control will ignore clicks:
+can govern that behavior by defining a “enabled” property. When this property is set
+to false, the control will ignore clicks:
 </p>
 
 <SourceCode sourceFile="Greet.qui" />
 
 <p>
-The disabled property is defined by calling the helper function Property.bool(),
-which returns a function that can set and get a boolean value. The “get” form always
-returns a boolean, but the “set” form can accept a string like “true” or “false”.
-This is helpful because QuickUI markup can only define property values as strings,
-HTML content, or QuickUI controls.
+The enabled property is defined by calling the helper function Property.element().applyClass,
+which returns a function that adds or removes a CSS class from a named element.
+The resulting Greet.enabled() function can be called with no parameters to obtain a boolean
+that indicates whether the CSS class is currently applied. Alternatively, a boolean
+parameter can be supplied to add the indicated CSS style (if the parameter is true)
+or remove the style (if the parameter is false).
 </p>
 
 <p>
-If called with no arguments, Property.bool() will define a plain getter/setter property
-function. If, as above, a function is supplied, then this function will be called after
-the property has been set. Here we can use this to conditionally apply our cursor style
-so that disabled controls do not show the pointer cursor.
-</p>
-
-<p>
-With this in place, our Sample control can now disable a Greet control through markup.
-We can leave the first two <Tag>Greet</Tag> tags alone, but apply the disabled property
-to the third:
+Here we apply some basic formatting so that a disabled Greet control will not show the
+pointer cursor over the main content element. With this in place, our Sample control
+can now enable or disable a Greet control through markup. We can leave the first two
+<Tag>Greet</Tag> tags alone, but apply the disabled property to the third:
 </p>
 
 <SourceCode sourceFile="Sample.qui" />
 
 <p>
-With this change, clicking “Alice” or “Carol” will invoke the dialog we defined earlier,
-but now clicking “Bob” will not.
+With this change, clicking “Alice” or “Bob” will invoke the dialog we defined earlier,
+but now clicking “Carol” will not.
 </p>
 
 <CodeOutput>

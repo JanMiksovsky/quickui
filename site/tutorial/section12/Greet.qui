@@ -25,11 +25,9 @@ $.extend(Greet.prototype, {
 	ready: function() {
 		var self = this;
 		$(this.Greet_content).click(function() {
-			if (self.enabled()) {
-				var newName = prompt("Enter name:", self.text());
-				if (newName != null) {
-					self.text(escape(newName));
-				}
+			var newName = prompt("Enter name:", self.text());
+			if (newName != null) {
+				self.text(escape(newName));
 			}
 		});
 	}	
