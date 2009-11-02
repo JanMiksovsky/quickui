@@ -98,6 +98,10 @@ NavigationBar = QuickControl.extend({
 					href: "/tutorial/section01/default.html",
 				}),
 				QuickControl.create(NavigationLink, {
+					content: "Discuss",
+					href: "http://groups.google.com/group/quickui",
+				}),
+				QuickControl.create(NavigationLink, {
 					content: "Contribute",
 					href: "http://code.google.com/p/quickui/",
 				})

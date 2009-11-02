@@ -147,6 +147,12 @@ see output which looks like this:
 </CodeOutput>
 
 <p>
+Note: The output above is not baked into the text of this page—it’s the live output of an
+instance of the Greet control. The remaining examples throughout this tutorial are also
+live code.
+</p>
+
+<p>
 As with any user interface framework, we’ve had to jump through a number of hoops
 to produce a trivial result, but now we’ve laid the foundation for more complex results.
 </p>
