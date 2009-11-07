@@ -1,8 +1,6 @@
 <Control name="TutorialNavigator">
 
 <prototype>
-	<h1>Tutorial</h1> <!-- h1 won't actually appear, just used for space -->
-
 	<NavigationLink href="/tutorial/section01/default.html">Hello, world</NavigationLink>
 	<NavigationLink href="/tutorial/section02/default.html">How QuickUI works</NavigationLink>
 	<NavigationLink href="/tutorial/section03/default.html">Composing controls</NavigationLink>
@@ -21,17 +19,9 @@
 
 <style>
 
-h1 {
-	margin-top: 0;
-}
-
 .Link {
 	display: block;
 	margin: 7px 0;
-}
-
-a:hover {
-	background-color: #928274;
 }
 
 </style>

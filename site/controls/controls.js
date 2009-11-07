@@ -158,7 +158,8 @@ SitePage = Page.extend({
 				)[0],
 				$("<tr />").items(
 					this.leftNavigation = $("<td id=\"leftNavigation\" />").items(
-						this.SitePage_navigator = $("<div id=\"SitePage_navigator\" />")[0]
+						"<h1> </h1>",
+						this.SitePage_sidebar = $("<div id=\"SitePage_sidebar\" />")[0]
 					)[0],
 					this.pageCanvas = $("<td id=\"pageCanvas\" />").items(
 						this.SitePage_title = $("<h1 id=\"SitePage_title\" />")[0],
@@ -173,7 +174,7 @@ $.extend(SitePage.prototype, {
 	
 	area: Property(),
 	content: Property.element("SitePage_content").content(),
-	navigator: Property.element("SitePage_navigator").content(),
+	sidebar: Property.element("SitePage_sidebar").content(),
 	
 	ready: function() {
 		$(this.navigationBar).control().highlightCurrentArea();
@@ -270,7 +271,6 @@ TutorialNavigator = QuickControl.extend({
 		QuickControl.prototype.render.call(this);
 		this.setClassProperties(QuickControl, {
 			content: [
-				"<h1>Tutorial</h1>",
 				QuickControl.create(NavigationLink, {
 					content: "Hello, world",
 					href: "/tutorial/section01/default.html",
@@ -354,7 +354,7 @@ TutorialPage = SitePage.extend({
 		SitePage.prototype.render.call(this);
 		this.setClassProperties(SitePage, {
 			area: "Tutorial",
-			navigator: this.tutorialNavigator = QuickControl.create(TutorialNavigator, {
+			sidebar: this.tutorialNavigator = QuickControl.create(TutorialNavigator, {
 				id: "tutorialNavigator",
 			}),
 		});

@@ -2,9 +2,9 @@
 
 <prototype>
 	<SitePage area="Tutorial">
-		<navigator>
+		<sidebar>
 			<TutorialNavigator id="tutorialNavigator"/>
-		</navigator>
+		</sidebar>
 	</SitePage>
 </prototype>
 

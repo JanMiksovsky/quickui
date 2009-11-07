@@ -1,0 +1,18 @@
+/*** GetStartedModule ***/
+
+.GetStartedModule {
+	border: 1px solid #928274;
+	padding: 10px;
+}
+
+.GetStartedModule h2 {
+	color: white;
+	font-size: 10pt;
+	margin-top: 0;
+}
+
+.GetStartedModule ul {
+	margin-left: 1em;
+	padding-left: 0;
+}
+

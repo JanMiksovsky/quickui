@@ -9,8 +9,6 @@
 <style>
 
 a {
-	border: none !important;
-	color: white !important;
 	padding: 2px 5px;
 }
 

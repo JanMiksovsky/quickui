@@ -43,6 +43,11 @@
 	margin-right: 20px;
 }
 
+.NavigationBar a {
+	border: none !important;
+	color: white !important;
+}
+
 .NavigationBar a:hover {
 	background-color: #47aaf0;
 }
@@ -50,8 +55,6 @@
 /*** NavigationLink ***/
 
 .NavigationLink a {
-	border: none !important;
-	color: white !important;
 	padding: 2px 5px;
 }
 
@@ -134,6 +137,19 @@
 	max-width: 800px;
 }
 
+.SitePage #SitePage_sidebar {
+	color: white;
+}
+
+.SitePage #SitePage_sidebar a {
+	border: none !important;
+	color: white !important;
+}
+
+.SitePage #SitePage_sidebar a:hover {
+	background-color: #928274;
+}
+
 .SitePage h1 {
 	color: #391c01;
 	font-family: Tahoma, Arial, Helvetica, sans-serif;
@@ -210,16 +226,8 @@
 
 /*** TutorialNavigator ***/
 
-.TutorialNavigator h1 {
-	margin-top: 0;
-}
-
 .TutorialNavigator .Link {
 	display: block;
 	margin: 7px 0;
-}
-
-.TutorialNavigator a:hover {
-	background-color: #928274;
 }
 

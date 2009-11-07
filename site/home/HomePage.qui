@@ -1,16 +1,22 @@
 <Control name="HomePage">
 
-<SitePage area="Home" title="QuickUI: Modular Web Control Framework">
+<SitePage area="Home" title="QuickUI modular web control framework">
+
+<sidebar>
+	<GetStartedModule/>
+</sidebar>
 
 <p>
 QuickUI (Quick User Interface) is a framework that simplifies the design, construction,
 and maintenance of web-based user interfaces. The easiest way to describe QuickUI is
-that it lets you write HTML as if you could create your own tags.
+that <i>it lets you write HTML as if you could create your own tags</i>.
 </p>
 <p>	
-In QuickUI, the tags you create are called controls. Each control can include HTML markup
-(including other Quick controls), CSS styling, and JavaScript scripting. You can easily
-bundle together a group of controls to create a new control.
+In QuickUI, the tags you create are called controls. You define controls with declarative
+markup that can include HTML (including other QuickUI controls), CSS styling,
+and JavaScript scripting. You can easily create new controls by bundling together a group
+of existing controls, or by subclassing an existing control to make it more special-purpose.
+The page you are reading here, and remainder of this site, is built entirely using QuickUI.
 </p>
 <p>
 QuickUI includes tools that compile your markup into regular JavaScript and CSS files.
@@ -45,7 +51,7 @@ $("div").control(Sample);
 </pre>
 
 <p>
-The div below shows the sample control above instantiated on this page:
+The div below shows the actual sample control above instantiated here on this page:
 </p>
 
 <CodeOutput>
@@ -53,17 +59,65 @@ The div below shows the sample control above instantiated on this page:
 </CodeOutput>
 
 <p>
-This is a trivial example. Most controls will include more complex
-contents, styling, and interactive behavior. When combined with the ability to
-compose and subclass controls, things can quickly become very interesting.
+This is a trivial example. The <Link href="/tutorial/section01/default.html">tutorial</Link>
+examines controls with complex contents, control styling, and interactive behavior.
+When combined with the ability to compose and subclass controls,
+things can quickly become very interesting.
 </p>
 
-<h2>Get started</h2>
+<h2>Why use QuickUI?</h2>
+
+<p>
+Consider using QuickUI because it:
+</p>
 
 <ul>
-	<li><Link href="/downloads/default.html">Download QuickUI</Link></li>
-	<li><Link href="/tutorial/section01/default.html">Read the Tutorial</Link></li>
+	<li>
+		Allows you to create UI in a markup language that is easy to read,
+		is easy to work with, and can concisely express your design intention.
+		This speeds up UI development, and makes UI code more maintainable.
+	</li>
+	<li>
+		Works with the web’s native technologies, it doesn’t replace them.
+		QuickUI is true to HTML, CSS, and JavaScript. Familiar conventions are used
+		whenever possible. QuickUI is only meant to address the web’s painful lack
+		of an extensible control framework.
+	</li>
+	<li>
+		Allows designers and developers to share design artifacts. QuickUI can bridge
+		the gap between pure visual design tools and native web coding frameworks.
+		The markup language can be easily learned by HTML-savvy designers, and is
+		still powerful and flexible enough to appeal to developers.
+	</li>
+	<li>
+		Encourages well-factored UI code. Controls are as modular as possible,
+		easily composable, and easily subclassable. All the goodness of object-oriented
+		design can be applied to your UI code. Package up your hard-earned knowledge
+		of HTML and CSS idiosyncrasies into reusable controls that can be readily
+		applied to new problems.
+	</li>
+	<li>
+		Produces predictable compiled code. The QuickUI tools do a minimum of
+		compilation magic. The compiler’s output are legible, understandable,
+		readily debuggable JavaScript classes. The generated code takes care of 
+		populating the control’s run-time DOM — code that is often tedious to write
+		by hand, and normally hard to read. The behavior of these controls can
+		be programmed in JavaScript and jQuery.
+	</li>
+	<li>
+		Creates controls that can be used as top-level pages on their own,
+		or easily included in web pages built with other technologies.
+	</li>
+	<li>
+		Is fun to work in!
+	</li>
 </ul>
+
+<p>
+<Link href="/downloads/default.html">Download QuickUI</Link>
+</p>
+
+<br/>
 
 <AddThis/>
 

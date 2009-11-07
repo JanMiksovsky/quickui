@@ -13,7 +13,10 @@
 				<td id="topNavigation"><NavigationBar id="navigationBar"/></td>
 			</tr>
 			<tr>
-				<td id="leftNavigation"><div id="SitePage_navigator" /></td>
+				<td id="leftNavigation">
+					<h1> </h1> <!-- h1 won't actually appear, just used for space -->
+					<div id="SitePage_sidebar" />
+				</td>
 				<td id="pageCanvas">
 					<h1 id="SitePage_title" />
 					<div id="SitePage_content" />
@@ -98,6 +101,19 @@ td {
 	max-width: 800px;
 }
 
+#SitePage_sidebar {
+	color: white;
+}
+
+#SitePage_sidebar a {
+	border: none !important;
+	color: white !important;
+}
+
+#SitePage_sidebar a:hover {
+	background-color: #928274;
+}
+
 h1 {
 	color: #391c01;
 	font-family: Tahoma, Arial, Helvetica, sans-serif;
@@ -150,7 +166,7 @@ $.extend(SitePage.prototype, {
 	
 	area: Property(),
 	content: Property.element("SitePage_content").content(),
-	navigator: Property.element("SitePage_navigator").content(),
+	sidebar: Property.element("SitePage_sidebar").content(),
 	
 	ready: function() {
 		$(this.navigationBar).control().highlightCurrentArea();
