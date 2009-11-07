@@ -185,6 +185,7 @@
 	font-family: Consolas, Lucida Console, Courier, Courier New, monospace;
 	font-size: 11pt;
 	padding: 10px;
+	white-space: pre-wrap;       /* css-3 */
 }
 
 .SitePage .CodeOutput {
