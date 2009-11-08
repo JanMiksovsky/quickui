@@ -50,7 +50,7 @@ QuickUI.Control = QuickUI.Class.extend({
 	/* Use jQuery to search within the control's DOM. */
 	$: function(selector)
 	{
-		return $(this.element).find(selector);
+		return jQuery(this.element).find(selector);
 	},
 	
 	className: "Control",
@@ -72,11 +72,11 @@ QuickUI.Control = QuickUI.Class.extend({
 	 * Set the content of a control.
 	 */
 	content: function(value) {
-		return $(this.element).items(value);
+		return jQuery(this.element).items(value);
 	},
 	
 	id: function(s) {
-		return $(this.element).attr("id", s);
+		return jQuery(this.element).attr("id", s);
 	},
 
 	/*
@@ -130,7 +130,7 @@ QuickUI.Control = QuickUI.Class.extend({
 	 */
 	style: function(value)
 	{
-		return $(this.element).attr("style", value);
+		return jQuery(this.element).attr("style", value);
 	}
 
 });
@@ -174,7 +174,7 @@ jQuery.extend(QuickUI.Control, {
 		var control = new controlClass();
 		
 		// Create a target if none was supplied.
-		var element = $(target || "<div/>");
+		var element = jQuery(target || "<div/>");
 		
 		// Bind the control to the element.
 		control.element = element[0];
