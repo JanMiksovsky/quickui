@@ -49,9 +49,9 @@
 <script>
 $.extend(DockPanel.prototype, {
 	
-	content: Property.element("DockPanel_content").content(),	
-	left: Property.element("DockPanel_left").content(),
-	right: Property.element("DockPanel_right").content(),
+	content: QuickUI.Element("DockPanel_content").content(),	
+	left: QuickUI.Element("DockPanel_left").content(),
+	right: QuickUI.Element("DockPanel_right").content(),
 	
 	ready: function() {
 		/*
@@ -63,11 +63,11 @@ $.extend(DockPanel.prototype, {
 		// this.recalc();
 	},
 	
-	bottom: Property.element("DockPanel_bottom").content(function(value) {
+	bottom: QuickUI.Element("DockPanel_bottom").content(function(value) {
 		this.recalc(this.DockPanel_bottom);
 	}),
 	
-	top: Property.element("DockPanel_top").content(function(value) {
+	top: QuickUI.Element("DockPanel_top").content(function(value) {
 		this.recalc(this.DockPanel_top);
 	}),
 	

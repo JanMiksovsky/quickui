@@ -385,7 +385,7 @@ namespace qc
                 );
                 ControlClass c = ParseControlClass(element);
                 Assert.AreEqual("Minimal", c.Name);
-                Assert.AreEqual("QuickControl", c.Prototype.ClassName);
+                Assert.AreEqual("QuickUI.Control", c.Prototype.ClassName);
                 Assert.AreEqual(0, c.Prototype.Properties.Count);
             }
 
@@ -520,7 +520,7 @@ namespace qc
             {
                 ControlClass c = ParseControlFromEmbeddedFile("qc.Tests.simple.qui");
                 Assert.AreEqual("Simple", c.Name);
-                Assert.AreEqual("QuickControl", c.Prototype.ClassName);
+                Assert.AreEqual("QuickUI.Control", c.Prototype.ClassName);
                 Assert.AreEqual(1, c.Prototype.Properties.Count);
                 Assert.IsTrue(c.Prototype.Properties.ContainsKey("content"));
 

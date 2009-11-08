@@ -12,7 +12,7 @@ DownloadPage = SitePage.extend({
 				"<h2>Windows</h2>",
 				$("<ol />").items(
 					$("<li />").items(
-						QuickControl.create(Link, {
+						QuickUI.Control.create(Link, {
 							content: "Download the installer",
 							href: "/downloads/QuickUI%20Setup.msi",
 						}),
@@ -23,7 +23,7 @@ DownloadPage = SitePage.extend({
 				"<div style=\"color: lightgray\"><h2>Mac OS/X</h2><ol><li>Download Mono</li><li>Download package</li><li>Add the QuickUI shell folder to your path.</li></ol></div>",
 				$("<p />").items(
 					"After downloading, you can run through the quick ",
-					QuickControl.create(Link, {
+					QuickUI.Control.create(Link, {
 						content: "tutorial",
 						href: "/tutorial/section01/default.html",
 					}),
@@ -33,7 +33,7 @@ DownloadPage = SitePage.extend({
 				"<p>\r\nQuick markup files use the .qui extension. You can associate this extension with your\r\nprefered XML or HTML editor. (An HTML editor will likely complain about some unknown elements,\r\nbut you’ll pick up syntax highlighting, auto-completion, etc., for CSS rules and JavaScript\r\nembedded in the Quick markup.)\r\n</p>",
 				"<h2>Aptana Studio</h2>",
 				" You can configure ",
-				QuickControl.create(Link, {
+				QuickUI.Control.create(Link, {
 					content: "Aptana Studio",
 					href: "http://www.aptana.com/studio",
 				}),

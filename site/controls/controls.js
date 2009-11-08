@@ -1,11 +1,11 @@
 //
 // AddThis
 //
-AddThis = QuickControl.extend({
+AddThis = QuickUI.Control.extend({
 	className: "AddThis",
 	render: function() {
-		QuickControl.prototype.render.call(this);
-		this.setClassProperties(QuickControl, {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
 			content: "<div class=\"addthis_toolbox addthis_default_style\"><a href=\"http://www.addthis.com/bookmark.php?v=250&amp;pub=janmiksovsky\" class=\"addthis_button_compact\">Share</a><span class=\"addthis_separator\">|</span><a class=\"addthis_button_twitter\"></a><a class=\"addthis_button_facebook\"></a><a class=\"addthis_button_email\"></a><a class=\"addthis_button_favorites\"></a><a class=\"addthis_button_print\"></a></div>",
 		});
 	}
@@ -22,35 +22,35 @@ var addthis_share = {
 //
 // CodeOutput
 //
-CodeOutput = QuickControl.extend({
+CodeOutput = QuickUI.Control.extend({
 	className: "CodeOutput",
 	render: function() {
-		QuickControl.prototype.render.call(this);
-		this.setClassProperties(QuickControl, {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
 			content: this.CodeOutput_content = $("<div id=\"CodeOutput_content\" />")[0],
 		});
 	}
 });
 $.extend(CodeOutput.prototype, {
-	content: Property.element("CodeOutput_content").content()
+	content: QuickUI.Element("CodeOutput_content").content()
 })
 
 //
 // Link
 //
-Link = QuickControl.extend({
+Link = QuickUI.Control.extend({
 	className: "Link",
 	render: function() {
-		QuickControl.prototype.render.call(this);
-		this.setClassProperties(QuickControl, {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
 			content: this.Link_content = $("<a id=\"Link_content\" href=\"javascript:\" />")[0],
 		});
 	}
 });
 $.extend(Link.prototype, {
 	
-	content: Property.element("Link_content").content(),
-	href: Property(),
+	content: QuickUI.Element("Link_content").content(),
+	href: QuickUI.Property(),
 	
 	ready: function() {
 		var self = this;
@@ -79,29 +79,29 @@ $.extend(Link.prototype, {
 //
 // NavigationBar
 //
-NavigationBar = QuickControl.extend({
+NavigationBar = QuickUI.Control.extend({
 	className: "NavigationBar",
 	render: function() {
-		QuickControl.prototype.render.call(this);
-		this.setClassProperties(QuickControl, {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
 			content: [
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "Home",
 					href: "/home/default.html",
 				}),
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "Download",
 					href: "/downloads/default.html",
 				}),
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "Tutorial",
 					href: "/tutorial/section01/default.html",
 				}),
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "Discuss",
 					href: "http://groups.google.com/group/quickui",
 				}),
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "Contribute",
 					href: "http://code.google.com/p/quickui/",
 				})
@@ -143,7 +143,7 @@ SitePage = Page.extend({
 			content: this.tableMain = $("<table id=\"tableMain\" />").items(
 				this.topRow = $("<tr id=\"topRow\" />").items(
 					this.logoCell = $("<td id=\"logoCell\" />").items(
-						this.logotype = QuickControl.create(Link, {
+						this.logotype = QuickUI.Control.create(Link, {
 							content: "<span class=\"bracket\">&lt;</span>QuickUI<span class=\"bracket\">&gt;</span>",
 							href: "/home/default.html",
 							id: "logotype",
@@ -151,7 +151,7 @@ SitePage = Page.extend({
 						this.tagline = $("<div id=\"tagline\">Modular web control framework</div>")[0]
 					)[0],
 					this.topNavigation = $("<td id=\"topNavigation\" />").items(
-						this.navigationBar = QuickControl.create(NavigationBar, {
+						this.navigationBar = QuickUI.Control.create(NavigationBar, {
 							id: "navigationBar",
 						})
 					)[0]
@@ -172,9 +172,9 @@ SitePage = Page.extend({
 });
 $.extend(SitePage.prototype, {
 	
-	area: Property(),
-	content: Property.element("SitePage_content").content(),
-	sidebar: Property.element("SitePage_sidebar").content(),
+	area: QuickUI.Property(),
+	content: QuickUI.Element("SitePage_content").content(),
+	sidebar: QuickUI.Element("SitePage_sidebar").content(),
 	
 	ready: function() {
 		$(this.navigationBar).control().highlightCurrentArea();
@@ -197,11 +197,11 @@ $.extend(SitePage.prototype, {
 //
 // SourceCode
 //
-SourceCode = QuickControl.extend({
+SourceCode = QuickUI.Control.extend({
 	className: "SourceCode",
 	render: function() {
-		QuickControl.prototype.render.call(this);
-		this.setClassProperties(QuickControl, {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
 			content: [
 				this.SourceCode_content = $("<pre id=\"SourceCode_content\" />")[0],
 				$("<div id=\"_divLink\" />").items(
@@ -216,7 +216,7 @@ SourceCode = QuickControl.extend({
 });
 $.extend(SourceCode.prototype, {
 	
-	content: Property.element("SourceCode_content").content(),
+	content: QuickUI.Element("SourceCode_content").content(),
 	
 	fileName: function(path) {
 		var pathNames = path.split("/");
@@ -225,7 +225,7 @@ $.extend(SourceCode.prototype, {
 			: pathNames[pathNames.length - 1];
 	},
 	
-	sourceFile: Property(function(value) {
+	sourceFile: QuickUI.Property(function(value) {
 		var self = this;
 		// Load the file.
 		$.get(value, function(data) {
@@ -245,11 +245,11 @@ $.extend(SourceCode.prototype, {
 //
 // Tag
 //
-Tag = QuickControl.extend({
+Tag = QuickUI.Control.extend({
 	className: "Tag",
 	render: function() {
-		QuickControl.prototype.render.call(this);
-		this.setClassProperties(QuickControl, {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
 			content: [
 				"&lt;",
 				this.Tag_content = $("<div id=\"Tag_content\" />")[0],
@@ -259,71 +259,71 @@ Tag = QuickControl.extend({
 	}
 });
 $.extend(Tag.prototype, {
-	content: Property.element("Tag_content").content()
+	content: QuickUI.Element("Tag_content").content()
 });
 
 //
 // TutorialNavigator
 //
-TutorialNavigator = QuickControl.extend({
+TutorialNavigator = QuickUI.Control.extend({
 	className: "TutorialNavigator",
 	render: function() {
-		QuickControl.prototype.render.call(this);
-		this.setClassProperties(QuickControl, {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
 			content: [
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "Hello, world",
 					href: "/tutorial/section01/default.html",
 				}),
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "How QuickUI works",
 					href: "/tutorial/section02/default.html",
 				}),
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "Composing controls",
 					href: "/tutorial/section03/default.html",
 				}),
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "Referencing control elements",
 					href: "/tutorial/section04/default.html",
 				}),
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "Defining control properties",
 					href: "/tutorial/section05/default.html",
 				}),
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "Setting control properties",
 					href: "/tutorial/section06/default.html",
 				}),
-				QuickControl.create(NavigationLink, {
-					content: "Compact property definition",
+				QuickUI.Control.create(NavigationLink, {
+					content: "Property factories",
 					href: "/tutorial/section07/default.html",
 				}),
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "Markup within properties",
 					href: "/tutorial/section08/default.html",
 				}),
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "Control prototypes",
 					href: "/tutorial/section09/default.html",
 				}),
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "Styling controls",
 					href: "/tutorial/section10/default.html",
 				}),
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "More on styling",
 					href: "/tutorial/section11/default.html",
 				}),
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "Defining interactivity",
 					href: "/tutorial/section12/default.html",
 				}),
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "Controlling behavior",
 					href: "/tutorial/section13/default.html",
 				}),
-				QuickControl.create(NavigationLink, {
+				QuickUI.Control.create(NavigationLink, {
 					content: "Subclassing controls",
 					href: "/tutorial/section14/default.html",
 				})
@@ -354,7 +354,7 @@ TutorialPage = SitePage.extend({
 		SitePage.prototype.render.call(this);
 		this.setClassProperties(SitePage, {
 			area: "Tutorial",
-			sidebar: this.tutorialNavigator = QuickControl.create(TutorialNavigator, {
+			sidebar: this.tutorialNavigator = QuickUI.Control.create(TutorialNavigator, {
 				id: "tutorialNavigator",
 			}),
 		});

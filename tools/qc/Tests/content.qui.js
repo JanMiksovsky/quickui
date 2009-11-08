@@ -1,19 +1,19 @@
 //
 // Content
 //
-Content = QuickControl.extend({
+Content = QuickUI.Control.extend({
 	className: "Content",
 	render: function() {
-		QuickControl.prototype.render.call(this);
-		this.setClassProperties(QuickControl, {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
 			content: [
-				QuickControl.create(Simple, {
+				QuickUI.Control.create(Simple, {
 					content: "Hello",
 				}),
-				QuickControl.create(Simple, {
+				QuickUI.Control.create(Simple, {
 					content: "There",
 				}),
-				QuickControl.create(Simple, {
+				QuickUI.Control.create(Simple, {
 					content: " World ",
 				})
 			],

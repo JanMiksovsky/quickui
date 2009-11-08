@@ -139,7 +139,7 @@ namespace qc
         {
             return new Control()
             {
-                ClassName = "QuickControl"
+                ClassName = "QuickUI.Control"
             };
         }
 
@@ -250,7 +250,7 @@ namespace qc
 
                 ControlClass controlClass = new ControlClass(c);
                 Assert.AreEqual("Simple", controlClass.Name);
-                Assert.AreEqual("QuickControl", controlClass.Prototype.ClassName);
+                Assert.AreEqual("QuickUI.Control", controlClass.Prototype.ClassName);
                 Assert.IsNull(controlClass.Style);
                 Assert.IsNull(controlClass.Script);
                 Assert.AreEqual(1, controlClass.Prototype.Properties.Count);
@@ -266,7 +266,7 @@ namespace qc
                     Name = "Simple",
                     Prototype = new Control()
                     {
-                        ClassName = "QuickControl"
+                        ClassName = "QuickUI.Control"
                     }
                 };
                 c.Prototype.Properties.Add("content", new HtmlNode("<span id=\"Simple_content\" />", "Simple_content"));

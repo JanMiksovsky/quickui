@@ -21,8 +21,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_3E38EC598DDB4EB7B45D20E2059353F6"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_29F029F39CEE78A21A7B123CBDD56948"
+        "OwnerKey" = "8:_7B346D30E19C4F65820543023176FC06"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -33,26 +33,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_707583EAC6C222259C4C153498C8080D"
+        "MsmKey" = "8:_617077B39AD95D8291EC66971588DC66"
         "OwnerKey" = "8:_7B346D30E19C4F65820543023176FC06"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_70C82A544D973AD723C3511FFBFDD2FC"
-        "OwnerKey" = "8:_7B346D30E19C4F65820543023176FC06"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_7483D9464D53E48924684152871CACB8"
-        "OwnerKey" = "8:_7B346D30E19C4F65820543023176FC06"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_7483D9464D53E48924684152871CACB8"
-        "OwnerKey" = "8:_70C82A544D973AD723C3511FFBFDD2FC"
+        "MsmKey" = "8:_617077B39AD95D8291EC66971588DC66"
+        "OwnerKey" = "8:_F71B2FB49263DFF517BDE635B8E5581E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -63,38 +51,50 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7BBD9236028C1E23FBCF3914F55EA98F"
+        "MsmKey" = "8:_808348CC8D2540BC920635BA506DC810"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D8EE215EE14A0BE48028226473536022"
         "OwnerKey" = "8:_7B346D30E19C4F65820543023176FC06"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_7BBD9236028C1E23FBCF3914F55EA98F"
-        "OwnerKey" = "8:_70C82A544D973AD723C3511FFBFDD2FC"
+        "MsmKey" = "8:_D8EE215EE14A0BE48028226473536022"
+        "OwnerKey" = "8:_F71B2FB49263DFF517BDE635B8E5581E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_7BBD9236028C1E23FBCF3914F55EA98F"
-        "OwnerKey" = "8:_7483D9464D53E48924684152871CACB8"
+        "MsmKey" = "8:_D8EE215EE14A0BE48028226473536022"
+        "OwnerKey" = "8:_617077B39AD95D8291EC66971588DC66"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_7BBD9236028C1E23FBCF3914F55EA98F"
-        "OwnerKey" = "8:_707583EAC6C222259C4C153498C8080D"
+        "MsmKey" = "8:_D8EE215EE14A0BE48028226473536022"
+        "OwnerKey" = "8:_29F029F39CEE78A21A7B123CBDD56948"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_DEC27F8A2FABD91C198AD5050B762AF3"
+        "MsmKey" = "8:_DEF51C340DFD6DBBD7298BCDA5030BA8"
         "OwnerKey" = "8:_7B346D30E19C4F65820543023176FC06"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_DEC27F8A2FABD91C198AD5050B762AF3"
-        "OwnerKey" = "8:_70C82A544D973AD723C3511FFBFDD2FC"
+        "MsmKey" = "8:_DEF51C340DFD6DBBD7298BCDA5030BA8"
+        "OwnerKey" = "8:_F71B2FB49263DFF517BDE635B8E5581E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F71B2FB49263DFF517BDE635B8E5581E"
+        "OwnerKey" = "8:_7B346D30E19C4F65820543023176FC06"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -106,31 +106,31 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_70C82A544D973AD723C3511FFBFDD2FC"
+        "OwnerKey" = "8:_F71B2FB49263DFF517BDE635B8E5581E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7483D9464D53E48924684152871CACB8"
+        "OwnerKey" = "8:_617077B39AD95D8291EC66971588DC66"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_707583EAC6C222259C4C153498C8080D"
+        "OwnerKey" = "8:_29F029F39CEE78A21A7B123CBDD56948"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7BBD9236028C1E23FBCF3914F55EA98F"
+        "OwnerKey" = "8:_D8EE215EE14A0BE48028226473536022"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_DEC27F8A2FABD91C198AD5050B762AF3"
+        "OwnerKey" = "8:_DEF51C340DFD6DBBD7298BCDA5030BA8"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -158,6 +158,19 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Net.Framework.3.5"
+                    {
+                    "Name" = "8:.NET Framework 3.5"
+                    "ProductCode" = "8:Microsoft.Net.Framework.3.5"
+                    }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.Windows.Installer.3.1"
+                    {
+                    "Name" = "8:Windows Installer 3.1"
+                    "ProductCode" = "8:Microsoft.Windows.Installer.3.1"
+                    }
+                }
             }
         }
         "Release"
@@ -245,54 +258,14 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3E38EC598DDB4EB7B45D20E2059353F6"
-            {
-            "SourcePath" = "8:..\\..\\..\\lib\\qui.js"
-            "TargetName" = "8:qui.js"
-            "Tag" = "8:"
-            "Folder" = "8:_444C2E134A014AEB939C7F316DC15ED2"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3F629091013040E4AA4D4066AD82CAFF"
-            {
-            "SourcePath" = "8:..\\..\\..\\quicommon\\quicommon.js"
-            "TargetName" = "8:quicommon.js"
-            "Tag" = "8:"
-            "Folder" = "8:_444C2E134A014AEB939C7F316DC15ED2"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_707583EAC6C222259C4C153498C8080D"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_29F029F39CEE78A21A7B123CBDD56948"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:System.Data.DataSetExtensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_707583EAC6C222259C4C153498C8080D"
+                    "_29F029F39CEE78A21A7B123CBDD56948"
                     {
                     "Name" = "8:System.Data.DataSetExtensions.dll"
                     "Attributes" = "3:512"
@@ -316,23 +289,12 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_70C82A544D973AD723C3511FFBFDD2FC"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3F629091013040E4AA4D4066AD82CAFF"
             {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:quic, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_70C82A544D973AD723C3511FFBFDD2FC"
-                    {
-                    "Name" = "8:quic.exe"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:quic.exe"
-            "TargetName" = "8:"
+            "SourcePath" = "8:..\\..\\..\\quicommon\\quicommon.js"
+            "TargetName" = "8:quicommon.js"
             "Tag" = "8:"
-            "Folder" = "8:_F812E70124EA4E60BADA6D012C6D60C1"
+            "Folder" = "8:_444C2E134A014AEB939C7F316DC15ED2"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -344,17 +306,17 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7483D9464D53E48924684152871CACB8"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_617077B39AD95D8291EC66971588DC66"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:System.Xml.Linq, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_7483D9464D53E48924684152871CACB8"
+                    "_617077B39AD95D8291EC66971588DC66"
                     {
                     "Name" = "8:System.Xml.Linq.dll"
                     "Attributes" = "3:512"
@@ -378,14 +340,34 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7BBD9236028C1E23FBCF3914F55EA98F"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_808348CC8D2540BC920635BA506DC810"
+            {
+            "SourcePath" = "8:..\\..\\..\\lib\\quickui.js"
+            "TargetName" = "8:quickui.js"
+            "Tag" = "8:"
+            "Folder" = "8:_444C2E134A014AEB939C7F316DC15ED2"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D8EE215EE14A0BE48028226473536022"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_7BBD9236028C1E23FBCF3914F55EA98F"
+                    "_D8EE215EE14A0BE48028226473536022"
                     {
                     "Name" = "8:System.Core.dll"
                     "Attributes" = "3:512"
@@ -409,14 +391,14 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DEC27F8A2FABD91C198AD5050B762AF3"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DEF51C340DFD6DBBD7298BCDA5030BA8"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:nunit.framework, Version=2.5.0.9122, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_DEC27F8A2FABD91C198AD5050B762AF3"
+                    "_DEF51C340DFD6DBBD7298BCDA5030BA8"
                     {
                     "Name" = "8:nunit.framework.dll"
                     "Attributes" = "3:512"
@@ -437,6 +419,37 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F71B2FB49263DFF517BDE635B8E5581E"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:qc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_F71B2FB49263DFF517BDE635B8E5581E"
+                    {
+                    "Name" = "8:qc.exe"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:qc.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_F812E70124EA4E60BADA6D012C6D60C1"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }

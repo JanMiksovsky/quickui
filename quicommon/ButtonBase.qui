@@ -36,7 +36,7 @@ $.extend(ButtonBase.prototype, {
 			});
 	},
 
-	disabled: Property.bool(function(value) {
+	disabled: QuickUI.Property.bool(function(value) {
 		$(this.element).toggleClass("disabled", value);
 	})
 

@@ -165,9 +165,9 @@ li {
 <script>
 $.extend(SitePage.prototype, {
 	
-	area: Property(),
-	content: Property.element("SitePage_content").content(),
-	sidebar: Property.element("SitePage_sidebar").content(),
+	area: QuickUI.Property(),
+	content: QuickUI.Element("SitePage_content").content(),
+	sidebar: QuickUI.Element("SitePage_sidebar").content(),
 	
 	ready: function() {
 		$(this.navigationBar).control().highlightCurrentArea();

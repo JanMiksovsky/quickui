@@ -68,7 +68,7 @@ For reference, the run-time DOM for a Greet control now looks something like:
 </p>
 
 <pre>
-&lt;div class="Greet QuickControl"&gt;
+&lt;div class="Greet Control"&gt;
 	Hello,
 	&lt;span id="Greet_content"&gt;Alice&lt;/span&gt;
 	&lt;span id="Greet_punctuation"&gt;.&lt;/span&gt;

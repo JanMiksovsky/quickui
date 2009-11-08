@@ -7,7 +7,7 @@
 	<NavigationLink href="/tutorial/section04/default.html">Referencing control elements</NavigationLink>
 	<NavigationLink href="/tutorial/section05/default.html">Defining control properties</NavigationLink>
 	<NavigationLink href="/tutorial/section06/default.html">Setting control properties</NavigationLink>
-	<NavigationLink href="/tutorial/section07/default.html">Compact property definition</NavigationLink>
+	<NavigationLink href="/tutorial/section07/default.html">Property factories</NavigationLink>
 	<NavigationLink href="/tutorial/section08/default.html">Markup within properties</NavigationLink>
 	<NavigationLink href="/tutorial/section09/default.html">Control prototypes</NavigationLink>
 	<NavigationLink href="/tutorial/section10/default.html">Styling controls</NavigationLink>

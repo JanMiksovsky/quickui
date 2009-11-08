@@ -31,7 +31,7 @@ h1 {
 
 <script>
 $.extend(CodeOutput.prototype, {
-	content: Property.element("CodeOutput_content").content()
+	content: QuickUI.Element("CodeOutput_content").content()
 })
 </script>
 

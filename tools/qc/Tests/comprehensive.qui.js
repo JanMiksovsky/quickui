@@ -7,7 +7,7 @@ Comprehensive = SampleBaseClass.extend({
 		SampleBaseClass.prototype.render.call(this);
 		this.setClassProperties(SampleBaseClass, {
 			content: [
-				this.message = QuickControl.create(Simple, {
+				this.message = QuickUI.Control.create(Simple, {
 					content: " Hello, <i>world</i>! ",
 					id: "message",
 				}),
@@ -19,7 +19,7 @@ Comprehensive = SampleBaseClass.extend({
 	}
 });
 $.extend(Comprehensive.prototype, {
-  content: Property.element("Comprehensive_content"),
+  content: QuickUI.Element("Comprehensive_content").content(),
   foo: function()
   {
       alert("Hello, world!");

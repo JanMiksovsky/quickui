@@ -14,8 +14,8 @@
 <![CDATA[
 $.extend(Link.prototype, {
 	
-	content: Property.element("Link_content").content(),
-	href: Property(),
+	content: QuickUI.Element("Link_content").content(),
+	href: QuickUI.Property(),
 	
 	ready: function() {
 		var self = this;

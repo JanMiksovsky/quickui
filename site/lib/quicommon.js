@@ -1,14 +1,14 @@
 //
 // Overlay
 //
-Overlay = QuickControl.extend({
+Overlay = QuickUI.Control.extend({
 	className: "Overlay",
 });
 $.extend(Overlay.prototype, {
 
-	blanket: Property(),
-	dismissOnInsideClick: Property.bool(),
-	dismissOnOutsideClick: Property.bool(null, true),
+	blanket: QuickUI.Property(),
+	dismissOnInsideClick: QuickUI.Property.bool(),
+	dismissOnOutsideClick: QuickUI.Property.bool(null, true),
 	
 	ready: function()
 	{
@@ -120,7 +120,7 @@ Popup = Overlay.extend({
 //
 // ButtonBase
 //
-ButtonBase = QuickControl.extend({
+ButtonBase = QuickUI.Control.extend({
 	className: "ButtonBase",
 });
 $.extend(ButtonBase.prototype, {
@@ -149,7 +149,7 @@ $.extend(ButtonBase.prototype, {
 			});
 	},
 
-	disabled: Property.bool(function(value) {
+	disabled: QuickUI.Property.bool(function(value) {
 		$(this.element).toggleClass("disabled", value);
 	})
 
@@ -216,11 +216,11 @@ $.extend(Dialog.prototype, {
 //
 // DockPanel
 //
-DockPanel = QuickControl.extend({
+DockPanel = QuickUI.Control.extend({
 	className: "DockPanel",
 	render: function() {
-		QuickControl.prototype.render.call(this);
-		this.setClassProperties(QuickControl, {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
 			content: [
 				this.DockPanel_top = $("<div id=\"DockPanel_top\" />")[0],
 				this.rowCenter = $("<div id=\"rowCenter\" />").items(
@@ -237,9 +237,9 @@ DockPanel = QuickControl.extend({
 });
 $.extend(DockPanel.prototype, {
 	
-	content: Property.element("DockPanel_content"),	
-	left: Property.element("DockPanel_left"),
-	right: Property.element("DockPanel_right"),
+	content: QuickUI.Element("DockPanel_content").content(),	
+	left: QuickUI.Element("DockPanel_left").content(),
+	right: QuickUI.Element("DockPanel_right").content(),
 	
 	ready: function() {
 		/*
@@ -251,11 +251,11 @@ $.extend(DockPanel.prototype, {
 		// this.recalc();
 	},
 	
-	bottom: Property.element("DockPanel_bottom", function(value) {
+	bottom: QuickUI.Element("DockPanel_bottom").content(function(value) {
 		this.recalc(this.DockPanel_bottom);
 	}),
 	
-	top: Property.element("DockPanel_top", function(value) {
+	top: QuickUI.Element("DockPanel_top").content(function(value) {
 		this.recalc(this.DockPanel_top);
 	}),
 	
@@ -281,7 +281,7 @@ $.extend(DockPanel.prototype, {
 //
 // Page
 //
-Page = QuickControl.extend({
+Page = QuickUI.Control.extend({
 	className: "Page",
 });
 /*
@@ -290,7 +290,7 @@ Page = QuickControl.extend({
 $.extend(Page.prototype, {
 	
 	// If true, have the page fill its container.
-	fill: Property.element().applyClass("fill"),
+	fill: QuickUI.Element().applyClass("fill"),
 	
 	// Return the parameter with the given name from the current URL, or null if not found.
 	getUrlParameter: function(parameterName) {
@@ -342,7 +342,7 @@ $.extend(QuickControl.prototype, {
 //
 // VerticalAlign
 //
-VerticalAlign = QuickControl.extend({
+VerticalAlign = QuickUI.Control.extend({
 	className: "VerticalAlign",
 });
 

@@ -1,11 +1,11 @@
 <Control name="Page07">
 
-<TutorialPage title="Compact property definition">
+<TutorialPage title="Compact property definition using property factories">
 
-<h2>Defining a property concisely with the Property helper class</h2>
+<h2>Declaring a property using a property factory</h2>
 <p>
 Defining a control property like Greet.content is so common, the QuickUI framework
-includes a JavaScript helper class to more concisely define common types of properties.
+includes some JavaScript helper classes to more concisely define common types of properties.
 The Greet.content property in this example is a very common type of property:
 a control property backed by the contents of a specific HTML element within the control’s DOM.
 </p>
@@ -18,16 +18,16 @@ content: function(value) {
 
 <p>
 To facilitate construction of such functions, the QuickUI run-time library includes
-a helper class called Property that serves as a factory for functions like the one above.
+a helper class called Element that serves as a factory for functions like the one above.
 So we can replace the above property definition with this one:
 </p>
 
 <pre>
-content: Property.element("Greet_content").content()
+content: QuickUI.Element("Greet_content").content()
 </pre>
 
 <p>
-Here, the element() reference indicates that we want to create a function bound to
+Here, the Element() reference indicates that we want to create a function bound to
 the element called “Greet_content”. Furthermore, we want
 a function that will set or get the content of that element. Note: the above code does not
 immediately return the content of Greet_content; it returns a 
@@ -37,14 +37,17 @@ above code is effectively a late-bound reference to the element we want.
 
 <p>
 Using property factories reduces the amount of code required to define control properties,
-and correspondingly reduces the chances for bugs. The Property class defines several other
-property factories for defining common types of control properties.
+and correspondingly reduces the chances for bugs. It also allows someone else reading the
+code to clearly see the intent of the property declaration. QuickUI defines several other
+property factories for defining common types of control properties. Significantly, this
+feature of QuickUI is defined in the run-time library, <i>not</i> in the
+Quick markup language, to afford the developer more flexibility.
 </p>
 
 <h2>Defining multiple “slots” with additional properties</h2>
 
 <p>
-Let’s adapt our Greet control to use the Property.element() property factory above.
+Let’s adapt our Greet control to use the QuickUI.Element() property factory above.
 And since it’s so easy to define new control properties, let’s extend our Greet control
 with an additional property to control the type of punctuation used at the end of the
 greeting:

@@ -25,8 +25,8 @@
 			(You can obtain this from <Link href="http://jquery.com/">jquery.com</Link>.)
 		</li>
 		<li>
-			Copy the core QuickUI library qui.js into the demo folder.
-			(You can find qui.js in the folder where you installed QuickUI,
+			Copy the core QuickUI library quickui.js into the demo folder.
+			(You can find quickui.js in the folder where you installed QuickUI,
 			inside the /lib subfolder).
 		</li>
 	</ol>

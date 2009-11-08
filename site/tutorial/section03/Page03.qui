@@ -57,19 +57,19 @@ independent copy of the contents defined for the Greet class earlier:
 </p>
 
 <pre>
-&lt;body class="Sample QuickControl"&gt;
+&lt;body class="Sample Control"&gt;
     &lt;h1&gt;QuickUI Sample&lt;/h1&gt;
-    &lt;div class="Greet QuickControl"&gt;
+    &lt;div class="Greet Control"&gt;
         Hello,
         &lt;i&gt;world&lt;/i&gt;
         !
     &lt;/div&gt;
-    &lt;div class="Greet QuickControl"&gt;
+    &lt;div class="Greet Control"&gt;
         Hello,
         &lt;i&gt;world&lt;/i&gt;
         !
     &lt;/div&gt;
-    &lt;div class="Greet QuickControl"&gt;
+    &lt;div class="Greet Control"&gt;
         Hello,
         &lt;i&gt;world&lt;/i&gt;
         !

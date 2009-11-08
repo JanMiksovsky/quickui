@@ -1,2 +1,0 @@
-#!/bin/sh
-/usr/bin/mono /Users/Jan/Documents/Projects/Qui2/Quic/quic/bin/release/quic.exe $1 $2 $3

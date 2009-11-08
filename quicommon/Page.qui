@@ -20,7 +20,7 @@
 $.extend(Page.prototype, {
 	
 	// If true, have the page fill its container.
-	fill: Property.element().applyClass("fill"),
+	fill: QuickUI.Element().applyClass("fill"),
 	
 	// Return the parameter with the given name from the current URL, or null if not found.
 	getUrlParameter: function(parameterName) {
@@ -54,7 +54,7 @@ $.extend(Page, {
 /*
  * General utility functions made available to all controls.
  */
-$.extend(QuickControl.prototype, {
+$.extend(QuickUI.Control.prototype, {
 	
 	/*
 	 * Look up the page hosting a control.

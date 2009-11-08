@@ -14,9 +14,9 @@
 <![CDATA[
 $.extend(Overlay.prototype, {
 
-	blanket: Property(),
-	dismissOnInsideClick: Property.bool(),
-	dismissOnOutsideClick: Property.bool(null, true),
+	blanket: QuickUI.Property(),
+	dismissOnInsideClick: QuickUI.Property.bool(),
+	dismissOnOutsideClick: QuickUI.Property.bool(null, true),
 	
 	ready: function()
 	{

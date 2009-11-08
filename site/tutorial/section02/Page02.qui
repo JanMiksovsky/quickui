@@ -33,7 +33,7 @@ Quick markup is comprised of the following element types, each identified by sim
 	<li>
 		Quick class tags. These allow you to instantiate one Quick control inside another.
 		They correspond to JavaScript classes that derive from the Quick control base class,
-		QuickControl. Quick class tags begin with an uppercase letter, e.g., <Tag>Greet</Tag>.
+		QuickUI.Control. Quick class tags begin with an uppercase letter, e.g., <Tag>Greet</Tag>.
 		This corresponds to the common JavaScript convention in which class names follow
 		Pascal casing. A class tag may not the name of a standard HTML element (see above).
 	</li>
@@ -71,7 +71,7 @@ we'll see the JavaScript which the qc compiler has generated:
 <p>
 	This code defines a class using a typical JavaScript prototype-based
 	inheritance scheme. The above JavaScript creates a new class called Greet
-	that inherits from a class called QuickControl., the base class from which all
+	that inherits from a class called QuickUI.Control., the base class from which all
 	QuickUI controls eventually derive. The Greet class defines two new members:
 	a className variable that affords run-time access to the name of the class, and a
 	render() method which is invoked whenever someone creates an instance
@@ -111,7 +111,7 @@ Inspecting the DOM at run time for the above output (e.g., via a tool such as
 </p>
 <pre>
 &lt;html&gt;
-&lt;body class="Greet QuickControl"&gt;
+&lt;body class="Greet Control"&gt;
     Hello, 
     &lt;i&gt;world&lt;/i&gt;
     !
@@ -120,7 +120,7 @@ Inspecting the DOM at run time for the above output (e.g., via a tool such as
 </pre>
 <p>
 The Greet.render() method has added the control’s contents to the DOM.
-The <Tag>body</Tag> has also been stamped with two class names: Greet and QuickControl.
+The <Tag>body</Tag> has also been stamped with two class names: Greet and Control.
 This operation was automatically performed by the QuickUI $.control() extension.
 When that call instantiates a control class, it adds the name of that class and
 the names of all its parent classes to the “class” attribute of the element on which

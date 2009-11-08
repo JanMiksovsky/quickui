@@ -31,7 +31,7 @@ namespace qc
         public override string EmitJavaScript(int indentLevel)
         {
             return Template.Format(
-                "{VariableDeclaration}QuickControl.create({ClassName}{ControlConstructorArguments})",
+                "{VariableDeclaration}QuickUI.Control.create({ClassName}{ControlConstructorArguments})",
                 new
                 {
                     VariableDeclaration = EmitVariableDeclaration(),
@@ -107,7 +107,7 @@ namespace qc
                     Id = "foo"
                 };
                 Assert.AreEqual(
-                    "this.foo = QuickControl.create(Simple, {\n" +
+                    "this.foo = QuickUI.Control.create(Simple, {\n" +
                     "\tcontent: \"Hello\",\n" +
                     "\tid: \"foo\",\n" +
                     "})",
