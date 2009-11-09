@@ -204,23 +204,6 @@ jQuery.extend(QuickUI.Control, {
 		control.ready();
 
 		return control.element;
-	},
-
-	/*
-	 * Utility: If the supplied value is a string, evaluate it and return the result.
-	 * Otherwise return the value as is.
-	 */
-	evalIfString: function(value)
-	{
-		if (typeof value == "string" || value instanceof String) 
-		{
-			eval("var obj = " + value);
-			return obj;
-		}
-		else 
-		{
-			return value;
-		}
 	}
 	
 });

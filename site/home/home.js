@@ -94,6 +94,17 @@ HomePage = SitePage.extend({
 				"<h2>Why use QuickUI?</h2>",
 				"<p>\r\nConsider using QuickUI because it:\r\n</p>",
 				"<ul><li>\r\n\t\tAllows you to create UI in a markup language that is easy to read,\r\n\t\tis easy to work with, and can concisely express your design intention.\r\n\t\tThis speeds up UI development, and makes UI code more maintainable.\r\n\t</li><li>\r\n\t\tWorks with the web’s native technologies, it doesn’t replace them.\r\n\t\tQuickUI is true to HTML, CSS, and JavaScript. Familiar conventions are used\r\n\t\twhenever possible. QuickUI is only meant to address the web’s painful lack\r\n\t\tof an extensible control framework.\r\n\t</li><li>\r\n\t\tAllows designers and developers to share design artifacts. QuickUI can bridge\r\n\t\tthe gap between pure visual design tools and native web coding frameworks.\r\n\t\tThe markup language can be easily learned by HTML-savvy designers, and is\r\n\t\tstill powerful and flexible enough to appeal to developers.\r\n\t</li><li>\r\n\t\tEncourages well-factored UI code. Controls are as modular as possible,\r\n\t\teasily composable, and easily subclassable. All the goodness of object-oriented\r\n\t\tdesign can be applied to your UI code. Package up your hard-earned knowledge\r\n\t\tof HTML and CSS idiosyncrasies into reusable controls that can be readily\r\n\t\tapplied to new problems.\r\n\t</li><li>\r\n\t\tProduces predictable compiled code. The QuickUI tools do a minimum of\r\n\t\tcompilation magic. The compiler’s output are legible, understandable,\r\n\t\treadily debuggable JavaScript classes. The generated code takes care of \r\n\t\tpopulating the control’s run-time DOM — code that is often tedious to write\r\n\t\tby hand, and normally hard to read. The behavior of these controls can\r\n\t\tbe programmed in JavaScript and jQuery.\r\n\t</li><li>\r\n\t\tCreates controls that can be used as top-level pages on their own,\r\n\t\tor easily included in web pages built with other technologies.\r\n\t</li><li>\r\n\t\tIs fun to work in!\r\n\t</li></ul>",
+				" QuickUI is completely free, and the ",
+				QuickUI.Control.create(Link, {
+					content: "source code",
+					href: "http://code.google.com/p/quickui/",
+				}),
+				" is open under the ",
+				QuickUI.Control.create(Link, {
+					content: "MIT License",
+					href: "http://www.opensource.org/licenses/mit-license.php",
+				}),
+				". ",
 				$("<p />").items(
 					QuickUI.Control.create(Link, {
 						content: "Download QuickUI",

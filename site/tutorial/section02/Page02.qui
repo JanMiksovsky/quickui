@@ -71,7 +71,7 @@ we'll see the JavaScript which the qc compiler has generated:
 <p>
 	This code defines a class using a typical JavaScript prototype-based
 	inheritance scheme. The above JavaScript creates a new class called Greet
-	that inherits from a class called QuickUI.Control., the base class from which all
+	that inherits from a class called QuickUI.Control, the base class from which all
 	QuickUI controls eventually derive. The Greet class defines two new members:
 	a className variable that affords run-time access to the name of the class, and a
 	render() method which is invoked whenever someone creates an instance
