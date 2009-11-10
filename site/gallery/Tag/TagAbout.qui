@@ -1,5 +1,5 @@
 <Control name="TagAbout">
-	<GalleryPage controlName="Tag" sourceFileExample="Tag/TagDemo.qui" sourceFileControl="../controls/Tag.qui">
+	<GalleryPage title="Tag" sourceFileExample="Tag/TagDemo.qui" sourceFileControl="../controls/Tag.qui">
 		<summary>
 			The Tag control formats its content as an XML tag. The control is a simple
 			example of what’s effectively a parameterized HTML macro that includes both content 

@@ -1,6 +1,6 @@
 <Control name="GalleryPageAbout">
 	<GalleryPage
-		controlName="GalleryPage"
+		title="GalleryPage"
 		sourceFileExample="GalleryPage/GalleryPageAbout.qui"
 		sourceFileControl="GalleryPage.qui">
 		<summary>
@@ -13,6 +13,8 @@
 			can be filled in by setting properties on the control. For the control
 			properties that point to source code, the GalleryPage control delegates
 			responsibility for showing the source code to the separate SourceCode control.
+			GalleryPage is a subclass of SitePage. The title property shown in this example
+			is inherited from SitePage.
 		</notes>
 	</GalleryPage>
 </Control>

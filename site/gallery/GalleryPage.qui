@@ -2,7 +2,6 @@
 
 <prototype>
 	<SitePage>
-		<h1><div id="GalleryPage_controlName"/></h1>
 		<div id="GalleryPage_summary" />
 		<h2>Example</h2>
 		<SourceCode id="sourceCodeExample" />
@@ -17,12 +16,11 @@
 
 <script>
 $.extend(GalleryPage.prototype, {
-	notes: QuickUI.Element("GalleryPage_notes").content(),
-	controlName: QuickUI.Element("GalleryPage_controlName").content(),
 	demo: QuickUI.Element("GalleryPage_demo").content(),
+	notes: QuickUI.Element("GalleryPage_notes").content(),
 	sourceFileControl: QuickUI.Element("sourceCodeControl").controlProperty("sourceFile"),
 	sourceFileExample: QuickUI.Element("sourceCodeExample").controlProperty("sourceFile"),
-	summary: QuickUI.Element("GalleryPage_summary").content()
+	summary: QuickUI.Element("GalleryPage_summary").content(),
 });
 </script>
 
