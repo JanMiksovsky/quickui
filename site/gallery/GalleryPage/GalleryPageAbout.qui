@@ -6,7 +6,9 @@
 		<summary>
 			The GalleryPage control is the basic template for all controls in the
 			QuickUI gallery. It defines the main content area of the type of page you are
-			looking at right now. (This page is its own demo of the control’s behavior!)
+			looking at right now. This page is its own demo of the control’s behavior!
+			In other words, the Example section below shows the <i>entire source</i>
+			of the control that is the specific page you’re looking at now.
 		</summary>
 		<notes>
 			This control is a good example of a page template with numerous slots which

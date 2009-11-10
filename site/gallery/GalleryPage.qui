@@ -5,7 +5,7 @@
 		<div id="GalleryPage_summary" />
 		<h2>Example</h2>
 		<SourceCode id="sourceCodeExample" />
-		<h2>Demo</h2>
+		<h2>Live Demo</h2>
 		<div id="GalleryPage_demo" />
 		<h2>Full Source</h2>
 		<SourceCode id="sourceCodeControl" />
