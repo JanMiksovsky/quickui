@@ -1,0 +1,18 @@
+<Control name="GalleryPageAbout">
+	<GalleryPage
+		controlName="GalleryPage"
+		sourceFileExample="GalleryPage/GalleryPageAbout.qui"
+		sourceFileControl="GalleryPage.qui">
+		<summary>
+			The GalleryPage control is the basic template for all controls in the
+			QuickUI gallery. It defines the main content area of the type of page you are
+			looking at right now. (This page is its own demo of the control’s behavior!)
+		</summary>
+		<notes>
+			This control is a good example of a page template with numerous slots which
+			can be filled in by setting properties on the control. For the control
+			properties that point to source code, the GalleryPage control delegates
+			responsibility for showing the source code to the separate SourceCode control.
+		</notes>
+	</GalleryPage>
+</Control>

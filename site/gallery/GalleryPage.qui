@@ -1,0 +1,29 @@
+<Control name="GalleryPage">
+
+<prototype>
+	<SitePage>
+		<h1><div id="GalleryPage_controlName"/></h1>
+		<div id="GalleryPage_summary" />
+		<h2>Example</h2>
+		<SourceCode id="sourceCodeExample" />
+		<h2>Demo</h2>
+		<div id="GalleryPage_demo" />
+		<h2>Full Source</h2>
+		<SourceCode id="sourceCodeControl" />
+		<h2>Notes</h2>
+		<div id="GalleryPage_notes" />
+	</SitePage>
+</prototype>
+
+<script>
+$.extend(GalleryPage.prototype, {
+	notes: QuickUI.Element("GalleryPage_notes").content(),
+	controlName: QuickUI.Element("GalleryPage_controlName").content(),
+	demo: QuickUI.Element("GalleryPage_demo").content(),
+	sourceFileControl: QuickUI.Element("sourceCodeControl").controlProperty("sourceFile"),
+	sourceFileExample: QuickUI.Element("sourceCodeExample").controlProperty("sourceFile"),
+	summary: QuickUI.Element("GalleryPage_summary").content()
+});
+</script>
+
+</Control>
