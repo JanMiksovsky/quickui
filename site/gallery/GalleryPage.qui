@@ -3,11 +3,11 @@
 <prototype>
 	<SitePage>
 		<div id="GalleryPage_summary" />
-		<h2>Example</h2>
+		<h2>Example code</h2>
 		<SourceCode id="sourceCodeExample" />
-		<h2>Live Demo</h2>
+		<h2>Live demo</h2>
 		<div id="GalleryPage_demo" />
-		<h2>Full Source</h2>
+		<h2>Full control source code</h2>
 		<SourceCode id="sourceCodeControl" />
 		<h2>Notes</h2>
 		<div id="GalleryPage_notes" />

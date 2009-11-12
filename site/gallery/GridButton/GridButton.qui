@@ -1,0 +1,80 @@
+<!-- A button with a grid texture for its background. -->
+
+<!-- *** rewrite to use ImageStrip *** -->
+
+<Control name="GridButton">
+
+<prototype>
+	<ButtonBase>
+		<div id="imageLeft" class="buttonImage" />
+		<div id="imageRight" class="buttonImage" />
+	    <button id="GridButton_content"/>
+	</ButtonBase>
+</prototype>
+
+<style>
+
+{
+	display: inline-block;
+	position: relative;
+}
+
+.buttonImage {
+	background-image: url(/QuickUI/site/gallery/GridButton/button_allstates.png);
+	background-repeat: no-repeat;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	z-index: 0;
+}
+
+#imageLeft {
+	background-position: left 0;
+	left: 0;
+	right: 10px;
+}
+
+#imageRight {
+	background-position: right 0;
+	right: 0;
+	width: 10px;
+}
+
+button {
+	border: medium none;
+	background: transparent none repeat scroll 0 0;
+	font-family: Arial, sans-serif;
+	font-size: 14px;
+	height: 31px;
+	min-width: 50px;
+	outline: none;
+	-moz-outline: none;
+	overflow: visible;
+	padding: 4px 7px 7px 7px;
+	position: relative;
+	top: 0;
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
+/* Shift the background images to reflect the various button states. */
+.GridButton.hovered #imageLeft { background-position: left -32px; }
+.GridButton.hovered #imageRight { background-position: right -32px; }
+.GridButton.focused #imageLeft { background-position: left -32px; }
+.GridButton.focused #imageRight { background-position: right -32px; }
+.GridButton.pressed #imageLeft { background-position: left -64px; }
+.GridButton.pressed #imageRight { background-position: right -64px; }
+.GridButton.disabled #imageLeft { background-position: left -96px; }
+.GridButton.disabled #imageRight { background-position: right -96px; }
+
+.GridButton.disabled button { color: #bbb; }
+
+</style>
+	
+<script>
+$.extend(GridButton.prototype, {
+	content: QuickUI.Element("GridButton_content").content()
+});
+</script>
+	
+</Control>

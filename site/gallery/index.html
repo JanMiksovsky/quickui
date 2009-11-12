@@ -9,17 +9,24 @@
 <link rel="stylesheet" type="text/css" href="../controls/controls.css" />
 <link rel="stylesheet" type="text/css" href="gallery.css" />
 
+<script type="text/javascript" src="http://use.typekit.com/yab6zcc.js"></script>
+
 <script type="text/javascript" src="../lib/jquery/jquery.js"></script>
 <script type="text/javascript" src="../lib/quickui.js"></script>
 <script type="text/javascript" src="../lib/quicommon.js"></script>
 <script type="text/javascript" src="../controls/controls.js"></script>
 <script type="text/javascript" src="gallery.js"></script>
+<!--
+<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+-->
 
 <script language="JavaScript">
 
 var defaultPageClass = TagAbout;
 
 $(function() {
+
+	//try{Typekit.load();}catch(e){}
 	
 	var pageClass;
 	var pageClassName = Page.getUrlParameter("page");

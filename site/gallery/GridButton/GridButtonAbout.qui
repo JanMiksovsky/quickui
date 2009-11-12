@@ -1,0 +1,10 @@
+<Control name="GridButtonAbout">
+	<GalleryPage title="GridButton" sourceFileExample="GridButton/GridButtonDemo.qui" sourceFileControl="GridButton/GridButton.qui">
+		<summary>
+			A button that uses a GridTexture for its background.
+		</summary>
+		<demo>
+			<GridButtonDemo/>
+		</demo>
+	</GalleryPage>
+</Control>
