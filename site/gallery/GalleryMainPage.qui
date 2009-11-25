@@ -14,6 +14,11 @@
 		for the control’s demo?
 		</p>
 		<p>
+		Some of these controls are subclasses of controls defined elsewhere.
+		The source code for all referenced classes is available in the
+		<Link href="http://code.google.com/p/quickui/source/browse/#svn/trunk">QuickUI source code</Link>.
+		</p>
+		<p>
 		Select a control from the pane on the left.
 		</p>
 		<!--
