@@ -12,10 +12,6 @@
 </prototype>
 
 <style>
-{
-	width: 290px;
-}
-
 #image {
 	cursor: pointer;
 }
