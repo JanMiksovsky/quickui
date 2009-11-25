@@ -1,0 +1,53 @@
+<!--
+Very basic CSS image sprite.
+The images have to be stacked vertically, and all be the same height.
+-->
+
+<Control name="Sprite">
+
+<style>
+{
+	background-repeat: no-repeat;
+}	
+</style>
+
+<script>
+<![CDATA[
+$.extend(Sprite.prototype, {
+	
+	image: QuickUI.Element().css("background-image"),
+
+	// The height of a single cell in the strip, in pixels.
+	cellHeight: QuickUI.Property(function(value) {
+		$(this.element).css("height", value + "px");
+		this.shiftBackground();
+	}),
+	
+	// The cell currently being shown.
+	currentCell: QuickUI.Property(function(value) {
+		this.shiftBackground();
+	}, 0),
+	
+	shiftBackground: function() {
+		if (this.currentCell() != null && this.cellHeight() != null) {
+			var y = (this.currentCell() * -this.cellHeight()) + "px";
+			if ($.browser.mozilla)
+			{
+				// Firefox 3.5.x doesn't support background-position-y,
+				// use background-position instead.
+				var backgroundPosition = $(this.element).css("background-position").split(" ");
+				backgroundPosition[1] = y;
+				$(this.element).css("background-position", backgroundPosition.join(" "));			
+			}
+			else
+			{
+				// Not Firefox
+				$(this.element).css("background-position-y", y);
+			}
+		}
+	}
+});
+]]>
+</script>
+
+</Control>

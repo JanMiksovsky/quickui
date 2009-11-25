@@ -1,5 +1,5 @@
 <Control name="SpriteAbout">
-	<GalleryPage title="Sprite" sourceFileExample="Sprite/SpriteDemo.qui" sourceFileControl="../../quicommon/Sprite.qui">
+	<GalleryPage title="Sprite" sourceFileExample="Sprite/SpriteDemo.qui" sourceFileControl="../common/Sprite.qui">
 		<summary>
 			A very basic CSS sprite: shows a single image at a time
 			from a strip of images.
