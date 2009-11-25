@@ -15,6 +15,7 @@
 			<tr>
 				<td id="leftNavigation">
 					<h1> </h1> <!-- h1 won't actually appear, just used for space -->
+					<Navigator id="SitePage_navigationLinks"/>
 					<div id="SitePage_sidebar" />
 				</td>
 				<td id="pageCanvas">
@@ -97,21 +98,21 @@ td {
 	letter-spacing: 2px;
 }
 
-#SitePage_content {
-	max-width: 800px;
-}
-
-#SitePage_sidebar {
+#leftNavigation {
 	color: white;
 }
 
-#SitePage_sidebar a {
+#leftNavigation a {
 	border: none !important;
 	color: white !important;
 }
 
-#SitePage_sidebar a:hover {
+#leftNavigation a:hover {
 	background-color: #928274;
+}
+
+#SitePage_content {
+	max-width: 800px;
 }
 
 h1 {
@@ -149,7 +150,7 @@ pre {
 	font-family: Consolas, Lucida Console, Courier, Courier New, monospace;
 	font-size: 11pt;
 	padding: 10px;
-	white-space: pre-wrap;       /* css-3 */
+	white-space: pre-wrap;
 }
 
 .CodeOutput {
@@ -167,10 +168,12 @@ $.extend(SitePage.prototype, {
 	
 	area: QuickUI.Property(),
 	content: QuickUI.Element("SitePage_content").content(),
+	navigationLinks: QuickUI.Element("SitePage_navigationLinks").content(),
 	sidebar: QuickUI.Element("SitePage_sidebar").content(),
 	
 	ready: function() {
 		$(this.navigationBar).control().highlightCurrentArea();
+		$(this.SitePage_navigationLinks).control().highlightCurrentPage();
 	},
 	
 	title: function(value) {

@@ -62,7 +62,8 @@ The div below shows the actual sample control above instantiated here on this pa
 This is a trivial example. The <Link href="/tutorial/section01/default.html">tutorial</Link>
 examines controls with complex contents, control styling, and interactive behavior.
 When combined with the ability to compose and subclass controls,
-things can quickly become very interesting.
+things can quickly become very interesting. You can see some sample QuickUI controls
+in the <Link href="/gallery/default.html">Gallery</Link>.
 </p>
 
 <h2>Why use QuickUI?</h2>

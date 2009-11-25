@@ -1,0 +1,46 @@
+<!-- Repeat contents a specific number of times. -->
+
+<Control name="Repeater">
+
+<prototype>
+	<div id="Repeater_expansion"/>
+</prototype>
+
+<script>
+<![CDATA[
+$.extend(Repeater.prototype, {
+
+	ready: function() {
+		this.expand();
+	},
+	
+	content: QuickUI.Property(function() {
+		this.expand();
+	}),
+	
+	count: QuickUI.Property.integer(function(value) {
+		this.expand();
+	}, 0),
+	
+	expand: function() {
+		var template = $(this.content());
+		if (template != null)
+		{
+			$(this.Repeater_expansion).empty();
+			var count = this.count();
+			for (var i = 0; i < count; i++)
+			{
+				template.clone().appendTo(this.Repeater_expansion);
+			}
+		}
+	},
+	
+	expansion: function() {
+		return $(this.Repeater_expansion).html();
+	}
+	
+});
+]]>
+</script>
+
+</Control>

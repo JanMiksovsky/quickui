@@ -125,34 +125,131 @@ ButtonBase = QuickUI.Control.extend({
 });
 $.extend(ButtonBase.prototype, {
 	
-	ready: function()
-	{
+	isFocused: QuickUI.Property.bool(null, false),
+	isKeyPressed: QuickUI.Property.bool(null, false),
+	isMouseButtonDown: QuickUI.Property.bool(null, false),
+	isMouseOverControl: QuickUI.Property.bool(null, false),
+	
+	ready: function() {
 		var self = this;
-		$(this.element).blur(function() {
-				$(self.element).removeClass("focused");
+		$(this.element)
+			.blur(function(event) { self.blur(event); })
+			.click(function(event) {
+				if (self.disabled())
+				{
+					event.stopImmediatePropagation();
+				}
 			})
-			.focus(function() { $(self.element).addClass("focused"); })
+			.focus(function(event) { self.focus(event); })
 			.hover(
-				function() {
-					$(self.element).addClass("hovered");
-				},
-				function() {
-					$(self.element).removeClass("focused")
-						.removeClass("hovered")
-						.removeClass("pressed");
-			})
-			.mousedown(function() {
-				$(self.element).addClass("pressed");
-			})
-			.mouseup(function() {
-				$(self.element).removeClass("pressed");
-			});
+				function(event) { self.mousein(event); },
+				function(event) { self.mouseout(event); }
+			)
+			.keydown (function(event) { self.keydown(event); })
+			.keyup (function(event) { self.keyup(event); })
+			.mousedown(function(event) { self.mousedown(event); })
+			.mouseup(function(event) { self.mouseup(event); });
+		this.renderButton();
+	},
+	
+	blur: function(event) {
+		
+		$(self.element).removeClass("focused");
+
+		// Losing focus causes the button to override any key that had been pressed.
+		this.isKeyPressed(false);
+
+		this.isFocused(false);
+		this.renderButton();
+	},
+	
+	// The current state of the button.
+	buttonState: function() {
+		if (this.disabled())
+		{
+			return ButtonBase.state.disabled;
+		}
+		else if ((this.isMouseButtonDown() && this.isMouseOverControl())
+			|| this.isKeyPressed())
+		{
+			return ButtonBase.state.pressed;
+		}
+		else if (this.isFocused())
+		{
+			return ButtonBase.state.focused;
+		}
+		else if (this.isMouseOverControl() /* || this.isMouseButtonDown() */)
+		{
+			return ButtonBase.state.hovered;
+		}
+
+		return ButtonBase.state.normal;
 	},
 
 	disabled: QuickUI.Property.bool(function(value) {
 		$(this.element).toggleClass("disabled", value);
-	})
-
+		this.renderButton();
+	}, false),
+	
+	focus: function(event) {
+		$(self.element).addClass("focused");
+		this.isFocused(true);
+		this.renderButton();
+	},
+	
+	keydown: function(event) {
+		if (event.keyCode == 32 /* space */ || event.keyCode == 13 /* return */)
+		{
+			this.isKeyPressed(true);		
+			this.renderButton();
+		}
+	},
+	
+	keyup: function(event) {
+		this.isKeyPressed(false);
+		this.renderButton();
+	},
+	
+	mousedown: function(event) {
+		$(self.element).addClass("pressed");
+		this.isMouseButtonDown(true);
+		this.renderButton();
+	},
+	
+	mousein: function(event) {
+		$(self.element).addClass("hovered");
+		this.isMouseOverControl(true);
+		this.renderButton();
+	},
+	
+	mouseout: function(event) {
+		$(self.element).removeClass("focused")
+			.removeClass("hovered")
+			.removeClass("pressed");
+		this.isMouseOverControl(false);
+		this.renderButton();
+	},
+	
+	mouseup: function(event) {
+		$(self.element).removeClass("pressed");
+		this.isMouseButtonDown(false);
+		this.renderButton();
+	},
+	
+	renderButtonState: function(buttonState) {},
+	
+	renderButton: function() {
+		this.renderButtonState(this.buttonState());
+	}
+});
+$.extend(ButtonBase, {
+	state: {
+		normal: 0,
+		hovered: 1,
+		focused: 2,
+		pressed: 3,
+		disabled: 4
+	}
 });
 
 //
@@ -279,6 +376,36 @@ $.extend(DockPanel.prototype, {
 });
 
 //
+// IfBrowser
+//
+IfBrowser = QuickUI.Control.extend({
+	className: "IfBrowser",
+	render: function() {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
+			content: [
+				this.IfBrowser_content = $("<span id=\"IfBrowser_content\" />")[0],
+				this.IfBrowser_elseContent = $("<span id=\"IfBrowser_elseContent\" />")[0]
+			],
+		});
+	}
+});
+$.extend(IfBrowser.prototype, {
+	browser: QuickUI.Property(),
+	content: QuickUI.Element("IfBrowser_content").content(),
+	elseContent: QuickUI.Element("IfBrowser_elseContent").content(),
+	support: QuickUI.Property(),
+	
+	ready: function() {
+		var usingSpecifiedBrowser = (this.browser() == undefined) || $.browser[this.browser()];
+		var browserSupportsProperty = (this.support() == undefined) || $.support[this.support()];
+		var allConditionsSatisfied = usingSpecifiedBrowser && browserSupportsProperty;
+		$(this.IfBrowser_content).toggle(allConditionsSatisfied);
+		$(this.IfBrowser_elseContent).toggle(!allConditionsSatisfied);
+	}
+});
+
+//
 // Page
 //
 Page = QuickUI.Control.extend({
@@ -324,7 +451,7 @@ $.extend(Page, {
 /*
  * General utility functions made available to all controls.
  */
-$.extend(QuickControl.prototype, {
+$.extend(QuickUI.Control.prototype, {
 	
 	/*
 	 * Look up the page hosting a control.
@@ -337,6 +464,92 @@ $.extend(QuickControl.prototype, {
 		return (pages.length > 0) ? pages.control() : null;
 	}
 
+});
+
+//
+// Repeater
+//
+Repeater = QuickUI.Control.extend({
+	className: "Repeater",
+	render: function() {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
+			content: this.Repeater_expansion = $("<div id=\"Repeater_expansion\" />")[0],
+		});
+	}
+});
+$.extend(Repeater.prototype, {
+
+	ready: function() {
+		this.expand();
+	},
+	
+	content: QuickUI.Property(function() {
+		this.expand();
+	}),
+	
+	count: QuickUI.Property.integer(function(value) {
+		this.expand();
+	}, 0),
+	
+	expand: function() {
+		var template = $(this.content());
+		if (template != null)
+		{
+			$(this.Repeater_expansion).empty();
+			var count = this.count();
+			for (var i = 0; i < count; i++)
+			{
+				template.clone().appendTo(this.Repeater_expansion);
+			}
+		}
+	},
+	
+	expansion: function() {
+		return $(this.Repeater_expansion).html();
+	}
+	
+});
+
+//
+// Sprite
+//
+Sprite = QuickUI.Control.extend({
+	className: "Sprite",
+});
+$.extend(Sprite.prototype, {
+	
+	image: QuickUI.Element().css("background-image"),
+
+	// The height of a single cell in the strip, in pixels.
+	cellHeight: QuickUI.Property(function(value) {
+		$(this.element).css("height", value + "px");
+		this.shiftBackground();
+	}),
+	
+	// The cell currently being shown.
+	currentCell: QuickUI.Property(function(value) {
+		this.shiftBackground();
+	}, 0),
+	
+	shiftBackground: function() {
+		if (this.currentCell() != null && this.cellHeight() != null) {
+			var y = (this.currentCell() * -this.cellHeight()) + "px";
+			if ($.browser.mozilla)
+			{
+				// Firefox 3.5.x doesn't support background-position-y,
+				// use background-position instead.
+				var backgroundPosition = $(this.element).css("background-position").split(" ");
+				backgroundPosition[1] = y;
+				$(this.element).css("background-position", backgroundPosition.join(" "));			
+			}
+			else
+			{
+				// Not Firefox
+				$(this.element).css("background-position-y", y);
+			}
+		}
+	}
 });
 
 //

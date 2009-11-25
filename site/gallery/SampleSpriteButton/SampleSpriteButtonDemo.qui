@@ -1,0 +1,25 @@
+<Control name="SampleSpriteButtonDemo">
+
+<prototype>
+	<SampleSpriteButton>Save</SampleSpriteButton>
+	<SampleSpriteButton>Don't Save</SampleSpriteButton>
+	<SampleSpriteButton disabled="true">Cancel</SampleSpriteButton>
+</prototype>
+
+<style>
+.SampleSpriteButton {
+	margin-right: 6px;
+}
+</style>
+
+<script>
+$.extend(SampleSpriteButtonDemo.prototype, {
+	ready: function() {
+		this.$(".SampleSpriteButton").click(function() {
+			alert("You clicked " + $(this).control().content());
+		});
+	}
+});
+</script>
+
+</Control>

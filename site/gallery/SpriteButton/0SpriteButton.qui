@@ -1,0 +1,97 @@
+<!-- A button that uses CSS image sprites for its background. -->
+
+<Control name="SpriteButton">
+
+<prototype>
+	<ButtonBase>
+		<Sprite id="backgroundLeft" />
+		<Sprite id="backgroundRight" />
+	    <button id="SpriteButton_content" />
+	</ButtonBase>
+</prototype>
+
+<style>
+
+{
+	display: inline-block;
+	position: relative;
+}
+
+.Sprite {
+	height: 100%;
+	position: absolute;
+	top: 0;
+	/* 
+	 * Each sprite covers half the background
+	 * (or just over half; at exactly half, Webkit will leave a gap).
+	 */
+	width: 52%;
+	z-index: 0;
+}
+
+#backgroundLeft {
+	background-position: left 0;
+	left: 0;
+}
+
+#backgroundRight {
+	background-position: right 0;
+	right: 0;
+}
+
+button {
+	background: transparent none repeat scroll 0 0;
+	border: medium none;
+	cursor: pointer;
+	outline: none;
+	-moz-outline: none;
+	overflow: visible;
+	position: relative;
+	white-space: nowrap;
+}
+
+.SpriteButton.disabled button {
+	cursor: default;
+}
+
+</style>
+	
+<script>
+$.extend(SpriteButton.prototype, {
+	
+	content: QuickUI.Element("SpriteButton_content").content(),
+
+	ready: function() {
+		SpriteButton.superProto.ready.call(this);
+		var self = this;
+		$(this.SpriteButton_content)
+			.blur(function() { self.blur(); })
+			.focus(function() { self.focus(); });		
+	},
+	
+	cellHeight: QuickUI.Element().css("height", function(value) {
+		$(this.SpriteButton_content).height(value + "px");
+		$(this.backgroundLeft).control().cellHeight(value);
+		$(this.backgroundRight).control().cellHeight(value);
+	}),
+	
+	disabled: function(value) {
+		if (value !== undefined)
+		{
+			$(this.SpriteButton_content).attr("disabled", String(value) == "true");
+		}
+		return SpriteButton.superProto.disabled.call(this, value);
+	},
+	
+	image: QuickUI.Element("backgroundLeft").controlProperty("image", function(value) {
+		$(this.backgroundRight).control().image(value);
+	}),
+	
+	renderButtonState: function(buttonState) {
+		$(this.backgroundLeft).control().currentCell(buttonState);
+		$(this.backgroundRight).control().currentCell(buttonState);
+	}
+});
+</script>
+	
+</Control>

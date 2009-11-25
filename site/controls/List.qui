@@ -1,0 +1,74 @@
+<!-- Instantiate its contents, once for each item in a supplied array. -->
+
+<Control name="List">
+
+<prototype>
+	<div id="List_expansion"/>
+</prototype>
+
+<script>
+<![CDATA[
+$.extend(List.prototype, {
+
+	expansion: QuickUI.Element("List_expansion").content(),
+
+	ready: function() {
+		this.expand();
+	},
+	
+	bind: null,
+	
+	content: QuickUI.Property(function() {
+		this.expand();
+	}),
+	
+	data: QuickUI.Property(function() {
+		this.expand();
+	}),
+	
+	expand: function() {
+		var template = this.content();
+		if (template != null)
+		{
+			$(this.List_expansion).empty();
+			var data = this.data();
+			if (data != null)
+			{
+				for (var i = 0; i < data.length; i++)
+				{
+					/*
+					var newElement = this.cloneElementWithControls(template);
+					if (this.bind != null) {
+						this.bind.call(newElement, data[i]);
+					}
+					$(newElement).appendTo(this.List_expansion);
+					*/
+					var $newElement = $(template).clone();
+					$newElement.appendTo(this.List_expansion);
+				}
+			}
+		}
+	},
+	
+	cloneElementWithControls: function(element) {
+		
+	},
+	
+	cloneElementWithControl: function(element) {
+		var $newElement = $(element).clone();
+		var control = $(element).control();
+		if (control !== undefined)
+		{
+			var newControl = new control.constructor();
+			$.extend(true, newControl, control);
+		}
+		newControl.element = $newElement;
+		$.data(newControl.element, "control", newControl);
+		return $newElement[0];
+	}
+	
+});
+]]>
+</script>
+
+</Control>

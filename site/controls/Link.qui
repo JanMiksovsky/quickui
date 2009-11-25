@@ -35,6 +35,7 @@ $.extend(Link.prototype, {
 		if (window.location.hostname == "127.0.0.1" &&
 			href.substr(0,7) != "http://")
 		{
+			// href = "/QuickUI/branches/jan/site" + href;
 			href = "/QuickUI/site" + href;
 		}
 		window.location.href = href;

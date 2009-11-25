@@ -1,0 +1,28 @@
+<Control name="Navigator">
+
+<style>
+.Link {
+	display: block;
+	margin: 7px 0;
+}
+</style>
+
+<script>
+<![CDATA[
+$.extend(Navigator.prototype, {
+
+	// Highlight the link for the page we're on.
+	highlightCurrentPage: function() {
+		var pageHref = window.location.href;
+		this.$(".Link").each(function() {
+			var linkHref = $(this).control().href();
+			var pageHrefRight = pageHref.substring(pageHref.length - linkHref.length)
+			$(this).toggleClass("highlight", pageHrefRight == linkHref);
+		});
+	}
+	
+});
+]]>
+</script>
+
+</Control>

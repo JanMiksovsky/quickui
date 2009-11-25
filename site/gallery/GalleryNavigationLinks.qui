@@ -1,0 +1,20 @@
+<Control name="GalleryNavigationLinks">
+
+<prototype>
+	<NavigationLink id="linkIndex" href="/gallery/default.html">Index</NavigationLink>
+	<NavigationLink href="/gallery/default.html?page=IfBrowserAbout">IfBrowser</NavigationLink>
+	<NavigationLink href="/gallery/default.html?page=GalleryPageAbout">GalleryPage</NavigationLink>
+	<NavigationLink href="/gallery/default.html?page=HintTextBoxAbout">HintTextBox</NavigationLink>
+	<NavigationLink href="/gallery/default.html?page=SampleSpriteButtonAbout">SampleSpriteButton</NavigationLink>
+	<NavigationLink href="/gallery/default.html?page=SpriteAbout">Sprite</NavigationLink>
+	<NavigationLink href="/gallery/default.html?page=SpriteButtonAbout">SpriteButton</NavigationLink>
+	<NavigationLink href="/gallery/default.html?page=TagAbout">Tag</NavigationLink>
+</prototype>
+
+<style>
+#linkIndex {
+	margin-bottom: 15px;
+}	
+</style>
+
+</Control>

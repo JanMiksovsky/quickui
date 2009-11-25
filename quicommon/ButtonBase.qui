@@ -7,40 +7,143 @@
 	cursor: pointer;
 	display: inline-block;
 }
+
+ButtonBaseNew.disabled {
+	cursor: default;
+}
 </style>
 
 <script>
+<![CDATA[
 $.extend(ButtonBase.prototype, {
 	
-	ready: function()
-	{
+	isFocused: QuickUI.Property.bool(null, false),
+	isKeyPressed: QuickUI.Property.bool(null, false),
+	isMouseButtonDown: QuickUI.Property.bool(null, false),
+	isMouseOverControl: QuickUI.Property.bool(null, false),
+	
+	ready: function() {
 		var self = this;
-		$(this.element).blur(function() {
-				$(self.element).removeClass("focused");
+		$(this.element)
+			.blur(function(event) { self.blur(event); })
+			.click(function(event) {
+				if (self.disabled())
+				{
+					event.stopImmediatePropagation();
+				}
 			})
-			.focus(function() { $(self.element).addClass("focused"); })
+			.focus(function(event) { self.focus(event); })
 			.hover(
-				function() {
-					$(self.element).addClass("hovered");
-				},
-				function() {
-					$(self.element).removeClass("focused")
-						.removeClass("hovered")
-						.removeClass("pressed");
-			})
-			.mousedown(function() {
-				$(self.element).addClass("pressed");
-			})
-			.mouseup(function() {
-				$(self.element).removeClass("pressed");
-			});
+				function(event) { self.mousein(event); },
+				function(event) { self.mouseout(event); }
+			)
+			.keydown (function(event) { self.keydown(event); })
+			.keyup (function(event) { self.keyup(event); })
+			.mousedown(function(event) { self.mousedown(event); })
+			.mouseup(function(event) { self.mouseup(event); });
+		this.renderButton();
+	},
+	
+	blur: function(event) {
+		
+		$(self.element).removeClass("focused");
+
+		// Losing focus causes the button to override any key that had been pressed.
+		this.isKeyPressed(false);
+
+		this.isFocused(false);
+		this.renderButton();
+	},
+	
+	// The current state of the button.
+	buttonState: function() {
+		if (this.disabled())
+		{
+			return ButtonBase.state.disabled;
+		}
+		else if ((this.isMouseButtonDown() && this.isMouseOverControl())
+			|| this.isKeyPressed())
+		{
+			return ButtonBase.state.pressed;
+		}
+		else if (this.isFocused())
+		{
+			return ButtonBase.state.focused;
+		}
+		else if (this.isMouseOverControl() /* || this.isMouseButtonDown() */)
+		{
+			return ButtonBase.state.hovered;
+		}
+
+		return ButtonBase.state.normal;
 	},
 
 	disabled: QuickUI.Property.bool(function(value) {
 		$(this.element).toggleClass("disabled", value);
-	})
-
+		this.renderButton();
+	}, false),
+	
+	focus: function(event) {
+		$(self.element).addClass("focused");
+		this.isFocused(true);
+		this.renderButton();
+	},
+	
+	keydown: function(event) {
+		if (event.keyCode == 32 /* space */ || event.keyCode == 13 /* return */)
+		{
+			this.isKeyPressed(true);		
+			this.renderButton();
+		}
+	},
+	
+	keyup: function(event) {
+		this.isKeyPressed(false);
+		this.renderButton();
+	},
+	
+	mousedown: function(event) {
+		$(self.element).addClass("pressed");
+		this.isMouseButtonDown(true);
+		this.renderButton();
+	},
+	
+	mousein: function(event) {
+		$(self.element).addClass("hovered");
+		this.isMouseOverControl(true);
+		this.renderButton();
+	},
+	
+	mouseout: function(event) {
+		$(self.element).removeClass("focused")
+			.removeClass("hovered")
+			.removeClass("pressed");
+		this.isMouseOverControl(false);
+		this.renderButton();
+	},
+	
+	mouseup: function(event) {
+		$(self.element).removeClass("pressed");
+		this.isMouseButtonDown(false);
+		this.renderButton();
+	},
+	
+	renderButtonState: function(buttonState) {},
+	
+	renderButton: function() {
+		this.renderButtonState(this.buttonState());
+	}
 });
+$.extend(ButtonBase, {
+	state: {
+		normal: 0,
+		hovered: 1,
+		focused: 2,
+		pressed: 3,
+		disabled: 4
+	}
+});
+]]>
 </script>
 
 </Control>

@@ -1,0 +1,66 @@
+<Control name="HintTextBox">
+
+<prototype>
+	<input id="HintTextBox_textBox" type="text"/>
+	<div id="HintTextBox_hint"/>
+</prototype>
+
+<style>
+
+{
+	position: relative;
+}
+
+#HintTextBox_textBox {
+	width: 100%;
+}
+
+#HintTextBox_hint
+{
+	bottom: 0;
+    color: gray;
+    position: absolute;
+    padding: 2px 6px;
+    overflow: hidden;
+	top: 0;
+	width: 100%;
+}
+
+</style>
+
+<script>
+$.extend(HintTextBox.prototype, {
+	
+	hint: QuickUI.Element("HintTextBox_hint").content(),
+	text: QuickUI.Element("HintTextBox_textBox").content(),
+	
+	ready: function() {
+		var self = this;
+		$(this.HintTextBox_textBox)
+			.blur(function() {
+				self.showHintIfEmpty();
+			})
+			.keydown(function(event) {
+				self.showHintIfEmpty();
+			})
+			.keyup(function(event) {
+				self.showHintIfEmpty();
+			});
+		$(this.element).click(function() {
+			self.hideHint(); 
+			$(self.HintTextBox_textBox).focus();
+		})
+	},
+	
+	showHintIfEmpty: function() {
+		$(this.HintTextBox_hint).toggle(this.text().length == 0);
+	},
+	
+	hideHint: function() {
+		$(this.HintTextBox_hint).toggle(false);
+	}
+
+});
+</script>
+
+</Control>

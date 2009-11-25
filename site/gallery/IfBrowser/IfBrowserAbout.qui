@@ -1,0 +1,22 @@
+<Control name="IfBrowserAbout">
+	<GalleryPage title="IfBrowser" sourceFileExample="IfBrowser/IfBrowserDemo.qui" sourceFileControl="../../quicommon/IfBrowser.qui">
+		<summary>
+			Conditionally shows contents if the given browser is in use (defined by 
+			<Link href="http://docs.jquery.com/Utilities/jQuery.browser">jQuery.browser</Link>),
+			and/or if the browser in use supports a given compatibility property (defined by
+			<Link href="http://docs.jquery.com/Utilities/jQuery.support">jQuery.support</Link>).
+		</summary>
+		<demo>
+			<IfBrowserDemo/>
+		</demo>
+		<notes>
+			The contents of the control’s <Tag>script</Tag> are surrounded by a CDATA
+			block because the code contains ampersands. A known issue in the qc compiler
+			causes it to treat ampersands as indicating XML entities, even when
+			ampersands appear in code. The current workaround is to use a CDATA block
+			within any top level <Tag>Control</Tag> element (<Tag>prototype</Tag>, 
+			<Tag>style</Tag>, or <Tag>script</Tag>) that contains ampersands or left
+			brackets.
+		</notes>
+	</GalleryPage>
+</Control>

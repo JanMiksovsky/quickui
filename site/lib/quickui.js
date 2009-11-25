@@ -452,7 +452,8 @@ jQuery.extend(QuickUI.ElementPropertyFactory.prototype, {
 					? $element.val(value)
 					: $element.items(value);
 			
-			if (value !== undefined && setterFunction != null) {
+			if (value !== undefined && setterFunction != null)
+			{
 				setterFunction.call(this, value);
 			}
 			
@@ -464,23 +465,33 @@ jQuery.extend(QuickUI.ElementPropertyFactory.prototype, {
 	 * A property of the control represented by the element.
 	 * The property needs to be defined as a getter/setter.
 	 */
-	controlProperty: function(propertyName) {
+	controlProperty: function(propertyName, setterFunction) {
 		var elementId = this.elementId;
 		return function(value) {
 			var $element = QuickUI.ElementPropertyFactory.$getElement(this, elementId);
 			var control = $element.control();
-			return control[propertyName].call(control, value);
+			var result = control[propertyName].call(control, value);
+			if (value !== undefined && setterFunction != null)
+			{
+				setterFunction.call(this, value);
+			}
+			return result;
 		};
 	},
 	
 	/*
 	 * A specific CSS property of the element. Works like $.css().
 	 */
-	css: function(attributeName) {
+	css: function(attributeName, setterFunction) {
 		var elementId = this.elementId;
 		return function(value) {
 			var $element = QuickUI.ElementPropertyFactory.$getElement(this, elementId);
-			return $element.css(attributeName, value);
+			var result = $element.css(attributeName, value);
+			if (value !== undefined && setterFunction != null)
+			{
+				setterFunction.call(this, value);
+			}
+			return result;
 		}
 	},
 	

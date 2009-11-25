@@ -30,7 +30,7 @@ DownloadPage = SitePage.extend({
 					"."
 				)[0],
 				"<h1>Integrate QuickUI into a development environment</h1>",
-				"<p>\r\nQuick markup files use the .qui extension. You can associate this extension with your\r\nprefered XML or HTML editor. (An HTML editor will likely complain about some unknown elements,\r\nbut you’ll pick up syntax highlighting, auto-completion, etc., for CSS rules and JavaScript\r\nembedded in the Quick markup.)\r\n</p>",
+				"<p>\r\nQuick markup files use the .qui extension. You can associate this extension with your\nprefered XML or HTML editor. (An HTML editor will likely complain about some unknown elements,\nbut you’ll pick up syntax highlighting, auto-completion, etc., for CSS rules and JavaScript\nembedded in the Quick markup.)\n</p>",
 				"<h2>Aptana Studio</h2>",
 				" You can configure ",
 				QuickUI.Control.create(Link, {

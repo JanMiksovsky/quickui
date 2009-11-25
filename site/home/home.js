@@ -89,7 +89,12 @@ HomePage = SitePage.extend({
 						content: "tutorial",
 						href: "/tutorial/section01/default.html",
 					}),
-					" examines controls with complex contents, control styling, and interactive behavior. When combined with the ability to compose and subclass controls, things can quickly become very interesting. "
+					" examines controls with complex contents, control styling, and interactive behavior. When combined with the ability to compose and subclass controls, things can quickly become very interesting. You can see some sample QuickUI controls in the ",
+					QuickUI.Control.create(Link, {
+						content: "Gallery",
+						href: "/gallery/default.html",
+					}),
+					". "
 				)[0],
 				"<h2>Why use QuickUI?</h2>",
 				"<p>\r\nConsider using QuickUI because it:\r\n</p>",

@@ -1,0 +1,37 @@
+<Control name="SpriteDemo">
+
+<prototype>
+	<Sprite id="sprite"
+		image="url(SampleSpriteButton/buttonStates.png)"
+		currentCell="4"
+		cellHeight="32" />
+	<p>
+		Select a frame from the sprite image:
+	</p>
+	<img id="image" src="SampleSpriteButton/buttonStates.png"/>
+</prototype>
+
+<style>
+{
+	width: 290px;
+}
+
+#image {
+	cursor: pointer;
+}
+</style>
+
+<script>
+$.extend(SpriteDemo.prototype, {
+	ready: function() {
+		var self = this;
+		$(this.image).click(function(event) {
+			var mouseY = event.pageY - $(this).offset().top;
+			var cellIndex = Math.floor(mouseY / $(self.sprite).control().cellHeight());
+			$(self.sprite).control().currentCell(cellIndex);
+		});
+	}
+});
+</script>
+
+</Control>

@@ -1,15 +1,11 @@
 <Control name="Tag">
 
-<prototype>&lt;<div id="Tag_content" />&gt;</prototype>
+<prototype>&lt;<span id="Tag_content" />&gt;</prototype>
 
 <style>
 {
 	display: inline;
 	font-family: Consolas, Lucida Console, Courier, Courier New, monospace;
-}
-
-#Tag_content {
-	display: inline;
 }
 </style>
 

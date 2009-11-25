@@ -1,16 +1,29 @@
+<!-- A page in the QuickUI gallery. -->
+
 <Control name="GalleryPage">
 
 <prototype>
-	<SitePage>
-		<div id="GalleryPage_summary" />
-		<h2>Example code</h2>
-		<SourceCode id="sourceCodeExample" />
-		<h2>Live demo</h2>
-		<div id="GalleryPage_demo" />
-		<h2>Full control source code</h2>
-		<SourceCode id="sourceCodeControl" />
-		<h2>Notes</h2>
-		<div id="GalleryPage_notes" />
+	<SitePage area="Gallery">
+		<navigationLinks>
+			<GalleryNavigationLinks/>
+		</navigationLinks>
+		<content>
+			<div id="GalleryPage_summary" />
+
+			<h2>Live demo</h2>
+			<CodeOutput>
+				<div id="GalleryPage_demo" />
+			</CodeOutput>
+
+			<h2>Demo source code</h2>
+			<SourceCode id="sourceCodeExample" />
+
+			<h2>Full control source code</h2>
+			<SourceCode id="sourceCodeControl" />
+
+			<h2>Notes</h2>
+			<div id="GalleryPage_notes" />
+		</content>
 	</SitePage>
 </prototype>
 

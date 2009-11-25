@@ -1,0 +1,29 @@
+<Control name="GalleryMainPage">
+
+<prototype>
+	<SitePage title="Gallery" area="Gallery">
+		<navigationLinks>
+			<GalleryNavigationLinks/>
+		</navigationLinks>
+		<p>
+		This gallery shows live examples and the full source for a handful of
+		simple QuickUI controls, representing a small range of what’s possible
+		in QuickUI. Since a key goal of QuickUI is to produce easily readable
+		code, as you look at each control, ask yourself: Is it easy to
+		understand the usage of the control by looking at the source code
+		for the control’s demo?
+		</p>
+		<p>
+		Select a control from the pane on the left.
+		</p>
+		<!--
+		<p>
+		Because a QuickUI control is completely self-contained in a single .qui file,
+		controls like these can be quickly added to a QuickUI control by just
+		saving the .qui source file for the control into your project.
+		</p>
+		-->
+	</SitePage>
+</prototype>
+
+</Control>

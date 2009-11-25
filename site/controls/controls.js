@@ -70,10 +70,112 @@ $.extend(Link.prototype, {
 		if (window.location.hostname == "127.0.0.1" &&
 			href.substr(0,7) != "http://")
 		{
+			// href = "/QuickUI/branches/jan/site" + href;
 			href = "/QuickUI/site" + href;
 		}
 		window.location.href = href;
 	},
+});
+
+//
+// LinkList
+//
+LinkList = QuickControl.extend({
+	className: "LinkList",
+	render: function() {
+		QuickControl.prototype.render.call(this);
+		this.setClassProperties(QuickControl, {
+			content: this.list = QuickUI.Control.create(List, {
+				content: $("<p />").items(
+					this.link = QuickUI.Control.create(Link, {
+						id: "link",
+					})
+				)[0],
+				id: "list",
+			}),
+		});
+	}
+});
+$.extend(LinkList.prototype, {
+	data: QuickUI.Element("list").controlProperty("data"),
+	ready: function() {
+		$(this.list).control().bind = function(value) {
+			$(this).find("#link").control().content(value);
+		};
+	}
+});
+
+//
+// List
+//
+List = QuickUI.Control.extend({
+	className: "List",
+	render: function() {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
+			content: this.List_expansion = $("<div id=\"List_expansion\" />")[0],
+		});
+	}
+});
+$.extend(List.prototype, {
+
+	expansion: QuickUI.Element("List_expansion").content(),
+
+	ready: function() {
+		this.expand();
+	},
+	
+	bind: null,
+	
+	content: QuickUI.Property(function() {
+		this.expand();
+	}),
+	
+	data: QuickUI.Property(function() {
+		this.expand();
+	}),
+	
+	expand: function() {
+		var template = this.content();
+		if (template != null)
+		{
+			$(this.List_expansion).empty();
+			var data = this.data();
+			if (data != null)
+			{
+				for (var i = 0; i < data.length; i++)
+				{
+					/*
+					var newElement = this.cloneElementWithControls(template);
+					if (this.bind != null) {
+						this.bind.call(newElement, data[i]);
+					}
+					$(newElement).appendTo(this.List_expansion);
+					*/
+					var $newElement = $(template).clone();
+					$newElement.appendTo(this.List_expansion);
+				}
+			}
+		}
+	},
+	
+	cloneElementWithControls: function(element) {
+		
+	},
+	
+	cloneElementWithControl: function(element) {
+		var $newElement = $(element).clone();
+		var control = $(element).control();
+		if (control !== undefined)
+		{
+			var newControl = new control.constructor();
+			$.extend(true, newControl, control);
+		}
+		newControl.element = $newElement;
+		$.data(newControl.element, "control", newControl);
+		return $newElement[0];
+	}
+	
 });
 
 //
@@ -96,6 +198,10 @@ NavigationBar = QuickUI.Control.extend({
 				QuickUI.Control.create(NavigationLink, {
 					content: "Tutorial",
 					href: "/tutorial/section01/default.html",
+				}),
+				QuickUI.Control.create(NavigationLink, {
+					content: "Gallery",
+					href: "/gallery/default.html",
 				}),
 				QuickUI.Control.create(NavigationLink, {
 					content: "Discuss",
@@ -132,6 +238,26 @@ NavigationLink = Link.extend({
 });
 
 //
+// Navigator
+//
+Navigator = QuickUI.Control.extend({
+	className: "Navigator",
+});
+$.extend(Navigator.prototype, {
+
+	// Highlight the link for the page we're on.
+	highlightCurrentPage: function() {
+		var pageHref = window.location.href;
+		this.$(".Link").each(function() {
+			var linkHref = $(this).control().href();
+			var pageHrefRight = pageHref.substring(pageHref.length - linkHref.length)
+			$(this).toggleClass("highlight", pageHrefRight == linkHref);
+		});
+	}
+	
+});
+
+//
 // SitePage
 //
 SitePage = Page.extend({
@@ -159,6 +285,9 @@ SitePage = Page.extend({
 				$("<tr />").items(
 					this.leftNavigation = $("<td id=\"leftNavigation\" />").items(
 						"<h1> </h1>",
+						this.SitePage_navigationLinks = QuickUI.Control.create(Navigator, {
+							id: "SitePage_navigationLinks",
+						}),
 						this.SitePage_sidebar = $("<div id=\"SitePage_sidebar\" />")[0]
 					)[0],
 					this.pageCanvas = $("<td id=\"pageCanvas\" />").items(
@@ -174,10 +303,12 @@ $.extend(SitePage.prototype, {
 	
 	area: QuickUI.Property(),
 	content: QuickUI.Element("SitePage_content").content(),
+	navigationLinks: QuickUI.Element("SitePage_navigationLinks").content(),
 	sidebar: QuickUI.Element("SitePage_sidebar").content(),
 	
 	ready: function() {
 		$(this.navigationBar).control().highlightCurrentArea();
+		$(this.SitePage_navigationLinks).control().highlightCurrentPage();
 	},
 	
 	title: function(value) {
@@ -252,7 +383,7 @@ Tag = QuickUI.Control.extend({
 		this.setClassProperties(QuickUI.Control, {
 			content: [
 				"&lt;",
-				this.Tag_content = $("<div id=\"Tag_content\" />")[0],
+				this.Tag_content = $("<span id=\"Tag_content\" />")[0],
 				">"
 			],
 		});
@@ -263,14 +394,15 @@ $.extend(Tag.prototype, {
 });
 
 //
-// TutorialNavigator
+// TutorialPage
 //
-TutorialNavigator = QuickUI.Control.extend({
-	className: "TutorialNavigator",
+TutorialPage = SitePage.extend({
+	className: "TutorialPage",
 	render: function() {
-		QuickUI.Control.prototype.render.call(this);
-		this.setClassProperties(QuickUI.Control, {
-			content: [
+		SitePage.prototype.render.call(this);
+		this.setClassProperties(SitePage, {
+			area: "Tutorial",
+			navigationLinks: [
 				QuickUI.Control.create(NavigationLink, {
 					content: "Hello, world",
 					href: "/tutorial/section01/default.html",
@@ -329,41 +461,6 @@ TutorialNavigator = QuickUI.Control.extend({
 				})
 			],
 		});
-	}
-});
-$.extend(TutorialNavigator.prototype, {
-
-	highlightCurrentPage: function() {
-		// Highlight the link for the page we're on.
-		var pageHref = window.location.href;
-		this.$(".Link").each(function() {
-			var linkHref = $(this).control().href();
-			var pageHrefRight = pageHref.substring(pageHref.length - linkHref.length)
-			$(this).toggleClass("highlight", pageHrefRight == linkHref);
-		});
-	}
-	
-});
-
-//
-// TutorialPage
-//
-TutorialPage = SitePage.extend({
-	className: "TutorialPage",
-	render: function() {
-		SitePage.prototype.render.call(this);
-		this.setClassProperties(SitePage, {
-			area: "Tutorial",
-			sidebar: this.tutorialNavigator = QuickUI.Control.create(TutorialNavigator, {
-				id: "tutorialNavigator",
-			}),
-		});
-	}
-});
-$.extend(TutorialPage.prototype, {
-	ready: function() {
-		TutorialPage.superProto.ready.call(this);
-		$(this.tutorialNavigator).control().highlightCurrentPage();
 	}
 });
 

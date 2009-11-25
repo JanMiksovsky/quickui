@@ -1,0 +1,12 @@
+<Control name="SpriteButtonAbout">
+	<GalleryPage title="SpriteButton" sourceFileExample="SampleSpriteButton/SampleSpriteButton.qui" sourceFileControl="SpriteButton/0SpriteButton.qui">
+		<summary>
+			A button that uses a
+			<Link href="/gallery/default.html?page=SpriteAbout">Sprite</Link>
+			for its background.
+		</summary>
+		<demo>
+			See <Link href="/gallery/default.html?page=SampleSpriteButtonAbout">SampleSpriteButton</Link> for a demo.
+		</demo>
+	</GalleryPage>
+</Control>

@@ -9,11 +9,18 @@
 			<TagDemo/>
 		</demo>
 		<notes>
+			<p>
+			The <Tag>script</Tag> defines the Tag control’s own contents to be
+			as the contents of the <Tag>span</Tag>
+			tag.
+			</p>
+			<p>
 			The behavior of the Tag control is simple enough that it could be replicated purely
 			in CSS 3 by making use of the “content” attribute. The content attribute allows one
 			to specify text that should appear before and after a matching HTML element.
 			The QuickUI approach is more flexible in that it allows arbitrary elements to be
 			placed before and after the control’s content.
+			</p>
 		</notes>
 	</GalleryPage>
 </Control>

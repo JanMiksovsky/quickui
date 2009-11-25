@@ -1,0 +1,32 @@
+<!--
+Conditionally shows contents if the given browser is in use and/or if the
+browser in use supports a given property defined by $.support.
+-->
+
+<Control name="IfBrowser">
+
+<prototype>
+	<span id="IfBrowser_content"/>
+	<span id="IfBrowser_elseContent"/>
+</prototype>
+
+<script>
+<![CDATA[
+$.extend(IfBrowser.prototype, {
+	browser: QuickUI.Property(),
+	content: QuickUI.Element("IfBrowser_content").content(),
+	elseContent: QuickUI.Element("IfBrowser_elseContent").content(),
+	support: QuickUI.Property(),
+	
+	ready: function() {
+		var usingSpecifiedBrowser = (this.browser() == undefined) || $.browser[this.browser()];
+		var browserSupportsProperty = (this.support() == undefined) || $.support[this.support()];
+		var allConditionsSatisfied = usingSpecifiedBrowser && browserSupportsProperty;
+		$(this.IfBrowser_content).toggle(allConditionsSatisfied);
+		$(this.IfBrowser_elseContent).toggle(!allConditionsSatisfied);
+	}
+});
+]]>
+</script>
+
+</Control>
