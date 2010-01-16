@@ -28,7 +28,7 @@ set a property’s value to arbitrarily complex content.
 <h2>Setting a property through JavaScript</h2>
 
 In addition to setting properties at design time through markup, we can also read
-and manipulate contorl properties at run time through JavaScript. As described
+and manipulate control properties at run time through JavaScript. As described
 earlier, QuickUI control classes are regular prototype-based JavaScript classes,
 and control properties can be read as members of the control class.
 
@@ -59,6 +59,17 @@ property function with no arguments:
 <pre>
 var g = $("body").control();        // Retrieve a reference to the control
 var name = g.content();             // Get the control's current content
+</pre>
+
+<p>
+Getting or setting a control property is such a common operation that a
+shorthand exists for it. The function QuickUI (which happens to be the
+root of the QuickUI namespace) with an element (or element selector)
+returns the control associated with that element:
+</p>
+
+<pre>
+var name = QuickUI("body").content(); // Get the control's current content
 </pre>
 
 <Link href="/tutorial/section07/default.html">Next ></Link>

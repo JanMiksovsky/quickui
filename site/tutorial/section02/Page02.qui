@@ -5,7 +5,7 @@
 <h2>Quick markup</h2>
 
 <p>
-QuickUI controls are deinfed with Quick markup, an XML format with no predefined schema
+QuickUI controls are defined with Quick markup, an XML format with no predefined schema
 (or, rather, a very loose one). This parallels the dynamic nature of JavaScript.
 There are no fixed class definitions in JavaScript, so it would be impossible
 to statically determine at compile time which elements in markup are classes or properties.

@@ -99,7 +99,7 @@ LinkList = QuickControl.extend({
 $.extend(LinkList.prototype, {
 	data: QuickUI.Element("list").controlProperty("data"),
 	ready: function() {
-		$(this.list).control().bind = function(value) {
+		QuickUI(this.list).bind = function(value) {
 			$(this).find("#link").control().content(value);
 		};
 	}
@@ -165,7 +165,7 @@ $.extend(List.prototype, {
 	
 	cloneElementWithControl: function(element) {
 		var $newElement = $(element).clone();
-		var control = $(element).control();
+		var control = QuickUI(element);
 		if (control !== undefined)
 		{
 			var newControl = new control.constructor();
@@ -222,7 +222,7 @@ $.extend(NavigationBar.prototype, {
 		var area = this.page() && this.page().area();
 		if (area != null) {
 			this.$(".Link").each(function() {
-				var control = $(this).control();
+				var control = QuickUI(this);
 				$(this).toggleClass("highlight", control.content() == area);
 			});
 		}
@@ -249,7 +249,7 @@ $.extend(Navigator.prototype, {
 	highlightCurrentPage: function() {
 		var pageHref = window.location.href;
 		this.$(".Link").each(function() {
-			var linkHref = $(this).control().href();
+			var linkHref = QuickUI(this).href();
 			var pageHrefRight = pageHref.substring(pageHref.length - linkHref.length)
 			$(this).toggleClass("highlight", pageHrefRight == linkHref);
 		});
@@ -307,8 +307,8 @@ $.extend(SitePage.prototype, {
 	sidebar: QuickUI.Element("SitePage_sidebar").content(),
 	
 	ready: function() {
-		$(this.navigationBar).control().highlightCurrentArea();
-		$(this.SitePage_navigationLinks).control().highlightCurrentPage();
+		QuickUI(this.navigationBar).highlightCurrentArea();
+		QuickUI(this.SitePage_navigationLinks).highlightCurrentPage();
 	},
 	
 	title: function(value) {

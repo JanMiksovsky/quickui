@@ -35,7 +35,7 @@ $.extend(NavigationBar.prototype, {
 		var area = this.page() && this.page().area();
 		if (area != null) {
 			this.$(".Link").each(function() {
-				var control = $(this).control();
+				var control = QuickUI(this);
 				$(this).toggleClass("highlight", control.content() == area);
 			});
 		}

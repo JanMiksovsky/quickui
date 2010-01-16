@@ -39,14 +39,14 @@ This is one of two approaches to defining control behavior with JavaScript:
 		will end up getting copied into the generated JavaScript file, which will complicate debugging.
 	</li>
 	<li>
-		Put a control's JavaScript in a seperate .js file. This is called the "code behind" approach.
+		Put a control's JavaScript in a separate .js file. This is called the "code behind" approach.
 		The advantage of this approach is that you can debug the JavaScript as you would any other code.
 		The disadvantages are that the control and its associated JavaScript will live in separate files,
 		complicating maintenance; you'll also have more .js dependencies to track and reference in HTML files.
 	</li>
 </ol>
 
-<h2>Control properites as setter/getter functions</h2>
+<h2>Control properties as setter/getter functions</h2>
 <p>
 The code above uses a jQuery-flavored approach to defining control properties, but JavaScript is a dynamic
 language and many alternative routes are possible. Some notes on the particular choices made here:

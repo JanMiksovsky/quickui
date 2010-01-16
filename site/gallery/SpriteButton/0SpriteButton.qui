@@ -71,8 +71,8 @@ $.extend(SpriteButton.prototype, {
 	
 	cellHeight: QuickUI.Element().css("height", function(value) {
 		$(this.SpriteButton_content).height(value + "px");
-		$(this.backgroundLeft).control().cellHeight(value);
-		$(this.backgroundRight).control().cellHeight(value);
+		QuickUI(this.backgroundLeft).cellHeight(value);
+		QuickUI(this.backgroundRight).cellHeight(value);
 	}),
 	
 	disabled: function(value) {
@@ -84,12 +84,12 @@ $.extend(SpriteButton.prototype, {
 	},
 	
 	image: QuickUI.Element("backgroundLeft").controlProperty("image", function(value) {
-		$(this.backgroundRight).control().image(value);
+		QuickUI(this.backgroundRight).image(value);
 	}),
 	
 	renderButtonState: function(buttonState) {
-		$(this.backgroundLeft).control().currentCell(buttonState);
-		$(this.backgroundRight).control().currentCell(buttonState);
+		QuickUI(this.backgroundLeft).currentCell(buttonState);
+		QuickUI(this.backgroundRight).currentCell(buttonState);
 	}
 });
 </script>

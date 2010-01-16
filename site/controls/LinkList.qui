@@ -14,7 +14,7 @@
 $.extend(LinkList.prototype, {
 	data: QuickUI.Element("list").controlProperty("data"),
 	ready: function() {
-		$(this.list).control().bind = function(value) {
+		QuickUI(this.list).bind = function(value) {
 			$(this).find("#link").control().content(value);
 		};
 	}

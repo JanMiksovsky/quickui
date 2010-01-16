@@ -56,7 +56,7 @@ $.extend(List.prototype, {
 	
 	cloneElementWithControl: function(element) {
 		var $newElement = $(element).clone();
-		var control = $(element).control();
+		var control = QuickUI(element);
 		if (control !== undefined)
 		{
 			var newControl = new control.constructor();

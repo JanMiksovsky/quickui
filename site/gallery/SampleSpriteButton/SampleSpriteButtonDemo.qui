@@ -16,7 +16,7 @@
 $.extend(SampleSpriteButtonDemo.prototype, {
 	ready: function() {
 		this.$(".SampleSpriteButton").click(function() {
-			alert("You clicked " + $(this).control().content());
+			alert("You clicked " + QuickUI(this).content());
 		});
 	}
 });

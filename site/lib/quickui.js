@@ -1,18 +1,23 @@
 /*
  * QuickUI
- * Version 0.7.1
+ * Version 0.7.2
  * Modular web control framework
  * http://quickui.org/
  *
- * Copyright (c) 2009 Jan Miksovsky
- * Licened under the MIT license.
+ * Copyright (c) 2009-2010 Jan Miksovsky
+ * Licensed under the MIT license.
  *
  */
 
 /*
  * QuickUI namespace.
+ * 
+ * The QuickUI object itself is a helper function that returns the control associated with a DOM element,
+ * or null if the given element does not represent a control.
  */
-QuickUI = {};
+function QuickUI(element) {
+    return $(element).control();
+}
 
 /*
  * A subclassable class.
@@ -435,6 +440,22 @@ jQuery.extend(QuickUI.ElementPropertyFactory.prototype, {
 				: $element.toggleClass(className, value);
 		}
 	},
+    
+    /*
+     * An attribute of the element. Works like $.attr().
+     */
+    attr: function(attributeName, setterFunction) {
+        var elementId = this.elementId;
+        return function(value) {
+            var $element = QuickUI.ElementPropertyFactory.$getElement(this, elementId);
+            var result = $element.attr(attributeName, value);
+            if (value !== undefined && setterFunction != null)
+            {
+                setterFunction.call(this, value);
+            }
+            return result;
+        }
+    },
 
 	/* 
 	 * The element's "content",
@@ -448,7 +469,7 @@ jQuery.extend(QuickUI.ElementPropertyFactory.prototype, {
 			var $element = QuickUI.ElementPropertyFactory.$getElement(this, elementId);	// "this" = control
 			var result = ($element.control() !== undefined)
 				? $element.control().content(value)
-				: ($element[0] instanceof HTMLInputElement)
+                : ($element[0] instanceof HTMLInputElement || $element[0] instanceof HTMLTextAreaElement)
 					? $element.val(value)
 					: $element.items(value);
 			

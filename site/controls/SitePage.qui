@@ -172,8 +172,8 @@ $.extend(SitePage.prototype, {
 	sidebar: QuickUI.Element("SitePage_sidebar").content(),
 	
 	ready: function() {
-		$(this.navigationBar).control().highlightCurrentArea();
-		$(this.SitePage_navigationLinks).control().highlightCurrentPage();
+		QuickUI(this.navigationBar).highlightCurrentArea();
+		QuickUI(this.SitePage_navigationLinks).highlightCurrentPage();
 	},
 	
 	title: function(value) {
