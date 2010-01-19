@@ -79,7 +79,7 @@ namespace qc
         private string EmitControlProperty(string propertyName, int indentLevel)
         {
             return Template.Format(
-                "{Tabs}{PropertyName}: {PropertyValue},\n",
+                "{Tabs}\"{PropertyName}\": {PropertyValue},\n",
                 new
                 {
                     Tabs = Tabs(indentLevel),
@@ -108,8 +108,8 @@ namespace qc
                 };
                 Assert.AreEqual(
                     "this.foo = QuickUI.Control.create(Simple, {\n" +
-                    "\tcontent: \"Hello\",\n" +
-                    "\tid: \"foo\",\n" +
+                    "\t\"content\": \"Hello\",\n" +
+                    "\t\"id\": \"foo\",\n" +
                     "})",
                     node.EmitJavaScript());
             }

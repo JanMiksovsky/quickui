@@ -112,7 +112,7 @@ Popup = Overlay.extend({
 	render: function() {
 		Overlay.prototype.render.call(this);
 		this.setClassProperties(Overlay, {
-			dismissOnInsideClick: "true",
+			"dismissOnInsideClick": "true",
 		});
 	}
 });
@@ -260,7 +260,7 @@ Dialog = Overlay.extend({
 	render: function() {
 		Overlay.prototype.render.call(this);
 		this.setClassProperties(Overlay, {
-			dismissOnOutsideClick: "false",
+			"dismissOnOutsideClick": "false",
 		});
 	}
 });
@@ -318,7 +318,7 @@ DockPanel = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			content: [
+			"content": [
 				this.DockPanel_top = $("<div id=\"DockPanel_top\" />")[0],
 				this.rowCenter = $("<div id=\"rowCenter\" />").items(
 					this.centerTable = $("<div id=\"centerTable\" />").items(
@@ -383,7 +383,7 @@ IfBrowser = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			content: [
+			"content": [
 				this.IfBrowser_content = $("<span id=\"IfBrowser_content\" />")[0],
 				this.IfBrowser_elseContent = $("<span id=\"IfBrowser_elseContent\" />")[0]
 			],
@@ -474,7 +474,7 @@ Repeater = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			content: this.Repeater_expansion = $("<div id=\"Repeater_expansion\" />")[0],
+			"content": this.Repeater_expansion = $("<div id=\"Repeater_expansion\" />")[0],
 		});
 	}
 });

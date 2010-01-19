@@ -6,10 +6,10 @@ Comprehensive = SampleBaseClass.extend({
 	render: function() {
 		SampleBaseClass.prototype.render.call(this);
 		this.setClassProperties(SampleBaseClass, {
-			content: [
+			"content": [
 				this.message = QuickUI.Control.create(Simple, {
-					content: " Hello, <i>world</i>! ",
-					id: "message",
+					"content": " Hello, <i>world</i>! ",
+					"id": "message",
 				}),
 				$("<div />").items(
 					this.Comprehensive_content = $("<p id=\"Comprehensive_content\" />")[0]

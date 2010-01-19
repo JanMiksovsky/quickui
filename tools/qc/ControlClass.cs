@@ -199,7 +199,7 @@ namespace qc
             // UNDONE: Write out .content() property first?
             return Prototype.Properties.Keys.Concatenate(
                 (propertyName) => Template.Format(
-                    "{Tabs}{PropertyName}: {PropertyValue},\n",
+                    "{Tabs}\"{PropertyName}\": {PropertyValue},\n",
                     new
                     {
                         Tabs = Tabs(indentLevel),

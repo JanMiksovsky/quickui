@@ -1,6 +1,6 @@
 /*
  * QuickUI
- * Version 0.7.2
+ * Version 0.7.3
  * Modular web control framework
  * http://quickui.org/
  *
@@ -57,6 +57,26 @@ QuickUI.Control = QuickUI.Class.extend({
 	{
 		return jQuery(this.element).find(selector);
 	},
+    
+    /*
+     * The set of classes on the control's element.
+     * If no value is supplied, this gets the current list of classes.
+     * If a value is supplied, the specified class name(s) are *added*
+     * to the element. This is useful for allowing a class to be added
+     * at design-time to an instance, e.g., <Foo class="bar"/>. The
+     * resulting element will end up with "bar" as a class, as well as
+     * the control's class hierarchy: <div class="Foo Control bar">.
+     * 
+     * Note that, since "class" is a reserved word in JavaScript, we have
+     * to quote it. 
+     */
+    "class": function(value) {
+        if (value !== undefined)
+        {
+            jQuery(this.element).toggleClass(value, true);
+        }
+        return jQuery(this.element).attr("class");
+    },
 	
 	className: "Control",
 	
@@ -65,7 +85,7 @@ QuickUI.Control = QuickUI.Class.extend({
 	 * If this has of class Foo and superclasses Bar and Control,
 	 * this returns "Foo Bar Control".
 	 */
-	classList: function() {
+	classHierarchy: function() {
 		var classes = QuickUI.Control.classHierarchy(this);
 		var classNames = jQuery.map(classes, function(c) {
 			return c.prototype.className;
@@ -191,7 +211,7 @@ jQuery.extend(QuickUI.Control, {
 
 		// Apply all class names in the class hierarchy as style names.
 		// This lets the element pick up styles defined by those classes.
-		element.addClass(control.classList());
+		element.addClass(control.classHierarchy());
 		
 		// Let the control render itself into its DOM element.
 		control.render();
