@@ -9,9 +9,9 @@ SimpleHost = QuickUI.Control.extend({
 			"content": [
 				" Text ",
 				QuickUI.Control.create(Simple, {
-					"content": "Hello, world!",
+					"content": "Hello, world!"
 				})
-			],
+			]
 		});
 	}
 });

@@ -197,15 +197,28 @@ namespace qc
         private string EmitBaseClassProperties(int indentLevel)
         {
             // UNDONE: Write out .content() property first?
-            return Prototype.Properties.Keys.Concatenate(
-                (propertyName) => Template.Format(
-                    "{Tabs}\"{PropertyName}\": {PropertyValue},\n",
-                    new
-                    {
-                        Tabs = Tabs(indentLevel),
-                        PropertyName = propertyName,
-                        PropertyValue = Prototype.Properties[propertyName].EmitJavaScript(indentLevel)
-                    }));
+            StringBuilder code = new StringBuilder();
+            int propertyCount = Prototype.Properties.Keys.Count;
+            int i = 0;
+            foreach (string propertyName in Prototype.Properties.Keys)
+            {
+                bool isLast = (++i == propertyCount);
+                code.Append(EmitBaseClassProperty(propertyName, isLast, indentLevel));
+            }
+            return code.ToString();
+        }
+
+        private string EmitBaseClassProperty(string propertyName, bool isLast, int indentLevel)
+        {
+             return Template.Format(
+                "{Tabs}\"{PropertyName}\": {PropertyValue}{Comma}\n",
+                new
+                {
+                    Tabs = Tabs(indentLevel),
+                    PropertyName = propertyName,
+                    PropertyValue = Prototype.Properties[propertyName].EmitJavaScript(indentLevel),
+                    Comma = isLast ? String.Empty : ","
+                });
         }
 
         // HACK! Copied from Node. Should share implementation.

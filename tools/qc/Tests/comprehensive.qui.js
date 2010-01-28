@@ -9,12 +9,12 @@ Comprehensive = SampleBaseClass.extend({
 			"content": [
 				this.message = QuickUI.Control.create(Simple, {
 					"content": " Hello, <i>world</i>! ",
-					"id": "message",
+					"id": "message"
 				}),
 				$("<div />").items(
 					this.Comprehensive_content = $("<p id=\"Comprehensive_content\" />")[0]
 				)[0]
-			],
+			]
 		});
 	}
 });

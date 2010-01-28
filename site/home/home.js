@@ -12,17 +12,17 @@ GetStartedModule = QuickUI.Control.extend({
 					$("<li />").items(
 						QuickUI.Control.create(Link, {
 							"content": "Download QuickUI",
-							"href": "/downloads/default.html",
+							"href": "/downloads/default.html"
 						})
 					)[0],
 					$("<li />").items(
 						QuickUI.Control.create(Link, {
 							"content": "Read the Tutorial",
-							"href": "/tutorial/section01/default.html",
+							"href": "/tutorial/section01/default.html"
 						})
 					)[0]
 				)[0]
-			],
+			]
 		});
 	}
 });
@@ -35,7 +35,7 @@ Greet = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			"content": " Hello, world! ",
+			"content": " Hello, world! "
 		});
 	}
 });
@@ -58,41 +58,41 @@ HomePage = SitePage.extend({
 					" QuickUI includes tools that compile your markup into regular JavaScript and CSS files. These tools run on Windows and OS/X (via the Mono project). The generated JavaScript makes use of the ",
 					QuickUI.Control.create(Link, {
 						"content": "jQuery",
-						"href": "http://jquery.com",
+						"href": "http://jquery.com"
 					}),
 					" library to build the web user interface on demand. QuickUI also includes a run-time library. Overall QuickUI is targetted at and tested against the mainstream browsers: Apple Safari 4.x, Google Chrome 3.x, Internet Explorer 8.x, and Mozilla Firefox 3.x. "
 				)[0],
 				"<h2>A quick example</h2>",
 				"<p>\r\n\tThe following Quick markup defines a simple control called “Greet”.\r\n</p>",
 				QuickUI.Control.create(SourceCode, {
-					"sourceFile": "Greet.qui",
+					"sourceFile": "Greet.qui"
 				}),
 				$("<p />").items(
 					" This control definition gives you a new tag ",
 					QuickUI.Control.create(Tag, {
-						"content": "Greet",
+						"content": "Greet"
 					}),
 					" that can be used in other Quick markup like this: "
 				)[0],
 				QuickUI.Control.create(SourceCode, {
-					"sourceFile": "Sample.qui",
+					"sourceFile": "Sample.qui"
 				}),
 				"<p>\r\nKicking everything off is accomplished in JavaScript via a jQuery extension:\r\n</p>",
 				"<pre>\r\n$(\"div\").control(Sample);\r\n</pre>",
 				"<p>\r\nThe div below shows the actual sample control above instantiated here on this page:\r\n</p>",
 				QuickUI.Control.create(CodeOutput, {
-					"content": QuickUI.Control.create(Sample),
+					"content": QuickUI.Control.create(Sample)
 				}),
 				$("<p />").items(
 					" This is a trivial example. The ",
 					QuickUI.Control.create(Link, {
 						"content": "tutorial",
-						"href": "/tutorial/section01/default.html",
+						"href": "/tutorial/section01/default.html"
 					}),
 					" examines controls with complex contents, control styling, and interactive behavior. When combined with the ability to compose and subclass controls, things can quickly become very interesting. You can see some sample QuickUI controls in the ",
 					QuickUI.Control.create(Link, {
 						"content": "Gallery",
-						"href": "/gallery/default.html",
+						"href": "/gallery/default.html"
 					}),
 					". "
 				)[0],
@@ -102,23 +102,23 @@ HomePage = SitePage.extend({
 				" QuickUI is completely free, and the ",
 				QuickUI.Control.create(Link, {
 					"content": "source code",
-					"href": "http://code.google.com/p/quickui/",
+					"href": "http://code.google.com/p/quickui/"
 				}),
 				" is open under the ",
 				QuickUI.Control.create(Link, {
 					"content": "MIT License",
-					"href": "http://www.opensource.org/licenses/mit-license.php",
+					"href": "http://www.opensource.org/licenses/mit-license.php"
 				}),
 				". ",
 				$("<p />").items(
 					QuickUI.Control.create(Link, {
 						"content": "Download QuickUI",
-						"href": "/downloads/default.html",
+						"href": "/downloads/default.html"
 					})
 				)[0],
 				"<br />",
 				QuickUI.Control.create(AddThis)
-			],
+			]
 		});
 	}
 });
@@ -134,7 +134,7 @@ Sample = QuickUI.Control.extend({
 			"content": [
 				"<h1>QuickUI sample</h1>",
 				QuickUI.Control.create(Greet)
-			],
+			]
 		});
 	}
 });
