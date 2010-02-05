@@ -108,8 +108,8 @@ namespace qc
                         if (c < ' ')
                         {
                             // Use hex representation.
-                            string hex = "000" + int.Parse(c.ToString(), System.Globalization.NumberStyles.HexNumber);
-                            stringBuilder.Append("\\u" + hex.Substring(hex.Length - 4));
+                            string hex = String.Format("{0:x4}", Convert.ToInt32(c));
+                            stringBuilder.Append("\\u" + hex);
                         }
                         else
                         {
@@ -124,5 +124,19 @@ namespace qc
 
             return stringBuilder.ToString();
         }
+
+#if DEBUG
+        [TestFixture]
+        public class Tests
+        {
+            [Test]
+            public void EscapeString()
+            {
+                string s = "\tHi\a;\n";
+                string escaped = EscapeJavaScript(s);
+                Assert.AreEqual("\"\\tHi\\u0007;\\n\"", escaped);
+            }
+        }
+#endif
     }
 }
