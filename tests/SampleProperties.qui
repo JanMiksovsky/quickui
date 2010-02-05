@@ -1,0 +1,13 @@
+<Control name="SampleProperties">
+
+<prototype>
+    <div id="SampleProperties_content"/>
+</prototype>
+
+<script>
+$.extend(SampleProperties.prototype, {
+    content: QuickUI.Element("SampleProperties_content").content()
+});
+</script>
+
+</Control>

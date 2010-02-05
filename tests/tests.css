@@ -1,0 +1,30 @@
+/*** Test ***/
+
+.Test #header {
+    font-weight: bold;
+}
+    
+.Test #Test_result {
+    color: darkgreen;
+}
+
+.Test.fail #Test_result {
+    color: red;
+}
+
+.Test #details {
+    display: none;
+    padding-left: 50px;
+}
+
+.Test.fail #details {
+    display: block;
+}
+
+/*** TestSuite ***/
+
+.TestSuite {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 20px;
+}
+

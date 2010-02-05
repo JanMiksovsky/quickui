@@ -15,8 +15,7 @@
 	width: 100%;
 }
 
-#HintTextBox_hint
-{
+#HintTextBox_hint {
 	bottom: 0;
     color: gray;
     position: absolute;
@@ -36,30 +35,15 @@ $.extend(HintTextBox.prototype, {
 	
 	ready: function() {
 		var self = this;
-		$(this.HintTextBox_textBox)
-			.blur(function() {
-				self.showHintIfEmpty();
-			})
-			.keydown(function(event) {
-				self.showHintIfEmpty();
-			})
-			.keyup(function(event) {
-				self.showHintIfEmpty();
-			});
+		$(this.HintTextBox_textBox).bind("blur keydown keyup", function() {
+            // Show hint if empty.            
+            $(self.HintTextBox_hint).toggle(self.text().length == 0);
+		});
 		$(this.element).click(function() {
-			self.hideHint(); 
+			$(this.HintTextBox_hint).hide(); 
 			$(self.HintTextBox_textBox).focus();
 		})
-	},
-	
-	showHintIfEmpty: function() {
-		$(this.HintTextBox_hint).toggle(this.text().length == 0);
-	},
-	
-	hideHint: function() {
-		$(this.HintTextBox_hint).toggle(false);
 	}
-
 });
 </script>
 

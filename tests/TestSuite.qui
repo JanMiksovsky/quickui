@@ -1,0 +1,38 @@
+<Control name="TestSuite">
+
+<h1>QuickUI Test Suite</h1>
+
+<Test name="Plain text macro">
+    <test><Simple/></test>
+    <expect><div class="Simple Control"> Hello, world! </div></expect>
+</Test>
+
+<Test name="Content property as attribute">
+    <test><Simple content="Hi"/></test>
+    <expect><div class="Simple Control">Hi</div></expect>
+</Test>
+
+<Test name="Compound property">
+    <test><Simple><content>Hi</content></Simple></test>
+    <expect><div class="Simple Control">Hi</div></expect>
+</Test>
+
+<Test name="Content property override">
+    <test>
+        <SampleProperties>  Foo </SampleProperties>
+    </test>
+    <expect>
+        <div class="SampleProperties Control">
+            <div id="SampleProperties_content"> Foo </div>
+        </div>
+    </expect>
+</Test>
+
+<style>
+{
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 20px;
+}
+</style>
+
+</Control>

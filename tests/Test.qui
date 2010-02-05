@@ -1,0 +1,62 @@
+<Control name="Test">
+
+<prototype>
+    <div id="header">
+        <span id="Test_name"/>: <span id="Test_result"/>
+    </div>
+    <div id="details">
+        Actual: <span id="htmlActual"/>
+        <div id="Test_test"/>
+        Expected: <span id="htmlExpected"/>
+        <div id="Test_expect"/>
+    </div>
+</prototype>
+
+<style>
+
+#header {
+    font-weight: bold;
+}
+    
+#Test_result {
+    color: darkgreen;
+}
+
+.Test.fail #Test_result {
+    color: red;
+}
+
+#details {
+    display: none;
+    padding-left: 50px;
+}
+
+.Test.fail #details {
+    display: block;
+} 
+
+</style>
+
+<script>
+$.extend(Test.prototype, {
+    
+    expect: QuickUI.Element("Test_expect").content(),
+    name: QuickUI.Element("Test_name").content(),
+    result: QuickUI.Element("Test_result").content(),
+    test: QuickUI.Element("Test_test").content(),
+    
+    ready: function() {
+        
+        var htmlActual = $(this.Test_test).html();
+        var htmlExpected = $(this.Test_expect).html();
+        $(this.htmlActual).text(htmlActual);
+        $(this.htmlExpected).text(htmlExpected);
+        
+        var equal = (htmlActual === htmlExpected);
+        this.result(equal ? "Pass" : "Fail");
+        $(this.element).toggleClass("fail", !equal);
+    }
+});
+</script>
+
+</Control>
