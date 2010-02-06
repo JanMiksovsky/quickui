@@ -199,10 +199,10 @@ jQuery.extend(QuickUI.Control, {
 		var control = new controlClass();
 		
 		// Create a target if none was supplied.
-		var element = jQuery(target || "<div/>");
+		var $element = jQuery(target || "<div/>");
 		
 		// Bind the control to the element.
-		control.element = element[0];
+		control.element = $element[0];
 
 		// Bind the element to the control.
 		// Don't set a property on the element directly to avoid creating a circular
@@ -211,7 +211,7 @@ jQuery.extend(QuickUI.Control, {
 
 		// Apply all class names in the class hierarchy as style names.
 		// This lets the element pick up styles defined by those classes.
-		element.addClass(control.classHierarchy());
+		$element.addClass(control.classHierarchy());
 		
 		// Let the control render itself into its DOM element.
 		control.render();
@@ -226,10 +226,26 @@ jQuery.extend(QuickUI.Control, {
 		}
 		
 		// Tell the control it's ready.
-		control.ready();
+        QuickUI.Control._readyQueue.push(control);
+        if ($element.parent().length > 0)
+        {
+            // Control is part of the document's DOM.
+            // Invoke the ready() handler of all queued controls.
+            // This will also pick up any children of this element that were
+            // added before this element was added to the document.
+            var c = QuickUI.Control._readyQueue.shift();
+            while (c)
+            {
+                c.ready();
+                c = QuickUI.Control._readyQueue.shift();
+            }
+        }
 
 		return control.element;
-	}
+	},
+    
+    // Queue of controls waiting for their ready() handler to be called.
+    _readyQueue: []
 	
 });
 
@@ -276,11 +292,14 @@ jQuery.fn.control = function(arg1, arg2) {
 	}
 	else
 	{
-		// Set properties on the control.
-		var properties = arg1;
-		jQuery.data(this[0], "control").setProperties(properties);
-		return this;
-	}
+        // Set properties on the control(s).
+        var properties = arg1;
+        this.each(function() {
+            var control = jQuery.data(this, "control");
+            control.setProperties(properties);
+        });
+        return this;
+    }
 }
 
 /*
@@ -295,45 +314,45 @@ jQuery.fn.control = function(arg1, arg2) {
  * a text node, it is returned as a string.
  */
 jQuery.fn.items = function(value) {
-	if (value === undefined)
-	{
-		// Getting contents.
-		var contents = jQuery(this).contents(value);
-		var result = jQuery.map(contents, function(item) {
-			return (item.nodeType == 3)
-				? item.nodeValue	// Return text node as simple string
-				: item;
-		});
-		return (result != null && result.length == 1)
-			? result[0]				// Return the single content element.
-			: result;
-	}
-	else
-	{
-		// Setting contents.
-		this.empty();
-		if (arguments.length == 1 && !jQuery.isArray(value))
-		{
-			// Single element.
-			this.append(value);
-		}
-		else
-		{
-			// Array or parameter list.
-			var array = (arguments.length > 1) ? arguments : value;
-			
-			// Add elements one at a time to avoid a limitation in $.append().
-			// As of jQuery 1.3.2, jQuery.append() can drop the text nodes when given
-			// an array containing a mixture of text and jQuery nodes.
-			// See filed bug http://dev.jquery.com/ticket/5404. If/when that gets
-			// fixed, this extension can get simplified.
-			var element = this;
-			jQuery.each(array, function(i, item) {
-				element.append(item);
-			});
-		}
-		return this;
-	}
+    if (value === undefined)
+    {
+        // Getting contents.
+        var contents = jQuery(this).contents(value);
+        var result = jQuery.map(contents, function(item) {
+            return (item.nodeType == 3)
+                ? item.nodeValue    // Return text node as simple string
+                : item;
+        });
+        return (result != null && result.length == 1)
+            ? result[0]                // Return the single content element.
+            : result;
+    }
+    else
+    {
+        // Setting contents.
+        this.empty();
+        if (arguments.length == 1 && !jQuery.isArray(value))
+        {
+            // Single element.
+            this.append(value);
+        }
+        else
+        {
+            // Array or parameter list.
+            var array = (arguments.length > 1) ? arguments : value;
+            
+            // Add elements one at a time to avoid a limitation in $.append().
+            // As of jQuery 1.3.2, jQuery.append() can drop the text nodes when given
+            // an array containing a mixture of text and jQuery nodes.
+            // See filed bug http://dev.jquery.com/ticket/5404. If/when that gets
+            // fixed, this extension can get simplified.
+            var element = this;
+            jQuery.each(array, function(i, item) {
+                element.append(item);
+            });
+        }
+        return this;
+    }
 }
 
 /*
@@ -345,65 +364,65 @@ jQuery.fn.items = function(value) {
  * Factory for generic property getter/setter.
  */
 QuickUI.Property = function(setterFunction, defaultValue, converterFunction) {
-	var backingPropertyName = "_property" + QuickUI.Property.symbolCounter++;
-	return function(value) {
-		var result;
-		if (value === undefined)
-		{
-			// Getting property value.
-			result = jQuery.data(this, backingPropertyName);
-			if (result === undefined)
-			{
-				result = defaultValue;
-			}
-		}
-		else
-		{
-			// Setting property value.
-			result = (converterFunction !== undefined)
-				? converterFunction.call(this, value)
-				: value;
-			jQuery.data(this, backingPropertyName, result);
-			if (setterFunction != null) {
-				setterFunction.call(this, result);			
-			}
-		}
-		
-		return result;
-	};
+    var backingPropertyName = "_property" + QuickUI.Property.symbolCounter++;
+    return function(value) {
+        var result;
+        if (value === undefined)
+        {
+            // Getting property value.
+            result = jQuery.data(this, backingPropertyName);
+            if (result === undefined)
+            {
+                result = defaultValue;
+            }
+        }
+        else
+        {
+            // Setting property value.
+            result = (converterFunction !== undefined)
+                ? converterFunction.call(this, value)
+                : value;
+            jQuery.data(this, backingPropertyName, result);
+            if (setterFunction != null) {
+                setterFunction.call(this, result);            
+            }
+        }
+        
+        return result;
+    };
 }
 
 /*
  * More factories for getter/setters of various types.
  */
 jQuery.extend(QuickUI.Property, {
-	
-	/*
-	 * A boolean property.
-	 */
-	bool: function(setterFunction, defaultValue) {
-		return QuickUI.Property(
-			setterFunction,
-			defaultValue,
-			function(value) {
-				// Convert either string or bool to bool.
-				return String(value) == "true";
-			}
-		);
-	},
-	
-	/*
-	 * An integer property.
-	 */
-	integer: function(setterFunction, defaultValue) {
-		return QuickUI.Property(
-			setterFunction,
-			defaultValue,
-			parseInt
-		);
-	},
+    
+    /*
+     * A boolean property.
+     */
+    bool: function(setterFunction, defaultValue) {
+        return QuickUI.Property(
+            setterFunction,
+            defaultValue,
+            function(value) {
+                // Convert either string or bool to bool.
+                return String(value) == "true";
+            }
+        );
+    },
+    
+    /*
+     * An integer property.
+     */
+    integer: function(setterFunction, defaultValue) {
+        return QuickUI.Property(
+            setterFunction,
+            defaultValue,
+            parseInt
+        );
+    },
 
-	symbolCounter: 0
+    symbolCounter: 0
 
 });
 
@@ -412,7 +431,7 @@ jQuery.extend(QuickUI.Property, {
  * representing QuickUI controls).
  */
 QuickUI.Element = function(elementId) {
-	return new QuickUI.ElementPropertyFactory(elementId);		
+    return new QuickUI.ElementPropertyFactory(elementId);        
 };
 
 /*
@@ -420,46 +439,46 @@ QuickUI.Element = function(elementId) {
  * representing QuickUI controls).
  */
 QuickUI.ElementPropertyFactory = function(elementId) {
-	this.elementId = elementId;
+    this.elementId = elementId;
 };
 
 jQuery.extend(QuickUI.ElementPropertyFactory, {
-	/*
-	 * Obtain the indicated element of the control.
-	 * If no element is indicated, the control's top-level element is returned.
-	 */
-	$getElement: function(control, elementId) {
-		if (elementId === undefined) {
-			// Return control's top-level element.
-			return $(control.element);
-		}
-		if (control[elementId] === undefined)
-		{
-			throw "Can't find element with ID \"" + elementId + "\"";
-		}
-		return $(control[elementId]);
-	}
+    /*
+     * Obtain the indicated element of the control.
+     * If no element is indicated, the control's top-level element is returned.
+     */
+    $getElement: function(control, elementId) {
+        if (elementId === undefined) {
+            // Return control's top-level element.
+            return $(control.element);
+        }
+        if (control[elementId] === undefined)
+        {
+            throw "Can't find element with ID \"" + elementId + "\"";
+        }
+        return $(control[elementId]);
+    }
 });
 
 /*
  * Factories for various types of properties on elements.
  */
 jQuery.extend(QuickUI.ElementPropertyFactory.prototype, {
-	
-	/*
-	 * Toggle a CSS class on and off the element.
-	 * Like $.toggleClass(), but if no value is supplied, the current CSS class state
-	 * (has / has not) is returned rather than toggling that state.
-	 */
-	applyClass: function(className) {
-		var elementId = this.elementId;
-		return function(value) {
-			var $element = QuickUI.ElementPropertyFactory.$getElement(this, elementId);
-			return (value === undefined)
-				? $element.hasClass(className)
-				: $element.toggleClass(className, value);
-		}
-	},
+    
+    /*
+     * Toggle a CSS class on and off the element.
+     * Like $.toggleClass(), but if no value is supplied, the current CSS class state
+     * (has / has not) is returned rather than toggling that state.
+     */
+    applyClass: function(className) {
+        var elementId = this.elementId;
+        return function(value) {
+            var $element = QuickUI.ElementPropertyFactory.$getElement(this, elementId);
+            return (value === undefined)
+                ? $element.hasClass(className)
+                : $element.toggleClass(className, value);
+        };
+    },
     
     /*
      * An attribute of the element. Works like $.attr().
@@ -474,91 +493,91 @@ jQuery.extend(QuickUI.ElementPropertyFactory.prototype, {
                 setterFunction.call(this, value);
             }
             return result;
-        }
+        };
     },
 
-	/* 
-	 * The element's "content",
-	 * which is either its val (if the element is an <input> element)
-	 * or its inner HTML (if the element is any other HTML element)
-	 * or its content (if the element is a control)
-	 */
-	content: function(setterFunction) {
-		var elementId = this.elementId;	// "this" = property generator
-		return function(value) {
-			var $element = QuickUI.ElementPropertyFactory.$getElement(this, elementId);	// "this" = control
-			var result = ($element.control() !== undefined)
-				? $element.control().content(value)
+    /* 
+     * The element's "content",
+     * which is either its val (if the element is an <input> element)
+     * or its inner HTML (if the element is any other HTML element)
+     * or its content (if the element is a control)
+     */
+    content: function(setterFunction) {
+        var elementId = this.elementId;    // "this" = property generator
+        return function(value) {
+            var $element = QuickUI.ElementPropertyFactory.$getElement(this, elementId);    // "this" = control
+            var result = ($element.control() !== undefined)
+                ? $element.control().content(value)
                 : ($element[0] instanceof HTMLInputElement || $element[0] instanceof HTMLTextAreaElement)
-					? $element.val(value)
-					: $element.items(value);
-			
-			if (value !== undefined && setterFunction != null)
-			{
-				setterFunction.call(this, value);
-			}
-			
-			return result;
-		}
-	},
-	
-	/*
-	 * A property of the control represented by the element.
-	 * The property needs to be defined as a getter/setter.
-	 */
-	controlProperty: function(propertyName, setterFunction) {
-		var elementId = this.elementId;
-		return function(value) {
-			var $element = QuickUI.ElementPropertyFactory.$getElement(this, elementId);
-			var control = $element.control();
-			var result = control[propertyName].call(control, value);
-			if (value !== undefined && setterFunction != null)
-			{
-				setterFunction.call(this, value);
-			}
-			return result;
-		};
-	},
-	
-	/*
-	 * A specific CSS property of the element. Works like $.css().
-	 */
-	css: function(attributeName, setterFunction) {
-		var elementId = this.elementId;
-		return function(value) {
-			var $element = QuickUI.ElementPropertyFactory.$getElement(this, elementId);
-			var result = $element.css(attributeName, value);
-			if (value !== undefined && setterFunction != null)
-			{
-				setterFunction.call(this, value);
-			}
-			return result;
-		}
-	},
-	
-	/*
-	 * The text (only) of the element. Like $.text().
-	 */
-	text: function(setterFunction, defaultValue) {
-		var elementId = this.elementId;
-		return function(value) {
-			var $element = QuickUI.ElementPropertyFactory.$getElement(this, elementId);
-			return $element.text(value);
-		}
-	},
-	
-	/*
-	 * Toggle the element's visibility.
-	 * Like $.toggle(), but if no value is supplied, the current visibility is returned
-	 * (rather than toggling the element's visibility).
-	 */
-	visibility: function() {
-		var elementId = this.elementId;
-		return function(value) {
-			var $element = QuickUI.ElementPropertyFactory.$getElement(this, elementId);
-			return (value === undefined)
-				? $element.is(":visible")
-				: $element.toggle(value);
-		}
-	}
+                    ? $element.val(value)
+                    : $element.items(value);
+            
+            if (value !== undefined && setterFunction != null)
+            {
+                setterFunction.call(this, value);
+            }
+            
+            return result;
+        };
+    },
+    
+    /*
+     * A property of the control represented by the element.
+     * The property needs to be defined as a getter/setter.
+     */
+    controlProperty: function(propertyName, setterFunction) {
+        var elementId = this.elementId;
+        return function(value) {
+            var $element = QuickUI.ElementPropertyFactory.$getElement(this, elementId);
+            var control = $element.control();
+            var result = control[propertyName].call(control, value);
+            if (value !== undefined && setterFunction != null)
+            {
+                setterFunction.call(this, value);
+            }
+            return result;
+        };
+    },
+    
+    /*
+     * A specific CSS property of the element. Works like $.css().
+     */
+    css: function(attributeName, setterFunction) {
+        var elementId = this.elementId;
+        return function(value) {
+            var $element = QuickUI.ElementPropertyFactory.$getElement(this, elementId);
+            var result = $element.css(attributeName, value);
+            if (value !== undefined && setterFunction != null)
+            {
+                setterFunction.call(this, value);
+            }
+            return result;
+        };
+    },
+    
+    /*
+     * The text (only) of the element. Like $.text().
+     */
+    text: function(setterFunction, defaultValue) {
+        var elementId = this.elementId;
+        return function(value) {
+            var $element = QuickUI.ElementPropertyFactory.$getElement(this, elementId);
+            return $element.text(value);
+        };
+    },
+    
+    /*
+     * Toggle the element's visibility.
+     * Like $.toggle(), but if no value is supplied, the current visibility is returned
+     * (rather than toggling the element's visibility).
+     */
+    visibility: function() {
+        var elementId = this.elementId;
+        return function(value) {
+            var $element = QuickUI.ElementPropertyFactory.$getElement(this, elementId);
+            return (value === undefined)
+                ? $element.is(":visible")
+                : $element.toggle(value);
+        };
+    }
 });

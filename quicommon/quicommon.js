@@ -265,13 +265,27 @@ Dialog = Overlay.extend({
 	}
 });
 $.extend(Dialog, {
-	show: function(dialogClass, arguments) {
+	show: function(dialogClass, properties, callbackOk, callbackCancel) {
 		var dialog = $("body")
 			.append("<div/>")
 			.find(":last")
 			.control(dialogClass)
 			.control();
-		dialog.setProperties(arguments);
+        $(dialog.element).bind({
+            ok: function() {
+                if (callbackOk)
+                {
+                    callbackOk.call(this);
+                }
+            },
+            cancel: function() {
+                if (callbackCancel)
+                {
+                    callbackCancel.call(this);
+                }
+            }
+        });
+		dialog.setProperties(properties);
 		dialog.show();
 	}
 });
