@@ -6,7 +6,7 @@ SampleProperties = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			"content": this.SampleProperties_content = $("<div id=\"SampleProperties_content\" />")[0]
+			content: this.SampleProperties_content = $("<div id=\"SampleProperties_content\" />")[0],
 		});
 	}
 });
@@ -22,7 +22,7 @@ Simple = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			"content": " Hello, world! "
+			content: " Hello, world! ",
 		});
 	}
 });
@@ -35,7 +35,7 @@ Test = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			"content": [
+			content: [
 				this.header = $("<div id=\"header\" />").items(
 					this.Test_name = $("<span id=\"Test_name\" />")[0],
 					": ",
@@ -49,7 +49,7 @@ Test = QuickUI.Control.extend({
 					this.htmlExpected = $("<span id=\"htmlExpected\" />")[0],
 					this.Test_expect = $("<div id=\"Test_expect\" />")[0]
 				)[0]
-			]
+			],
 		});
 	}
 });
@@ -81,37 +81,37 @@ TestSuite = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			"content": [
+			content: [
 				"<h1>QuickUI Test Suite</h1>",
 				QuickUI.Control.create(Test, {
-					"name": "Plain text macro",
-					"test": QuickUI.Control.create(Simple),
-					"expect": "<div class=\"Simple Control\"> Hello, world! </div>"
+					name: "Plain text macro",
+					test: QuickUI.Control.create(Simple),
+					expect: "<div class=\"Simple Control\"> Hello, world! </div>",
 				}),
 				QuickUI.Control.create(Test, {
-					"name": "Content property as attribute",
-					"test": QuickUI.Control.create(Simple, {
-						"content": "Hi"
+					name: "Content property as attribute",
+					test: QuickUI.Control.create(Simple, {
+						content: "Hi",
 					}),
-					"expect": "<div class=\"Simple Control\">Hi</div>"
+					expect: "<div class=\"Simple Control\">Hi</div>",
 				}),
 				QuickUI.Control.create(Test, {
-					"name": "Compound property",
-					"test": QuickUI.Control.create(Simple, {
-						"content": "Hi"
+					name: "Compound property",
+					test: QuickUI.Control.create(Simple, {
+						content: "Hi",
 					}),
-					"expect": "<div class=\"Simple Control\">Hi</div>"
+					expect: "<div class=\"Simple Control\">Hi</div>",
 				}),
 				QuickUI.Control.create(Test, {
-					"name": "Content property override",
-					"test": QuickUI.Control.create(SampleProperties, {
-						"content": " Foo "
+					name: "Content property override",
+					test: QuickUI.Control.create(SampleProperties, {
+						content: " Foo ",
 					}),
-					"expect": $("<div class=\"SampleProperties Control\" />").items(
+					expect: $("<div class=\"SampleProperties Control\" />").items(
 						this.SampleProperties_content = $("<div id=\"SampleProperties_content\"> Foo </div>")[0]
-					)[0]
+					)[0],
 				})
-			]
+			],
 		});
 	}
 });
