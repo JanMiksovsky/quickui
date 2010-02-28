@@ -2,7 +2,7 @@
 // Overlay
 //
 Overlay = QuickUI.Control.extend({
-	className: "Overlay",
+	className: "Overlay"
 });
 $.extend(Overlay.prototype, {
 
@@ -112,7 +112,7 @@ Popup = Overlay.extend({
 	render: function() {
 		Overlay.prototype.render.call(this);
 		this.setClassProperties(Overlay, {
-			dismissOnInsideClick: "true",
+			"dismissOnInsideClick": "true"
 		});
 	}
 });
@@ -121,7 +121,7 @@ Popup = Overlay.extend({
 // ButtonBase
 //
 ButtonBase = QuickUI.Control.extend({
-	className: "ButtonBase",
+	className: "ButtonBase"
 });
 $.extend(ButtonBase.prototype, {
 	
@@ -260,7 +260,7 @@ Dialog = Overlay.extend({
 	render: function() {
 		Overlay.prototype.render.call(this);
 		this.setClassProperties(Overlay, {
-			dismissOnOutsideClick: "false",
+			"dismissOnOutsideClick": "false"
 		});
 	}
 });
@@ -332,7 +332,7 @@ DockPanel = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			content: [
+			"content": [
 				this.DockPanel_top = $("<div id=\"DockPanel_top\" />")[0],
 				this.rowCenter = $("<div id=\"rowCenter\" />").items(
 					this.centerTable = $("<div id=\"centerTable\" />").items(
@@ -342,7 +342,7 @@ DockPanel = QuickUI.Control.extend({
 					)[0]
 				)[0],
 				this.DockPanel_bottom = $("<div id=\"DockPanel_bottom\" />")[0]
-			],
+			]
 		});
 	}
 });
@@ -397,10 +397,10 @@ IfBrowser = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			content: [
+			"content": [
 				this.IfBrowser_content = $("<span id=\"IfBrowser_content\" />")[0],
 				this.IfBrowser_elseContent = $("<span id=\"IfBrowser_elseContent\" />")[0]
-			],
+			]
 		});
 	}
 });
@@ -423,7 +423,7 @@ $.extend(IfBrowser.prototype, {
 // Page
 //
 Page = QuickUI.Control.extend({
-	className: "Page",
+	className: "Page"
 });
 /*
  * General page utility functions.
@@ -445,7 +445,7 @@ $.extend(Page.prototype, {
 			document.title = value;
 		}
 		return document.title;
-	},
+	}
 
 });
 
@@ -458,7 +458,7 @@ $.extend(Page, {
 		var regex = new RegExp( regexS );
 		var results = regex.exec( window.location.href );
 		return (results == null) ? null : results[1];
-	},
+	}
 	
 });
 
@@ -488,7 +488,7 @@ Repeater = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			content: this.Repeater_expansion = $("<div id=\"Repeater_expansion\" />")[0],
+			"content": this.Repeater_expansion = $("<div id=\"Repeater_expansion\" />")[0]
 		});
 	}
 });
@@ -529,7 +529,7 @@ $.extend(Repeater.prototype, {
 // Sprite
 //
 Sprite = QuickUI.Control.extend({
-	className: "Sprite",
+	className: "Sprite"
 });
 $.extend(Sprite.prototype, {
 	
@@ -570,6 +570,6 @@ $.extend(Sprite.prototype, {
 // VerticalAlign
 //
 VerticalAlign = QuickUI.Control.extend({
-	className: "VerticalAlign",
+	className: "VerticalAlign"
 });
 

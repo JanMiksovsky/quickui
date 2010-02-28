@@ -34,7 +34,7 @@ $.extend(Page.prototype, {
 			document.title = value;
 		}
 		return document.title;
-	},
+	}
 
 });
 
@@ -47,7 +47,7 @@ $.extend(Page, {
 		var regex = new RegExp( regexS );
 		var results = regex.exec( window.location.href );
 		return (results == null) ? null : results[1];
-	},
+	}
 	
 });
 

@@ -65,17 +65,16 @@ namespace qc
             // If subcontrol has a content property, write that out first.
             if (Control.Properties.ContainsKey("content"))
             {
-                i++;
-                bool isLast = (Control.Properties.Keys.Count == 1);
+                bool isLast = (++i >= propertyCount);
                 code.Append(EmitControlProperty("content", isLast, indentLevel));
             }
 
             // Write out remaining properties.
             foreach (string propertyName in Control.Properties.Keys)
             {
-                bool isLast = (++i == propertyCount);
                 if (propertyName != "content")
                 {
+                    bool isLast = (++i >= propertyCount);
                     code.Append(EmitControlProperty(propertyName, isLast, indentLevel));
                 }
             }

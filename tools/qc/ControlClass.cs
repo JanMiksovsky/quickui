@@ -148,12 +148,13 @@ namespace qc
         /// </summary>
         public string EmitJavaScript()
         {
+            string renderFunction = EmitRenderFunction(1);
             return Template.Format(
                 "//\n" +
                 "// {ClassName}\n" +
                 "//\n" +
                 "{ClassName} = {BaseClassName}.extend({\n" +
-                    "\tclassName: \"{ClassName}\",\n" +
+                    "\tclassName: \"{ClassName}\"{Comma}\n" +
                     "{RenderFunction}" +
                 "});\n" +
                 "{Script}\n", // Extra break at end helps delineate between successive controls in combined output.
@@ -161,7 +162,8 @@ namespace qc
                 {
                     ClassName = Name,
                     BaseClassName = Prototype.ClassName,
-                    RenderFunction = EmitRenderFunction(1),
+                    RenderFunction = renderFunction,
+                    Comma = String.IsNullOrEmpty(renderFunction) ? "" : ",",
                     Script = EmitScript()
                 });
         }
