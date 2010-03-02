@@ -30,7 +30,7 @@ $.extend(Repeater.prototype, {
 			var count = this.count();
 			for (var i = 0; i < count; i++)
 			{
-				template.clone().appendTo(this.Repeater_expansion);
+				template.clone(true).appendTo(this.Repeater_expansion); // Deep copy
 			}
 		}
 	},

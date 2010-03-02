@@ -47,15 +47,17 @@ $.extend(Overlay.prototype, {
 	
 	hide: function()
 	{
-		// $(this.element).remove();
-		$(this.element)
+		$(this.element).remove();
+		/*
+        $(this.element)
 			.hide()
 			.css("z-index", null); // No need to define Z-order any longer.
+        */
 		if (this.blanket() != null)
 		{
-			// $(this.blanket()).remove();
-			// this.blanket(null);
-			$(this.blanket()).hide();
+			$(this.blanket()).remove();
+			this.blanket(null);
+			// $(this.blanket()).hide();
 		}
 	},
 	
@@ -315,8 +317,8 @@ $.extend(Dialog.prototype, {
 	
 	position: function() {
 		// Center dialog horizontally and vertically.
-		var left = ($(document).width() - $(this.element).outerWidth()) / 2;
-		var top = ($(document).height() - $(this.element).outerHeight()) / 2;
+		var left = ($(window).width() - $(this.element).outerWidth()) / 2;
+		var top = ($(window).height() - $(this.element).outerHeight()) / 2;
 		$(this.element).css({
 			left: left,
 			top: top
@@ -514,7 +516,7 @@ $.extend(Repeater.prototype, {
 			var count = this.count();
 			for (var i = 0; i < count; i++)
 			{
-				template.clone().appendTo(this.Repeater_expansion);
+				template.clone(true).appendTo(this.Repeater_expansion); // Deep copy
 			}
 		}
 	},

@@ -67,8 +67,8 @@ $.extend(Dialog.prototype, {
 	
 	position: function() {
 		// Center dialog horizontally and vertically.
-		var left = ($(document).width() - $(this.element).outerWidth()) / 2;
-		var top = ($(document).height() - $(this.element).outerHeight()) / 2;
+		var left = ($(window).width() - $(this.element).outerWidth()) / 2;
+		var top = ($(window).height() - $(this.element).outerHeight()) / 2;
 		$(this.element).css({
 			left: left,
 			top: top

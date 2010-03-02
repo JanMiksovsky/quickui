@@ -55,15 +55,17 @@ $.extend(Overlay.prototype, {
 	
 	hide: function()
 	{
-		// $(this.element).remove();
-		$(this.element)
+		$(this.element).remove();
+		/*
+        $(this.element)
 			.hide()
 			.css("z-index", null); // No need to define Z-order any longer.
+        */
 		if (this.blanket() != null)
 		{
-			// $(this.blanket()).remove();
-			// this.blanket(null);
-			$(this.blanket()).hide();
+			$(this.blanket()).remove();
+			this.blanket(null);
+			// $(this.blanket()).hide();
 		}
 	},
 	
