@@ -90,7 +90,14 @@ namespace qc
                 XElement childElement = childNode as XElement;
                 if (IsPropertyTag(childElement))
                 {
-                    c[childElement.Name.ToString()] = ParseXNodes(childElement.Nodes());
+                    Node node = ParseXNodes(childElement.Nodes());
+                    if (node == null)
+                    {
+                        // An empty compound property is equivalent to the empty string.
+                        node = new HtmlNode(String.Empty);
+                    }
+                    c[childElement.Name.ToString()] = node;
+
                 }
                 else
                 {
@@ -441,6 +448,17 @@ namespace qc
             }
 
             [Test]
+            public void CompoundPropertyIsEmpty()
+            {
+                XElement element = new XElement("Foo",
+                    new XElement("bar")
+                );
+                Control c = ParseControl(element).Control;
+                Assert.Contains("bar", c.Properties.Keys);
+                Assert.AreEqual(String.Empty, ((HtmlNode) c["bar"]).Html);
+            }
+
+            [Test]
             public void CompoundPropertyContainsHtml()
             {
                 XElement element = new XElement("Foo",
@@ -489,6 +507,7 @@ namespace qc
                 Assert.IsInstanceOf<ControlNode>(items[0]);
                 Assert.IsInstanceOf<HtmlNode>(items[1]);
             }
+
 
             [Test]
             [ExpectedException(typeof(XmlException))]
