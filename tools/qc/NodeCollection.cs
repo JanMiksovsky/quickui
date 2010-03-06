@@ -79,7 +79,7 @@ namespace qc
 
 #if DEBUG
         [TestFixture]
-        public class Tests
+        public new class Tests
         {
             [Test]
             public void Collection()

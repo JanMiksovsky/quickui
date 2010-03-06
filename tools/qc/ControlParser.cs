@@ -31,37 +31,9 @@ namespace qc
                 IgnoreProcessingInstructions = true,
                 IgnoreWhitespace = true
             };
-            //XmlReader xmlReader = XmlReader.Create(sourceReader, xmlReaderSettings);
-            TextReader cleanReader = CleanReader(sourceReader);
+            TextReader cleanReader = EntityCleaner.CleanScript(sourceReader);
             XmlReader xmlReader = XmlReader.Create(cleanReader, xmlReaderSettings);
             return ParseControlClass(XElement.Load(xmlReader));
-        }
-
-        static StringReader CleanReader(TextReader sourceReader)
-        {
-            string s = sourceReader.ReadToEnd();
-            Regex regex = new Regex(@".*<script>(.*)</script>.*", RegexOptions.Singleline);
-            Match match = regex.Match(s);
-            string clean;
-            if (match.Success)
-            {
-                Group scriptGroup = match.Groups[1];
-                string script = scriptGroup.Value;
-                string cleanScript = CleanEntities(script);
-                clean = s.Substring(0, scriptGroup.Index)
-                        + cleanScript
-                        + s.Substring(scriptGroup.Index + scriptGroup.Length);
-            }
-            else
-            {
-                clean = s;
-            }
-            return new StringReader(clean);
-        }
-
-        static string CleanEntities(string s)
-        {
-            return s.Replace("&", "&amp;").Replace("<", "&lt;");
         }
 
         /// <summary>
