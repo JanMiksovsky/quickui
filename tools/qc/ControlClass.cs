@@ -244,9 +244,14 @@ namespace qc
         /// </remarks>
         private string EmitScript()
         {
+            /*
             return String.IsNullOrEmpty(Script)
                 ? String.Empty
                 : Script.Trim() + "\n";
+            */
+            return String.IsNullOrEmpty(Script)
+                ? String.Empty
+                : Script.Trim().Replace("&lt;", "<") + "\n";
         }
 
 #if DEBUG

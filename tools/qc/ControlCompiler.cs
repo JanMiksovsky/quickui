@@ -77,6 +77,7 @@ namespace qc
             [TestCase("qc.Tests.content.qui.js", "qc.Tests.content.qui")]
             [TestCase("qc.Tests.simplehost.qui.js", "qc.Tests.simplehost.qui")]
             [TestCase("qc.Tests.comprehensive.qui.js", "qc.Tests.comprehensive.qui")]
+            [TestCase("qc.Tests.entities.qui.js", "qc.Tests.entities.qui")]
             public void Compile(string fileNameExpectedOutput, string fileNameSource)
             {
                 ControlClass c = ControlParser.ParseControlClass(Utilities.GetEmbeddedFileReader(fileNameSource));
