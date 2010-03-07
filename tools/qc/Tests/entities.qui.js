@@ -6,7 +6,7 @@ Entities = QuickUI.Control.extend({
 });
 $.extend(Entities.prototype, {
   ready: function() {
-    if (2 < 3 && 4 < 5)
+    if (1 < 2 && 4 > 3)
     {
       alert("Success");
     }

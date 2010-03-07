@@ -238,20 +238,22 @@ namespace qc
         /// Return the control's script.
         /// </summary>
         /// <remarks>
-        /// The only thing that really needs to be done is to add back 
-        /// a final newline (which will get stripped during reading)
+        /// We undo any entity replacements we made to avoid choking the XML parser.
+        /// We also add back a final newline (which was stripped during reading)
         /// to make sure the generated code looks pretty.
         /// </remarks>
         private string EmitScript()
         {
-            /*
-            return String.IsNullOrEmpty(Script)
-                ? String.Empty
-                : Script.Trim() + "\n";
-            */
-            return String.IsNullOrEmpty(Script)
-                ? String.Empty
-                : Script.Trim().Replace("&lt;", "<") + "\n";
+            if (String.IsNullOrEmpty(Script))
+            {
+                return String.Empty;
+            }
+
+            return Script
+                        .Trim()
+                        .Replace("&lt;", "<")
+                        .Replace("&amp;", "&")
+                   + "\n";
         }
 
 #if DEBUG

@@ -6,7 +6,7 @@ Control whose script contains characters ("&" and "<") that get interpreted as H
 <script>
 $.extend(Entities.prototype, {
   ready: function() {
-    if (2 < 3 && 4 < 5)
+    if (1 < 2 && 4 > 3)
     {
       alert("Success");
     }
