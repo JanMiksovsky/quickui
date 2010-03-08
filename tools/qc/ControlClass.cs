@@ -238,7 +238,6 @@ namespace qc
         /// Return the control's script.
         /// </summary>
         /// <remarks>
-        /// We undo any entity replacements we made to avoid choking the XML parser.
         /// We also add back a final newline (which was stripped during reading)
         /// to make sure the generated code looks pretty.
         /// </remarks>
@@ -249,11 +248,7 @@ namespace qc
                 return String.Empty;
             }
 
-            return Script
-                        .Trim()
-                        .Replace("&lt;", "<")
-                        .Replace("&amp;", "&")
-                   + "\n";
+            return Script.Trim() + "\n";
         }
 
 #if DEBUG

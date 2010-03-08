@@ -233,7 +233,7 @@ namespace qc
             // Browsers like WebKit don't like seeing "<" in text.
             // Undo any entity replacement made by the parser in a text node
             // so that at run-time the text can be added as-is to the HTML.
-            s = s.Replace("<", "&lt;");
+            // s = s.Replace("<", "&lt;");
 
             // Remove extra white space.
             s = CollapseWhiteSpaceRuns(s);

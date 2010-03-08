@@ -51,7 +51,6 @@
   <ItemGroup>
     <Compile Include="Application.cs" />
     <Compile Include="MarkupParser.cs" />
-    <Compile Include="EntityCleaner.cs" />
     <Compile Include="NodeCollection.cs" />
     <Compile Include="CompilerException.cs" />
     <Compile Include="Control.cs" />
