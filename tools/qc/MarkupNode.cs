@@ -9,8 +9,10 @@ using NUnit.Framework;
 
 namespace qc
 {
-    // UNDONE: Rename to avoid confusion with XNode?
-    public abstract class Node
+    /// <summary>
+    /// A node in Quick markup.
+    /// </summary>
+    public abstract class MarkupNode
     {
         // UNDONE: Push this down into HtmlNode and ControlNode
         public string Id { get; set; }

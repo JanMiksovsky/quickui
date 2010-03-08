@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace qc
 {
-    public class HtmlNode : Node
+    public class HtmlNode : MarkupNode
     {
         public string Html { get; set; }
         public NodeCollection ChildNodes { get; set; }
@@ -28,7 +28,7 @@ namespace qc
             this.Id = id;
         }
 
-        public HtmlNode(IEnumerable<Node> items)
+        public HtmlNode(IEnumerable<MarkupNode> items)
         {
             this.ChildNodes = new NodeCollection(items);
         }
@@ -105,7 +105,7 @@ namespace qc
                 // <div><h1/><p id="content">Hello</p></div>
                 HtmlNode node = new HtmlNode("<div />")
                 {
-                    ChildNodes = new NodeCollection(new Node[] {
+                    ChildNodes = new NodeCollection(new MarkupNode[] {
                         new HtmlNode("<h1 />"),
                         new HtmlNode("<p id=\"content\">Hello</p>", "content")
                     })

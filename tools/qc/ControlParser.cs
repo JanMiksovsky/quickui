@@ -13,16 +13,21 @@ using NUnit.Framework;
 
 namespace qc
 {
-    class ControlParser
+    /// <summary>
+    /// ompiles the strict XML portion of Quick markup: the top level
+    /// <Control> tag and the <prototype> element.
+    /// </summary>
+    /// <remarks>
+    /// Because the script and style elements may not contain legal XML,
+    /// they should be removed before this class is invoked.
+    /// </remarks>
+    static class ControlParser
     {
-        // The contents of <script/> and <style/> tags are handled specially
-        // to avoid messing with any significant whitespace they contain.
-        const string elementNameScript = "script";
-        const string elementNameStyle = "style";
+        public static ControlClass ParseControlClass(string source)
+        {
+            return ParseControlClass(new StringReader(source));
+        }
 
-        /// <summary>
-        /// Parse a control from the given Quick markup and return a top-level control structure.
-        /// </summary>
         public static ControlClass ParseControlClass(TextReader sourceReader)
         {
             XmlReaderSettings xmlReaderSettings = new XmlReaderSettings
@@ -31,13 +36,12 @@ namespace qc
                 IgnoreProcessingInstructions = true,
                 IgnoreWhitespace = true
             };
-            TextReader cleanReader = EntityCleaner.CleanScript(sourceReader);
-            XmlReader xmlReader = XmlReader.Create(cleanReader, xmlReaderSettings);
+            XmlReader xmlReader = XmlReader.Create(sourceReader, xmlReaderSettings);
             return ParseControlClass(XElement.Load(xmlReader));
         }
 
         /// <summary>
-        /// Parse a control from the given Quick markup and return a top-level control structure.
+        /// Parse a control from the given XML and return a top-level control structure.
         /// </summary>
         public static ControlClass ParseControlClass(XElement element)
         {
@@ -91,7 +95,7 @@ namespace qc
                 XElement childElement = childNode as XElement;
                 if (IsPropertyTag(childElement))
                 {
-                    Node node = ParseXNodes(childElement.Nodes());
+                    MarkupNode node = ParseXNodes(childElement.Nodes());
                     if (node == null)
                     {
                         // An empty compound property is equivalent to the empty string.
@@ -107,7 +111,7 @@ namespace qc
             }
 
             // Parse the remaining children as content.
-            Node contentNode = ParseXNodes(contentNodes);
+            MarkupNode contentNode = ParseXNodes(contentNodes);
             if (contentNode != null)
             {
                 // Set the implicit content property. This will overwrite content
@@ -119,7 +123,7 @@ namespace qc
         /// <summary>
         /// Parse a collection of XNodes (of unknown type).
         /// </summary>
-        static Node ParseXNodes(IEnumerable<XNode> xNodes)
+        static MarkupNode ParseXNodes(IEnumerable<XNode> xNodes)
         {
             if (xNodes == null || xNodes.Count() == 0)
             {
@@ -133,7 +137,7 @@ namespace qc
             }
 
             // Parse each item in the collection.
-            IEnumerable<Node> nodes = xNodes.Select(xNode => ParseXNode(xNode));
+            IEnumerable<MarkupNode> nodes = xNodes.Select(xNode => ParseXNode(xNode));
 
             // If the nodes are all HTML, and there are no Ids below this point,
             // the nodes can be collapsed to a single node.
@@ -154,7 +158,7 @@ namespace qc
         /// <summary>
         /// Parse the content at the given XNode (of unknown type).
         /// </summary>
-        public static Node ParseXNode(XNode node)
+        public static MarkupNode ParseXNode(XNode node)
         {
             switch (node.NodeType)
             {
@@ -163,8 +167,8 @@ namespace qc
 
                 case XmlNodeType.Element:
                     return HtmlElements.IsHtmlElement((XElement) node)
-                        ? (Node) ParseHtml((XElement) node)
-                        : (Node) ParseControl((XElement) node);
+                        ? (MarkupNode) ParseHtml((XElement) node)
+                        : (MarkupNode) ParseControl((XElement) node);
 
                 case XmlNodeType.Text:
                     return ParseText((XText) node);
@@ -189,7 +193,7 @@ namespace qc
             }          
 
             IEnumerable<XNode> children = element.Nodes();
-            Node childrenNode = ParseXNodes(children);
+            MarkupNode childrenNode = ParseXNodes(children);
 
             if (childrenNode == null
                 || (childrenNode is HtmlNode
@@ -214,7 +218,7 @@ namespace qc
             node.ChildNodes =
                 childrenNode is NodeCollection
                     ? (NodeCollection) childrenNode
-                    : new NodeCollection(new Node[] { childrenNode });
+                    : new NodeCollection(new MarkupNode[] { childrenNode });
 
             return node;
         }
@@ -231,14 +235,8 @@ namespace qc
             // so that at run-time the text can be added as-is to the HTML.
             s = s.Replace("<", "&lt;");
 
-            // Remove extra white space for most text nodes.
-            // Exception: leave <style/> and <script/> tags alone.
-            string parentName =
-                (node.Parent == null) ? null : node.Parent.Name.ToString();
-            if (parentName != elementNameStyle && parentName != elementNameScript)
-            {
-                s = CollapseWhiteSpaceRuns(s);
-            }
+            // Remove extra white space.
+            s = CollapseWhiteSpaceRuns(s);
 
             return new HtmlNode(s);
         }
@@ -356,7 +354,7 @@ namespace qc
                 Assert.AreEqual("<div />", node.Html);
                 Assert.IsNotNull(node.ChildNodes);
                 Assert.AreEqual(1, node.ChildNodes.Count());
-                List<Node> items = new List<Node>(node.ChildNodes);
+                List<MarkupNode> items = new List<MarkupNode>(node.ChildNodes);
                 Assert.IsInstanceOf<HtmlNode>(items[0]);
                 HtmlNode contentNode = (HtmlNode) items[0];
                 Assert.AreEqual("<p id=\"content\" />", contentNode.Html);
@@ -376,7 +374,7 @@ namespace qc
                 HtmlNode node = (HtmlNode) ParseXNode(element);
                 Assert.AreEqual("<div />", node.Html);
                 Assert.AreEqual(2, node.ChildNodes.Count());
-                List<Node> items = new List<Node>(node.ChildNodes);
+                List<MarkupNode> items = new List<MarkupNode>(node.ChildNodes);
                 Assert.IsInstanceOf<HtmlNode>(items[0]);
                 Assert.AreEqual("<h1 />", ((HtmlNode) items[0]).Html);
                 Assert.IsInstanceOf<HtmlNode>(items[1]);
@@ -482,11 +480,11 @@ namespace qc
                         new XText("Control content")
                     )
                 );
-                Node node = ParseXNode(element);
+                MarkupNode node = ParseXNode(element);
                 Assert.IsInstanceOf<HtmlNode>(node);
                 HtmlNode htmlNode = (HtmlNode) node;
                 Assert.AreEqual(1, htmlNode.ChildNodes.Count());
-                Node childNode = htmlNode.ChildNodes.ToArray()[0];
+                MarkupNode childNode = htmlNode.ChildNodes.ToArray()[0];
                 Assert.IsInstanceOf<ControlNode>(childNode);
                 ControlNode controlNode = (ControlNode)childNode;
                 Assert.AreEqual("Foo", controlNode.Control.ClassName);
@@ -499,12 +497,12 @@ namespace qc
                     new XElement("Bar", "Control content"),
                     new XElement("p", "paragraph")
                 );
-                Node node = ParseXNodes(element.Nodes());
+                MarkupNode node = ParseXNodes(element.Nodes());
                 Assert.IsInstanceOf<NodeCollection>(node);
                 NodeCollection collection = (NodeCollection) node;
                 Assert.IsNotNull(collection);
                 Assert.AreEqual(2, collection.Count());
-                List<Node> items = new List<Node>(collection);
+                List<MarkupNode> items = new List<MarkupNode>(collection);
                 Assert.IsInstanceOf<ControlNode>(items[0]);
                 Assert.IsInstanceOf<HtmlNode>(items[1]);
             }
@@ -555,7 +553,7 @@ namespace qc
                 ControlClass controlClass = ParseControlFromEmbeddedFile("qc.Tests.simplehost.qui");
                 Assert.AreEqual("SimpleHost", controlClass.Name);
                 Assert.IsInstanceOf<NodeCollection>(controlClass.Prototype["content"]);
-                List<Node> nodes = new List<Node>((NodeCollection) controlClass.Prototype["content"]);
+                List<MarkupNode> nodes = new List<MarkupNode>((NodeCollection) controlClass.Prototype["content"]);
                 Assert.AreEqual(" Text ", ((HtmlNode) nodes[0]).Html);
                 Control control = ((ControlNode) nodes[1]).Control;
                 Assert.AreEqual("Simple", control.ClassName);

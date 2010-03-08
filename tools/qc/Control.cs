@@ -11,14 +11,14 @@ namespace qc
     public class Control
     {
         public string ClassName { get; set; }
-        public Dictionary<string, Node> Properties { get; set; }
+        public Dictionary<string, MarkupNode> Properties { get; set; }
 
         public Control()
         {
-            Properties = new Dictionary<string, Node>();
+            Properties = new Dictionary<string, MarkupNode>();
         }
 
-        public Node this[string key]
+        public MarkupNode this[string key]
         {
             get { return Properties[key]; }
             set { Properties[key] = value; }

@@ -135,21 +135,6 @@ namespace qc
                 string result = AddClassNameToStyles("Foo", styles);
                 Assert.AreEqual(styles, result);
             }
-
-            [Test]
-            public void ComprehensiveControl()
-            {
-                CompareCompilation("qc.Tests.comprehensive.qui.css", "qc.Tests.comprehensive.qui");
-            }
-
-            static void CompareCompilation(string expectedCompilationFileName, string sourceFileName)
-            {
-                ControlClass c = ControlParser.ParseControlClass(Utilities.GetEmbeddedFileReader(sourceFileName));
-                string compilation = EmitControlClass(c);
-                string expectedCompilation = Utilities.GetEmbeddedFileContent(expectedCompilationFileName);
-                Assert.AreEqual(Utilities.NormalizeLineEndings(expectedCompilation),
-                    Utilities.NormalizeLineEndings(compilation));
-            }
         }
 #endif
     }

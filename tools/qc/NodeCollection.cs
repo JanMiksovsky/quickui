@@ -10,11 +10,11 @@ using NUnit.Framework;
 
 namespace qc
 {
-    public class NodeCollection : Node, IEnumerable<Node>
+    public class NodeCollection : MarkupNode, IEnumerable<MarkupNode>
     {
-        private IEnumerable<Node> Items { get; set; }
+        private IEnumerable<MarkupNode> Items { get; set; }
 
-        public NodeCollection(IEnumerable<Node> items)
+        public NodeCollection(IEnumerable<MarkupNode> items)
         {
             this.Items = items;
         }
@@ -44,7 +44,7 @@ namespace qc
             StringBuilder code = new StringBuilder();
             int nodeCount = Items.Count();
             int i = 0;
-            foreach (Node node in Items)
+            foreach (MarkupNode node in Items)
             {
                 bool isLast = (++i == nodeCount);
                 code.Append(EmitNodeInCollection(node, isLast, indentLevel));
@@ -56,7 +56,7 @@ namespace qc
         /// <summary>
         /// Return the JavaScript to generate a single node.
         /// </summary>
-        private string EmitNodeInCollection(Node node, bool isLast, int indentLevel)
+        private string EmitNodeInCollection(MarkupNode node, bool isLast, int indentLevel)
         {
             return Template.Format(
                 "{Tabs}{Node}{Comma}\n",
@@ -72,7 +72,7 @@ namespace qc
             return Items.GetEnumerator();
         }
 
-        public IEnumerator<Node> GetEnumerator()
+        public IEnumerator<MarkupNode> GetEnumerator()
         {
             return Items.GetEnumerator();
         }
@@ -84,7 +84,7 @@ namespace qc
             [Test]
             public void Collection()
             {
-                NodeCollection node = new NodeCollection(new Node[] {
+                NodeCollection node = new NodeCollection(new MarkupNode[] {
                     new HtmlNode("Hi, "),
                     new HtmlNode() {
                         Id = "content",

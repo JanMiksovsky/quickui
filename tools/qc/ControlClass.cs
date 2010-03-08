@@ -54,15 +54,15 @@ namespace qc
         /// </summary>
         /// <remarks>
         /// The parser will read a .qui file as if the whole thing were an instance
-        /// of a class called Control with various properties like
-        /// "prototype", "script", etc. We translate those key properties into
-        /// the relevant members of the ControlClass type.
+        /// of a class called Control with properties like "name" and "prototype".
+        /// We translate those key properties into the relevant members of the
+        /// ControlClass type.
         /// </remarks>
         private void ExtractClassProperties(Control c)
         {
             foreach (string propertyName in c.Properties.Keys)
             {
-                Node node = c[propertyName];
+                MarkupNode node = c[propertyName];
                 string text = (node is HtmlNode) ? ((HtmlNode) node).Html : null;
 
                 switch (propertyName)
@@ -110,7 +110,7 @@ namespace qc
         /// <summary>
         /// Return a prototype appropriate to contain the information in the given node.
         /// </summary>
-        private Control GetPrototypeFromNode(Node node)
+        private Control GetPrototypeFromNode(MarkupNode node)
         {
             Control prototype = null;
 

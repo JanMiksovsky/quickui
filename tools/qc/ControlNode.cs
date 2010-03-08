@@ -12,7 +12,7 @@ namespace qc
     /// <summary>
     /// An instance of a control found in Quick markup.
     /// </summary>
-    public class ControlNode : Node
+    public class ControlNode : MarkupNode
     {
         public Control Control { get; set; }
 

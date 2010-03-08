@@ -12,5 +12,5 @@ $.extend(Entities.prototype, {
     }
   }
 });
-  </script>
+</script>
 </Control>
