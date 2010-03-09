@@ -17,12 +17,12 @@ namespace qc
     {
         public static void Compile(TextReader markupReader, TextWriter jsWriter, TextWriter cssWriter)
         {
-            ControlClass control = MarkupParser.Parse(markupReader);
+            Control control = MarkupParser.Parse(markupReader);
 
             // Only write out the CSS if the caller asked for it.
             if (cssWriter != null)
             {
-                cssWriter.Write(ControlCssEmitter.EmitControlClass(control));
+                cssWriter.Write(control.EmitCss());
             }
 
             jsWriter.Write(control.EmitJavaScript());

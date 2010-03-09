@@ -8,9 +8,12 @@ using NUnit.Framework;
 
 namespace qc
 {
+    /// <summary>
+    /// Helper class which can generate the CSS for a control.
+    /// </summary>
     public static class ControlCssEmitter
     {
-        public static string EmitControlClass(ControlClass c)
+        public static string EmitControlClass(Control c)
         {
             if (c.Style == null)
             {
@@ -104,7 +107,7 @@ namespace qc
             [Test]
             public void ControlWithNoScript()
             {
-                ControlClass c = new ControlClass() {
+                Control c = new Control() {
                     // BaseClassName = "Control",
                     Name = "Foo"
                 };

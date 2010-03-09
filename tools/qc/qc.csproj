@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application.cs" />
+    <Compile Include="Control.cs" />
     <Compile Include="ControlElement.cs" />
     <Compile Include="HtmlElement.cs" />
     <Compile Include="HtmlElementNames.cs" />
@@ -59,7 +60,6 @@
     <Compile Include="CompilerException.cs" />
     <Compile Include="MarkupCompiler.cs" />
     <Compile Include="ControlCssEmitter.cs" />
-    <Compile Include="ControlClass.cs" />
     <Compile Include="ControlParser.cs" />
     <Compile Include="MarkupNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

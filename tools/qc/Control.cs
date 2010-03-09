@@ -11,23 +11,23 @@ using NUnit.Framework;
 namespace qc
 {
     /// <summary>
-    /// A Quick control class declaration.
+    /// The parsed representation of a Quick control class declaration.
     /// </summary>
-    public class ControlClass
+    public class Control
     {
         public string Name { get; set; }
         public string Script { get; set; }
         public string Style { get; set; }
         public ControlElement Prototype { get; set; }
 
-        public ControlClass()
+        public Control()
         {
         }
 
         /// <summary>
         /// Create a control class.
         /// </summary>
-        public ControlClass(ControlElement c)
+        public Control(ControlElement c)
         {
             // Ensure the root element actually is "Control".
             if (c.ClassName != "Control")
@@ -143,6 +143,11 @@ namespace qc
             };
         }
 
+        public string EmitCss()
+        {
+            return ControlCssEmitter.EmitControlClass(this);
+        }
+
         /// <summary>
         /// Return the JavaScript for this control class.
         /// </summary>
@@ -180,7 +185,7 @@ namespace qc
                         "{Tabs}\t});\n" +
                     "{Tabs}}\n",
                     new {
-                        Tabs = Tabs(indentLevel),
+                        Tabs = MarkupNode.Tabs(indentLevel),
                         BaseClassName = Prototype.ClassName,
                         BaseClassProperties = EmitBaseClassProperties(indentLevel + 2)
                     });
@@ -216,22 +221,11 @@ namespace qc
                 "{Tabs}\"{PropertyName}\": {PropertyValue}{Comma}\n",
                 new
                 {
-                    Tabs = Tabs(indentLevel),
+                    Tabs = MarkupNode.Tabs(indentLevel),
                     PropertyName = propertyName,
                     PropertyValue = Prototype.Properties[propertyName].EmitJavaScript(indentLevel),
                     Comma = isLast ? String.Empty : ","
                 });
-        }
-
-        // HACK! Copied from Node. Should share implementation.
-        protected string Tabs(int tabCount)
-        {
-            StringBuilder output = new StringBuilder();
-            for (int i = 0; i < tabCount; i++)
-            {
-                output.Append('\t');
-            }
-            return output.ToString();
         }
 
         /// <summary>
@@ -265,7 +259,7 @@ namespace qc
                 control.Properties.Add("name", new HtmlElement("Simple"));
                 control.Properties.Add("content", new HtmlElement("<span id=\"Simple_content\" />", "Simple_content"));
 
-                ControlClass controlClass = new ControlClass(control);
+                Control controlClass = new Control(control);
                 Assert.AreEqual("Simple", controlClass.Name);
                 Assert.AreEqual("QuickUI.Control", controlClass.Prototype.ClassName);
                 Assert.IsNull(controlClass.Style);
@@ -278,7 +272,7 @@ namespace qc
             [Test]
             public void SimpleControl()
             {
-                ControlClass c = new ControlClass()
+                Control c = new Control()
                 {
                     Name = "Simple",
                     Prototype = new ControlElement()
@@ -291,7 +285,7 @@ namespace qc
                 CompileControlAndCompareOutput("qc.Tests.simple.qui.js", c);
             }
 
-            static void CompileControlAndCompareOutput(string expectedCompilationFileName, ControlClass control)
+            static void CompileControlAndCompareOutput(string expectedCompilationFileName, Control control)
             {
                 string compilation = control.EmitJavaScript();
                 string expectedCompilation = Utilities.GetEmbeddedFileContent(expectedCompilationFileName);

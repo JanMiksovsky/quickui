@@ -32,7 +32,7 @@ namespace qc
             return EmitJavaScript(0);
         }
 
-        protected string Tabs(int tabCount)
+        public static string Tabs(int tabCount)
         {
             StringBuilder output = new StringBuilder();
             for (int i = 0; i < tabCount; i++)

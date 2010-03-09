@@ -23,12 +23,12 @@ namespace qc
     /// </remarks>
     static class ControlParser
     {
-        public static ControlClass ParseControlClass(string source)
+        public static Control ParseControlClass(string source)
         {
             return ParseControlClass(new StringReader(source));
         }
 
-        public static ControlClass ParseControlClass(TextReader sourceReader)
+        public static Control ParseControlClass(TextReader sourceReader)
         {
             XmlReaderSettings xmlReaderSettings = new XmlReaderSettings
             {
@@ -43,10 +43,10 @@ namespace qc
         /// <summary>
         /// Parse a control from the given XML and return a top-level control structure.
         /// </summary>
-        public static ControlClass ParseControlClass(XElement element)
+        public static Control ParseControlClass(XElement element)
         {
             ControlElement control = ParseControl(element);
-            return new ControlClass(control);
+            return new Control(control);
         }
 
         /// <summary>
@@ -386,7 +386,7 @@ namespace qc
                 XElement element = new XElement("Control",
                     new XAttribute("name", "Minimal")
                 );
-                ControlClass c = ParseControlClass(element);
+                Control c = ParseControlClass(element);
                 Assert.AreEqual("Minimal", c.Name);
                 Assert.AreEqual("QuickUI.Control", c.Prototype.ClassName);
                 Assert.AreEqual(0, c.Prototype.Properties.Count);
@@ -401,7 +401,7 @@ namespace qc
                         new XAttribute("content", "Hello")
                     )
                 );
-                ControlClass controlClass = ParseControlClass(element);
+                Control controlClass = ParseControlClass(element);
                 ControlElement prototype = controlClass.Prototype;
                 Assert.AreEqual("Bar", prototype.ClassName);
                 Assert.AreEqual("Hello", ((HtmlElement) prototype.Properties["content"]).Html);
@@ -511,7 +511,7 @@ namespace qc
             {
                 string source = "This source has no root element";
                 StringReader stringReader = new StringReader(source);
-                ControlClass c = ParseControlClass(stringReader);
+                Control c = ParseControlClass(stringReader);
             }
 
             [Test]
@@ -519,7 +519,7 @@ namespace qc
             public void RootElementNotClass()
             {
                 XElement element = new XElement("foo");  // Root element is lowercase, hence not a class.
-                ControlClass c = ParseControlClass(element);
+                Control c = ParseControlClass(element);
             }
 
             [Test]
@@ -527,13 +527,13 @@ namespace qc
             public void MissingClassName()
             {
                 XElement element = new XElement("Control");
-                ControlClass c = ParseControlClass(element);
+                Control c = ParseControlClass(element);
             }
 
             [Test]
             public void SimpleControl()
             {
-                ControlClass c = ParseControlFromEmbeddedFile("qc.Tests.simple.qui");
+                Control c = ParseControlFromEmbeddedFile("qc.Tests.simple.qui");
                 Assert.AreEqual("Simple", c.Name);
                 Assert.AreEqual("QuickUI.Control", c.Prototype.ClassName);
                 Assert.AreEqual(1, c.Prototype.Properties.Count);
@@ -547,7 +547,7 @@ namespace qc
             [Test]
             public void SimpleHostControl()
             {
-                ControlClass controlClass = ParseControlFromEmbeddedFile("qc.Tests.simplehost.qui");
+                Control controlClass = ParseControlFromEmbeddedFile("qc.Tests.simplehost.qui");
                 Assert.AreEqual("SimpleHost", controlClass.Name);
                 Assert.IsInstanceOf<MarkupNodeCollection>(controlClass.Prototype.Properties["content"]);
                 List<MarkupNode> nodes = new List<MarkupNode>((MarkupNodeCollection) controlClass.Prototype.Properties["content"]);
@@ -558,7 +558,7 @@ namespace qc
                 Assert.AreEqual("Hello, world!", ((HtmlElement) control.Properties["content"]).Html);
             }
 
-            private ControlClass ParseControlFromEmbeddedFile(string fileName)
+            private Control ParseControlFromEmbeddedFile(string fileName)
             {
                 using (StreamReader reader = Utilities.GetEmbeddedFileReader(fileName))
                 {

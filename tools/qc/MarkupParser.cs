@@ -25,7 +25,7 @@ namespace qc
             @"<(?<tag>script|style)>(?:(?:\s*<!\[CDATA\[(?'contents'.*?)\]\]>\s*)|(?'contents'.*?))</(?:\k<tag>)>",
             RegexOptions.Compiled | RegexOptions.Singleline);
 
-        public static ControlClass Parse(TextReader markupReader)
+        public static Control Parse(TextReader markupReader)
         {
             return Parse(markupReader.ReadToEnd());
         }
@@ -33,15 +33,15 @@ namespace qc
         /// <summary>
         /// Return a control class definition defined in the given markup.
         /// </summary>
-        public static ControlClass Parse(string markup)
+        public static Control Parse(string markup)
         {
-            // First extract any script and/or style tag.
+            // Preprocess to extract any script and/or style tags.
             string script;
             string style;
-            string source = ExtractScriptAndStyle(markup, out script, out style);
+            string processed = PreprocessMarkup(markup, out script, out style);
 
-            // Process the remaining source.
-            ControlClass c = ControlParser.ParseControlClass(source);
+            // Parse the remaining source.
+            Control c = ControlParser.ParseControlClass(processed);
 
             // Double-check the (unlikely) specification of script or style that
             // may have been set via attributes on the top-level <Control> element.
@@ -58,7 +58,7 @@ namespace qc
         /// contents of the <script> and <style> elements (if present) removed
         /// and handed back separately.
         /// </summary>
-        private static string ExtractScriptAndStyle(string markup, out string script, out string style)
+        private static string PreprocessMarkup(string markup, out string script, out string style)
         {
             StringBuilder source = new StringBuilder(markup.Length);
             script = null;
@@ -187,7 +187,7 @@ namespace qc
             {
                 string script;
                 string style;
-                string source = ExtractScriptAndStyle(markup, out script, out style);
+                string source = PreprocessMarkup(markup, out script, out style);
                 Assert.AreEqual(expectedSource, source);
                 Assert.AreEqual(expectedStyle, style);
                 Assert.AreEqual(expectedScript, script);
