@@ -12,17 +12,14 @@ namespace qc
     /// <summary>
     /// An instance of a control found in Quick markup.
     /// </summary>
-    public class ControlNode : MarkupNode
+    public class ControlElement : MarkupElement
     {
-        public Control Control { get; set; }
+        public string ClassName { get; set; }
+        public Dictionary<string, MarkupNode> Properties { get; set; }
 
-        public ControlNode() : base()
+        public ControlElement() : base()
         {
-        }
-
-        public ControlNode(Control control) : this()
-        {
-            this.Control = control;
+            Properties = new Dictionary<string, MarkupNode>();
         }
 
         /// <summary>
@@ -35,7 +32,7 @@ namespace qc
                 new
                 {
                     VariableDeclaration = EmitVariableDeclaration(),
-                    ClassName = Control.ClassName,
+                    ClassName = ClassName,
                     ControlConstructorArguments = EmitControlConstructorArguments(indentLevel)
                 });
         }
@@ -45,7 +42,7 @@ namespace qc
         /// </summary>
         private string EmitControlConstructorArguments(int indentLevel)
         {
-            return (!Control.Properties.Any())
+            return (!Properties.Any())
                 ? String.Empty
                 : Template.Format(
                     ", {\n{ControlProperties}{Tabs}}",
@@ -60,17 +57,17 @@ namespace qc
         {
             StringBuilder code = new StringBuilder();
             int i = 0;
-            int propertyCount = Control.Properties.Keys.Count;
+            int propertyCount = Properties.Keys.Count;
 
             // If subcontrol has a content property, write that out first.
-            if (Control.Properties.ContainsKey("content"))
+            if (Properties.ContainsKey("content"))
             {
                 bool isLast = (++i >= propertyCount);
                 code.Append(EmitControlProperty("content", isLast, indentLevel));
             }
 
             // Write out remaining properties.
-            foreach (string propertyName in Control.Properties.Keys)
+            foreach (string propertyName in Properties.Keys)
             {
                 if (propertyName != "content")
                 {
@@ -90,7 +87,7 @@ namespace qc
                 {
                     Tabs = Tabs(indentLevel),
                     PropertyName = propertyName,
-                    PropertyValue = Control[propertyName].EmitJavaScript(indentLevel),
+                    PropertyValue = Properties[propertyName].EmitJavaScript(indentLevel),
                     Comma = isLast ? String.Empty : ","
                 });
         }
@@ -102,23 +99,19 @@ namespace qc
             [Test]
             public void Control()
             {
-                Control c = new Control()
+                ControlElement control = new ControlElement()
                 {
                     ClassName = "Simple",
-                };
-                c.Properties.Add("id", new HtmlNode("foo"));
-                c.Properties.Add("content", new HtmlNode("Hello"));
-                ControlNode node = new ControlNode()
-                {
-                    Control = c,
                     Id = "foo"
                 };
+                control.Properties.Add("id", new HtmlElement("foo"));
+                control.Properties.Add("content", new HtmlElement("Hello"));
                 Assert.AreEqual(
                     "this.foo = QuickUI.Control.create(Simple, {\n" +
                     "\t\"content\": \"Hello\",\n" +
                     "\t\"id\": \"foo\"\n" +
                     "})",
-                    node.EmitJavaScript());
+                    control.EmitJavaScript());
             }
         }
 #endif

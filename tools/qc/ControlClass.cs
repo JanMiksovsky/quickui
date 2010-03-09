@@ -18,7 +18,7 @@ namespace qc
         public string Name { get; set; }
         public string Script { get; set; }
         public string Style { get; set; }
-        public Control Prototype { get; set; }
+        public ControlElement Prototype { get; set; }
 
         public ControlClass()
         {
@@ -27,7 +27,7 @@ namespace qc
         /// <summary>
         /// Create a control class.
         /// </summary>
-        public ControlClass(Control c)
+        public ControlClass(ControlElement c)
         {
             // Ensure the root element actually is "Control".
             if (c.ClassName != "Control")
@@ -58,12 +58,12 @@ namespace qc
         /// We translate those key properties into the relevant members of the
         /// ControlClass type.
         /// </remarks>
-        private void ExtractClassProperties(Control c)
+        private void ExtractClassProperties(ControlElement control)
         {
-            foreach (string propertyName in c.Properties.Keys)
+            foreach (string propertyName in control.Properties.Keys)
             {
-                MarkupNode node = c[propertyName];
-                string text = (node is HtmlNode) ? ((HtmlNode) node).Html : null;
+                MarkupNode node = control.Properties[propertyName];
+                string text = (node is HtmlElement) ? ((HtmlElement) node).Html : null;
 
                 switch (propertyName)
                 {
@@ -110,16 +110,16 @@ namespace qc
         /// <summary>
         /// Return a prototype appropriate to contain the information in the given node.
         /// </summary>
-        private Control GetPrototypeFromNode(MarkupNode node)
+        private ControlElement GetPrototypeFromNode(MarkupNode node)
         {
-            Control prototype = null;
+            ControlElement prototype = null;
 
-            if (node is ControlNode)
+            if (node is ControlElement)
             {
                 // Node can be used directly as the prototype.
-                prototype = ((ControlNode) node).Control;
+                prototype = (ControlElement) node;
             }
-            if (node is HtmlNode || node is NodeCollection)
+            if (node is HtmlElement || node is MarkupNodeCollection)
             {
                 // Node is HTML content, or HTML mixed with controls.
                 // Place that content into the default prototype.
@@ -135,9 +135,9 @@ namespace qc
             return prototype;
         }
 
-        private static Control DefaultPrototype()
+        private static ControlElement DefaultPrototype()
         {
-            return new Control()
+            return new ControlElement()
             {
                 ClassName = "QuickUI.Control"
             };
@@ -258,21 +258,21 @@ namespace qc
             [Test]
             public void ConvertControlToControlClass()
             {
-                Control c = new Control()
+                ControlElement control = new ControlElement()
                 {
                     ClassName = "Control",
                 };
-                c.Properties.Add("name", new HtmlNode("Simple"));
-                c.Properties.Add("content", new HtmlNode("<span id=\"Simple_content\" />", "Simple_content"));
+                control.Properties.Add("name", new HtmlElement("Simple"));
+                control.Properties.Add("content", new HtmlElement("<span id=\"Simple_content\" />", "Simple_content"));
 
-                ControlClass controlClass = new ControlClass(c);
+                ControlClass controlClass = new ControlClass(control);
                 Assert.AreEqual("Simple", controlClass.Name);
                 Assert.AreEqual("QuickUI.Control", controlClass.Prototype.ClassName);
                 Assert.IsNull(controlClass.Style);
                 Assert.IsNull(controlClass.Script);
                 Assert.AreEqual(1, controlClass.Prototype.Properties.Count);
                 Assert.IsTrue(controlClass.Prototype.Properties.ContainsKey("content"));
-                Assert.IsTrue(controlClass.Prototype.Properties["content"] is HtmlNode);
+                Assert.IsTrue(controlClass.Prototype.Properties["content"] is HtmlElement);
             }
 
             [Test]
@@ -281,12 +281,12 @@ namespace qc
                 ControlClass c = new ControlClass()
                 {
                     Name = "Simple",
-                    Prototype = new Control()
+                    Prototype = new ControlElement()
                     {
                         ClassName = "QuickUI.Control"
                     }
                 };
-                c.Prototype.Properties.Add("content", new HtmlNode("<span id=\"Simple_content\" />", "Simple_content"));
+                c.Prototype.Properties.Add("content", new HtmlElement("<span id=\"Simple_content\" />", "Simple_content"));
 
                 CompileControlAndCompareOutput("qc.Tests.simple.qui.js", c);
             }

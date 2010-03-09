@@ -12,11 +12,13 @@ namespace qc
     /// <summary>
     /// A node in Quick markup.
     /// </summary>
+    /// <remarks>
+    /// Quick markup nodes can be any one of the following subclasses:
+    /// 1) MarkupElement (which will be either an HTMLELement or ControlElement)
+    /// 2) MarkupElementCollection: A collection of Quick markup elements
+    /// </remarks>
     public abstract class MarkupNode
     {
-        // UNDONE: Push this down into HtmlNode and ControlNode
-        public string Id { get; set; }
-
         /// <summary>
         /// Return the JavaScript for this node, indenting at the given number of tabs.
         /// </summary>
@@ -28,18 +30,6 @@ namespace qc
         public virtual string EmitJavaScript()
         {
             return EmitJavaScript(0);
-        }
-
-        /// <summary>
-        /// If the node defines an ID, return the JavaScript for the
-        /// left-hand side of a variable declaration on the control class
-        /// that will use that ID. If there is no ID, return Empty.
-        /// </summary>
-        protected string EmitVariableDeclaration()
-        {
-            return (Id == null)
-                ? String.Empty
-                : String.Format("this.{0} = ", Id);
         }
 
         protected string Tabs(int tabCount)

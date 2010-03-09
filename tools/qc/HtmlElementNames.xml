@@ -2,7 +2,7 @@
 
 <!--
 
-HTMLELements.xml
+HTMLELementNames.xml
 
 HTML elements that can appear within Quick markup, which includes all standard HTML 5 elements,
 except tags that can be used *within the body* of an HTML page:

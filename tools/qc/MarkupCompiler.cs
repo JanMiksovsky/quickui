@@ -9,6 +9,10 @@ using NUnit.Framework;
 
 namespace qc
 {
+    /// <summary>
+    /// Top-level Quick markup compiler: reads markup, parses it, then generates
+    /// and outputs JavaScript and CSS.
+    /// </summary>
     public class MarkupCompiler
     {
         public static void Compile(TextReader markupReader, TextWriter jsWriter, TextWriter cssWriter)

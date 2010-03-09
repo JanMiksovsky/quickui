@@ -10,11 +10,14 @@ using NUnit.Framework;
 
 namespace qc
 {
-    public class NodeCollection : MarkupNode, IEnumerable<MarkupNode>
+    /// <summary>
+    /// A collection of Quick markup nodes.
+    /// </summary>
+    public class MarkupNodeCollection : MarkupNode, IEnumerable<MarkupNode>
     {
         private IEnumerable<MarkupNode> Items { get; set; }
 
-        public NodeCollection(IEnumerable<MarkupNode> items)
+        public MarkupNodeCollection(IEnumerable<MarkupNode> items)
         {
             this.Items = items;
         }
@@ -84,9 +87,9 @@ namespace qc
             [Test]
             public void Collection()
             {
-                NodeCollection node = new NodeCollection(new MarkupNode[] {
-                    new HtmlNode("Hi, "),
-                    new HtmlNode() {
+                MarkupNodeCollection node = new MarkupNodeCollection(new MarkupNode[] {
+                    new HtmlElement("Hi, "),
+                    new HtmlElement() {
                         Id = "content",
                         Html = "<span id=\"content\"/>"
                     }

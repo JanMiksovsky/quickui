@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 namespace qc
 {
-    public static class HtmlElements
+    public static class HtmlElementNames
     {
         public static ArrayList Elements
         {
@@ -16,7 +16,7 @@ namespace qc
             {
                 if (elements == null)
                 {
-                    elements = new ArrayList(Utilities.DeserializeXml<string[]>("qc.HtmlElements.xml"));
+                    elements = new ArrayList(Utilities.DeserializeXml<string[]>("qc.HtmlElementNames.xml"));
                 }
 
                 return elements;

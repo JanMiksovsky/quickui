@@ -9,28 +9,31 @@ using NUnit.Framework;
 
 namespace qc
 {
-    public class HtmlNode : MarkupNode
+    /// <summary>
+    /// An HTML fragment found in Quick markup.
+    /// </summary>
+    public class HtmlElement : MarkupElement
     {
         public string Html { get; set; }
-        public NodeCollection ChildNodes { get; set; }
+        public MarkupNodeCollection ChildNodes { get; set; }
 
-        public HtmlNode()
+        public HtmlElement()
         {
         }
 
-        public HtmlNode(string html)
+        public HtmlElement(string html)
         {
             this.Html = html;
         }
 
-        public HtmlNode(string html, string id) : this(html)
+        public HtmlElement(string html, string id) : this(html)
         {
             this.Id = id;
         }
 
-        public HtmlNode(IEnumerable<MarkupNode> items)
+        public HtmlElement(IEnumerable<MarkupNode> items)
         {
-            this.ChildNodes = new NodeCollection(items);
+            this.ChildNodes = new MarkupNodeCollection(items);
         }
 
         /// <summary>
@@ -80,7 +83,7 @@ namespace qc
             [Test]
             public void Text()
             {
-                HtmlNode node = new HtmlNode("Hello");
+                HtmlElement node = new HtmlElement("Hello");
                 Assert.AreEqual("\"Hello\"", node.EmitJavaScript());
             }
 
@@ -88,14 +91,14 @@ namespace qc
             [TestCase("<div><h1/><p>Hello</p></div>", Result = "\"<div><h1/><p>Hello</p></div>\"")]
             public string Html(string source)
             {
-                HtmlNode node = new HtmlNode(source);
+                HtmlElement node = new HtmlElement(source);
                 return node.EmitJavaScript();
             }
 
             [Test]
             public void HtmlWithId()
             {
-                HtmlNode node = new HtmlNode("<div id=\"foo\">Hi</div>", "foo");
+                HtmlElement node = new HtmlElement("<div id=\"foo\">Hi</div>", "foo");
                 Assert.AreEqual("this.foo = $(\"<div id=\\\"foo\\\">Hi</div>\")[0]", node.EmitJavaScript());
             }
 
@@ -103,11 +106,11 @@ namespace qc
             public void HtmlContainsHtmlWithId()
             {
                 // <div><h1/><p id="content">Hello</p></div>
-                HtmlNode node = new HtmlNode("<div />")
+                HtmlElement node = new HtmlElement("<div />")
                 {
-                    ChildNodes = new NodeCollection(new MarkupNode[] {
-                        new HtmlNode("<h1 />"),
-                        new HtmlNode("<p id=\"content\">Hello</p>", "content")
+                    ChildNodes = new MarkupNodeCollection(new MarkupNode[] {
+                        new HtmlElement("<h1 />"),
+                        new HtmlElement("<p id=\"content\">Hello</p>", "content")
                     })
                 };
                 Assert.AreEqual(
