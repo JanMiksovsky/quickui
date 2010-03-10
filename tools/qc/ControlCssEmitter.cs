@@ -13,7 +13,7 @@ namespace qc
     /// </summary>
     public static class ControlCssEmitter
     {
-        public static string EmitControlClass(Control c)
+        public static string EmitControlClass(MarkupControlClass c)
         {
             if (c.Style == null)
             {
@@ -98,7 +98,7 @@ namespace qc
         //          Any character that is NOT in this class: [\}], any number of repetitions
         //          Literal }
         //
-        static Regex findClassNames = new Regex(@"(\s*(?:/\*.*?\*/\s*)*)([^\{]*\{[^\}]*\})");
+        static Regex findClassNames = new Regex(@"(\s*(?:/\*.*?\*/\s*)*)([^\{]*\{[^\}]*\})", RegexOptions.Compiled);
 
 #if DEBUG
         [TestFixture]
@@ -107,7 +107,7 @@ namespace qc
             [Test]
             public void ControlWithNoScript()
             {
-                Control c = new Control() {
+                MarkupControlClass c = new MarkupControlClass() {
                     // BaseClassName = "Control",
                     Name = "Foo"
                 };

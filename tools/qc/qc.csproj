@@ -50,12 +50,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application.cs" />
-    <Compile Include="Control.cs" />
-    <Compile Include="ControlElement.cs" />
-    <Compile Include="HtmlElement.cs" />
     <Compile Include="HtmlElementNames.cs" />
+    <Compile Include="MarkupControlClass.cs" />
+    <Compile Include="MarkupControlInstance.cs" />
     <Compile Include="MarkupElement.cs" />
-    <Compile Include="MarkupNodeCollection.cs" />
+    <Compile Include="MarkupElementCollection.cs" />
+    <Compile Include="MarkupHtmlElement.cs" />
     <Compile Include="MarkupParser.cs" />
     <Compile Include="CompilerException.cs" />
     <Compile Include="MarkupCompiler.cs" />

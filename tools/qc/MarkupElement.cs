@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace qc
 {
@@ -20,6 +22,40 @@ namespace qc
     public abstract class MarkupElement : MarkupNode
     {
         public string Id { get; set; }
+
+        /// <summary>
+        /// Parse the content at the given XNode (of unknown type).
+        /// </summary>
+        public static MarkupElement Parse(XNode node)
+        {
+            switch (node.NodeType)
+            {
+                case XmlNodeType.CDATA:
+                    return new MarkupHtmlElement((XCData) node);
+
+                case XmlNodeType.Element:
+                    return HtmlElementNames.IsHtmlElement((XElement) node)
+                        ? new MarkupHtmlElement((XElement) node)
+                        : (MarkupElement) new MarkupControlInstance((XElement) node);
+
+                case XmlNodeType.Text:
+                    return new MarkupHtmlElement((XText) node);
+
+                default:
+                    throw new CompilerException(
+                        String.Format("Couldn't parse unexpected XML element <{0}>.", node));
+            }
+        }
+
+
+        /// <summary>
+        /// Return true if the given string is valid as a public ID for an element or control.
+        /// This returns false if the id starts with an underscore ("_").
+        /// </summary>
+        protected bool IsPublicId(string id)
+        {
+            return !id.StartsWith("_");
+        }
 
         /// <summary>
         /// If the node defines an ID, return the JavaScript for the

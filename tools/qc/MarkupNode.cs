@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
+using System.Xml;
+using System.Xml.Linq;
 
 #if DEBUG
 using NUnit.Framework;
@@ -13,6 +16,9 @@ namespace qc
     /// A node in Quick markup.
     /// </summary>
     /// <remarks>
+    /// Markup node classes know how to parse themselves from Quick markup,
+    /// and can generate up a JavaScript (and CSS) representation of themselves.
+    /// 
     /// Quick markup nodes can be any one of the following subclasses:
     /// 1) MarkupElement (which will be either an HTMLELement or ControlElement)
     /// 2) MarkupElementCollection: A collection of Quick markup elements
@@ -32,26 +38,40 @@ namespace qc
             return EmitJavaScript(0);
         }
 
-        public static string Tabs(int tabCount)
+        /// <summary>
+        /// Parse a collection of XNodes (of unknown type).
+        /// </summary>
+        public static MarkupNode Parse(IEnumerable<XNode> xNodes)
         {
-            StringBuilder output = new StringBuilder();
-            for (int i = 0; i < tabCount; i++)
+            if (xNodes == null || xNodes.Count() == 0)
             {
-                output.Append('\t');
+                return null;
             }
-            return output.ToString();
-        }
 
-        protected string IndentLine(string s, int tabCount)
-        {
-            StringBuilder output = new StringBuilder();
-            for (int i = 0; i < tabCount; i++)
+            if (xNodes.Count() == 1)
             {
-                output.Append('\t');
+                // Parse singleton.
+                return MarkupHtmlElement.Parse(xNodes.ToArray()[0]);
             }
-            output.Append(s);
-            output.Append('\n');
-            return output.ToString();
+
+            // Parse each item in the collection.
+            IEnumerable<MarkupElement> elements = xNodes.Select(
+                                    xNode => MarkupHtmlElement.Parse(xNode));
+
+            // If the nodes are all HTML, and there are no Ids below this point,
+            // the nodes can be collapsed to a single node.
+            // UNDONE: Reduce consecutive HTML nodes, even if there are other nodes types,
+            // or HTML nodes with Ids, too.
+            if (elements.All(element =>
+                element is MarkupHtmlElement
+                && ((MarkupHtmlElement) element).Id == null
+                && ((MarkupHtmlElement) element).ChildNodes == null))
+            {
+                return new MarkupHtmlElement(elements.Concatenate(node => ((MarkupHtmlElement) node).Html));
+            }
+
+            // Return a heterogenous collection.
+            return new MarkupElementCollection(elements);
         }
 
         /// <summary>
@@ -115,6 +135,25 @@ namespace qc
             stringBuilder.Append('"');
 
             return stringBuilder.ToString();
+        }
+
+        protected string IndentLine(string s, int tabCount)
+        {
+            StringBuilder output = new StringBuilder();
+            output.Append(Tabs(tabCount));
+            output.Append(s);
+            output.Append('\n');
+            return output.ToString();
+        }
+
+        protected string Tabs(int tabCount)
+        {
+            StringBuilder output = new StringBuilder();
+            for (int i = 0; i < tabCount; i++)
+            {
+                output.Append('\t');
+            }
+            return output.ToString();
         }
 
 #if DEBUG

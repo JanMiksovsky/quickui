@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 #if DEBUG
 using NUnit.Framework;
@@ -11,13 +12,13 @@ using NUnit.Framework;
 namespace qc
 {
     /// <summary>
-    /// A collection of Quick markup nodes.
+    /// A collection of Quick markup elements (HTML and control instances).
     /// </summary>
-    public class MarkupNodeCollection : MarkupNode, IEnumerable<MarkupNode>
+    public class MarkupElementCollection : MarkupNode, IEnumerable<MarkupElement>
     {
-        private IEnumerable<MarkupNode> Items { get; set; }
+        private IEnumerable<MarkupElement> Items { get; set; }
 
-        public MarkupNodeCollection(IEnumerable<MarkupNode> items)
+        public MarkupElementCollection(IEnumerable<MarkupElement> items)
         {
             this.Items = items;
         }
@@ -47,10 +48,10 @@ namespace qc
             StringBuilder code = new StringBuilder();
             int nodeCount = Items.Count();
             int i = 0;
-            foreach (MarkupNode node in Items)
+            foreach (MarkupElement element in Items)
             {
                 bool isLast = (++i == nodeCount);
-                code.Append(EmitNodeInCollection(node, isLast, indentLevel));
+                code.Append(EmitNodeInCollection(element, isLast, indentLevel));
             }
 
             return code.ToString();
@@ -59,7 +60,7 @@ namespace qc
         /// <summary>
         /// Return the JavaScript to generate a single node.
         /// </summary>
-        private string EmitNodeInCollection(MarkupNode node, bool isLast, int indentLevel)
+        private string EmitNodeInCollection(MarkupElement node, bool isLast, int indentLevel)
         {
             return Template.Format(
                 "{Tabs}{Node}{Comma}\n",
@@ -75,7 +76,7 @@ namespace qc
             return Items.GetEnumerator();
         }
 
-        public IEnumerator<MarkupNode> GetEnumerator()
+        public IEnumerator<MarkupElement> GetEnumerator()
         {
             return Items.GetEnumerator();
         }
@@ -87,18 +88,27 @@ namespace qc
             [Test]
             public void Collection()
             {
-                MarkupNodeCollection node = new MarkupNodeCollection(new MarkupNode[] {
-                    new HtmlElement("Hi, "),
-                    new HtmlElement() {
-                        Id = "content",
-                        Html = "<span id=\"content\"/>"
-                    }
-                });
-
+                XElement element = new XElement("Foo",
+                    new XElement("Bar",
+                        new XAttribute("id", "bar"),
+                        "Control content"),
+                    new XElement("p", "paragraph")
+                );
+                MarkupNode node = MarkupNode.Parse(element.Nodes());
+                Assert.IsInstanceOf<MarkupElementCollection>(node);
+                MarkupElementCollection collection = (MarkupElementCollection) node;
+                Assert.IsNotNull(collection);
+                Assert.AreEqual(2, collection.Count());
+                List<MarkupElement> items = new List<MarkupElement>(collection);
+                Assert.IsInstanceOf<MarkupControlInstance>(items[0]);
+                Assert.IsInstanceOf<MarkupHtmlElement>(items[1]);
                 Assert.AreEqual(
                     "[\n" +
-                    "\t\"Hi, \",\n" +
-                    "\tthis.content = $(\"<span id=\\\"content\\\"/>\")[0]\n" +
+                    "\tthis.bar = QuickUI.Control.create(Bar, {\n" +
+                    "\t\t\"content\": \"Control content\",\n" +
+                    "\t\t\"id\": \"bar\"\n" +
+                    "\t}),\n" +
+                    "\t\"<p>paragraph</p>\"\n" +
                     "]",
                     node.EmitJavaScript());
             }

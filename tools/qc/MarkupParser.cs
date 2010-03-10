@@ -25,7 +25,7 @@ namespace qc
             @"<(?<tag>script|style)>(?:(?:\s*<!\[CDATA\[(?'contents'.*?)\]\]>\s*)|(?'contents'.*?))</(?:\k<tag>)>",
             RegexOptions.Compiled | RegexOptions.Singleline);
 
-        public static Control Parse(TextReader markupReader)
+        public static MarkupControlClass Parse(TextReader markupReader)
         {
             return Parse(markupReader.ReadToEnd());
         }
@@ -33,7 +33,7 @@ namespace qc
         /// <summary>
         /// Return a control class definition defined in the given markup.
         /// </summary>
-        public static Control Parse(string markup)
+        public static MarkupControlClass Parse(string markup)
         {
             // Preprocess to extract any script and/or style tags.
             string script;
@@ -41,7 +41,7 @@ namespace qc
             string processed = PreprocessMarkup(markup, out script, out style);
 
             // Parse the remaining source.
-            Control c = ControlParser.ParseControlClass(processed);
+            MarkupControlClass c = ControlParser.ParseControlClass(processed);
 
             // Double-check the (unlikely) specification of script or style that
             // may have been set via attributes on the top-level <Control> element.

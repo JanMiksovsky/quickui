@@ -17,7 +17,7 @@ namespace qc
     {
         public static void Compile(TextReader markupReader, TextWriter jsWriter, TextWriter cssWriter)
         {
-            Control control = MarkupParser.Parse(markupReader);
+            MarkupControlClass control = MarkupParser.Parse(markupReader);
 
             // Only write out the CSS if the caller asked for it.
             if (cssWriter != null)

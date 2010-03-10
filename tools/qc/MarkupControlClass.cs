@@ -13,21 +13,21 @@ namespace qc
     /// <summary>
     /// The parsed representation of a Quick control class declaration.
     /// </summary>
-    public class Control
+    public class MarkupControlClass : MarkupNode
     {
         public string Name { get; set; }
         public string Script { get; set; }
         public string Style { get; set; }
-        public ControlElement Prototype { get; set; }
+        public MarkupControlInstance Prototype { get; set; }
 
-        public Control()
+        public MarkupControlClass()
         {
         }
 
         /// <summary>
         /// Create a control class.
         /// </summary>
-        public Control(ControlElement c)
+        public MarkupControlClass(MarkupControlInstance c)
         {
             // Ensure the root element actually is "Control".
             if (c.ClassName != "Control")
@@ -58,12 +58,12 @@ namespace qc
         /// We translate those key properties into the relevant members of the
         /// ControlClass type.
         /// </remarks>
-        private void ExtractClassProperties(ControlElement control)
+        private void ExtractClassProperties(MarkupControlInstance control)
         {
             foreach (string propertyName in control.Properties.Keys)
             {
                 MarkupNode node = control.Properties[propertyName];
-                string text = (node is HtmlElement) ? ((HtmlElement) node).Html : null;
+                string text = (node is MarkupHtmlElement) ? ((MarkupHtmlElement) node).Html : null;
 
                 switch (propertyName)
                 {
@@ -110,16 +110,16 @@ namespace qc
         /// <summary>
         /// Return a prototype appropriate to contain the information in the given node.
         /// </summary>
-        private ControlElement GetPrototypeFromNode(MarkupNode node)
+        private MarkupControlInstance GetPrototypeFromNode(MarkupNode node)
         {
-            ControlElement prototype = null;
+            MarkupControlInstance prototype = null;
 
-            if (node is ControlElement)
+            if (node is MarkupControlInstance)
             {
                 // Node can be used directly as the prototype.
-                prototype = (ControlElement) node;
+                prototype = (MarkupControlInstance) node;
             }
-            if (node is HtmlElement || node is MarkupNodeCollection)
+            if (node is MarkupHtmlElement || node is MarkupElementCollection)
             {
                 // Node is HTML content, or HTML mixed with controls.
                 // Place that content into the default prototype.
@@ -135,9 +135,9 @@ namespace qc
             return prototype;
         }
 
-        private static ControlElement DefaultPrototype()
+        private static MarkupControlInstance DefaultPrototype()
         {
-            return new ControlElement()
+            return new MarkupControlInstance()
             {
                 ClassName = "QuickUI.Control"
             };
@@ -151,9 +151,9 @@ namespace qc
         /// <summary>
         /// Return the JavaScript for this control class.
         /// </summary>
-        public string EmitJavaScript()
+        public override string EmitJavaScript(int indentLevel)
         {
-            string renderFunction = EmitRenderFunction(1);
+            string renderFunction = EmitRenderFunction(indentLevel + 1);
             return Template.Format(
                 "//\n" +
                 "// {ClassName}\n" +
@@ -185,7 +185,7 @@ namespace qc
                         "{Tabs}\t});\n" +
                     "{Tabs}}\n",
                     new {
-                        Tabs = MarkupNode.Tabs(indentLevel),
+                        Tabs = Tabs(indentLevel),
                         BaseClassName = Prototype.ClassName,
                         BaseClassProperties = EmitBaseClassProperties(indentLevel + 2)
                     });
@@ -221,7 +221,7 @@ namespace qc
                 "{Tabs}\"{PropertyName}\": {PropertyValue}{Comma}\n",
                 new
                 {
-                    Tabs = MarkupNode.Tabs(indentLevel),
+                    Tabs = Tabs(indentLevel),
                     PropertyName = propertyName,
                     PropertyValue = Prototype.Properties[propertyName].EmitJavaScript(indentLevel),
                     Comma = isLast ? String.Empty : ","
@@ -247,45 +247,45 @@ namespace qc
 
 #if DEBUG
         [TestFixture]
-        public class Tests
+        public new class Tests
         {
             [Test]
             public void ConvertControlToControlClass()
             {
-                ControlElement control = new ControlElement()
+                MarkupControlInstance control = new MarkupControlInstance()
                 {
                     ClassName = "Control",
                 };
-                control.Properties.Add("name", new HtmlElement("Simple"));
-                control.Properties.Add("content", new HtmlElement("<span id=\"Simple_content\" />", "Simple_content"));
+                control.Properties.Add("name", new MarkupHtmlElement("Simple"));
+                control.Properties.Add("content", new MarkupHtmlElement("<span id=\"Simple_content\" />", "Simple_content"));
 
-                Control controlClass = new Control(control);
+                MarkupControlClass controlClass = new MarkupControlClass(control);
                 Assert.AreEqual("Simple", controlClass.Name);
                 Assert.AreEqual("QuickUI.Control", controlClass.Prototype.ClassName);
                 Assert.IsNull(controlClass.Style);
                 Assert.IsNull(controlClass.Script);
                 Assert.AreEqual(1, controlClass.Prototype.Properties.Count);
                 Assert.IsTrue(controlClass.Prototype.Properties.ContainsKey("content"));
-                Assert.IsTrue(controlClass.Prototype.Properties["content"] is HtmlElement);
+                Assert.IsTrue(controlClass.Prototype.Properties["content"] is MarkupHtmlElement);
             }
 
             [Test]
             public void SimpleControl()
             {
-                Control c = new Control()
+                MarkupControlClass c = new MarkupControlClass()
                 {
                     Name = "Simple",
-                    Prototype = new ControlElement()
+                    Prototype = new MarkupControlInstance()
                     {
                         ClassName = "QuickUI.Control"
                     }
                 };
-                c.Prototype.Properties.Add("content", new HtmlElement("<span id=\"Simple_content\" />", "Simple_content"));
+                c.Prototype.Properties.Add("content", new MarkupHtmlElement("<span id=\"Simple_content\" />", "Simple_content"));
 
                 CompileControlAndCompareOutput("qc.Tests.simple.qui.js", c);
             }
 
-            static void CompileControlAndCompareOutput(string expectedCompilationFileName, Control control)
+            static void CompileControlAndCompareOutput(string expectedCompilationFileName, MarkupControlClass control)
             {
                 string compilation = control.EmitJavaScript();
                 string expectedCompilation = Utilities.GetEmbeddedFileContent(expectedCompilationFileName);
