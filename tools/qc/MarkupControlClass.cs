@@ -219,33 +219,25 @@ namespace qc
         /// This covers virtually all the properties (except className) which the
         /// developer will set on a control.
         /// </remarks>
-        /// UNDONE: This function has evolved to be nearly identical to code in ControlNode,
+        /// UNDONE: This function has evolved to be nearly identical to code in MarkupControlInstance,
         /// so those functions should probably be refactored and shared.
         private string EmitBaseClassProperties(int indentLevel)
         {
             // UNDONE: Write out .content() property first?
-            StringBuilder code = new StringBuilder();
-            int propertyCount = Prototype.Properties.Keys.Count;
-            int i = 0;
-            foreach (string propertyName in Prototype.Properties.Keys)
-            {
-                bool isLast = (++i == propertyCount);
-                code.Append(EmitBaseClassProperty(propertyName, isLast, indentLevel));
-            }
-            return code.ToString();
+            return Prototype.Properties.Keys.Concatenate(propertyName =>
+                EmitBaseClassProperty(propertyName, indentLevel), ",\n") + "\n";
         }
 
-        private string EmitBaseClassProperty(string propertyName, bool isLast, int indentLevel)
+        private string EmitBaseClassProperty(string propertyName, int indentLevel)
         {
-             return Template.Format(
-                "{Tabs}\"{PropertyName}\": {PropertyValue}{Comma}\n",
-                new
-                {
-                    Tabs = Tabs(indentLevel),
-                    PropertyName = propertyName,
-                    PropertyValue = Prototype.Properties[propertyName].JavaScript(indentLevel),
-                    Comma = isLast ? String.Empty : ","
-                });
+            return Template.Format(
+               "{Tabs}\"{PropertyName}\": {PropertyValue}",
+               new
+               {
+                   Tabs = Tabs(indentLevel),
+                   PropertyName = propertyName,
+                   PropertyValue = Prototype.Properties[propertyName].JavaScript(indentLevel)
+               });
         }
 
         /// <summary>

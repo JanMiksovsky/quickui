@@ -17,7 +17,25 @@ namespace qc
         /// </summary>
         public static string Concatenate<T>(this IEnumerable<T> list, Func<T, string> f)
         {
-            return list.Aggregate(new StringBuilder(), (s, item) => s.Append(f(item))).ToString();
+            return list.Concatenate(f, String.Empty);
+        }
+
+        /// <summary>
+        /// Map each list item to a string and concatenate the results, separating
+        /// the instances with the given separator.
+        /// </summary>
+        public static string Concatenate<T>(this IEnumerable<T> list, Func<T, string> f, string separator)
+        {
+            StringBuilder stringBuilder = list.Aggregate(new StringBuilder(),
+                (s, item) => {
+                    if (s.Length > 0)
+                    {
+                        s.Append(separator);
+                    }
+                    return s.Append(f(item));
+                }
+            );
+            return stringBuilder.ToString();
         }
 
         /// <summary>

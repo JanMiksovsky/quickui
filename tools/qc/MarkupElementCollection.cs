@@ -42,32 +42,19 @@ namespace qc
         /// </summary>
         public string EmitItems(int indentLevel)
         {
-            // We have to jump through some hoops to ensure the last element of
-            // the collection does *not* get a comma after it. This means we can't
-            // do a simple LINQ query, so we roll the iteration by hand.
-            StringBuilder code = new StringBuilder();
-            int nodeCount = Items.Count();
-            int i = 0;
-            foreach (MarkupElement element in Items)
-            {
-                bool isLast = (++i == nodeCount);
-                code.Append(EmitNodeInCollection(element, isLast, indentLevel));
-            }
-
-            return code.ToString();
+            return Items.Concatenate(element => EmitElementInCollection(element, indentLevel), ",\n") + "\n";
         }
 
         /// <summary>
         /// Return the JavaScript to generate a single node.
         /// </summary>
-        private string EmitNodeInCollection(MarkupElement node, bool isLast, int indentLevel)
+        private string EmitElementInCollection(MarkupElement element, int indentLevel)
         {
             return Template.Format(
-                "{Tabs}{Node}{Comma}\n",
+                "{Tabs}{Element}",
                 new {
                     Tabs = Tabs(indentLevel),
-                    Node = node.JavaScript(indentLevel),
-                    Comma = isLast ? String.Empty : ","
+                    Element = element.JavaScript(indentLevel)
                 });
         }
 
