@@ -98,7 +98,7 @@ namespace qc
         /// <summary>
         /// Return the JavaScript for the given HTML node.
         /// </summary>
-        public override string EmitJavaScript(int indentLevel)
+        public override string JavaScript(int indentLevel)
         {
             string html = EscapeJavaScript(Html);
 
@@ -171,7 +171,7 @@ namespace qc
                 MarkupHtmlElement node = new MarkupHtmlElement(element);
                 Assert.AreEqual("foo", node.Id);
                 Assert.AreEqual("<div id=\"foo\">Hi</div>", node.Html);
-                Assert.AreEqual("this.foo = $(\"<div id=\\\"foo\\\">Hi</div>\")[0]", node.EmitJavaScript());
+                Assert.AreEqual("this.foo = $(\"<div id=\\\"foo\\\">Hi</div>\")[0]", node.JavaScript());
             }
 
             [Test]

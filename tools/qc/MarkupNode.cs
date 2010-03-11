@@ -16,8 +16,9 @@ namespace qc
     /// A node in Quick markup.
     /// </summary>
     /// <remarks>
-    /// Markup node classes know how to parse themselves from Quick markup,
-    /// and can generate up a JavaScript (and CSS) representation of themselves.
+    /// Each markup node class is essentially a mini compiler: it can
+    /// parse a specific type of Quick markup (XML) element, and generate
+    /// JavaScript code that can construct that element at run-time.
     /// 
     /// Quick markup nodes can be any one of the following subclasses:
     /// 1) MarkupElement (which will be either an HTMLELement or ControlElement)
@@ -28,14 +29,14 @@ namespace qc
         /// <summary>
         /// Return the JavaScript for this node, indenting at the given number of tabs.
         /// </summary>
-        public abstract string EmitJavaScript(int indentLevel);
+        public abstract string JavaScript(int indentLevel);
 
         /// <summary>
         /// Return the JavaScript for this node.
         /// </summary>
-        public virtual string EmitJavaScript()
+        public virtual string JavaScript()
         {
-            return EmitJavaScript(0);
+            return JavaScript(0);
         }
 
         /// <summary>

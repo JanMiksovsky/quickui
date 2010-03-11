@@ -5,6 +5,7 @@ using System.Text;
 using System.Linq;
 
 #if DEBUG
+using System.Xml.Linq;
 using NUnit.Framework;
 #endif
 
@@ -24,19 +25,31 @@ namespace qc
         {
         }
 
-        /// <summary>
-        /// Create a control class.
-        /// </summary>
-        public MarkupControlClass(MarkupControlInstance c)
+        public MarkupControlClass(MarkupControlInstance control)
+            : this(control, null, null)
         {
-            // Ensure the root element actually is "Control".
-            if (c.ClassName != "Control")
-            {
-                throw new CompilerException(
-                    String.Format("Expected root element <Control>, but found <{0}>.", c.ClassName));
-            }
+        }
 
-            ExtractClassProperties(c);
+        /// <summary>
+        /// Elevate the specific control instance to a control class declaration.
+        /// </summary>
+        /// <remarks>
+        /// The simplest way to parse the class definition is to parse it just
+        /// like an instance of a control, then pull out specific properties
+        /// for the name, prototype, script, and style.
+        /// 
+        /// The script and style properties are those which were separated out
+        /// by the preprocessor before the control instance was parsed. These
+        /// must now be folded into the control class declaration.
+        /// </remarks>
+        public MarkupControlClass(MarkupControlInstance c, string script, string style)
+        {
+            // Copy over the script and style separated out by the preprocessor.
+            Script = script;
+            Style = style;
+
+            // Read the explicitly defined class properties.
+            ExtractExplicitClassProperties(c);
 
             // Ensure a "name" attribute was specified for the root tag.
             if (String.IsNullOrEmpty(this.Name))
@@ -50,15 +63,22 @@ namespace qc
         }
 
         /// <summary>
-        /// Extract class properties.
+        /// Extract explicitly declared class properties.
         /// </summary>
         /// <remarks>
         /// The parser will read a .qui file as if the whole thing were an instance
         /// of a class called Control with properties like "name" and "prototype".
         /// We translate those key properties into the relevant members of the
         /// ControlClass type.
+        /// 
+        /// Note: At this point, the script and style tags are highly unlikely
+        /// to appear, having been previously separated out by the preprocessor.
+        /// However, for completeness, we check here for those properties. The
+        /// only way they could get this far were if they were set as attributes
+        /// of the top-level Control node: <Control script="alert('Hi');"/> which
+        /// would be pretty odd.
         /// </remarks>
-        private void ExtractClassProperties(MarkupControlInstance control)
+        private void ExtractExplicitClassProperties(MarkupControlInstance control)
         {
             foreach (string propertyName in control.Properties.Keys)
             {
@@ -143,15 +163,15 @@ namespace qc
             };
         }
 
-        public string EmitCss()
+        public string Css()
         {
-            return ControlCssEmitter.EmitControlClass(this);
+            return CssProcessor.CssForClass(this);
         }
 
         /// <summary>
         /// Return the JavaScript for this control class.
         /// </summary>
-        public override string EmitJavaScript(int indentLevel)
+        public override string JavaScript(int indentLevel)
         {
             string renderFunction = EmitRenderFunction(indentLevel + 1);
             return Template.Format(
@@ -223,7 +243,7 @@ namespace qc
                 {
                     Tabs = Tabs(indentLevel),
                     PropertyName = propertyName,
-                    PropertyValue = Prototype.Properties[propertyName].EmitJavaScript(indentLevel),
+                    PropertyValue = Prototype.Properties[propertyName].JavaScript(indentLevel),
                     Comma = isLast ? String.Empty : ","
                 });
         }
@@ -249,6 +269,41 @@ namespace qc
         [TestFixture]
         public new class Tests
         {
+            [Test]
+            public void ControlClass()
+            {
+                XElement element = new XElement("Control",
+                    new XAttribute("name", "Minimal")
+                );
+                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
+                Assert.AreEqual("Minimal", c.Name);
+                Assert.AreEqual("QuickUI.Control", c.Prototype.ClassName);
+                Assert.AreEqual(0, c.Prototype.Properties.Count);
+            }
+
+            [Test]
+            public void ControlClassWithImplicitPrototype()
+            {
+                XElement element = new XElement("Control",
+                    new XAttribute("name", "Foo"),
+                    new XElement("Bar",
+                        new XAttribute("content", "Hello")
+                    )
+                );
+                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
+                MarkupControlInstance prototype = c.Prototype;
+                Assert.AreEqual("Bar", prototype.ClassName);
+                Assert.AreEqual("Hello", ((MarkupHtmlElement) prototype.Properties["content"]).Html);
+            }
+
+            [Test]
+            [ExpectedException(typeof(CompilerException))]
+            public void MissingClassName()
+            {
+                XElement element = new XElement("Control");
+                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
+            }
+            
             [Test]
             public void ConvertControlToControlClass()
             {
@@ -285,9 +340,9 @@ namespace qc
                 CompileControlAndCompareOutput("qc.Tests.simple.qui.js", c);
             }
 
-            static void CompileControlAndCompareOutput(string expectedCompilationFileName, MarkupControlClass control)
+            private static void CompileControlAndCompareOutput(string expectedCompilationFileName, MarkupControlClass control)
             {
-                string compilation = control.EmitJavaScript();
+                string compilation = control.JavaScript();
                 string expectedCompilation = Utilities.GetEmbeddedFileContent(expectedCompilationFileName);
                 Assert.AreEqual(Utilities.NormalizeLineEndings(expectedCompilation),
                     Utilities.NormalizeLineEndings(compilation));

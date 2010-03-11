@@ -13,7 +13,7 @@ namespace qc
         {
             try
             {
-                MarkupCompiler.Tests tests = new MarkupCompiler.Tests();
+                MarkupFileCompiler.Tests tests = new MarkupFileCompiler.Tests();
                 tests.CompareCompilation("qc.Tests.comprehensive.qui.js", "qc.Tests.comprehensive.qui.css", "qc.Tests.comprehensive.qui");
                 return;
 
@@ -22,7 +22,7 @@ namespace qc
                 string jsFileName;
                 string cssFileName;
                 ArgumentProcessor.GetFileNames(args, out sourceFileName, out jsFileName, out cssFileName);
-                MarkupCompiler.Compile(sourceFileName, jsFileName, cssFileName);
+                MarkupFileCompiler.Compile(sourceFileName, jsFileName, cssFileName);
             }
             catch (Exception e)
             {

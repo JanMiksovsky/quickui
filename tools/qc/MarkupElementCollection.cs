@@ -26,7 +26,7 @@ namespace qc
         /// <summary>
         /// Return the JavaScript for the collection as an array.
         /// </summary>
-        public override string EmitJavaScript(int indentLevel)
+        public override string JavaScript(int indentLevel)
         {
             return Template.Format(
                 "[\n{Items}{Tabs}]",
@@ -66,7 +66,7 @@ namespace qc
                 "{Tabs}{Node}{Comma}\n",
                 new {
                     Tabs = Tabs(indentLevel),
-                    Node = node.EmitJavaScript(indentLevel),
+                    Node = node.JavaScript(indentLevel),
                     Comma = isLast ? String.Empty : ","
                 });
         }
@@ -110,7 +110,7 @@ namespace qc
                     "\t}),\n" +
                     "\t\"<p>paragraph</p>\"\n" +
                     "]",
-                    node.EmitJavaScript());
+                    node.JavaScript());
             }
         }
 #endif

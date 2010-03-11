@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -10,93 +13,260 @@ using NUnit.Framework;
 namespace qc
 {
     /// <summary>
-    /// Top-level Quick markup compiler: reads markup, parses it, then generates
-    /// and outputs JavaScript and CSS.
+    /// Compiles a Quick markup document (the contents of a .qui file)
+    /// and returns the control class declaration it contains.
     /// </summary>
-    public class MarkupCompiler
+    /// <remarks>
+    /// This class handles parsing the top-level <Control/> element,
+    /// and its child <prototype/>, <style/>, and <script/> elements.
+    /// It's responsible for verifying that the markup is generally
+    /// well-formed at this outermost level.
+    /// </remarks>
+    public static class MarkupCompiler
     {
-        public static void Compile(TextReader markupReader, TextWriter jsWriter, TextWriter cssWriter)
+        private static Regex regexTags = new Regex(
+            @"<(?<tag>script|style)>(?:(?:\s*<!\[CDATA\[(?'contents'.*?)\]\]>\s*)|(?'contents'.*?))</(?:\k<tag>)>",
+            RegexOptions.Compiled | RegexOptions.Singleline);
+
+        public static MarkupControlClass Compile(TextReader markupReader)
         {
-            MarkupControlClass control = MarkupParser.Parse(markupReader);
-
-            // Only write out the CSS if the caller asked for it.
-            if (cssWriter != null)
-            {
-                cssWriter.Write(control.EmitCss());
-            }
-
-            jsWriter.Write(control.EmitJavaScript());
+            return Compile(markupReader.ReadToEnd());
         }
 
-        public static void Compile(string sourceFileName, string jsFileName, string cssFileName)
+        /// <summary>
+        /// Parse the Quick markup document.
+        /// </summary>
+        public static MarkupControlClass Compile(string markup)
         {
-            // Map file names to reader/writers.
-            using (TextReader sourceReader = GetReader(sourceFileName, Console.In))
+            // Preprocess to extract any script and/or style tags.
+            string script;
+            string style;
+            string processed = PreprocessMarkup(markup, out script, out style);
+
+            // Parse the remaining (processed) source.
+            XElement controlElement = GetControlElement(processed);
+            MarkupControlInstance controlInstance = new MarkupControlInstance(controlElement);
+            MarkupControlClass controlClass = new MarkupControlClass(controlInstance, script, style);
+
+            return controlClass;
+        }
+
+        /// <summary>
+        /// Read the markup as XML and return the <Control/> element.
+        /// </summary>
+        private static XElement GetControlElement(string markup)
+        {
+            StringReader markupReader = new StringReader(markup);
+            XmlReaderSettings xmlReaderSettings = new XmlReaderSettings
             {
-                using (TextWriter jsWriter = GetWriter(jsFileName, Console.Out),
-                        cssWriter = GetWriter(cssFileName, null))
+                IgnoreComments = true,
+                IgnoreProcessingInstructions = true,
+                IgnoreWhitespace = true
+            };
+            XmlReader xmlReader = XmlReader.Create(markupReader, xmlReaderSettings);
+            XDocument document = XDocument.Load(xmlReader);
+            XElement controlElement = document.Element("Control");
+
+            // Ensure the root element actually is "Control".
+            if (controlElement == null)
+            {
+                throw new CompilerException(
+                    String.Format("The root element of a Quick markup file must be a <Control> element."));
+            }
+            
+            return controlElement;
+        }
+
+        /// <summary>
+        /// Return the contents of the given Quick markup with the
+        /// contents of the <script/> and <style/> elements (if present) removed
+        /// and handed back separately.
+        /// </summary>
+        private static string PreprocessMarkup(string markup, out string script, out string style)
+        {
+            StringBuilder source = new StringBuilder(markup.Length);
+            script = null;
+            style = null;
+
+            int position = 0;
+            foreach (Match match in regexTags.Matches(markup))
+            {
+                string tag = match.Groups["tag"].Value;
+                string contents = match.Groups["contents"].Value;
+                switch (tag)
                 {
-                    Compile(sourceReader, jsWriter, cssWriter);
+                    case "script":
+                        VerifyPropertyIsNull(tag, script);
+                        script = contents;
+                        break;
+
+                    case "style":
+                        VerifyPropertyIsNull(tag, style);
+                        style = contents;
+                        break;
                 }
+
+                if (match.Index > position)
+                {
+                    // Copy over everything up to the start of the match.
+                    source.Append(markup.Substring(position, match.Index - position));
+                }
+                position = match.Index + match.Length;
             }
+
+            // Copy over everything after the last match.
+            source.Append(markup.Substring(position));
+            return source.ToString();
         }
 
-        static TextReader GetReader(string fileName, TextReader defaultReader)
+        /// <summary>
+        /// Throw an exception if the given control property is not null.
+        /// </summary>
+        /// <remarks>
+        /// E.g., you can't set the <script/> tag more than once per control.
+        /// </remarks>
+        private static void VerifyPropertyIsNull(string propertyName, object propertyValue)
         {
-            return String.IsNullOrEmpty(fileName) ?
-                defaultReader :
-                new StreamReader(fileName);
-        }
-
-        static TextWriter GetWriter(string fileName, TextWriter defaultWriter)
-        {
-            return String.IsNullOrEmpty(fileName) ?
-                defaultWriter :
-                new StreamWriter(fileName);
+            if (propertyValue != null)
+            {
+                throw new CompilerException(
+                    String.Format("The \"{0}\" property can't be set more than once.", propertyName));
+            }
         }
 
 #if DEBUG
         [TestFixture]
-        public class Tests
+        public class ExtractionTests
         {
-            [TestCase("qc.Tests.simple.qui.js", null, "qc.Tests.simple.qui")]
-            [TestCase("qc.Tests.content.qui.js", null, "qc.Tests.content.qui")]
-            [TestCase("qc.Tests.simplehost.qui.js", null, "qc.Tests.simplehost.qui")]
-            [TestCase("qc.Tests.comprehensive.qui.js", "qc.Tests.comprehensive.qui.css", "qc.Tests.comprehensive.qui")]
-            [TestCase("qc.Tests.entities.qui.js", null, "qc.Tests.entities.qui")]
-            public void CompareCompilation(string fileNameExpectedJs, string fileNameExpectedCss, string fileNameSource)
+            [Test]
+            public void Empty()
             {
-                StreamReader sourceReader = Utilities.GetEmbeddedFileReader(fileNameSource);
-                StringWriter jsWriter = new StringWriter();
-                StringWriter cssWriter = (fileNameExpectedCss == null)
-                    ? null
-                    : new StringWriter();
+                string markup = @"<Control name='foo'/>";
+                string source = markup;
+                CheckExtraction(markup, source, null, null);
+            }
 
-                Compile(sourceReader, jsWriter, cssWriter);
+            [Test]
+            public void PrototypeImplicit()
+            {
+                string markup = @"<Control name='foo'>Hello</Control>";
+                string source = markup;
+                CheckExtraction(markup, source, null, null);
+            }
 
-                string expectedJs = Utilities.GetEmbeddedFileContent(fileNameExpectedJs);
-                string compiledJs = jsWriter.ToString();
-                Assert.AreEqual(NormalizeLineEndings(expectedJs), NormalizeLineEndings(compiledJs));
+            [Test]
+            public void PrototypeExplicit()
+            {
+                string markup = @"<Control name='foo'><prototype>Hello</prototype></Control>";
+                string source = markup;
+                CheckExtraction(markup, source, null, null);
+            }
 
-                if (fileNameExpectedCss != null)
+            [Test]
+            public void Script()
+            {
+                string markup = @"<Control name='foo'>Hello<script>alert('Hi');</script></Control>";
+                string source = @"<Control name='foo'>Hello</Control>";
+                string script = @"alert('Hi');";
+                CheckExtraction(markup, source, script, null);
+            }
+
+            [Test]
+            public void ScriptCData()
+            {
+                string markup = @"<Control name='foo'>Hello<script><![CDATA[alert('Hi');]]></script></Control>";
+                string source = @"<Control name='foo'>Hello</Control>";
+                string script = @"alert('Hi');";
+                CheckExtraction(markup, source, script, null);
+            }
+
+            [Test]
+            public void Style()
+            {
+                string markup = @"<Control name='foo'>Hello<style>{ color: red; }</style></Control>";
+                string source = @"<Control name='foo'>Hello</Control>";
+                string style = @"{ color: red; }";
+                CheckExtraction(markup, source, null, style);
+            }
+
+            [Test]
+            public void PrototypeScriptStyle()
+            {
+                string markup = @"<Control name='foo'><prototype>Hello</prototype><style>{ color: red; }</style><script>alert('Hi');</script></Control>";
+                string source = @"<Control name='foo'><prototype>Hello</prototype></Control>";
+                string script = @"alert('Hi');";
+                string style = @"{ color: red; }";
+                CheckExtraction(markup, source, script, style);
+            }
+
+            [Test]
+            [ExpectedException(typeof(XmlException))]
+            public void NoRootElement()
+            {
+                string source = "This source has no root element";
+                MarkupControlClass c = MarkupCompiler.Compile(source);
+            }
+
+            [Test]
+            [ExpectedException(typeof(CompilerException))]
+            public void RootElementNotControl()
+            {
+                string source = "<Foo/>";
+                MarkupControlClass c = MarkupCompiler.Compile(source);
+            }
+
+            [Test]
+            [ExpectedException(typeof(CompilerException))]
+            public void DuplicateScript()
+            {
+                string markup = @"<Control name='foo'><script>alert('Hi');</script><script>alert('Bye');</script></Control>";
+                CheckExtraction(markup, null, null, null);
+            }
+
+            [Test]
+            public void SimpleControl()
+            {
+                MarkupControlClass c = CompileControlFromEmbeddedFile("qc.Tests.simple.qui");
+                Assert.AreEqual("Simple", c.Name);
+                Assert.AreEqual("QuickUI.Control", c.Prototype.ClassName);
+                Assert.AreEqual(1, c.Prototype.Properties.Count);
+                Assert.IsTrue(c.Prototype.Properties.ContainsKey("content"));
+
+                MarkupHtmlElement property = (MarkupHtmlElement) c.Prototype.Properties["content"];
+                Assert.AreEqual("Simple_content", property.Id);
+                Assert.AreEqual("<span id=\"Simple_content\" />", property.Html);
+            }
+
+            [Test]
+            public void SimpleHostControl()
+            {
+                MarkupControlClass controlClass = CompileControlFromEmbeddedFile("qc.Tests.simplehost.qui");
+                Assert.AreEqual("SimpleHost", controlClass.Name);
+                Assert.IsInstanceOf<MarkupElementCollection>(controlClass.Prototype.Properties["content"]);
+                List<MarkupElement> nodes = new List<MarkupElement>((MarkupElementCollection) controlClass.Prototype.Properties["content"]);
+                Assert.AreEqual(" Text ", ((MarkupHtmlElement) nodes[0]).Html);
+                MarkupControlInstance control = (MarkupControlInstance) nodes[1];
+                Assert.AreEqual("Simple", control.ClassName);
+                Assert.IsInstanceOf<MarkupHtmlElement>(control.Properties["content"]);
+                Assert.AreEqual("Hello, world!", ((MarkupHtmlElement) control.Properties["content"]).Html);
+            }
+
+            private MarkupControlClass CompileControlFromEmbeddedFile(string fileName)
+            {
+                using (StreamReader reader = Utilities.GetEmbeddedFileReader(fileName))
                 {
-                    string expectedCss = Utilities.GetEmbeddedFileContent(fileNameExpectedCss);
-                    string compiledCss = cssWriter.ToString();
-                    Assert.AreEqual(NormalizeLineEndings(expectedCss), NormalizeLineEndings(compiledCss));
+                    return Compile(reader);
                 }
             }
 
-            /// <summary>
-            /// Convert all "\r\n" sequences to "\n" for purposes of checking compilations.
-            /// </summary>
-            /// <remarks>
-            /// Otherwise way too much time is wasted trying to chase down irrelevant
-            /// inconsistencies in unit tests that result from writing tests on different
-            /// platforms.
-            /// </remarks>
-            static string NormalizeLineEndings(string s)
+            private void CheckExtraction(string markup, string expectedSource, string expectedScript, string expectedStyle)
             {
-                return s.Replace("\r\n", "\n");
+                string script;
+                string style;
+                string source = PreprocessMarkup(markup, out script, out style);
+                Assert.AreEqual(expectedSource, source);
+                Assert.AreEqual(expectedStyle, style);
+                Assert.AreEqual(expectedScript, script);
             }
         }
 #endif

@@ -51,7 +51,7 @@ namespace qc
         /// <summary>
         /// Return the JavaScript to declare a control.
         /// </summary>
-        public override string EmitJavaScript(int indentLevel)
+        public override string JavaScript(int indentLevel)
         {
             return Template.Format(
                 "{VariableDeclaration}QuickUI.Control.create({ClassName}{ControlConstructorArguments})",
@@ -113,7 +113,7 @@ namespace qc
                 {
                     Tabs = Tabs(indentLevel),
                     PropertyName = propertyName,
-                    PropertyValue = Properties[propertyName].EmitJavaScript(indentLevel),
+                    PropertyValue = Properties[propertyName].JavaScript(indentLevel),
                     Comma = isLast ? String.Empty : ","
                 });
         }
@@ -189,7 +189,7 @@ namespace qc
                     "\t\"content\": \"Hello\",\n" +
                     "\t\"id\": \"foo\"\n" +
                     "})",
-                    control.EmitJavaScript());
+                    control.JavaScript());
             }
 
             [Test]

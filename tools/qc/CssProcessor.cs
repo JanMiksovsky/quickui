@@ -11,9 +11,9 @@ namespace qc
     /// <summary>
     /// Helper class which can generate the CSS for a control.
     /// </summary>
-    public static class ControlCssEmitter
+    public static class CssProcessor
     {
-        public static string EmitControlClass(MarkupControlClass c)
+        public static string CssForClass(MarkupControlClass c)
         {
             if (c.Style == null)
             {
@@ -111,7 +111,7 @@ namespace qc
                     // BaseClassName = "Control",
                     Name = "Foo"
                 };
-                string compiledCss = EmitControlClass(c);
+                string compiledCss = CssForClass(c);
                 Assert.AreEqual(String.Empty, compiledCss);
             }
 
