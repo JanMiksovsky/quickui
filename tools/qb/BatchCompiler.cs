@@ -92,7 +92,7 @@ namespace qb
             {
                 string quiFileName = Path.GetFileName(quiFile);
                 Console.WriteLine(quiFileName);
-                MarkupCompiler.Compile(quiFile, jsFile, cssFile);
+                MarkupFileCompiler.Compile(quiFile, jsFile, cssFile);
                 return true;
             }
             catch (Exception e)

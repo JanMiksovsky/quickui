@@ -427,6 +427,7 @@ $.extend(IfBrowser.prototype, {
 List = QuickUI.Control.extend({
 	className: "List"
 });
+<![CDATA[
 $.extend(List.prototype, {
     
     itemClass: QuickUI.Property(
@@ -625,6 +626,7 @@ $.extend(Sprite.prototype, {
 		}
 	}
 });
+]]>
 
 //
 // VerticalAlign

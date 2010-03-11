@@ -12,7 +12,7 @@ The images have to be stacked vertically, and all be the same height.
 </style>
 
 <script>
-<![CDATA[
+
 $.extend(Sprite.prototype, {
 	
 	image: QuickUI.Element().css("background-image"),
