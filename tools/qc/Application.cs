@@ -13,10 +13,6 @@ namespace qc
         {
             try
             {
-                MarkupFileCompiler.Tests tests = new MarkupFileCompiler.Tests();
-                tests.CompareCompilation("qc.Tests.comprehensive.qui.js", "qc.Tests.comprehensive.qui.css", "qc.Tests.comprehensive.qui");
-                return;
-
                 // Crack arguments.
                 string sourceFileName;
                 string jsFileName;
