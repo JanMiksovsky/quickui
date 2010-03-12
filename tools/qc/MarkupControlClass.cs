@@ -16,9 +16,12 @@ namespace qc
     /// </summary>
     public class MarkupControlClass : MarkupNode
     {
+        private const string DEFAULT_CLASS_NAME = "QuickUI.Control";
+
         public string Name { get; set; }
         public string Script { get; set; }
         public string Style { get; set; }
+        public MarkupNode Content { get; set; }
         public MarkupControlInstance Prototype { get; set; }
 
         public MarkupControlClass()
@@ -50,16 +53,45 @@ namespace qc
 
             // Read the explicitly defined class properties.
             ExtractExplicitClassProperties(c);
+            VerifyProperties();
+        }
 
-            // Ensure a "name" attribute was specified for the root tag.
-            if (String.IsNullOrEmpty(this.Name))
+        public string Css()
+        {
+            return CssProcessor.CssForClass(this);
+        }
+
+        /// <summary>
+        /// Return the JavaScript for this control class.
+        /// </summary>
+        public override string JavaScript(int indentLevel)
+        {
+            string renderFunction = EmitRenderFunction(indentLevel + 1);
+            return Template.Format(
+                "//\n" +
+                "// {ClassName}\n" +
+                "//\n" +
+                "{ClassName} = {BaseClassName}.extend({\n" +
+                    "\tclassName: \"{ClassName}\"{Comma}\n" +
+                    "{RenderFunction}" +
+                "});\n" +
+                "{Script}\n", // Extra break at end helps delineate between successive controls in combined output.
+                new
+                {
+                    ClassName = Name,
+                    BaseClassName = BaseClassName,
+                    RenderFunction = renderFunction,
+                    Comma = String.IsNullOrEmpty(renderFunction) ? "" : ",",
+                    Script = EmitScript()
+                });
+        }
+
+        private string BaseClassName
+        {
+            get
             {
-                throw new CompilerException(
-                    String.Format("No class \"name\" attribute was defined on the root <Control> element."));
+                return (Prototype != null) ? Prototype.ClassName : DEFAULT_CLASS_NAME;
             }
-
-            // If no prototype was specified, use the default one of an empty Control.
-            Prototype = Prototype ?? DefaultPrototype();
         }
 
         /// <summary>
@@ -93,9 +125,13 @@ namespace qc
                         break;
 
                     case "content":
+                        VerifyPropertyIsNull(propertyName, this.Content);
+                        this.Content = node;
+                        break;
+
                     case "prototype":
                         VerifyPropertyIsNull(propertyName, this.Prototype);
-                        this.Prototype = GetPrototypeFromNode(node);
+                        this.Prototype = VerifyPrototype(node);
                         break;
 
                     case "script":
@@ -115,87 +151,9 @@ namespace qc
             }
         }
 
-        /// <summary>
-        /// Throw an exception if the given property value is not null.
-        /// </summary>
-        private void VerifyPropertyIsNull(string propertyName, object propertyValue)
-        {
-            if (propertyValue != null)
-            {
-                throw new CompilerException(
-                    String.Format("The \"{0}\" property can't be set more than once.", propertyName));
-            }
-        }
-
-        /// <summary>
-        /// Return a prototype appropriate to contain the information in the given node.
-        /// </summary>
-        private MarkupControlInstance GetPrototypeFromNode(MarkupNode node)
-        {
-            MarkupControlInstance prototype = null;
-
-            if (node is MarkupControlInstance)
-            {
-                // Node can be used directly as the prototype.
-                prototype = (MarkupControlInstance) node;
-            }
-            if (node is MarkupHtmlElement || node is MarkupElementCollection)
-            {
-                // Node is HTML content, or HTML mixed with controls.
-                // Place that content into the default prototype.
-                prototype = DefaultPrototype();
-                prototype.Properties.Add("content", node);
-            }
-            
-            if (prototype == null)
-            {
-                throw new ApplicationException("Unknown node type found.");
-            }
-
-            return prototype;
-        }
-
-        private static MarkupControlInstance DefaultPrototype()
-        {
-            return new MarkupControlInstance()
-            {
-                ClassName = "QuickUI.Control"
-            };
-        }
-
-        public string Css()
-        {
-            return CssProcessor.CssForClass(this);
-        }
-
-        /// <summary>
-        /// Return the JavaScript for this control class.
-        /// </summary>
-        public override string JavaScript(int indentLevel)
-        {
-            string renderFunction = EmitRenderFunction(indentLevel + 1);
-            return Template.Format(
-                "//\n" +
-                "// {ClassName}\n" +
-                "//\n" +
-                "{ClassName} = {BaseClassName}.extend({\n" +
-                    "\tclassName: \"{ClassName}\"{Comma}\n" +
-                    "{RenderFunction}" +
-                "});\n" +
-                "{Script}\n", // Extra break at end helps delineate between successive controls in combined output.
-                new
-                {
-                    ClassName = Name,
-                    BaseClassName = Prototype.ClassName,
-                    RenderFunction = renderFunction,
-                    Comma = String.IsNullOrEmpty(renderFunction) ? "" : ",",
-                    Script = EmitScript()
-                });
-        }
-
         private string EmitRenderFunction(int indentLevel)
         {
-            return (Prototype.Properties.Count == 0)
+            return (Content == null && Prototype == null)
                 ? String.Empty
                 : Template.Format(
                     "{Tabs}render: function() {\n" +
@@ -206,7 +164,7 @@ namespace qc
                     "{Tabs}}\n",
                     new {
                         Tabs = Tabs(indentLevel),
-                        BaseClassName = Prototype.ClassName,
+                        BaseClassName = BaseClassName,
                         BaseClassProperties = EmitBaseClassProperties(indentLevel + 2)
                     });
         }
@@ -223,12 +181,17 @@ namespace qc
         /// so those functions should probably be refactored and shared.
         private string EmitBaseClassProperties(int indentLevel)
         {
-            // UNDONE: Write out .content() property first?
+            if (Content != null)
+            {
+                return EmitBaseClassProperty("content", Content, indentLevel) + "\n";
+            }
+
+            // UNDONE: Write out prototype's content property first?
             return Prototype.Properties.Keys.Concatenate(propertyName =>
-                EmitBaseClassProperty(propertyName, indentLevel), ",\n") + "\n";
+                EmitBaseClassProperty(propertyName, Prototype.Properties[propertyName], indentLevel), ",\n") + "\n";
         }
 
-        private string EmitBaseClassProperty(string propertyName, int indentLevel)
+        private string EmitBaseClassProperty(string propertyName, MarkupNode propertyValue, int indentLevel)
         {
             return Template.Format(
                "{Tabs}\"{PropertyName}\": {PropertyValue}",
@@ -236,7 +199,7 @@ namespace qc
                {
                    Tabs = Tabs(indentLevel),
                    PropertyName = propertyName,
-                   PropertyValue = Prototype.Properties[propertyName].JavaScript(indentLevel)
+                   PropertyValue = propertyValue.JavaScript(indentLevel)
                });
         }
 
@@ -257,6 +220,47 @@ namespace qc
             return Script.Trim() + "\n";
         }
 
+        /// <summary>
+        /// Throw an exception if the given property value is not null.
+        /// </summary>
+        private void VerifyPropertyIsNull(string propertyName, object propertyValue)
+        {
+            if (propertyValue != null)
+            {
+                throw new CompilerException(
+                    String.Format("The \"{0}\" property can't be set more than once.", propertyName));
+            }
+        }
+
+        // Perform final tests for a well-formed control.
+        private void VerifyProperties()
+        {
+            if (String.IsNullOrEmpty(Name))
+            {
+                throw new CompilerException(
+                    String.Format("No class \"name\" attribute was defined on the root <Control> element."));
+            }
+
+            if (Content != null && Prototype != null)
+            {
+                throw new CompilerException(
+                    String.Format("A control can't define both content and a prototype."));
+            }
+        }
+
+        /// <summary>
+        /// Ensure the prototype is well-formed.
+        /// </summary>
+        private MarkupControlInstance VerifyPrototype(MarkupNode node)
+        {
+            if (!(node is MarkupControlInstance))
+            {
+                throw new CompilerException(
+                    "A control's <prototype> must be a single instance of a QuickUI control class.");
+            }
+            return (MarkupControlInstance) node;
+        }
+
 #if DEBUG
         [TestFixture]
         public new class Tests
@@ -269,22 +273,46 @@ namespace qc
                 );
                 MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
                 Assert.AreEqual("Minimal", c.Name);
-                Assert.AreEqual("QuickUI.Control", c.Prototype.ClassName);
-                Assert.AreEqual(0, c.Prototype.Properties.Count);
             }
 
             [Test]
-            public void ControlClassWithImplicitPrototype()
+            public void ImplicitContent()
             {
                 XElement element = new XElement("Control",
                     new XAttribute("name", "Foo"),
-                    new XElement("Bar",
-                        new XAttribute("content", "Hello")
+                    new XText("Hello")
+                );
+                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
+                Assert.AreEqual("Hello", ((MarkupHtmlElement) c.Content).Html);
+            }
+
+            [Test]
+            public void ExplicitContent()
+            {
+                XElement element = new XElement("Control",
+                    new XAttribute("name", "Foo"),
+                    new XElement("content",
+                        new XText("Hello")
+                    )
+                );
+                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
+                Assert.AreEqual("Hello", ((MarkupHtmlElement) c.Content).Html);
+            }
+
+            [Test]
+            public void Prototype()
+            {
+                XElement element = new XElement("Control",
+                    new XAttribute("name", "Foo"),
+                    new XElement("prototype",
+                        new XElement("Button",
+                            new XAttribute("content", "Hello")
+                        )
                     )
                 );
                 MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
                 MarkupControlInstance prototype = c.Prototype;
-                Assert.AreEqual("Bar", prototype.ClassName);
+                Assert.AreEqual("Button", prototype.ClassName);
                 Assert.AreEqual("Hello", ((MarkupHtmlElement) prototype.Properties["content"]).Html);
             }
 
@@ -295,49 +323,48 @@ namespace qc
                 XElement element = new XElement("Control");
                 MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
             }
-            
-            [Test]
-            public void ConvertControlToControlClass()
-            {
-                MarkupControlInstance control = new MarkupControlInstance()
-                {
-                    ClassName = "Control",
-                };
-                control.Properties.Add("name", new MarkupHtmlElement("Simple"));
-                control.Properties.Add("content", new MarkupHtmlElement("<span id=\"Simple_content\" />", "Simple_content"));
 
-                MarkupControlClass controlClass = new MarkupControlClass(control);
-                Assert.AreEqual("Simple", controlClass.Name);
-                Assert.AreEqual("QuickUI.Control", controlClass.Prototype.ClassName);
-                Assert.IsNull(controlClass.Style);
-                Assert.IsNull(controlClass.Script);
-                Assert.AreEqual(1, controlClass.Prototype.Properties.Count);
-                Assert.IsTrue(controlClass.Prototype.Properties.ContainsKey("content"));
-                Assert.IsTrue(controlClass.Prototype.Properties["content"] is MarkupHtmlElement);
+            [Test]
+            [ExpectedException(typeof(CompilerException))]
+            public void PrototypeNotClass()
+            {
+                XElement element = new XElement("Control",
+                    new XAttribute("name", "Foo"),
+                    new XElement("prototype",
+                        new XElement("div")
+                    )
+                );
+                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
             }
 
             [Test]
-            public void SimpleControl()
+            [ExpectedException(typeof(CompilerException))]
+            public void PrototypeNotSingleton()
             {
-                MarkupControlClass c = new MarkupControlClass()
-                {
-                    Name = "Simple",
-                    Prototype = new MarkupControlInstance()
-                    {
-                        ClassName = "QuickUI.Control"
-                    }
-                };
-                c.Prototype.Properties.Add("content", new MarkupHtmlElement("<span id=\"Simple_content\" />", "Simple_content"));
-
-                CompileControlAndCompareOutput("qc.Tests.simple.qui.js", c);
+                XElement element = new XElement("Control",
+                    new XAttribute("name", "Foo"),
+                    new XElement("prototype",
+                        new XElement("Link"),
+                        new XElement("Button")
+                    )
+                );
+                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
             }
 
-            private static void CompileControlAndCompareOutput(string expectedCompilationFileName, MarkupControlClass control)
+            [Test]
+            [ExpectedException(typeof(CompilerException))]
+            public void ContentAndPrototype()
             {
-                string compilation = control.JavaScript();
-                string expectedCompilation = Utilities.GetEmbeddedFileContent(expectedCompilationFileName);
-                Assert.AreEqual(Utilities.NormalizeLineEndings(expectedCompilation),
-                    Utilities.NormalizeLineEndings(compilation));
+                XElement element = new XElement("Control",
+                    new XAttribute("name", "Foo"),
+                    new XElement("content",
+                        new XText("Hello")
+                    ),
+                    new XElement("prototype",
+                        new XElement("Button")
+                    )
+                );
+                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
             }
         }
 #endif

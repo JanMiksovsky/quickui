@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -136,7 +137,7 @@ namespace qc
 
 #if DEBUG
         [TestFixture]
-        public class ExtractionTests
+        public class Tests
         {
             [Test]
             public void Empty()
@@ -147,7 +148,7 @@ namespace qc
             }
 
             [Test]
-            public void PrototypeImplicit()
+            public void ContentImplicit()
             {
                 string markup = @"<Control name='foo'>Hello</Control>";
                 string source = markup;
@@ -155,9 +156,17 @@ namespace qc
             }
 
             [Test]
-            public void PrototypeExplicit()
+            public void ContentExplicit()
             {
-                string markup = @"<Control name='foo'><prototype>Hello</prototype></Control>";
+                string markup = @"<Control name='foo'><content>Hello</content></Control>";
+                string source = markup;
+                CheckExtraction(markup, source, null, null);
+            }
+
+            [Test]
+            public void Prototype()
+            {
+                string markup = @"<Control name='foo'><prototype><Button>Hello</Button></prototype></Control>";
                 string source = markup;
                 CheckExtraction(markup, source, null, null);
             }
@@ -228,13 +237,9 @@ namespace qc
             {
                 MarkupControlClass c = CompileControlFromEmbeddedFile("qc.Tests.simple.qui");
                 Assert.AreEqual("Simple", c.Name);
-                Assert.AreEqual("QuickUI.Control", c.Prototype.ClassName);
-                Assert.AreEqual(1, c.Prototype.Properties.Count);
-                Assert.IsTrue(c.Prototype.Properties.ContainsKey("content"));
-
-                MarkupHtmlElement property = (MarkupHtmlElement) c.Prototype.Properties["content"];
-                Assert.AreEqual("Simple_content", property.Id);
-                Assert.AreEqual("<span id=\"Simple_content\" />", property.Html);
+                MarkupHtmlElement content = (MarkupHtmlElement) c.Content;
+                Assert.AreEqual("Simple_content", content.Id);
+                Assert.AreEqual("<span id=\"Simple_content\" />", content.Html);
             }
 
             [Test]
@@ -242,10 +247,9 @@ namespace qc
             {
                 MarkupControlClass controlClass = CompileControlFromEmbeddedFile("qc.Tests.simplehost.qui");
                 Assert.AreEqual("SimpleHost", controlClass.Name);
-                Assert.IsInstanceOf<MarkupElementCollection>(controlClass.Prototype.Properties["content"]);
-                List<MarkupElement> nodes = new List<MarkupElement>((MarkupElementCollection) controlClass.Prototype.Properties["content"]);
-                Assert.AreEqual(" Text ", ((MarkupHtmlElement) nodes[0]).Html);
-                MarkupControlInstance control = (MarkupControlInstance) nodes[1];
+                MarkupElement[] elements = ((MarkupElementCollection) controlClass.Content).Items.ToArray();
+                Assert.AreEqual(" Text ", ((MarkupHtmlElement) elements[0]).Html);
+                MarkupControlInstance control = (MarkupControlInstance) elements[1];
                 Assert.AreEqual("Simple", control.ClassName);
                 Assert.IsInstanceOf<MarkupHtmlElement>(control.Properties["content"]);
                 Assert.AreEqual("Hello, world!", ((MarkupHtmlElement) control.Properties["content"]).Html);

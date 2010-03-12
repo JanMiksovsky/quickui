@@ -16,7 +16,7 @@ namespace qc
     /// </summary>
     public class MarkupElementCollection : MarkupNode, IEnumerable<MarkupElement>
     {
-        private IEnumerable<MarkupElement> Items { get; set; }
+        public IEnumerable<MarkupElement> Items { get; set; }
 
         public MarkupElementCollection(IEnumerable<MarkupElement> items)
         {
