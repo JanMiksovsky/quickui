@@ -1,5 +1,5 @@
 <Control name="Page01">
-
+<prototype>
 <TutorialPage title="Hello, world">
 
 <p>
@@ -160,5 +160,5 @@ to produce a trivial result, but now we’ve laid the foundation for more comple
 <Link href="/tutorial/section02/default.html">Next ></Link>
 
 </TutorialPage>
-
+</prototype>
 </Control>

@@ -1,4 +1,5 @@
 <Control name="IfBrowserAbout">
+<prototype>
 	<GalleryPage title="IfBrowser" sourceFileExample="IfBrowser/IfBrowserDemo.qui" sourceFileControl="../common/IfBrowser.qui">
 		<summary>
 			Conditionally shows contents if the given browser is in use (defined by 
@@ -10,4 +11,5 @@
 			<IfBrowserDemo/>
 		</demo>
 	</GalleryPage>
+</prototype>
 </Control>

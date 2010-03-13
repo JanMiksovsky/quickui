@@ -1,4 +1,5 @@
 <Control name="GalleryPageAbout">
+<prototype>
 	<GalleryPage
 		title="GalleryPage"
 		sourceFileExample="GalleryPage/GalleryPageAbout.qui"
@@ -25,4 +26,5 @@
 			referenced in the Example is inherited from SitePage.
 		</notes>
 	</GalleryPage>
+</prototype>
 </Control>

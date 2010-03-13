@@ -1,5 +1,5 @@
 <Control name="Page06">
-
+<prototype>
 <TutorialPage title="Setting control properties">
 
 <h2>Setting a property through markup</h2>
@@ -75,5 +75,5 @@ var name = QuickUI("body").content(); // Get the control's current content
 <Link href="/tutorial/section07/default.html">Next ></Link>
 
 </TutorialPage>
-
+</prototype>
 </Control>

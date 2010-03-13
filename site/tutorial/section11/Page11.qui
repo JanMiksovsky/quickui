@@ -1,5 +1,5 @@
 <Control name="Page11">
-
+<prototype>
 <TutorialPage title="More on styling">
 
 <h2>Styling the top level of a control</h2>
@@ -83,5 +83,5 @@ to alter its appearance, which preserves both flexibility and maintainability.
 <Link href="/tutorial/section12/default.html">Next ></Link>
 
 </TutorialPage>
-
+</prototype>
 </Control>

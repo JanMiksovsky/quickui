@@ -1,5 +1,5 @@
 <Control name="Page08">
-
+<prototype>
 <TutorialPage title="Markup within properties">
 
 <p>
@@ -121,5 +121,5 @@ of the Greet control where we felt we really wanted it.
 <Link href="/tutorial/section09/default.html">Next ></Link>
 
 </TutorialPage>
-
+</prototype>
 </Control>

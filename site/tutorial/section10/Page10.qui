@@ -1,5 +1,5 @@
 <Control name="Page10">
-
+<prototype>
 <TutorialPage title="Styling controls">
 
 <h2>Styling a control element</h2>
@@ -93,5 +93,5 @@ apply the same formatting to both, so the end result is usually acceptable.)
 <Link href="/tutorial/section11/default.html">Next ></Link>
 
 </TutorialPage>
-
+</prototype>
 </Control>

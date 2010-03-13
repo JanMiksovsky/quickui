@@ -1,5 +1,5 @@
 <Control name="Page09">
-
+<prototype>
 <TutorialPage title="Control prototypes">
 
 <p>
@@ -129,5 +129,5 @@ different aspects of the control.
 <Link href="/tutorial/section10/default.html">Next ></Link>
 
 </TutorialPage>
-
+</prototype>
 </Control>

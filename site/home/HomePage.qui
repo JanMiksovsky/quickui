@@ -1,5 +1,6 @@
 <Control name="HomePage">
 
+<prototype>
 <SitePage area="Home" title="QuickUI modular web control framework">
 
 <sidebar>
@@ -126,5 +127,6 @@ is open under the <Link href="http://www.opensource.org/licenses/mit-license.php
 <AddThis/>
 
 </SitePage>
+</prototype>
 
 </Control>

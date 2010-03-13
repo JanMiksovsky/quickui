@@ -1,4 +1,5 @@
 <Control name="SampleSpriteButtonAbout">
+<prototype>
 	<GalleryPage title="SampleSpriteButton" sourceFileExample="SampleSpriteButton/SampleSpriteButtonDemo.qui" sourceFileControl="SampleSpriteButton/SampleSpriteButton.qui">
 		<summary>
 			A sample of how to create a new
@@ -10,4 +11,5 @@
 			<SampleSpriteButtonDemo/>
 		</demo>
 	</GalleryPage>
+</prototype>
 </Control>

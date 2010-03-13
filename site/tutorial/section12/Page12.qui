@@ -1,5 +1,5 @@
 <Control name="Page12">
-
+<prototype>
 <TutorialPage title="Defining interactivity">
 
 <p>
@@ -54,5 +54,5 @@ Sample that host the Greet control.
 <Link href="/tutorial/section13/default.html">Next ></Link>
 
 </TutorialPage>
-
+</prototype>
 </Control>

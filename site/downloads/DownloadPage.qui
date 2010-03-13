@@ -1,5 +1,5 @@
 <Control name="DownloadPage">
-
+<prototype>
 <SitePage area="Download" title="Download QuickUI">
 	
 <h2>Windows</h2>
@@ -56,5 +56,7 @@ automatically build a QuickUI project by invoking the qb tool.
 </ol>
 
 </SitePage>
+
+</prototype>
 
 </Control>

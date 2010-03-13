@@ -1,5 +1,5 @@
 <Control name="Page14">
-
+<prototype>
 <TutorialPage title="Subclassing controls">
 
 <h2>Factoring aspects of a control instance into a new subclass</h2>
@@ -63,5 +63,5 @@ technologies: HTML, CSS, and JavaScript.
 <AddThis/>
 
 </TutorialPage>
-
+</prototype>
 </Control>

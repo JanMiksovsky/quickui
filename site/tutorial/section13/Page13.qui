@@ -1,5 +1,5 @@
 <Control name="Page13">
-
+<prototype>
 <TutorialPage title="Controlling behavior">
 
 <h2>Defining a property that governs behavior</h2>
@@ -49,5 +49,5 @@ but now clicking “Carol” will not.
 <Link href="/tutorial/section14/default.html">Next ></Link>
 
 </TutorialPage>
-
+</prototype>
 </Control>

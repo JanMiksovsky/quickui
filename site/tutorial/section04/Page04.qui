@@ -1,5 +1,5 @@
 <Control name="Page04">
-
+<prototype>
 <TutorialPage title="Referencing control elements">
 
 <p>
@@ -104,5 +104,5 @@ references that were saved at the moment the elements were created.
 <Link href="/tutorial/section05/default.html">Next ></Link>
 
 </TutorialPage>
-
+</prototype>
 </Control>

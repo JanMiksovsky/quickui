@@ -1,5 +1,5 @@
 <Control name="Page02">
-
+<prototype>
 <TutorialPage title="How QuickUI works">
 
 <h2>Quick markup</h2>
@@ -136,5 +136,5 @@ Second, this allows us to style QuickUI control contents effectively via CSS
 <Link href="/tutorial/section03/default.html">Next ></Link>
 
 </TutorialPage>
-
+</prototype>
 </Control>

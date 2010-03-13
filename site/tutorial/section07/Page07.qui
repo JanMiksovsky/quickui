@@ -1,5 +1,5 @@
 <Control name="Page07">
-
+<prototype>
 <TutorialPage title="Compact property definition using property factories">
 
 <h2>Declaring a property using a property factory</h2>
@@ -81,5 +81,5 @@ etc.
 <Link href="/tutorial/section08/default.html">Next ></Link>
 
 </TutorialPage>
-
+</prototype>
 </Control>

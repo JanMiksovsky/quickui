@@ -1,4 +1,5 @@
 <Control name="SpriteAbout">
+<prototype>
 	<GalleryPage title="Sprite" sourceFileExample="Sprite/SpriteDemo.qui" sourceFileControl="../common/Sprite.qui">
 		<summary>
 			A very basic CSS sprite: shows a single image at a time
@@ -8,4 +9,5 @@
 			<SpriteDemo/>
 		</demo>
 	</GalleryPage>
+</prototype>
 </Control>

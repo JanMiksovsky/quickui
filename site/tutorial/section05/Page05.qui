@@ -1,5 +1,5 @@
 <Control name="Page05">
-
+<prototype>
 <TutorialPage title="Defining control properties">
 
 <p>
@@ -117,5 +117,5 @@ This outputs:
 <Link href="/tutorial/section06/default.html">Next ></Link>
 
 </TutorialPage>
-
+</prototype>
 </Control>

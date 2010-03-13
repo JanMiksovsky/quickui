@@ -1,5 +1,5 @@
 <Control name="Page03">
-	
+<prototype>
 <TutorialPage title="Composing QuickUI controls">
 
 <h2>Assembling more complex controls</h2>
@@ -80,5 +80,5 @@ independent copy of the contents defined for the Greet class earlier:
 <Link href="/tutorial/section04/default.html">Next ></Link>
 
 </TutorialPage>
-
+</prototype>
 </Control>
