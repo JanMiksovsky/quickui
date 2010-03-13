@@ -2,12 +2,11 @@
 
 <Control name="Repeater">
 
-<prototype>
+<content>
 	<div id="Repeater_expansion"/>
-</prototype>
+</content>
 
 <script>
-<![CDATA[
 $.extend(Repeater.prototype, {
 
 	ready: function() {
@@ -40,7 +39,6 @@ $.extend(Repeater.prototype, {
 	}
 	
 });
-]]>
 </script>
 
 </Control>

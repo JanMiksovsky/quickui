@@ -72,7 +72,7 @@ namespace qc
         /// Parse the text node at the given element.
         /// </summary>
         public MarkupHtmlElement(XText node)
-            : this(CollapseWhiteSpaceRuns(node.Value))
+            : this(node.Value)
         {
         }
 
@@ -83,17 +83,6 @@ namespace qc
             : this(node.Value)
         {
         }
-
-        /// <summary>
-        /// Catch-all constructor which handles cases not explicitly handled
-        /// above. Since those should cover the known cases, calling this
-        /// constructor throws an exception.
-        /// </summary>
-        //public MarkupHtmlElement(XNode node)
-        //{
-        //    throw new CompilerException(
-        //        String.Format("Couldn't parse unexpected XML element <{0}>.", node));
-        //}
 
         /// <summary>
         /// Return the JavaScript for the given HTML node.
@@ -122,19 +111,10 @@ namespace qc
                 });
         }
 
-        /// <summary>
-        /// Replace all runs of whitespace with a single space.
-        /// </summary>
-        /// <remarks>
-        /// The .NET XML reader doesn't seem to ignore whitespace within a text
-        /// node the same way a typical HTML parser does, so we have to do this
-        /// ourselves.
-        /// </remarks>
-        private static string CollapseWhiteSpaceRuns(string s)
+        public override bool IsWhiteSpace()
         {
-            return whiteSpaceRuns.Replace(s, " ");
+            return Html != null && Html.Trim().Length == 0;
         }
-        private static readonly Regex whiteSpaceRuns = new Regex(@"\s+", RegexOptions.Compiled);
 
         private string EmitChildren(int indentLevel)
         {

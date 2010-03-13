@@ -1,8 +1,6 @@
 <Control name="SampleProperties">
 
-<prototype>
-    <div id="SampleProperties_content"/>
-</prototype>
+<content><div id="SampleProperties_content"/></content>
 
 <script>
 $.extend(SampleProperties.prototype, {

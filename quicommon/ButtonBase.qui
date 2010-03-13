@@ -14,7 +14,6 @@ ButtonBaseNew.disabled {
 </style>
 
 <script>
-<![CDATA[
 $.extend(ButtonBase.prototype, {
 	
 	isFocused: QuickUI.Property.bool(null, false),
@@ -143,7 +142,6 @@ $.extend(ButtonBase, {
 		disabled: 4
 	}
 });
-]]>
 </script>
 
 </Control>

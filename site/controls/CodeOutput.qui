@@ -1,9 +1,9 @@
 <Control name="CodeOutput">
 
-<prototype>
+<content>
 	<div id="CodeOutput_content"/>
 	<!-- <div id="_label">(live control)</div> -->
-</prototype>
+</content>
 
 <style>
 

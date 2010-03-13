@@ -57,7 +57,7 @@ namespace qc
 
             // Parse each item in the collection.
             IEnumerable<MarkupElement> elements = xNodes.Select(
-                                    xNode => MarkupHtmlElement.Parse(xNode));
+                                    xNode => MarkupElement.Parse(xNode));
 
             // If the nodes are all HTML, and there are no Ids below this point,
             // the nodes can be collapsed to a single node.
@@ -145,6 +145,14 @@ namespace qc
             output.Append(s);
             output.Append('\n');
             return output.ToString();
+        }
+
+        /// <summary>
+        /// Return true if the node is just white space; false otherwise.
+        /// </summary>
+        public virtual bool IsWhiteSpace()
+        {
+            return false;
         }
 
         protected string Tabs(int tabCount)

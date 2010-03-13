@@ -1,6 +1,6 @@
 <Control name="Sample">
 
-<prototype>
+<content>
 	<h1>QuickUI sample</h1>
 	<Greet>Alice</Greet>
 	<GreetEmphatic>Bob</GreetEmphatic>
@@ -8,7 +8,7 @@
 		<i>Carol</i>
 	</Greet>
 	<GreetEmphatic>David</GreetEmphatic>
-</prototype>
+</content>
 
 </Control>
 

@@ -64,7 +64,7 @@ this.Greet_content = $("&lt;span id=&frasl;"Greet_content&frasl;" /&gt;")[0]
 This refers to the same literal name “Greet_content” twice, but in completely different
 worlds. The right hand side of the expression takes place in the DOM world; the left hand
 side in the JavaScript world. The Quick markup created an implicit association between
-those two worlds by specifiying an ID on markup element.
+those two worlds by specifiying an ID on a markup element.
 </p>
 
 <p>

@@ -1,13 +1,13 @@
 <Control name="NavigationBar">
 
-<prototype>
+<content>
 	<NavigationLink href="/home/default.html">Home</NavigationLink>
 	<NavigationLink href="/downloads/default.html">Download</NavigationLink>
 	<NavigationLink href="/tutorial/section01/default.html">Tutorial</NavigationLink>
 	<NavigationLink href="/gallery/default.html">Gallery</NavigationLink>
 	<NavigationLink href="http://groups.google.com/group/quickui">Discuss</NavigationLink>
 	<NavigationLink href="http://code.google.com/p/quickui/">Contribute</NavigationLink>
-</prototype>
+</content>
 
 <style>
 .NavigationLink {
@@ -27,7 +27,6 @@ a:hover {
 </style>
 
 <script>
-<![CDATA[
 $.extend(NavigationBar.prototype, {
 
 	highlightCurrentArea: function() {
@@ -42,7 +41,6 @@ $.extend(NavigationBar.prototype, {
 	}
 	
 });
-]]>
 </script>
 
 </Control>

@@ -1,8 +1,8 @@
 <Control name="Greet">
 	
-<prototype>
+<content>
 	Hello, <span id="Greet_content"/><span id="Greet_punctuation">.</span>
-</prototype>
+</content>
 
 <style>
 {

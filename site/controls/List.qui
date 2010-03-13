@@ -2,12 +2,11 @@
 
 <Control name="List">
 
-<prototype>
+<content>
 	<div id="List_expansion"/>
-</prototype>
+</content>
 
 <script>
-<![CDATA[
 $.extend(List.prototype, {
 
 	expansion: QuickUI.Element("List_expansion").content(),
@@ -68,7 +67,6 @@ $.extend(List.prototype, {
 	}
 	
 });
-]]>
 </script>
 
 </Control>

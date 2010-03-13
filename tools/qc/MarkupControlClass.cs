@@ -253,12 +253,29 @@ namespace qc
         /// </summary>
         private MarkupControlInstance VerifyPrototype(MarkupNode node)
         {
-            if (!(node is MarkupControlInstance))
+            if (node is MarkupControlInstance)
             {
-                throw new CompilerException(
-                    "A control's <prototype> must be a single instance of a QuickUI control class.");
+                return (MarkupControlInstance) node;
             }
-            return (MarkupControlInstance) node;
+            if (node is MarkupElementCollection)
+            {
+                // There should be only one non-whitespace node in the collection.
+                try
+                {
+                    MarkupElement element = ((MarkupElementCollection) node)
+                        .Single(item => !item.IsWhiteSpace());
+                    if (element is MarkupControlInstance)
+                    {
+                        return (MarkupControlInstance) element;
+                    }
+                }
+                catch (InvalidOperationException e)
+                {
+                }
+            }
+
+            throw new CompilerException(
+                "A control's <prototype> must be a single instance of a QuickUI control class.");
         }
 
 #if DEBUG

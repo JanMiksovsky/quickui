@@ -13,10 +13,6 @@ namespace qc
         {
             try
             {
-                //(new MarkupFileCompiler.Tests()).CompareCompilation("qc.Tests.content.qui.js", null, "qc.Tests.content.qui");
-                (new MarkupCompiler.Tests()).SimpleControl();
-                return;
-
                 // Crack arguments.
                 string sourceFileName;
                 string jsFileName;

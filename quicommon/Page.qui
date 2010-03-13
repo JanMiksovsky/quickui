@@ -12,7 +12,6 @@
 </style>
 
 <script>
-<![CDATA[
 
 /*
  * General page utility functions.
@@ -68,8 +67,6 @@ $.extend(QuickUI.Control.prototype, {
 	}
 
 });
-
-]]>
 </script>
 
 </Control>

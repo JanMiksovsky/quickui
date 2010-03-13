@@ -3,8 +3,6 @@
 <Control name="VerticalAlign">
 
 <style>
-<![CDATA[
-
 {
 	display: table;
 	height: 100%;
@@ -14,8 +12,6 @@
 	display: table-cell;
 	vertical-align: middle;
 }
-
-]]>
 </style>
 
 </Control>

@@ -163,13 +163,14 @@ namespace qc
 
             // Parse the remaining children as content.
             MarkupNode contentNode = MarkupNode.Parse(contentNodes);
-            if (contentNode != null)
+            if (contentNode != null && !contentNode.IsWhiteSpace())
             {
                 // Set the implicit content property. This will overwrite content
                 // set through an attribute or compound property.
                 Properties["content"] = contentNode;
             }
         }
+
 #if DEBUG
         [TestFixture]
         public new class Tests

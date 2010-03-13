@@ -8,7 +8,6 @@
 </style>
 
 <script>
-<![CDATA[
 $.extend(Navigator.prototype, {
 
 	// Highlight the link for the page we're on.
@@ -22,7 +21,6 @@ $.extend(Navigator.prototype, {
 	}
 	
 });
-]]>
 </script>
 
 </Control>

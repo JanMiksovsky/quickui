@@ -1,6 +1,6 @@
 <Control name="GalleryNavigationLinks">
 
-<prototype>
+<content>
 	<NavigationLink id="linkIndex" href="/gallery/default.html">Index</NavigationLink>
 	<NavigationLink href="/gallery/default.html?page=IfBrowserAbout">IfBrowser</NavigationLink>
 	<NavigationLink href="/gallery/default.html?page=GalleryPageAbout">GalleryPage</NavigationLink>
@@ -9,7 +9,7 @@
 	<NavigationLink href="/gallery/default.html?page=SpriteAbout">Sprite</NavigationLink>
 	<NavigationLink href="/gallery/default.html?page=SpriteButtonAbout">SpriteButton</NavigationLink>
 	<NavigationLink href="/gallery/default.html?page=TagAbout">Tag</NavigationLink>
-</prototype>
+</content>
 
 <style>
 #linkIndex {

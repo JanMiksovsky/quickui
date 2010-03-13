@@ -7,10 +7,11 @@ SimpleHost = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				" Text ",
+				"\n  Text\n  ",
 				QuickUI.Control.create(Simple, {
 					"content": "Hello, world!"
-				})
+				}),
+				"\n"
 			]
 		});
 	}

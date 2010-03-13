@@ -2,7 +2,7 @@
 
 <Control name="AddThis">
 
-<prototype>
+<content>
 	<!-- AddThis Button BEGIN -->
 	<div class="addthis_toolbox addthis_default_style">
 	<a href="http://www.addthis.com/bookmark.php?v=250&amp;pub=janmiksovsky" class="addthis_button_compact">Share</a>
@@ -14,7 +14,7 @@
 	<a class="addthis_button_print"></a>
 	</div>
 	<!-- AddThis Button END -->
-</prototype>
+</content>
 
 <style>
 a {

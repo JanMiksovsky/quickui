@@ -14,8 +14,6 @@
 </style>
 
 <script>
-<![CDATA[
-	
 $.extend(Dialog, {
 	show: function(dialogClass, properties, callbackOk, callbackCancel) {
 		var dialog = $("body")
@@ -75,8 +73,6 @@ $.extend(Dialog.prototype, {
 		});
 	}
 });
-
-]]>
 </script>
 
 </Control>

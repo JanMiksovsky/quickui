@@ -2,7 +2,7 @@
 
 <Control name="DockPanel">
 
-<prototype>
+<content>
 	<div id="DockPanel_top" />
 	<div id="rowCenter">
 		<div id="centerTable">
@@ -12,10 +12,9 @@
 		</div>
 	</div>
 	<div id="DockPanel_bottom" />
-</prototype>
+</content>
 
 <style>
-<![CDATA[
 {
 	/* border: 1px solid #f0f0f0; */
 	display: table;
@@ -42,8 +41,6 @@
 .panel {
 	width: 0;
 }
-
-]]>
 </style>
 
 <script>

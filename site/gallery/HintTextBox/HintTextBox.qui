@@ -1,9 +1,9 @@
 <Control name="HintTextBox">
 
-<prototype>
+<content>
 	<input id="HintTextBox_textBox" type="text"/>
 	<div id="HintTextBox_hint"/>
-</prototype>
+</content>
 
 <style>
 

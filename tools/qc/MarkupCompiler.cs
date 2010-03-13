@@ -61,8 +61,7 @@ namespace qc
             XmlReaderSettings xmlReaderSettings = new XmlReaderSettings
             {
                 IgnoreComments = true,
-                IgnoreProcessingInstructions = true,
-                IgnoreWhitespace = true
+                IgnoreProcessingInstructions = true
             };
             XmlReader xmlReader = XmlReader.Create(markupReader, xmlReaderSettings);
             XDocument document = XDocument.Load(xmlReader);
@@ -237,7 +236,7 @@ namespace qc
             {
                 MarkupControlClass c = CompileControlFromEmbeddedFile("qc.Tests.simple.qui");
                 Assert.AreEqual("Simple", c.Name);
-                MarkupHtmlElement content = (MarkupHtmlElement) c.Content;
+                MarkupHtmlElement content = (MarkupHtmlElement) ((MarkupElementCollection) c.Content).Items.ToArray()[1];
                 Assert.AreEqual("Simple_content", content.Id);
                 Assert.AreEqual("<span id=\"Simple_content\" />", content.Html);
             }
@@ -248,7 +247,7 @@ namespace qc
                 MarkupControlClass controlClass = CompileControlFromEmbeddedFile("qc.Tests.simplehost.qui");
                 Assert.AreEqual("SimpleHost", controlClass.Name);
                 MarkupElement[] elements = ((MarkupElementCollection) controlClass.Content).Items.ToArray();
-                Assert.AreEqual(" Text ", ((MarkupHtmlElement) elements[0]).Html);
+                Assert.AreEqual("\n  Text\n  ", ((MarkupHtmlElement) elements[0]).Html);
                 MarkupControlInstance control = (MarkupControlInstance) elements[1];
                 Assert.AreEqual("Simple", control.ClassName);
                 Assert.IsInstanceOf<MarkupHtmlElement>(control.Properties["content"]);

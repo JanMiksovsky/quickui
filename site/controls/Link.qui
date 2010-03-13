@@ -1,8 +1,8 @@
 <Control name="Link">
 
-<prototype>
+<content>
 	<a id="Link_content" href="javascript:" />
-</prototype>
+</content>
 
 <style>
 {
@@ -11,7 +11,6 @@
 </style>
 
 <script>
-<![CDATA[
 $.extend(Link.prototype, {
 	
 	content: QuickUI.Element("Link_content").content(),
@@ -41,8 +40,6 @@ $.extend(Link.prototype, {
 		window.location.href = href;
 	},
 });
-
-]]>
 </script>
 
 </Control>

@@ -1,10 +1,10 @@
 <Control name="SampleSpriteButtonDemo">
 
-<prototype>
+<content>
 	<SampleSpriteButton>Save</SampleSpriteButton>
 	<SampleSpriteButton>Don't Save</SampleSpriteButton>
 	<SampleSpriteButton disabled="true">Cancel</SampleSpriteButton>
-</prototype>
+</content>
 
 <style>
 .SampleSpriteButton {

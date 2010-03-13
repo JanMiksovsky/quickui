@@ -45,6 +45,11 @@ namespace qc
             return Items.Concatenate(element => EmitElementInCollection(element, indentLevel), ",\n") + "\n";
         }
 
+        public override bool IsWhiteSpace()
+        {
+            return Items != null && Items.All(element => element.IsWhiteSpace());
+        }
+
         /// <summary>
         /// Return the JavaScript to generate a single node.
         /// </summary>

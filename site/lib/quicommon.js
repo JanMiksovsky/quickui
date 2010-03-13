@@ -47,15 +47,17 @@ $.extend(Overlay.prototype, {
 	
 	hide: function()
 	{
-		// $(this.element).remove();
-		$(this.element)
+		$(this.element).remove();
+		/*
+        $(this.element)
 			.hide()
 			.css("z-index", null); // No need to define Z-order any longer.
+        */
 		if (this.blanket() != null)
 		{
-			// $(this.blanket()).remove();
-			// this.blanket(null);
-			$(this.blanket()).hide();
+			$(this.blanket()).remove();
+			this.blanket(null);
+			// $(this.blanket()).hide();
 		}
 	},
 	
@@ -315,8 +317,8 @@ $.extend(Dialog.prototype, {
 	
 	position: function() {
 		// Center dialog horizontally and vertically.
-		var left = ($(document).width() - $(this.element).outerWidth()) / 2;
-		var top = ($(document).height() - $(this.element).outerHeight()) / 2;
+		var left = ($(window).width() - $(this.element).outerWidth()) / 2;
+		var top = ($(window).height() - $(this.element).outerHeight()) / 2;
 		$(this.element).css({
 			left: left,
 			top: top
@@ -333,15 +335,25 @@ DockPanel = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
+				"\n\t",
 				this.DockPanel_top = $("<div id=\"DockPanel_top\" />")[0],
+				"\n\t",
 				this.rowCenter = $("<div id=\"rowCenter\" />").items(
+					"\n\t\t",
 					this.centerTable = $("<div id=\"centerTable\" />").items(
+						"\n\t\t\t",
 						this.DockPanel_left = $("<div id=\"DockPanel_left\" class=\"panel\" />")[0],
+						"\n\t\t\t",
 						this.DockPanel_content = $("<div id=\"DockPanel_content\" />")[0],
-						this.DockPanel_right = $("<div id=\"DockPanel_right\" class=\"panel\" />")[0]
-					)[0]
+						"\n\t\t\t",
+						this.DockPanel_right = $("<div id=\"DockPanel_right\" class=\"panel\" />")[0],
+						"\n\t\t"
+					)[0],
+					"\n\t"
 				)[0],
-				this.DockPanel_bottom = $("<div id=\"DockPanel_bottom\" />")[0]
+				"\n\t",
+				this.DockPanel_bottom = $("<div id=\"DockPanel_bottom\" />")[0],
+				"\n"
 			]
 		});
 	}
@@ -398,8 +410,11 @@ IfBrowser = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
+				"\n\t",
 				this.IfBrowser_content = $("<span id=\"IfBrowser_content\" />")[0],
-				this.IfBrowser_elseContent = $("<span id=\"IfBrowser_elseContent\" />")[0]
+				"\n\t",
+				this.IfBrowser_elseContent = $("<span id=\"IfBrowser_elseContent\" />")[0],
+				"\n"
 			]
 		});
 	}
@@ -417,6 +432,64 @@ $.extend(IfBrowser.prototype, {
 		$(this.IfBrowser_content).toggle(allConditionsSatisfied);
 		$(this.IfBrowser_elseContent).toggle(!allConditionsSatisfied);
 	}
+});
+
+//
+// List
+//
+List = QuickUI.Control.extend({
+	className: "List"
+});
+$.extend(List.prototype, {
+    
+    itemClass: QuickUI.Property(
+        function() { this._refresh(); },
+        null,
+        function(className) {
+            return eval(className);
+        }
+    ),
+        
+    items: QuickUI.Property(function() { this._refresh(); }),
+    
+    mapFn: QuickUI.Property(),
+    
+    setItems: function(items, mapFn) {
+        this.mapFn(mapFn);
+        this.items(items);
+    },
+    
+    _refresh: function() {
+        var itemClass = this.itemClass();
+        var items = this.items();
+        var mapFn = this.mapFn();
+        if (itemClass && items)
+        {
+            var me = this;
+            var controls = $.map(items, function(item, index) {
+                var properties;
+                if (mapFn)
+                {
+                    // Map item to control properties with custom map function.
+                    properties = mapFn.call(me, item, index);
+                }
+                else if (typeof item == "string" || item instanceof String)
+                {
+                    // Simple string; use as content property.
+                    properties = { content: item };
+                }
+                else
+                {
+                    // Use the item as is for the control's properties.
+                    properties = item;
+                }
+                var control = QuickUI.Control.create(itemClass, properties);
+                return control;
+            });
+            $(this.element).items(controls);
+        }
+    }
+    
 });
 
 //
@@ -488,7 +561,11 @@ Repeater = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			"content": this.Repeater_expansion = $("<div id=\"Repeater_expansion\" />")[0]
+			"content": [
+				"\n\t",
+				this.Repeater_expansion = $("<div id=\"Repeater_expansion\" />")[0],
+				"\n"
+			]
 		});
 	}
 });
@@ -514,7 +591,7 @@ $.extend(Repeater.prototype, {
 			var count = this.count();
 			for (var i = 0; i < count; i++)
 			{
-				template.clone().appendTo(this.Repeater_expansion);
+				template.clone(true).appendTo(this.Repeater_expansion); // Deep copy
 			}
 		}
 	},

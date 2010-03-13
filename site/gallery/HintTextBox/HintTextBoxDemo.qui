@@ -1,10 +1,10 @@
 <Control name="HintTextBoxDemo">
 
-<prototype>
+<content>
 	<div>
 		<HintTextBox hint="Type here"/>
 	</div>
-</prototype>
+</content>
 
 <style>
 {

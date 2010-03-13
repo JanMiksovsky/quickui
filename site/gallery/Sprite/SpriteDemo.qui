@@ -1,6 +1,6 @@
 <Control name="SpriteDemo">
 
-<prototype>
+<content>
 	<Sprite id="sprite"
 		image="url(SampleSpriteButton/buttonStates.png)"
 		currentCell="4"
@@ -9,7 +9,7 @@
 		Select a frame from the sprite image:
 	</p>
 	<img id="image" src="SampleSpriteButton/buttonStates.png"/>
-</prototype>
+</content>
 
 <style>
 #image {

@@ -1,6 +1,6 @@
 <Control name="Test">
 
-<prototype>
+<content>
     <div id="header">
         <span id="Test_name"/>: <span id="Test_result"/>
     </div>
@@ -10,7 +10,7 @@
         Expected: <span id="htmlExpected"/>
         <div id="Test_expect"/>
     </div>
-</prototype>
+</content>
 
 <style>
 

@@ -335,15 +335,25 @@ DockPanel = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
+				"\n\t",
 				this.DockPanel_top = $("<div id=\"DockPanel_top\" />")[0],
+				"\n\t",
 				this.rowCenter = $("<div id=\"rowCenter\" />").items(
+					"\n\t\t",
 					this.centerTable = $("<div id=\"centerTable\" />").items(
+						"\n\t\t\t",
 						this.DockPanel_left = $("<div id=\"DockPanel_left\" class=\"panel\" />")[0],
+						"\n\t\t\t",
 						this.DockPanel_content = $("<div id=\"DockPanel_content\" />")[0],
-						this.DockPanel_right = $("<div id=\"DockPanel_right\" class=\"panel\" />")[0]
-					)[0]
+						"\n\t\t\t",
+						this.DockPanel_right = $("<div id=\"DockPanel_right\" class=\"panel\" />")[0],
+						"\n\t\t"
+					)[0],
+					"\n\t"
 				)[0],
-				this.DockPanel_bottom = $("<div id=\"DockPanel_bottom\" />")[0]
+				"\n\t",
+				this.DockPanel_bottom = $("<div id=\"DockPanel_bottom\" />")[0],
+				"\n"
 			]
 		});
 	}
@@ -400,8 +410,11 @@ IfBrowser = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
+				"\n\t",
 				this.IfBrowser_content = $("<span id=\"IfBrowser_content\" />")[0],
-				this.IfBrowser_elseContent = $("<span id=\"IfBrowser_elseContent\" />")[0]
+				"\n\t",
+				this.IfBrowser_elseContent = $("<span id=\"IfBrowser_elseContent\" />")[0],
+				"\n"
 			]
 		});
 	}
@@ -427,7 +440,6 @@ $.extend(IfBrowser.prototype, {
 List = QuickUI.Control.extend({
 	className: "List"
 });
-<![CDATA[
 $.extend(List.prototype, {
     
     itemClass: QuickUI.Property(
@@ -549,7 +561,11 @@ Repeater = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			"content": this.Repeater_expansion = $("<div id=\"Repeater_expansion\" />")[0]
+			"content": [
+				"\n\t",
+				this.Repeater_expansion = $("<div id=\"Repeater_expansion\" />")[0],
+				"\n"
+			]
 		});
 	}
 });
@@ -626,7 +642,6 @@ $.extend(Sprite.prototype, {
 		}
 	}
 });
-]]>
 
 //
 // VerticalAlign

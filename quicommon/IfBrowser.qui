@@ -5,13 +5,12 @@ browser in use supports a given property defined by $.support.
 
 <Control name="IfBrowser">
 
-<prototype>
+<content>
 	<span id="IfBrowser_content"/>
 	<span id="IfBrowser_elseContent"/>
-</prototype>
+</content>
 
 <script>
-<![CDATA[
 $.extend(IfBrowser.prototype, {
 	browser: QuickUI.Property(),
 	content: QuickUI.Element("IfBrowser_content").content(),
@@ -26,7 +25,6 @@ $.extend(IfBrowser.prototype, {
 		$(this.IfBrowser_elseContent).toggle(!allConditionsSatisfied);
 	}
 });
-]]>
 </script>
 
 </Control>

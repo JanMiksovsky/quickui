@@ -5,7 +5,6 @@ Instantiates an instance of another control class for each item in a list.
 <Control name="List">
 
 <script>
-<![CDATA[
 $.extend(List.prototype, {
     
     itemClass: QuickUI.Property(
@@ -57,7 +56,6 @@ $.extend(List.prototype, {
     }
     
 });
-
 </script>
 
 </Control>

@@ -1,11 +1,11 @@
 <Control name="SourceCode">
 
-<prototype>
+<content>
 	<pre id="SourceCode_content" />
 	<div id="_divLink">
 		<a id="link">→ <span id="linkText"/></a>
 	</div>
-</prototype>
+</content>
 
 <style>
 

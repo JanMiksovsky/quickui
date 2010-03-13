@@ -47,7 +47,6 @@ $.extend(Sprite.prototype, {
 		}
 	}
 });
-]]>
 </script>
 
 </Control>

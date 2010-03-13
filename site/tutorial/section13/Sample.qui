@@ -1,13 +1,13 @@
 <Control name="Sample">
 
-<prototype>
+<content>
 	<h1>QuickUI sample</h1>
 	<Greet content="Alice" />
 	<Greet id="bob" content="Bob" punctuation="!" />
 	<Greet punctuation="?" enabled="false">
 		<i>Carol</i>
 	</Greet>
-</prototype>
+</content>
 
 <style>
 #bob {

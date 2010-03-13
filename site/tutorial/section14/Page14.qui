@@ -42,7 +42,7 @@ All instances of our new GreetEmphatic class receive the same styling and conten
 </CodeOutput>
 
 <p>
-Signficantly, we’re deriving behavior here, not copying and pasting it. If we make further
+Significantly, we’re deriving behavior here, not copying and pasting it. If we make further
 modifications to the Greet class, those will be automatically picked up by the GreetEmphatic
 class.
 </p>
