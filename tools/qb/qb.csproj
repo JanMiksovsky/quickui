@@ -66,6 +66,7 @@
     <Compile Include="Application.cs" />
     <Compile Include="BatchCompiler.cs" />
     <Compile Include="Combiner.cs" />
+    <Compile Include="DependencyMap.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities.cs" />
