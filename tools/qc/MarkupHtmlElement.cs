@@ -72,7 +72,7 @@ namespace qc
         /// Parse the text node at the given element.
         /// </summary>
         public MarkupHtmlElement(XText node)
-            : this(node.Value)
+            : this(CollapseWhiteSpaceRuns(node.Value))
         {
         }
 
@@ -115,6 +115,26 @@ namespace qc
         {
             return Html != null && Html.Trim().Length == 0;
         }
+
+        /// <summary>
+        /// Replace all runs of whitespace with a single space.
+        /// </summary>
+        /// <remarks>
+        /// As a stylistic choice, the Quick markup compiler collapses
+        /// contiguous runs of whitespace into a single space. HTML rendering
+        /// engines generally treat whitespace runs as a single space, so
+        /// in most cases this optimization won't affect run-time rendering,
+        /// and it leaves the compiled JavaScript a bit easier to read.
+        /// 
+        /// Note that we don't trim whitespace (e.g., at the beginning or end
+        /// of text), because that *would* affect rendering in situations
+        /// involving adjoining text elements.
+        /// </remarks>
+        private static string CollapseWhiteSpaceRuns(string s)
+        {
+            return whiteSpaceRuns.Replace(s, " ");
+        }
+        private static readonly Regex whiteSpaceRuns = new Regex(@"\s+", RegexOptions.Compiled);
 
         private string EmitChildren(int indentLevel)
         {

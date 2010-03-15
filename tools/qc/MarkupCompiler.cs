@@ -247,7 +247,7 @@ namespace qc
                 MarkupControlClass controlClass = CompileControlFromEmbeddedFile("qc.Tests.simplehost.qui");
                 Assert.AreEqual("SimpleHost", controlClass.Name);
                 MarkupElement[] elements = ((MarkupElementCollection) controlClass.Content).Items.ToArray();
-                Assert.AreEqual("\n  Text\n  ", ((MarkupHtmlElement) elements[0]).Html);
+                Assert.AreEqual(" Text ", ((MarkupHtmlElement) elements[0]).Html);
                 MarkupControlInstance control = (MarkupControlInstance) elements[1];
                 Assert.AreEqual("Simple", control.ClassName);
                 Assert.IsInstanceOf<MarkupHtmlElement>(control.Properties["content"]);
