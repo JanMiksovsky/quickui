@@ -23,9 +23,30 @@ $.extend(Page.prototype, {
 	
 	// Return the parameter with the given name from the current URL, or null if not found.
 	getUrlParameter: function(parameterName) {
-		return Page.getUrlParameter(parameterName);
-	},	
-	
+		return this.urlParameters[parameterName];
+	},
+
+    //
+    // Return the URL parameters as a JavaScript object.
+    // E.g., if the URL looks like http://www.example.com/index.html?foo=hello&bar=world
+    // then this returns the object
+    //
+    //    { foo: "hello", bar: "world" }
+    //
+    urlParameters: function() {
+        var regex = /[?&](\w+)=([^&#]*)/g;
+        var results = {};
+        var match = regex.exec( window.location.search );
+        while (match != null)
+        {
+            var parameterName = match[1];
+            var parameterValue = match[2];
+            results[parameterName] = parameterValue;
+            match = regex.exec( window.location.href );
+        }
+        return results;
+    },
+    	
 	// Gets or sets the title of the page.
 	title: function(value) {
 		if (value !== undefined)
@@ -35,19 +56,6 @@ $.extend(Page.prototype, {
 		return document.title;
 	}
 
-});
-
-$.extend(Page, {
-	
-	// Return the parameter with the given name from the current URL, or null if not found.
-	getUrlParameter: function(parameterName) {
-		parameterName = parameterName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-		var regexS = "[\\?&]"+parameterName+"=([^&#]*)";
-		var regex = new RegExp( regexS );
-		var results = regex.exec( window.location.href );
-		return (results == null) ? null : results[1];
-	}
-	
 });
 
 /*
