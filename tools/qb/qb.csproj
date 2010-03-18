@@ -67,6 +67,8 @@
     <Compile Include="BatchCompiler.cs" />
     <Compile Include="Combiner.cs" />
     <Compile Include="DependencyMap.cs" />
+    <Compile Include="FileDependencyMap.cs" />
+    <Compile Include="QuiFileCompiler.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities.cs" />
@@ -108,6 +110,12 @@
       <Project>{FDCDE62B-250B-4333-A8E6-55E49662D765}</Project>
       <Name>qc</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tests\Sample\Foo.qui" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Tests\Sample\Bar.Foo.qui" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

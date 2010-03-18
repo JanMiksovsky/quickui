@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-using qc;
-
 namespace qb
 {
     /// <summary>
@@ -12,9 +10,7 @@ namespace qb
     /// </summary>
     public class BatchCompiler
     {
-        public string BuildPath { get; protected set; }
-        public List<string> JsFiles { get; protected set; }
-        public List<string> CssFiles { get; protected set; }
+        public string BuildPath { get; set; }
 
         public BatchCompiler(string buildPath)
         {
@@ -40,36 +36,22 @@ namespace qb
         /// The compiled JS and CSS files are returned in the properties
         /// of the corresponding name.
         /// </remarks>
-        public bool Compile(List<string> quiFiles)
+        public bool Compile(IEnumerable<string> quiFiles, out IEnumerable<string> jsFiles, out IEnumerable<string> cssFiles)
         {
+            List<string> jsFilesBuilt = new List<string>();
+            List<string> cssFilesBuilt = new List<string>();
+
+            EnsureBuildDirectoryExists();
             bool batchSuccess = true;
-
-            if (!Directory.Exists(BuildPath))
-            {
-                Directory.CreateDirectory(BuildPath);
-            }
-
-            JsFiles = new List<string>();
-            CssFiles = new List<string>();
-
             foreach (string quiFile in quiFiles)
             {
-                string jsFile = GetOutputFilePath(quiFile, Project.fileExtensionJs);
-                string cssFile = GetOutputFilePath(quiFile, Project.fileExtensionCss);
-
-                bool fileSuccess = true;
-                if (!File.Exists(jsFile) ||
-                    Utilities.FileNewerThan(quiFile, jsFile) ||
-                    !File.Exists(cssFile) ||
-                    Utilities.FileNewerThan(quiFile, cssFile))
-                {
-                    fileSuccess = CompileQuiFile(quiFile, jsFile, cssFile);
-                }
-
+                string jsFile;
+                string cssFile;
+                bool fileSuccess = QuiFileCompiler.Compile(quiFile, BuildPath, out jsFile, out cssFile);
                 if (fileSuccess)
                 {
-                    JsFiles.Add(jsFile);
-                    CssFiles.Add(cssFile);
+                    jsFilesBuilt.Add(jsFile);
+                    cssFilesBuilt.Add(cssFile);
                 }
                 else
                 {
@@ -77,60 +59,32 @@ namespace qb
                 }
             }
 
-            RemoveOrphanedFiles();
+            RemoveUnbuiltFiles(jsFilesBuilt, Project.fileExtensionJs);
+            RemoveUnbuiltFiles(cssFilesBuilt, Project.fileExtensionCss);
 
+            jsFiles = jsFilesBuilt;
+            cssFiles = cssFilesBuilt;
             return batchSuccess;
         }
 
-        /// <summary>
-        /// Compile the supplied Quick markup file into the indicate JavaScript and Css files.
-        /// Return true if successful, false if there were errors.
-        /// </summary>
-        private bool CompileQuiFile(string quiFile, string jsFile, string cssFile)
+        private void EnsureBuildDirectoryExists()
         {
-            try
+            if (!Directory.Exists(BuildPath))
             {
-                string quiFileName = Path.GetFileName(quiFile);
-                Console.WriteLine(quiFileName);
-                MarkupFileCompiler.Compile(quiFile, jsFile, cssFile);
-                return true;
+                Directory.CreateDirectory(BuildPath);
             }
-            catch (Exception e)
-            {
-                Console.Error.WriteLine("qc: " + e.Message);
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Return the path that should be used for the given type of output file.
-        /// </summary>
-        private string GetOutputFilePath(string quiFile, string fileExtension)
-        {
-            string quiFileName = Path.GetFileName(quiFile);
-            string outputFileName = Path.ChangeExtension(quiFileName, fileExtension);
-            return Path.Combine(BuildPath, outputFileName);
-        }
-
-        /// <summary>
-        /// Remove any files in the build folder that were not part of the last compile.
-        /// </summary>
-        private void RemoveOrphanedFiles()
-        {
-            RemoveOrphanedFiles(JsFiles, Project.fileExtensionJs);
-            RemoveOrphanedFiles(CssFiles, Project.fileExtensionCss);
         }
 
         /// <summary>
         /// Remove any files of the given extension in the build folder that
-        /// aren't in the list of current files.
+        /// aren't in the list of files to keep.
         /// </summary>
-        private void RemoveOrphanedFiles(List<string> currentFiles, string fileExtension)
+        private void RemoveUnbuiltFiles(IEnumerable<string> builtFile, string fileExtension)
         {
-            foreach (string orphanedFile in
-                Directory.GetFiles(BuildPath, "*" + fileExtension).Except(currentFiles))
+            foreach (string unbuiltFile in
+                Directory.GetFiles(BuildPath, "*" + fileExtension).Except(builtFile))
             {
-                File.Delete(orphanedFile);
+                File.Delete(unbuiltFile);
             }
         }
     }

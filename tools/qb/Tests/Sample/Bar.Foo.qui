@@ -1,0 +1,15 @@
+<!-- Subclass -->
+
+<Control name="Bar">
+
+<prototype>
+    <Foo>Hello, world.</Foo>
+</prototype>
+
+<style>
+{
+    color: red;
+}
+</style>
+
+</Control>

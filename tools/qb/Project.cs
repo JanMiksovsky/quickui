@@ -43,18 +43,24 @@ namespace qb
         /// </summary>
         public void Build()
         {
-            if (batchCompiler.Compile(QuiFiles))
-            {
-                // Success
-                jsCombiner.Combine(batchCompiler.JsFiles);
-                cssCombiner.Combine(batchCompiler.CssFiles);
-            }
-            else
+            IEnumerable<string> jsFiles;
+            IEnumerable<string> cssFiles;
+            bool success = batchCompiler.Compile(QuiFiles, out jsFiles, out cssFiles);
+            if (!success)
             {
                 // Errors
                 jsCombiner.Clean();
                 cssCombiner.Clean();
             }
+
+            // TODO: Both lists should contain the same files, but with different
+            // extensions. The class dependencies will be the same in both cases,
+            // so it'd be nice to just do the sorting once.
+            IEnumerable<string> jsFilesSorted = FileDependencyMap.SortDependencies(jsFiles);
+            IEnumerable<string> cssFilesSorted = FileDependencyMap.SortDependencies(cssFiles);
+
+            jsCombiner.Combine(jsFilesSorted);
+            cssCombiner.Combine(cssFilesSorted);
         }
 
         /// <summary>
@@ -64,14 +70,13 @@ namespace qb
         /// A list of all Quick markup files in the project folder or its subfolders,
         /// sorted by file name.
         /// </returns>
-        public List<string> QuiFiles
+        public IEnumerable<string> QuiFiles
         {
             get
             {
-                return new List<string>(
-                    from quiFile in GetQuiFilesInPath(ProjectPath)
+                return from quiFile in GetQuiFilesInPath(ProjectPath)
                     orderby Path.GetFileName(quiFile)
-                    select quiFile);
+                    select quiFile;
             }
         }
 

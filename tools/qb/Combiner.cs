@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 
 namespace qb
@@ -14,6 +15,14 @@ namespace qb
         public string BuildPath { get; protected set; }
         public string FileExtension { get; protected set; }
         public string CombinedFile { get; protected set; }
+
+        private IEnumerable<string> SourceFiles {
+            get
+            {
+                string searchPattern = "*" + FileExtension;
+                return Directory.GetFiles(BuildPath, searchPattern);
+            }
+        }
 
         public Combiner(string projectPath, string buildPath, string fileExtension)
         {
@@ -40,9 +49,9 @@ namespace qb
         /// <summary>
         /// Combine the supplied source files to create the output file.
         /// </summary>
-        public void Combine(List<string> sourceFiles)
+        public void Combine(IEnumerable<string> sourceFiles)
         {
-            if (sourceFiles.Count == 0)
+            if (sourceFiles.Count() == 0)
             {
                 // Nothing to combine.
                 return;
@@ -50,7 +59,7 @@ namespace qb
 
             // Only do the work if the combined file is out of date.
             if (!File.Exists(CombinedFile) ||
-                !Utilities.FileNewerThan(CombinedFile, sourceFiles.ToArray()))
+                !Utilities.FileNewerThan(CombinedFile, sourceFiles))
             {
                 Console.WriteLine(Path.GetFileName(CombinedFile));
 
@@ -67,7 +76,7 @@ namespace qb
         /// <summary>
         /// Concatenate the source files to create the target file.
         /// </summary>
-        private static void ConcatenateFiles(List<string> sourcePaths, string targetPath)
+        private static void ConcatenateFiles(IEnumerable<string> sourcePaths, string targetPath)
         {
             using (StreamWriter targetWriter = new StreamWriter(targetPath))
             {

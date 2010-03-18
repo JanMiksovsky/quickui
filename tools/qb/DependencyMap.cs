@@ -9,14 +9,13 @@ using NUnit.Framework;
 namespace qb
 {
     /// <summary>
-    /// Tracks which items in a set are dependent upon which other item(s).
+    /// Determine which items in a set are dependent upon which other item(s).
     /// </summary>
     /// <remarks>
     /// Each item can only be directly dependent upon a single other item.
-    /// This can be used, for example, to define a single-inheritance class
-    /// hierarchy.
+    /// A call to DependencyMap.Add(x, y) adds the fact that x depends on y.
     /// </remarks>
-    class DependencyMap<T> : Dictionary<T, T>
+    public class DependencyMap<T> : Dictionary<T, T>
     {
         /// <summary>
         /// Return the map such that each item comes after all items it's
@@ -24,14 +23,16 @@ namespace qb
         /// </summary>
         public IEnumerable<T> SortDependencies()
         {
-            Queue<T> queue = new Queue<T>(this.Keys);
-            List<T> sorted = new List<T>();
+            Queue<T> queue = new Queue<T>(this.Keys);   // Items not yet sorted.
+            List<T> sorted = new List<T>();             // Items already sorted.
 
             // Each pass through the map should sort at least one item.
             // This gives us a maximum number of passes as n*(n+1) / 2.
             int maxPass = (this.Keys.Count * (this.Keys.Count + 1)) / 2;
             for (int i = 0; i < maxPass; i++)
             {
+                // On each pass, we pull out anything that has no dependencies,
+                // or whose dependent item has already been sorted.
                 T key = queue.Dequeue();
                 T value = this[key];
                 if (value == null ||
@@ -46,7 +47,7 @@ namespace qb
                 }
                 else
                 {
-                    queue.Enqueue(key);
+                    queue.Enqueue(key); // Defer sorting for a later pass.
                 }
             }
 
@@ -61,10 +62,10 @@ namespace qb
 
 #if DEBUG
     [TestFixture]
-    static public class Tests
+    public class DependencyTests
     {
         [Test]
-        public static void Typical()
+        public void Typical()
         {
             DependencyMap<string> map = new DependencyMap<string>();
             map.Add("A", "C");  // Forward reference
@@ -78,7 +79,7 @@ namespace qb
         }
 
         [Test]
-        public static void DegenerateCase()
+        public void DegenerateCase()
         {
             DependencyMap<string> map = new DependencyMap<string>();
             map.Add("A", null);
@@ -91,7 +92,7 @@ namespace qb
         }
 
         [Test]
-        public static void WorstCase()
+        public void WorstCase()
         {
             DependencyMap<string> map = new DependencyMap<string>();
             map.Add("A", "B");
@@ -105,7 +106,7 @@ namespace qb
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
-        public static void Circle()
+        public void Circle()
         {
             DependencyMap<string> map = new DependencyMap<string>();
             map.Add("A", "B");
@@ -114,12 +115,20 @@ namespace qb
             IEnumerable<string> sorted = map.SortDependencies();
         }
 
-        private static void CheckSort(string expected, DependencyMap<string> map)
+        [Test]
+        public void Empty()
+        {
+            DependencyMap<string> map = new DependencyMap<string>();
+            IEnumerable<string> sorted = map.SortDependencies();
+            Assert.AreEqual(0, sorted.Count());
+        }
+
+        private void CheckSort(string expected, DependencyMap<string> map)
         {
             IEnumerable<string> sorted = map.SortDependencies();
             string s = sorted.Aggregate("", (seed, item) => seed + item);
             Assert.AreEqual(expected, s);
         }
-    }
 #endif
+    }
 }

@@ -86,7 +86,7 @@ namespace qc
                 });
         }
 
-        private string BaseClassName
+        public string BaseClassName
         {
             get
             {
