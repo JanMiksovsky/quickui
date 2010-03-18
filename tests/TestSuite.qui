@@ -14,18 +14,10 @@
 
 <Test name="Whitespace">
     <test>
-        A
-        <Simple>
-            B
-        </Simple>
-        C
+        <SimpleSpan>A</SimpleSpan> <SimpleSpan>B</SimpleSpan>
     </test>
     <expect>
-        A
-        <div class="Simple Control">
-            B
-        </div>
-        C
+        <div class="SimpleSpan Control">A</div> <div class="SimpleSpan Control">B</div>
     </expect>
 </Test>
 
@@ -39,7 +31,7 @@
         <SampleProperties>Foo</SampleProperties>
     </test>
     <expect>
-        <div class="SampleProperties Control"><div id="SampleProperties_content">Foo</div></div>
+        <div class="SampleProperties Control"><span id="SampleProperties_content">Foo</span></div>
     </expect>
 </Test>
 
