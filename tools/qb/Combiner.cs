@@ -16,14 +16,6 @@ namespace qb
         public string FileExtension { get; protected set; }
         public string CombinedFile { get; protected set; }
 
-        private IEnumerable<string> SourceFiles {
-            get
-            {
-                string searchPattern = "*" + FileExtension;
-                return Directory.GetFiles(BuildPath, searchPattern);
-            }
-        }
-
         public Combiner(string projectPath, string buildPath, string fileExtension)
         {
             ProjectPath = projectPath;
@@ -49,9 +41,9 @@ namespace qb
         /// <summary>
         /// Combine the supplied source files to create the output file.
         /// </summary>
-        public void Combine(IEnumerable<string> sourceFiles)
+        public void Combine(BuildManifest manifest)
         {
-            if (sourceFiles.Count() == 0)
+            if (manifest.Count() == 0)
             {
                 // Nothing to combine.
                 return;
@@ -59,7 +51,7 @@ namespace qb
 
             // Only do the work if the combined file is out of date.
             if (!File.Exists(CombinedFile) ||
-                !Utilities.FileNewerThan(CombinedFile, sourceFiles))
+                !Utilities.FileNewerThan(CombinedFile, manifest.Files))
             {
                 Console.WriteLine(Path.GetFileName(CombinedFile));
 
@@ -68,7 +60,9 @@ namespace qb
                 {
                     fileInfo.IsReadOnly = false;
                 }
-                ConcatenateFiles(sourceFiles, CombinedFile);
+                IEnumerable<BuildFile> sortedBuildFiles = manifest.SortDependencies();
+                IEnumerable<string> sortedFiles = sortedBuildFiles.Select(buildFile => buildFile.FileName);
+                ConcatenateFiles(sortedFiles, CombinedFile);
                 fileInfo.IsReadOnly = true;
             }
         }

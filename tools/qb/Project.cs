@@ -43,9 +43,9 @@ namespace qb
         /// </summary>
         public void Build()
         {
-            IEnumerable<string> jsFiles;
-            IEnumerable<string> cssFiles;
-            bool success = batchCompiler.Compile(QuiFiles, out jsFiles, out cssFiles);
+            BuildManifest manifestJs;
+            BuildManifest manifestCss;
+            bool success = batchCompiler.Compile(QuiFiles, out manifestJs, out manifestCss);
             if (!success)
             {
                 // Errors
@@ -53,14 +53,8 @@ namespace qb
                 cssCombiner.Clean();
             }
 
-            // TODO: Both lists should contain the same files, but with different
-            // extensions. The class dependencies will be the same in both cases,
-            // so it'd be nice to just do the sorting once.
-            IEnumerable<string> jsFilesSorted = FileDependencyMap.SortDependencies(jsFiles);
-            IEnumerable<string> cssFilesSorted = FileDependencyMap.SortDependencies(cssFiles);
-
-            jsCombiner.Combine(jsFilesSorted);
-            cssCombiner.Combine(cssFilesSorted);
+            jsCombiner.Combine(manifestJs);
+            cssCombiner.Combine(manifestCss);
         }
 
         /// <summary>

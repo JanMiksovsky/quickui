@@ -65,9 +65,10 @@
   <ItemGroup>
     <Compile Include="Application.cs" />
     <Compile Include="BatchCompiler.cs" />
+    <Compile Include="BuildFile.cs" />
+    <Compile Include="BuildManifest.cs" />
     <Compile Include="Combiner.cs" />
     <Compile Include="DependencyMap.cs" />
-    <Compile Include="FileDependencyMap.cs" />
     <Compile Include="QuiFileCompiler.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

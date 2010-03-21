@@ -36,12 +36,14 @@ namespace qb
         /// The compiled JS and CSS files are returned in the properties
         /// of the corresponding name.
         /// </remarks>
-        public bool Compile(IEnumerable<string> quiFiles, out IEnumerable<string> jsFiles, out IEnumerable<string> cssFiles)
+        public bool Compile(IEnumerable<string> quiFiles, out BuildManifest manifestJs, out BuildManifest manifestCss)
         {
-            List<string> jsFilesBuilt = new List<string>();
-            List<string> cssFilesBuilt = new List<string>();
+            BuildManifest manifestOldJs;
+            BuildManifest manifestOldCss;
+            CheckBuildFolder(out manifestOldJs, out manifestOldCss);
 
-            EnsureBuildDirectoryExists();
+            manifestJs = new BuildManifest();
+            manifestCss = new BuildManifest();
             bool batchSuccess = true;
             foreach (string quiFile in quiFiles)
             {
@@ -50,8 +52,8 @@ namespace qb
                 bool fileSuccess = QuiFileCompiler.Compile(quiFile, BuildPath, out jsFile, out cssFile);
                 if (fileSuccess)
                 {
-                    jsFilesBuilt.Add(jsFile);
-                    cssFilesBuilt.Add(cssFile);
+                    manifestJs.Add(jsFile);
+                    manifestCss.Add(cssFile);
                 }
                 else
                 {
@@ -59,30 +61,44 @@ namespace qb
                 }
             }
 
-            RemoveUnbuiltFiles(jsFilesBuilt, Project.fileExtensionJs);
-            RemoveUnbuiltFiles(cssFilesBuilt, Project.fileExtensionCss);
+            RemoveUnbuiltFiles(manifestJs, manifestOldJs);
+            RemoveUnbuiltFiles(manifestCss, manifestOldCss);
 
-            jsFiles = jsFilesBuilt;
-            cssFiles = cssFilesBuilt;
             return batchSuccess;
         }
 
-        private void EnsureBuildDirectoryExists()
+        private void CheckBuildFolder(out BuildManifest manifestOldJs, out BuildManifest manifestOldCss)
         {
-            if (!Directory.Exists(BuildPath))
+            if (Directory.Exists(BuildPath))
             {
+                // Incremental build; find existing files.
+                manifestOldJs = new BuildManifest(BuildPath, Project.fileExtensionJs);
+                manifestOldCss = new BuildManifest(BuildPath, Project.fileExtensionCss);
+            }
+            else
+            {
+                // Clean build.
                 Directory.CreateDirectory(BuildPath);
+                manifestOldJs = null;
+                manifestOldCss = null;
             }
         }
 
         /// <summary>
-        /// Remove any files of the given extension in the build folder that
-        /// aren't in the list of files to keep.
+        /// Remove any files in the old manifest but not in the new,
+        /// i.e., files that are left over from a previous compilation.
         /// </summary>
-        private void RemoveUnbuiltFiles(IEnumerable<string> builtFile, string fileExtension)
+        private void RemoveUnbuiltFiles(BuildManifest manifestNew, BuildManifest manifestOld)
         {
-            foreach (string unbuiltFile in
-                Directory.GetFiles(BuildPath, "*" + fileExtension).Except(builtFile))
+            if (manifestOld == null)
+            {
+                return;
+            }
+
+            IEnumerable<string> newFiles = manifestNew.Files;
+            IEnumerable<string> unbuiltFiles = manifestOld.Files.Where(
+                oldFile => !newFiles.Contains(oldFile));
+            foreach (string unbuiltFile in unbuiltFiles)
             {
                 File.Delete(unbuiltFile);
             }
