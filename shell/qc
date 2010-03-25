@@ -1,2 +1,4 @@
 #!/bin/sh
-/usr/bin/mono /Users/Jan/Documents/Projects/Qui2/Quic/quic/bin/release/quic.exe $1 $2 $3
+# Launch the qb tool via Mono.
+# Replace the qb.exe location below with your own install location.
+/usr/bin/mono /Developer/Applications/QuickUI/bin/qb.exe $*
