@@ -64,15 +64,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application.cs" />
-    <Compile Include="BatchCompiler.cs" />
-    <Compile Include="BuildFile.cs" />
-    <Compile Include="BuildManifest.cs" />
-    <Compile Include="Combiner.cs" />
+    <Compile Include="BuildUnit.cs" />
+    <Compile Include="Build.cs" />
     <Compile Include="DependencyMap.cs" />
-    <Compile Include="QuiFileCompiler.cs" />
+    <Compile Include="ProjectCombiner.cs" />
+    <Compile Include="ProjectCompiler.cs" />
+    <Compile Include="ProjectScanner.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -113,10 +112,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Tests\Sample\Foo.qui" />
+    <EmbeddedResource Include="Tests\Sample\Subfolder\Foo.qui" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Tests\Sample\Bar.Foo.qui" />
+    <EmbeddedResource Include="Tests\Sample\Bar.qui" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

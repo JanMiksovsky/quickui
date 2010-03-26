@@ -10,22 +10,23 @@ namespace qb
         public const string fileExtensionQui = ".qui";
         public const string fileExtensionJs = ".js";
         public const string fileExtensionCss = ".css";
-        private const string buildDirectoryName = "build";
+        private const string buildFolderName = "build";
 
-        public string ProjectPath { get; protected set; }
+        public string ProjectFolder { get; protected set; }
 
-        private BatchCompiler batchCompiler;
-        private Combiner jsCombiner;
-        private Combiner cssCombiner;
+        private string BuildFolder { get; set; }
+        private ProjectScanner scanner;
+        private ProjectCompiler compiler;
+        private ProjectCombiner combiner;
 
-        public Project(string projectPath)
+        public Project(string projectFolder)
         {
-            ProjectPath = Path.GetFullPath(projectPath);
+            ProjectFolder = Path.GetFullPath(projectFolder);
+            BuildFolder = Path.Combine(ProjectFolder, buildFolderName);
 
-            string buildPath = Path.Combine(ProjectPath, buildDirectoryName);
-            batchCompiler = new BatchCompiler(buildPath);
-            jsCombiner = new Combiner(ProjectPath, buildPath, fileExtensionJs);
-            cssCombiner = new Combiner(ProjectPath, buildPath, fileExtensionCss);
+            scanner = new ProjectScanner(ProjectFolder, BuildFolder);
+            compiler = new ProjectCompiler(BuildFolder);
+            combiner = new ProjectCombiner(ProjectFolder, BuildFolder);
         }
 
         /// <summary>
@@ -33,9 +34,12 @@ namespace qb
         /// </summary>
         public void Clean()
         {
-            batchCompiler.Clean();
-            jsCombiner.Clean();
-            cssCombiner.Clean();
+            if (Directory.Exists(BuildFolder))
+            {
+                Directory.Delete(BuildFolder, true);
+            }
+
+            combiner.Clean();
         }
 
         /// <summary>
@@ -43,46 +47,37 @@ namespace qb
         /// </summary>
         public void Build()
         {
-            BuildManifest manifestJs;
-            BuildManifest manifestCss;
-            bool success = batchCompiler.Compile(QuiFiles, out manifestJs, out manifestCss);
-            if (!success)
+            Build build = new Build(BuildFolder);
+
+            // Phase 1: Scan the project's Quick markup source files and previous
+            // build output to determine which files need to be recompiled.
+            IEnumerable<string> quiFilesToCompile = scanner.Scan(build);
+
+            // Phase 2: Compile files that need it and add the output to the build.
+            bool compileSuccess;
+            if (quiFilesToCompile.Count() == 0)
             {
-                // Errors
-                jsCombiner.Clean();
-                cssCombiner.Clean();
+                // All build files up to date.
+                compileSuccess = true;
+            }
+            else
+            {
+                compileSuccess = compiler.Compile(quiFilesToCompile, build);
             }
 
-            jsCombiner.Combine(manifestJs);
-            cssCombiner.Combine(manifestCss);
-        }
-
-        /// <summary>
-        /// All Quick markup files in the project.
-        /// </summary>
-        /// <returns>
-        /// A list of all Quick markup files in the project folder or its subfolders,
-        /// sorted by file name.
-        /// </returns>
-        public IEnumerable<string> QuiFiles
-        {
-            get
+            // Phase 3: Create the project's combined output files.
+            if (compileSuccess)
             {
-                return from quiFile in GetQuiFilesInPath(ProjectPath)
-                    orderby Path.GetFileName(quiFile)
-                    select quiFile;
+                combiner.Combine(build);
             }
-        }
+            else
+            {
+                // Fail; remove any (now out of date) project output.
+                combiner.Clean();
+            }
 
-        /// <summary>
-        /// Return all Quick markup files in the given path or below.
-        /// </summary>
-        private static IEnumerable<string> GetQuiFilesInPath(string path)
-        {
-            string searchPattern = "*" + fileExtensionQui;
-            return Directory.GetFiles(path, searchPattern)  // Quick markup files in this folder
-                .Concat(Directory.GetDirectories(path).SelectMany(     // Quick markup files in subfolders
-                            subfolder => GetQuiFilesInPath(subfolder)));
+            // Phase 4: Clean up and remove any obsolete build files.
+            build.RemoveObsoleteFiles();
         }
     }
 }
