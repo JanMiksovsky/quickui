@@ -109,6 +109,11 @@ namespace qb
             Dictionary<string, BuildUnit> map = new Dictionary<string, BuildUnit>();
             foreach (BuildUnit buildFile in BuildUnits)
             {
+                if (map.ContainsKey(buildFile.ClassName))
+                {
+                    throw new Exception(
+                        String.Format("Attempt to define control class {0} more than once.", buildFile.ClassName));
+                }
                 map.Add(buildFile.ClassName, buildFile);
             }
             return map;
