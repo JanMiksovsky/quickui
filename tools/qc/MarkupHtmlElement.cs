@@ -72,7 +72,7 @@ namespace qc
         /// Parse the text node at the given element.
         /// </summary>
         public MarkupHtmlElement(XText node)
-            : this(CollapseWhiteSpaceRuns(node.Value))
+            : this(EscapeLessThans(CollapseWhiteSpaceRuns(node.Value)))
         {
         }
 
@@ -147,6 +147,14 @@ namespace qc
                         ChildNodes = ChildNodes.EmitItems(indentLevel + 1),
                         Tabs = Tabs(indentLevel)
                     });
+        }
+
+        // WebKit doesn't seem to like seeing "<" in text.
+        // Undo any entity replacement made by the parser in a text node
+        // so that at run-time the text can be added as-is to the HTML.
+        private static string EscapeLessThans(string s)
+        {
+            return s.Replace("<", "&lt;");
         }
 
 #if DEBUG

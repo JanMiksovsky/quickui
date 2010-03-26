@@ -445,7 +445,7 @@ Tag = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				"<",
+				"&lt;",
 				this.Tag_content = $("<span id=\"Tag_content\" />")[0],
 				">"
 			]
