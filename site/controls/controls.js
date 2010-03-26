@@ -6,7 +6,7 @@ AddThis = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			"content": "\n\t\n\t<div class=\"addthis_toolbox addthis_default_style\">\r\n\t<a href=\"http://www.addthis.com/bookmark.php?v=250&amp;pub=janmiksovsky\" class=\"addthis_button_compact\">Share</a>\r\n\t<span class=\"addthis_separator\">|</span>\r\n\t<a class=\"addthis_button_twitter\"></a>\r\n\t<a class=\"addthis_button_facebook\"></a>\r\n\t<a class=\"addthis_button_email\"></a>\r\n\t<a class=\"addthis_button_favorites\"></a>\r\n\t<a class=\"addthis_button_print\"></a>\r\n\t</div>\n\t\n"
+			"content": " <div class=\"addthis_toolbox addthis_default_style\">\r\n\t<a href=\"http://www.addthis.com/bookmark.php?v=250&amp;pub=janmiksovsky\" class=\"addthis_button_compact\">Share</a>\r\n\t<span class=\"addthis_separator\">|</span>\r\n\t<a class=\"addthis_button_twitter\"></a>\r\n\t<a class=\"addthis_button_facebook\"></a>\r\n\t<a class=\"addthis_button_email\"></a>\r\n\t<a class=\"addthis_button_favorites\"></a>\r\n\t<a class=\"addthis_button_print\"></a>\r\n\t</div> "
 		});
 	}
 });
@@ -28,9 +28,9 @@ CodeOutput = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				"\n\t",
+				" ",
 				this.CodeOutput_content = $("<div id=\"CodeOutput_content\" />")[0],
-				"\n\t\n"
+				" "
 			]
 		});
 	}
@@ -48,9 +48,9 @@ Link = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				"\n\t",
+				" ",
 				this.Link_content = $("<a id=\"Link_content\" href=\"javascript:\" />")[0],
-				"\n"
+				" "
 			]
 		});
 	}
@@ -94,22 +94,22 @@ LinkList = QuickControl.extend({
 		QuickControl.prototype.render.call(this);
 		this.setClassProperties(QuickControl, {
 			"content": [
-				"\n\t\t",
+				" ",
 				this.list = QuickUI.Control.create(List, {
 					"content": [
-						"\n\t\t\t",
+						" ",
 						$("<p />").items(
-							"\n\t\t\t\t",
+							" ",
 							this.link = QuickUI.Control.create(Link, {
 								"id": "link"
 							}),
-							"\n\t\t\t"
+							" "
 						)[0],
-						"\n\t\t"
+						" "
 					],
 					"id": "list"
 				}),
-				"\n\t"
+				" "
 			]
 		});
 	}
@@ -132,9 +132,9 @@ List = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				"\n\t",
+				" ",
 				this.List_expansion = $("<div id=\"List_expansion\" />")[0],
-				"\n"
+				" "
 			]
 		});
 	}
@@ -209,37 +209,37 @@ NavigationBar = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				"\n\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Home",
 					"href": "/home/default.html"
 				}),
-				"\n\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Download",
 					"href": "/downloads/default.html"
 				}),
-				"\n\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Tutorial",
 					"href": "/tutorial/section01/default.html"
 				}),
-				"\n\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Gallery",
 					"href": "/gallery/default.html"
 				}),
-				"\n\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Discuss",
 					"href": "http://groups.google.com/group/quickui"
 				}),
-				"\n\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Contribute",
 					"href": "http://code.google.com/p/quickui/"
 				}),
-				"\n"
+				" "
 			]
 		});
 	}
@@ -302,57 +302,57 @@ SitePage = Page.extend({
 		this.setClassProperties(Page, {
 			"fill": "true",
 			"content": [
-				"\n\t\t",
+				" ",
 				this.tableMain = $("<table id=\"tableMain\" />").items(
-					"\n\t\t\t",
+					" ",
 					this.topRow = $("<tr id=\"topRow\" />").items(
-						"\n\t\t\t\t",
+						" ",
 						this.logoCell = $("<td id=\"logoCell\" />").items(
-							"\n\t\t\t\t\t",
+							" ",
 							this.logotype = QuickUI.Control.create(Link, {
-								"content": "\n\t\t\t\t\t\t<span class=\"bracket\">&lt;</span>QuickUI<span class=\"bracket\">&gt;</span>\n\t\t\t\t\t",
+								"content": " <span class=\"bracket\">&lt;</span>QuickUI<span class=\"bracket\">&gt;</span> ",
 								"href": "/home/default.html",
 								"id": "logotype"
 							}),
-							"\n\t\t\t\t\t",
+							" ",
 							this.tagline = $("<div id=\"tagline\">Modular web control framework</div>")[0],
-							"\n\t\t\t\t"
+							" "
 						)[0],
-						"\n\t\t\t\t",
+						" ",
 						this.topNavigation = $("<td id=\"topNavigation\" />").items(
 							this.navigationBar = QuickUI.Control.create(NavigationBar, {
 								"id": "navigationBar"
 							})
 						)[0],
-						"\n\t\t\t"
+						" "
 					)[0],
-					"\n\t\t\t",
+					" ",
 					$("<tr />").items(
-						"\n\t\t\t\t",
+						" ",
 						this.leftNavigation = $("<td id=\"leftNavigation\" />").items(
-							"\n\t\t\t\t\t",
+							" ",
 							"<h1> </h1>",
-							" \n\t\t\t\t\t",
+							" ",
 							this.SitePage_navigationLinks = QuickUI.Control.create(Navigator, {
 								"id": "SitePage_navigationLinks"
 							}),
-							"\n\t\t\t\t\t",
+							" ",
 							this.SitePage_sidebar = $("<div id=\"SitePage_sidebar\" />")[0],
-							"\n\t\t\t\t"
+							" "
 						)[0],
-						"\n\t\t\t\t",
+						" ",
 						this.pageCanvas = $("<td id=\"pageCanvas\" />").items(
-							"\n\t\t\t\t\t",
+							" ",
 							this.SitePage_title = $("<h1 id=\"SitePage_title\" />")[0],
-							"\n\t\t\t\t\t",
+							" ",
 							this.SitePage_content = $("<div id=\"SitePage_content\" />")[0],
-							"\n\t\t\t\t"
+							" "
 						)[0],
-						"\n\t\t\t"
+						" "
 					)[0],
-					"\n\t\t"
+					" "
 				)[0],
-				"\n\t"
+				" "
 			]
 		});
 	}
@@ -392,18 +392,18 @@ SourceCode = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				"\n\t",
+				" ",
 				this.SourceCode_content = $("<pre id=\"SourceCode_content\" />")[0],
-				"\n\t",
+				" ",
 				$("<div id=\"_divLink\" />").items(
-					"\n\t\t",
+					" ",
 					this.link = $("<a id=\"link\" />").items(
 						"→ ",
 						this.linkText = $("<span id=\"linkText\" />")[0]
 					)[0],
-					"\n\t"
+					" "
 				)[0],
-				"\n"
+				" "
 			]
 		});
 	}
@@ -466,77 +466,77 @@ TutorialPage = SitePage.extend({
 		this.setClassProperties(SitePage, {
 			"area": "Tutorial",
 			"navigationLinks": [
-				"\n\t\t\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Hello, world",
 					"href": "/tutorial/section01/default.html"
 				}),
-				"\n\t\t\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "How QuickUI works",
 					"href": "/tutorial/section02/default.html"
 				}),
-				"\n\t\t\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Composing controls",
 					"href": "/tutorial/section03/default.html"
 				}),
-				"\n\t\t\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Referencing control elements",
 					"href": "/tutorial/section04/default.html"
 				}),
-				"\n\t\t\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Defining control properties",
 					"href": "/tutorial/section05/default.html"
 				}),
-				"\n\t\t\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Setting control properties",
 					"href": "/tutorial/section06/default.html"
 				}),
-				"\n\t\t\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Property factories",
 					"href": "/tutorial/section07/default.html"
 				}),
-				"\n\t\t\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Markup within properties",
 					"href": "/tutorial/section08/default.html"
 				}),
-				"\n\t\t\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Control prototypes",
 					"href": "/tutorial/section09/default.html"
 				}),
-				"\n\t\t\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Styling controls",
 					"href": "/tutorial/section10/default.html"
 				}),
-				"\n\t\t\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "More on styling",
 					"href": "/tutorial/section11/default.html"
 				}),
-				"\n\t\t\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Defining interactivity",
 					"href": "/tutorial/section12/default.html"
 				}),
-				"\n\t\t\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Controlling behavior",
 					"href": "/tutorial/section13/default.html"
 				}),
-				"\n\t\t\t",
+				" ",
 				QuickUI.Control.create(NavigationLink, {
 					"content": "Subclassing controls",
 					"href": "/tutorial/section14/default.html"
 				}),
-				"\n\t\t"
+				" "
 			]
 		});
 	}

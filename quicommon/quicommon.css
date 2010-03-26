@@ -1,11 +1,3 @@
-/*** Overlay ***/
-
-.Overlay {
-	display: none;
-	position: fixed;
-	z-index: 1;
-}
-
 /*** ButtonBase ***/
 
 .ButtonBase {
@@ -15,13 +7,6 @@
 
 .ButtonBase ButtonBaseNew.disabled {
 	cursor: default;
-}
-
-/*** Dialog ***/
-
-.Dialog {
-	background-color: white;
-	border: 1px solid black;
 }
 
 /*** DockPanel ***/
@@ -53,6 +38,14 @@
 	width: 0;
 }
 
+/*** Overlay ***/
+
+.Overlay {
+	display: none;
+	position: fixed;
+	z-index: 1;
+}
+
 /*** Page ***/
 
 .Page.fill {
@@ -78,5 +71,12 @@
 .VerticalAlign > * {
 	display: table-cell;
 	vertical-align: middle;
+}
+
+/*** Dialog ***/
+
+.Dialog {
+	background-color: white;
+	border: 1px solid black;
 }
 

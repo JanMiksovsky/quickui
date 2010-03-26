@@ -1,125 +1,4 @@
 //
-// Overlay
-//
-Overlay = QuickUI.Control.extend({
-	className: "Overlay"
-});
-$.extend(Overlay.prototype, {
-
-	blanket: QuickUI.Property(),
-	dismissOnInsideClick: QuickUI.Property.bool(),
-	dismissOnOutsideClick: QuickUI.Property.bool(null, true),
-	
-	ready: function()
-	{
-		var self = this;
-		$(this.element).click(function() {
-			if (self.dismissOnInsideClick())
-			{
-				self.hide();
-			}
-		});
-	},
-	
-	createBlanket: function() {
-		var newBlanket = $(this.element)
-			.after("<div id='blanket'/>")
-			.next()[0];
-		var self = this;
-		$(newBlanket)
-			.click(function() {
-				if (self.dismissOnOutsideClick())
-				{
-					self.hide();
-				}
-			})
-			.css({
-				cursor: "default",
-				position: "fixed",
-				opacity: 0.01,
-				top: 0,
-				left: 0,
-				width: "100%",
-				height: "100%"
-			});
-		return newBlanket;
-	},
-	
-	hide: function()
-	{
-		$(this.element).remove();
-		/*
-        $(this.element)
-			.hide()
-			.css("z-index", null); // No need to define Z-order any longer.
-        */
-		if (this.blanket() != null)
-		{
-			$(this.blanket()).remove();
-			this.blanket(null);
-			// $(this.blanket()).hide();
-		}
-	},
-	
-	/* Return the maximum Z-index in use by the page and its top-level controls. */
-	maximumZIndex: function()
-	{
-		var topLevelElements = $("body").children().andSelf();
-		var zIndices = $.map(topLevelElements, function(element) {
-			switch ($(element).css("position")) {
-				case "absolute":
-				case "fixed":
-					var zIndex = parseInt($(element).css("z-index")) || 1;
-					return zIndex;
-			}
-		});
-		return Math.max.apply(null, zIndices);
-	},
-	
-	// Subclasses should override this to position themselves.
-	position: function() {},
-	
-	show: function()
-	{
-		if (this.blanket() == null)
-		{
-			this.blanket(this.createBlanket());
-		}
-		
-		if (!this.dismissOnOutsideClick())
-		{
-			$(this.blanket()).css({
-				"background-color": "black",
-				opacity: 0.25
-			});
-		}
-		
-		/* Show control and blanket at the top of the Z-order. */
-		var maximumZIndex = this.maximumZIndex();
-		$(this.blanket())
-			.css("z-index", maximumZIndex + 1)
-			.show();
-		$(this.element)
-			.css("z-index", maximumZIndex + 2)
-			.show();
-		this.position();
-	}
-});
-
-//
-// Popup
-//
-Popup = Overlay.extend({
-	className: "Popup",
-	render: function() {
-		Overlay.prototype.render.call(this);
-		this.setClassProperties(Overlay, {
-			"dismissOnInsideClick": "true"
-		});
-	}
-});
-
-//
 // ButtonBase
 //
 ButtonBase = QuickUI.Control.extend({
@@ -255,78 +134,6 @@ $.extend(ButtonBase, {
 });
 
 //
-// Dialog
-//
-Dialog = Overlay.extend({
-	className: "Dialog",
-	render: function() {
-		Overlay.prototype.render.call(this);
-		this.setClassProperties(Overlay, {
-			"dismissOnOutsideClick": "false"
-		});
-	}
-});
-$.extend(Dialog, {
-	show: function(dialogClass, properties, callbackOk, callbackCancel) {
-		var dialog = $("body")
-			.append("<div/>")
-			.find(":last")
-			.control(dialogClass)
-			.control();
-        $(dialog.element).bind({
-            ok: function() {
-                if (callbackOk)
-                {
-                    callbackOk.call(this);
-                }
-            },
-            cancel: function() {
-                if (callbackCancel)
-                {
-                    callbackCancel.call(this);
-                }
-            }
-        });
-		dialog.setProperties(properties);
-		dialog.show();
-	}
-});
-
-$.extend(Dialog.prototype, {
-	
-	ready: function() {
-		Dialog.superProto.ready.call(this);
-		var self = this;
-		$(this.element).keydown(function(event) {
-			if (event.keyCode == 27)
-			{
-				self.cancel();
-			}
-		});
-	},
-
-	cancel: function() {
-		this.hide();
-		$(this.element).trigger("cancel");
-	},
-	
-	close: function() {
-		this.hide();
-		$(this.element).trigger("ok");
-	},
-	
-	position: function() {
-		// Center dialog horizontally and vertically.
-		var left = ($(window).width() - $(this.element).outerWidth()) / 2;
-		var top = ($(window).height() - $(this.element).outerHeight()) / 2;
-		$(this.element).css({
-			left: left,
-			top: top
-		});
-	}
-});
-
-//
 // DockPanel
 //
 DockPanel = QuickUI.Control.extend({
@@ -335,25 +142,25 @@ DockPanel = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				"\n\t",
+				" ",
 				this.DockPanel_top = $("<div id=\"DockPanel_top\" />")[0],
-				"\n\t",
+				" ",
 				this.rowCenter = $("<div id=\"rowCenter\" />").items(
-					"\n\t\t",
+					" ",
 					this.centerTable = $("<div id=\"centerTable\" />").items(
-						"\n\t\t\t",
+						" ",
 						this.DockPanel_left = $("<div id=\"DockPanel_left\" class=\"panel\" />")[0],
-						"\n\t\t\t",
+						" ",
 						this.DockPanel_content = $("<div id=\"DockPanel_content\" />")[0],
-						"\n\t\t\t",
+						" ",
 						this.DockPanel_right = $("<div id=\"DockPanel_right\" class=\"panel\" />")[0],
-						"\n\t\t"
+						" "
 					)[0],
-					"\n\t"
+					" "
 				)[0],
-				"\n\t",
+				" ",
 				this.DockPanel_bottom = $("<div id=\"DockPanel_bottom\" />")[0],
-				"\n"
+				" "
 			]
 		});
 	}
@@ -410,11 +217,11 @@ IfBrowser = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				"\n\t",
+				" ",
 				this.IfBrowser_content = $("<span id=\"IfBrowser_content\" />")[0],
-				"\n\t",
+				" ",
 				this.IfBrowser_elseContent = $("<span id=\"IfBrowser_elseContent\" />")[0],
-				"\n"
+				" "
 			]
 		});
 	}
@@ -493,6 +300,114 @@ $.extend(List.prototype, {
 });
 
 //
+// Overlay
+//
+Overlay = QuickUI.Control.extend({
+	className: "Overlay"
+});
+$.extend(Overlay.prototype, {
+
+	blanket: QuickUI.Property(),
+	dismissOnInsideClick: QuickUI.Property.bool(),
+	dismissOnOutsideClick: QuickUI.Property.bool(null, true),
+	
+	ready: function()
+	{
+		var self = this;
+		$(this.element).click(function() {
+			if (self.dismissOnInsideClick())
+			{
+				self.hide();
+			}
+		});
+	},
+	
+	createBlanket: function() {
+		var newBlanket = $(this.element)
+			.after("<div id='blanket'/>")
+			.next()[0];
+		var self = this;
+		$(newBlanket)
+			.click(function() {
+				if (self.dismissOnOutsideClick())
+				{
+					self.hide();
+				}
+			})
+			.css({
+				cursor: "default",
+				position: "fixed",
+				opacity: 0.01,
+				top: 0,
+				left: 0,
+				width: "100%",
+				height: "100%"
+			});
+		return newBlanket;
+	},
+	
+	hide: function()
+	{
+		$(this.element).remove();
+		/*
+        $(this.element)
+			.hide()
+			.css("z-index", null); // No need to define Z-order any longer.
+        */
+		if (this.blanket() != null)
+		{
+			$(this.blanket()).remove();
+			this.blanket(null);
+			// $(this.blanket()).hide();
+		}
+	},
+	
+	/* Return the maximum Z-index in use by the page and its top-level controls. */
+	maximumZIndex: function()
+	{
+		var topLevelElements = $("body").children().andSelf();
+		var zIndices = $.map(topLevelElements, function(element) {
+			switch ($(element).css("position")) {
+				case "absolute":
+				case "fixed":
+					var zIndex = parseInt($(element).css("z-index")) || 1;
+					return zIndex;
+			}
+		});
+		return Math.max.apply(null, zIndices);
+	},
+	
+	// Subclasses should override this to position themselves.
+	position: function() {},
+	
+	show: function()
+	{
+		if (this.blanket() == null)
+		{
+			this.blanket(this.createBlanket());
+		}
+		
+		if (!this.dismissOnOutsideClick())
+		{
+			$(this.blanket()).css({
+				"background-color": "black",
+				opacity: 0.25
+			});
+		}
+		
+		/* Show control and blanket at the top of the Z-order. */
+		var maximumZIndex = this.maximumZIndex();
+		$(this.blanket())
+			.css("z-index", maximumZIndex + 1)
+			.show();
+		$(this.element)
+			.css("z-index", maximumZIndex + 2)
+			.show();
+		this.position();
+	}
+});
+
+//
 // Page
 //
 Page = QuickUI.Control.extend({
@@ -508,9 +423,30 @@ $.extend(Page.prototype, {
 	
 	// Return the parameter with the given name from the current URL, or null if not found.
 	getUrlParameter: function(parameterName) {
-		return Page.getUrlParameter(parameterName);
-	},	
-	
+		return this.urlParameters[parameterName];
+	},
+
+    //
+    // Return the URL parameters as a JavaScript object.
+    // E.g., if the URL looks like http://www.example.com/index.html?foo=hello&bar=world
+    // then this returns the object
+    //
+    //    { foo: "hello", bar: "world" }
+    //
+    urlParameters: function() {
+        var regex = /[?&](\w+)=([^&#]*)/g;
+        var results = {};
+        var match = regex.exec( window.location.search );
+        while (match != null)
+        {
+            var parameterName = match[1];
+            var parameterValue = match[2];
+            results[parameterName] = parameterValue;
+            match = regex.exec( window.location.href );
+        }
+        return results;
+    },
+    	
 	// Gets or sets the title of the page.
 	title: function(value) {
 		if (value !== undefined)
@@ -520,19 +456,6 @@ $.extend(Page.prototype, {
 		return document.title;
 	}
 
-});
-
-$.extend(Page, {
-	
-	// Return the parameter with the given name from the current URL, or null if not found.
-	getUrlParameter: function(parameterName) {
-		parameterName = parameterName.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-		var regexS = "[\\?&]"+parameterName+"=([^&#]*)";
-		var regex = new RegExp( regexS );
-		var results = regex.exec( window.location.href );
-		return (results == null) ? null : results[1];
-	}
-	
 });
 
 /*
@@ -554,6 +477,19 @@ $.extend(QuickUI.Control.prototype, {
 });
 
 //
+// Popup
+//
+Popup = Overlay.extend({
+	className: "Popup",
+	render: function() {
+		Overlay.prototype.render.call(this);
+		this.setClassProperties(Overlay, {
+			"dismissOnInsideClick": "true"
+		});
+	}
+});
+
+//
 // Repeater
 //
 Repeater = QuickUI.Control.extend({
@@ -562,9 +498,9 @@ Repeater = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				"\n\t",
+				" ",
 				this.Repeater_expansion = $("<div id=\"Repeater_expansion\" />")[0],
-				"\n"
+				" "
 			]
 		});
 	}
@@ -648,5 +584,77 @@ $.extend(Sprite.prototype, {
 //
 VerticalAlign = QuickUI.Control.extend({
 	className: "VerticalAlign"
+});
+
+//
+// Dialog
+//
+Dialog = Overlay.extend({
+	className: "Dialog",
+	render: function() {
+		Overlay.prototype.render.call(this);
+		this.setClassProperties(Overlay, {
+			"dismissOnOutsideClick": "false"
+		});
+	}
+});
+$.extend(Dialog, {
+	show: function(dialogClass, properties, callbackOk, callbackCancel) {
+		var dialog = $("body")
+			.append("<div/>")
+			.find(":last")
+			.control(dialogClass)
+			.control();
+        $(dialog.element).bind({
+            ok: function() {
+                if (callbackOk)
+                {
+                    callbackOk.call(this);
+                }
+            },
+            cancel: function() {
+                if (callbackCancel)
+                {
+                    callbackCancel.call(this);
+                }
+            }
+        });
+		dialog.setProperties(properties);
+		dialog.show();
+	}
+});
+
+$.extend(Dialog.prototype, {
+	
+	ready: function() {
+		Dialog.superProto.ready.call(this);
+		var self = this;
+		$(this.element).keydown(function(event) {
+			if (event.keyCode == 27)
+			{
+				self.cancel();
+			}
+		});
+	},
+
+	cancel: function() {
+		this.hide();
+		$(this.element).trigger("cancel");
+	},
+	
+	close: function() {
+		this.hide();
+		$(this.element).trigger("ok");
+	},
+	
+	position: function() {
+		// Center dialog horizontally and vertically.
+		var left = ($(window).width() - $(this.element).outerWidth()) / 2;
+		var top = ($(window).height() - $(this.element).outerHeight()) / 2;
+		$(this.element).css({
+			left: left,
+			top: top
+		});
+	}
 });
 

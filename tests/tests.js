@@ -43,27 +43,27 @@ Test = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				"\n    ",
+				" ",
 				this.header = $("<div id=\"header\" />").items(
-					"\n        ",
+					" ",
 					this.Test_name = $("<span id=\"Test_name\" />")[0],
 					": ",
 					this.Test_result = $("<span id=\"Test_result\" />")[0],
-					"\n    "
+					" "
 				)[0],
-				"\n    ",
+				" ",
 				this.details = $("<div id=\"details\" />").items(
-					"\n        Actual: ",
+					" Actual: ",
 					this.htmlActual = $("<span id=\"htmlActual\" />")[0],
-					"\n        ",
+					" ",
 					this.Test_test = $("<div id=\"Test_test\" />")[0],
-					"\n        Expected: ",
+					" Expected: ",
 					this.htmlExpected = $("<span id=\"htmlExpected\" />")[0],
-					"\n        ",
+					" ",
 					this.Test_expect = $("<div id=\"Test_expect\" />")[0],
-					"\n    "
+					" "
 				)[0],
-				"\n"
+				" "
 			]
 		});
 	}

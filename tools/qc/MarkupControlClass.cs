@@ -290,6 +290,7 @@ namespace qc
                 );
                 MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
                 Assert.AreEqual("Minimal", c.Name);
+                Assert.AreEqual("QuickUI.Control", c.BaseClassName);
             }
 
             [Test]
