@@ -1,0 +1,3 @@
+This folder contains bash shell scripts for running the QuickUI tools via mono.
+
+To use these shell scripts, you'll need to first download Mono from http://www.mono-project.com. Mono allows .NET executables such as the QuickUI tools to run under OS and Linux.
