@@ -1,3 +1,7 @@
-This folder contains bash shell scripts for running the QuickUI tools via mono.
+This folder contains the QuickUI tools (qb.exe and qc.exe) as well as corresponding bash shell scripts for running the tools on OS/X via mono.
 
-To use these shell scripts, you'll need to first download Mono from http://www.mono-project.com. Mono allows .NET executables such as the QuickUI tools to run under OS and Linux.
+To use on OS/X:
+1. Download Mono from http://www.mono-project.com. Mono allows .NET executables such as the QuickUI tools to run under OS/X and Linux.
+2. Copy the contents of this folder to, e.g., /Developer/Applications/QuickUI.
+3. Add the location of the bin folder from step #2, e.g., /Developer/Applications/QuickUI/bin, to your path.
+4. If you installed in a location other than /Developer/Applications/QuickUI, then update the qb and qc scripts in the bin folder to point to the location you used.
