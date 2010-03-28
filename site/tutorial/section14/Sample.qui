@@ -3,11 +3,11 @@
 <content>
 	<h1>QuickUI sample</h1>
 	<Greet>Alice</Greet>
-	<GreetEmphatic>Bob</GreetEmphatic>
+	<EmphaticGreet>Bob</EmphaticGreet>
 	<Greet punctuation="?" enabled="false">
 		<i>Carol</i>
 	</Greet>
-	<GreetEmphatic>David</GreetEmphatic>
+	<EmphaticGreet>David</EmphaticGreet>
 </content>
 
 </Control>

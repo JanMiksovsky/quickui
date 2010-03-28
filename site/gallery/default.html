@@ -22,7 +22,7 @@ var defaultPageClass = GalleryMainPage;
 $(function() {
 
 	var pageClass;
-	var pageClassName = Page.getUrlParameter("page");
+	var pageClassName = Page.urlParameters().page;
 	if (pageClassName != null)
 	{
 		pageClass = eval(pageClassName);

@@ -1,6 +1,6 @@
 <Control name="SpriteButtonAbout">
 <prototype>
-	<GalleryPage title="SpriteButton" sourceFileExample="SampleSpriteButton/SampleSpriteButton.qui" sourceFileControl="SpriteButton/0SpriteButton.qui">
+	<GalleryPage title="SpriteButton" sourceFileExample="SampleSpriteButton/SampleSpriteButton.qui" sourceFileControl="SpriteButton/SpriteButton.qui">
 		<summary>
 			A button that uses a
 			<Link href="/gallery/default.html?page=SpriteAbout">Sprite</Link>

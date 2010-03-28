@@ -420,12 +420,27 @@ $.extend(Page.prototype, {
 	
 	// If true, have the page fill its container.
 	fill: QuickUI.Element().applyClass("fill"),
-	
-	// Return the parameter with the given name from the current URL, or null if not found.
-	getUrlParameter: function(parameterName) {
-		return this.urlParameters[parameterName];
-	},
 
+    urlParameters: function() {
+        return Page.urlParameters();
+    },
+    	
+	// Gets or sets the title of the page.
+	title: function(value) {
+		if (value !== undefined)
+		{
+			document.title = value;
+		}
+		return document.title;
+	}
+
+});
+
+/*
+ * Static members.
+ */
+$.extend(Page, {
+    
     //
     // Return the URL parameters as a JavaScript object.
     // E.g., if the URL looks like http://www.example.com/index.html?foo=hello&bar=world
@@ -445,17 +460,8 @@ $.extend(Page.prototype, {
             match = regex.exec( window.location.href );
         }
         return results;
-    },
-    	
-	// Gets or sets the title of the page.
-	title: function(value) {
-		if (value !== undefined)
-		{
-			document.title = value;
-		}
-		return document.title;
-	}
-
+    }    
+    
 });
 
 /*
@@ -473,7 +479,7 @@ $.extend(QuickUI.Control.prototype, {
 		// From the DOM element, get the associated QuickUI control.
 		return (pages.length > 0) ? pages.control() : null;
 	}
-
+    
 });
 
 //

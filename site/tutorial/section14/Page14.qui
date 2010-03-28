@@ -2,38 +2,61 @@
 <prototype>
 <TutorialPage title="Subclassing controls">
 
-<h2>Factoring aspects of a control instance into a new subclass</h2>
-
 <p>
 If a particular control class instance — with properties filled out a particular way,
 say, or with particular styling — is likely to be repeated elsewhere, the instance can itself
-become the prototype for a new class of control. For example, in our Sample control,
-the Greet instance with the ID “bob” is a particular emphatic greeting, with an
-exclamation point as punctuation, and bold red styling. We can lift out these aspects
-and create a new subclass of Greet called GreetEmphatic (and stored in GreetEmphatic.qui):
+become the prototype for a new class of control. This is perhaps the most powerful
+aspect of QuickUI, and the most important ingredient in effectively factoring 
+a UI into classes that can focus on very specific duties. 
 </p>
 
-<SourceCode sourceFile="GreetEmphatic.qui" />
+<h2>Factoring aspects of a control instance into a new subclass</h2>
 
 <p>
-As discussed in the section on <Link href="/tutorial/section09/default.html">control prototypes</Link>,
-a single child of the <Tag>prototype</Tag> tag defines a control’s parent class. Here,
-the GreetEmphatic class will derive from Greet. (Specifically, the JavaScript function
-GreetEmphatic() will use an instance of Greet as its JavaScript prototype. This ensures that,
-for example, calls to GreetEmphatic.content() will ultimately invoke the function
-Greet.content().
+In our Sample control, the Greet instance with the ID “bob” is a particular
+emphatic greeting, with an exclamation point as punctuation, and bold red styling.
+We can lift out these aspects and create a new subclass of Greet called
+EmphaticGreet (and stored in EmphaticGreet.qui):
+</p>
+
+<SourceCode sourceFile="EmphaticGreet.qui" />
+
+<p>
+This control doesn’t define a <Tag>content</Tag> tag. Instead it uses a tag
+we haven’t seen yet: a <Tag>prototype</Tag>.
+A control class’ <Tag>prototype</Tag> identifies an object that will
+created to serve as the prototype or starting point for new instances of Greet.
+If no prototype is specified, the default prototype is the base QuickUI.Control
+class. The Quick markup above overrides this default behavior, and specifies that
+new instances of the EmphaticGreet class should be created by first instantiating
+the Greet class. The generated code for EmphaticGreet will see to it that
+EmphaticGreet.prototype = new Greet().
 </p>
 
 <p>
-Having factored this information into its own class, we can apply that class to the
+A QuickUI prototype goes beyond the behavior of a normal JavaScript prototype in that
+it can also indicate a set of default property values that should be set on new
+control instances. Here this includes setting a new control’s punctuation property to "!".
+</p>
+
+<p>
+The above definition for EmphaticGreet does not define a content property, so it
+inherits the one defined for Greet. It also inherits all the behavior of Greet,
+including the click-to-edit behavior.
+</p>
+
+<h2>Using the new subclass</h2>
+
+<p>
+Having factored out this emphatic behavior into own class, we can apply that class to the
 original “bob” control element, and simplify the definition of the Sample control. Let’s
-also add an additional instance of the GreetEmphatic class at the end:
+also add an additional instance of the EmphaticGreet class at the end:
 </p>
 
 <SourceCode sourceFile="Sample.qui" />
 
 <p>
-All instances of our new GreetEmphatic class receive the same styling and content
+All instances of our new EmphaticGreet class receive the same styling and content
 (the exclamation mark as punctuation):
 </p>
 
@@ -43,7 +66,7 @@ All instances of our new GreetEmphatic class receive the same styling and conten
 
 <p>
 Significantly, we’re deriving behavior here, not copying and pasting it. If we make further
-modifications to the Greet class, those will be automatically picked up by the GreetEmphatic
+modifications to the Greet class, those will be automatically picked up by the EmphaticGreet
 class.
 </p>
 

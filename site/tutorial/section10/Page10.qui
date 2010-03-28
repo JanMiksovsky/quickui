@@ -48,6 +48,14 @@ Opening demo.html now shows the indicated styling applied to the Greet control�
 	<Sample/>
 </CodeOutput>
 
+<p>
+Significantly, the CSS style rules for this control are bundled right alongside
+the control’s DOM elements and its JavaScript. This ensures all three aspects of
+a control travel together. It also ensures locality of reference: when debugging
+a control, it’s a simple matter to look from the DOM elements to the adjacent
+style rules or vice versa.
+</p>
+
 <h2>Automatic scoping of control styles</h2>
 <p>
 If we inspect the contents of generated Greet.css file, we can see the <Tag>style</Tag>

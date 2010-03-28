@@ -9,14 +9,16 @@
 	<li>Add the QuickUI tools folder (e.g., C:\Program Files\QuickUI\bin) to your path.</li>
 </ol>
 
-<div style="color: lightgray">
 <h2>Mac OS/X</h2>
 <ol>
-	<li>Download Mono</li>
-	<li>Download package</li>
-	<li>Add the QuickUI shell folder to your path.</li>
+	<li>Download <Link href="http://www.mono-project.com">Mono</Link>. The QuickUI tools are written in .NET, and the Mono
+    binaries allow QuickUI to run fine on OS/X.</li>
+	<li>Download <Link href="/downloads/QuickUI.zip">QuickUI.zip</Link> and expand it.</li>
+    <li>Copy the expanded contents to a location, e.g., /Developer/Applications/QuickUI.</li>
+    <li>Add the resulting location of the QuickUI bin folder (e.g., /Developer/Applications/QuickUI/bin) to your path.</li>
+    <li>If you installed in a location other than /Developer/Applications/QuickUI,
+    then update the qb and qc scripts in the bin folder to point to the location you used.</li>
 </ol>
-</div>
 
 <p>After downloading, you can run through the quick <Link href="/tutorial/section01/default.html">tutorial</Link>.</p>
 
@@ -41,7 +43,13 @@ automatically build a QuickUI project by invoking the qb tool.
 	<li>First you’ll create a Builder to build your Aptana project using qb. Click the New… button.</li>
 	<li>Select “Program”.</li>
 	<li>Give the builder a name like “qb”.</li>
-	<li>On the Main tab, enter a Location of “${system_path:qb.exe}”. For the Working Directory, use the Browse Workspace… button to select your project.</li>
+	<li>
+        On the Main tab, enter a Location of “${system_path:qb.exe}”.
+        (On OS/X, use "qb" instead of "qb.exe".
+        Mac Aptana doesn't seem to actually respect the system_path variable;
+        you may need to hard-code the path to qb instead.)
+    </li>
+    <li>For the Working Directory, use the Browse Workspace… button to select your project.</li>
 	<li>On the Refresh tab, check “Refresh resources upon completion”, and “The project containing the selected resource”.</li>
 	<li>Click OK to save the Builder.</li>
 	<li>Next you’ll create a Builder to clean your Aptana project using qb with the “-clean” option. Click the New… button again.</li>

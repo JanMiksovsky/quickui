@@ -11,7 +11,7 @@
 			<NavigationLink href="/tutorial/section06/default.html">Setting control properties</NavigationLink>
 			<NavigationLink href="/tutorial/section07/default.html">Property factories</NavigationLink>
 			<NavigationLink href="/tutorial/section08/default.html">Markup within properties</NavigationLink>
-			<NavigationLink href="/tutorial/section09/default.html">Control prototypes</NavigationLink>
+			<NavigationLink href="/tutorial/section09/default.html">Control content</NavigationLink>
 			<NavigationLink href="/tutorial/section10/default.html">Styling controls</NavigationLink>
 			<NavigationLink href="/tutorial/section11/default.html">More on styling</NavigationLink>
 			<NavigationLink href="/tutorial/section12/default.html">Defining interactivity</NavigationLink>

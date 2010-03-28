@@ -49,7 +49,7 @@ Link = QuickUI.Control.extend({
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
 				" ",
-				this.Link_content = $("<a id=\"Link_content\" href=\"javascript:\" />")[0],
+				this.Link_content = $("<a id=\"Link_content\" />")[0],
 				" "
 			]
 		});
@@ -58,31 +58,15 @@ Link = QuickUI.Control.extend({
 $.extend(Link.prototype, {
 	
 	content: QuickUI.Element("Link_content").content(),
-	href: QuickUI.Property(),
-	
-	ready: function() {
-		var self = this;
-		$(this.Link_content).click(function() {
-			self.navigate();
-		});
-	},
-	
-	navigate: function() {
-		
-		var href = this.href();
-		if (href == null) {
-			return;
-		}
-		
-		// HACK for testing under Aptana preview server.
-		if (window.location.hostname == "127.0.0.1" &&
-			href.substr(0,7) != "http://")
-		{
-			// href = "/QuickUI/branches/jan/site" + href;
-			href = "/QuickUI/site" + href;
-		}
-		window.location.href = href;
-	},
+	href: QuickUI.Element("Link_content").attr("href", function(href) {
+        // HACK for testing under Aptana preview server.
+        if ((window.location.hostname == "127.0.0.1" || window.location.hostname == "localhost")
+            && href.substr(0,7) != "http://")
+        {
+            $(this.Link_content).attr("href", "/QuickUI/site" + href);
+        }
+    })
+   
 });
 
 //
@@ -508,7 +492,7 @@ TutorialPage = SitePage.extend({
 				}),
 				" ",
 				QuickUI.Control.create(NavigationLink, {
-					"content": "Control prototypes",
+					"content": "Control content",
 					"href": "/tutorial/section09/default.html"
 				}),
 				" ",

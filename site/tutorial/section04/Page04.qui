@@ -56,7 +56,7 @@ The key expression is
 
 <![CDATA[
 <pre>
-this.Greet_content = $("&lt;span id=&frasl;"Greet_content&frasl;" /&gt;")[0]
+this.Greet_content = $("&lt;span id=\"Greet_content\" /&gt;")[0]
 </pre>
 ]]>
 
