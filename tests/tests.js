@@ -85,6 +85,11 @@ $.extend(Test.prototype, {
         var equal = (htmlActual === htmlExpected);
         this.result(equal ? "Pass" : "Fail");
         $(this.element).toggleClass("fail", !equal);
+        
+        var me = this;
+        $(this.element).click(function() {
+            $(me.details).toggle();
+        });
     }
 });
 
@@ -128,6 +133,18 @@ TestSuite = QuickUI.Control.extend({
 						" "
 					],
 					"expect": " <div class=\"SimpleSpan Control\">A</div> <div class=\"SimpleSpan Control\">B</div> "
+				}),
+				" ",
+				QuickUI.Control.create(Test, {
+					"name": "No whitespace after tag",
+					"test": [
+						" ",
+						QuickUI.Control.create(SimpleSpan, {
+							"content": "A"
+						}),
+						". "
+					],
+					"expect": " <div class=\"SimpleSpan Control\">A</div>. "
 				}),
 				" ",
 				QuickUI.Control.create(Test, {

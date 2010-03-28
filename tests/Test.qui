@@ -15,6 +15,7 @@
 <style>
 
 #header {
+    cursor: pointer;
     font-weight: bold;
 }
     
@@ -55,6 +56,11 @@ $.extend(Test.prototype, {
         var equal = (htmlActual === htmlExpected);
         this.result(equal ? "Pass" : "Fail");
         $(this.element).toggleClass("fail", !equal);
+        
+        var me = this;
+        $(this.element).click(function() {
+            $(me.details).toggle();
+        });
     }
 });
 </script>

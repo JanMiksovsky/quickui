@@ -47,11 +47,7 @@ Link = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			"content": [
-				" ",
-				this.Link_content = $("<a id=\"Link_content\" />")[0],
-				" "
-			]
+			"content": this.Link_content = $("<a id=\"Link_content\" />")[0]
 		});
 	}
 });

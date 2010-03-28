@@ -63,6 +63,14 @@ automatically build a QuickUI project by invoking the qb tool.
 	<li>From the Project menu, select “Build Project”. You should see qb output in the Console view.</li>
 </ol>
 
+<p>
+To get most of the benefits of Aptana's HTML editor, in Aptana'a Preferences
+dialog, under General / Editors / File Associates, set the editor for *.qui files
+to be “Aptana HTML Editor”. The editor will complain about the custom tags in
+Quick markup, but that won't prevent you from getting work done, and you'll
+pick up smart editing for the contents of <Tag>style</Tag> and <Tag>script</Tag> tags. 
+</p>
+
 </SitePage>
 
 </prototype>

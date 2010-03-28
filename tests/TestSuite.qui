@@ -21,6 +21,15 @@
     </expect>
 </Test>
 
+<Test name="No whitespace after tag">
+    <test>
+        <SimpleSpan>A</SimpleSpan>.
+    </test>
+    <expect>
+        <div class="SimpleSpan Control">A</div>.
+    </expect>
+</Test>
+
 <Test name="Compound property">
     <test><Simple><content>Hi</content></Simple></test>
     <expect><div class="Simple Control">Hi</div></expect>
