@@ -1,4 +1,4 @@
 #!/bin/bash
 # Launch the qb tool via Mono.
 # Replace the qb.exe location below with your own install location.
-/usr/bin/mono /Developer/Applications/QuickUI/bin/qb.exe $*
+exec /usr/bin/mono /Developer/Applications/QuickUI/lib/qb.exe "$@"
