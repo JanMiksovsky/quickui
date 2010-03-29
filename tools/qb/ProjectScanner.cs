@@ -67,13 +67,13 @@ namespace qb
         }
 
         /// <summary>
-        /// Return true if the first is newer than the second.
+        /// Return true if the first is at least as new as the second.
         /// </summary>
-        private bool FileNewerThan(string file, string targetFile)
+        private bool FileAtLeastAsNewAs(string file, string targetFile)
         {
             DateTime fileLastWriteTime = new FileInfo(file).LastWriteTimeUtc;
             DateTime targetLastWriteTime = new FileInfo(targetFile).LastWriteTimeUtc;
-            return (fileLastWriteTime > targetLastWriteTime);
+            return (fileLastWriteTime >= targetLastWriteTime);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace qb
 
         private bool RequiresCompilation(string quiFile, string targetFile)
         {
-            bool outOfDate = !File.Exists(targetFile) || FileNewerThan(quiFile, targetFile);
+            bool outOfDate = !File.Exists(targetFile) || FileAtLeastAsNewAs(quiFile, targetFile);
             return outOfDate;
         }
     }

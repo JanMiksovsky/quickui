@@ -128,11 +128,11 @@ namespace qb
         /// <summary>
         /// Return true if the indicated file is newer than all the target files.
         /// </summary>
-        private bool FileNewerThanAll(string file, IEnumerable<string> targetFiles)
+        private bool FileAtLeastAsNewAs(string file, IEnumerable<string> targetFiles)
         {
             DateTime fileLastWriteTime = new FileInfo(file).LastWriteTimeUtc;
             return targetFiles.ToList().TrueForAll(
-                (targetFile) => fileLastWriteTime > new FileInfo(targetFile).LastWriteTimeUtc);
+                (targetFile) => fileLastWriteTime >= new FileInfo(targetFile).LastWriteTimeUtc);
         }
         
         /// <summary>
@@ -144,7 +144,7 @@ namespace qb
             bool combinedFileOutOfDate =
                 files.Count() > 0 &&
                 !(File.Exists(combinedFile) &&
-                  FileNewerThanAll(combinedFile, files));
+                  FileAtLeastAsNewAs(combinedFile, files));
             return combinedFileOutOfDate;
         }
     }
