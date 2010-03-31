@@ -1,0 +1,17 @@
+<Control name="SearchBoxAbout">
+<prototype>
+	<GalleryPage
+        title="SearchBox"
+        sourceFileExample="SearchBox/SearchBoxDemo.qui"
+        sourceFileControl="SearchBox/SearchBox.qui">
+            
+		<summary>
+            A typical web search box.
+		</summary>
+		<demo>
+            <SearchBoxDemo/>
+		</demo>
+        
+	</GalleryPage>
+</prototype>
+</Control>

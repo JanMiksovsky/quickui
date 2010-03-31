@@ -8,6 +8,7 @@
 <style>
 
 {
+    cursor: text;
 	position: relative;
 }
 
@@ -31,19 +32,22 @@
 $.extend(HintTextBox.prototype, {
 	
 	hint: QuickUI.Element("HintTextBox_hint").content(),
-	text: QuickUI.Element("HintTextBox_textBox").content(),
+	content: QuickUI.Element("HintTextBox_textBox").content(),
 	
 	ready: function() {
 		var self = this;
 		$(this.HintTextBox_textBox).bind("blur keydown keyup", function() {
             // Show hint if empty.            
-            $(self.HintTextBox_hint).toggle(self.text().length == 0);
+            $(self.HintTextBox_hint).toggle(self.content().length == 0);
 		});
 		$(this.element).click(function() {
 			$(this.HintTextBox_hint).hide(); 
 			$(self.HintTextBox_textBox).focus();
-		})
+		}).focus(function() {
+            //$(self.HintTextBox_textBox).focus();
+        })
 	}
+    
 });
 </script>
 

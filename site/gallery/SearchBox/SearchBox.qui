@@ -1,0 +1,38 @@
+<Control name="SearchBox">
+
+<content>
+    <TextBoxWithButton>
+        <textBox>
+            <HintTextBox id="searchTerms" hint="Search"/>
+        </textBox>
+        <goButton>
+            <SampleSpriteButton id="searchButton">Go</SampleSpriteButton>
+        </goButton>
+    </TextBoxWithButton>
+</content>
+
+<style>
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11pt;
+}
+
+input {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11pt;
+}
+
+#searchButton {
+    margin-left: 4px;
+}
+</style>
+
+<script>
+$.extend(SearchBox.prototype, {
+    ready: function() {
+        $(this.searchTerms).focus();
+    }
+});
+</script>
+
+</Control>

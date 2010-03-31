@@ -6,9 +6,11 @@
 	<NavigationLink href="/gallery/default.html?page=GalleryPageAbout">GalleryPage</NavigationLink>
 	<NavigationLink href="/gallery/default.html?page=HintTextBoxAbout">HintTextBox</NavigationLink>
 	<NavigationLink href="/gallery/default.html?page=SampleSpriteButtonAbout">SampleSpriteButton</NavigationLink>
+    <NavigationLink href="/gallery/default.html?page=SearchBoxAbout">SearchBox</NavigationLink>
 	<NavigationLink href="/gallery/default.html?page=SpriteAbout">Sprite</NavigationLink>
 	<NavigationLink href="/gallery/default.html?page=SpriteButtonAbout">SpriteButton</NavigationLink>
 	<NavigationLink href="/gallery/default.html?page=TagAbout">Tag</NavigationLink>
+    <NavigationLink href="/gallery/default.html?page=TextBoxWithButtonAbout">TextBoxWithButton</NavigationLink>
 </content>
 
 <style>

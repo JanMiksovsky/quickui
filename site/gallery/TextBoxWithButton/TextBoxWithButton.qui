@@ -1,0 +1,79 @@
+<!--
+Control with a content area (usually some form of text box) and an associated "Go" button
+(labeled something like "Search"), where clicking the button does something with the content.
+--> 
+
+<Control name="TextBoxWithButton">
+
+<content>
+    <div id="TextBoxWithButton_textBox"/>
+    <div id="TextBoxWithButton_goButton"/>
+</content>
+
+<style>
+{
+    display: inline-block;
+}
+
+> * {
+    display: inline-block;
+}
+</style>
+
+<script>
+$.extend(TextBoxWithButton.prototype, {
+    
+    goButton: QuickUI.Element("TextBoxWithButton_goButton").content(),    
+    textBox: QuickUI.Element("TextBoxWithButton_textBox").content(),
+    
+    ready: function() {
+        var me = this;
+        $(this.TextBoxWithButton_textBox).bind("change keydown keyup", function() {
+            me.disableButtonIfContentEmpty();
+        });
+        $(this.TextBoxWithButton_goButton).click(function() {
+            $(me.element).trigger("goButtonClick");
+        });
+        this.disableButtonIfContentEmpty();
+    },
+    
+    content: function(value) {
+        result = this.elementContent(this.TextBoxWithButton_textBox, value); 
+        if (value !== undefined) 
+        {
+            this.disableButtonIfContentEmpty();
+        }
+        return result;
+    },
+    
+    disableButtonIfContentEmpty: function() {
+        var content = this.content();
+        var $goButton = $(this.TextBoxWithButton_goButton);
+        if ($goButton.children().length > 0)
+        {
+            var buttonControl = QuickUI($goButton.children()[0]);
+            if (buttonControl != null && buttonControl instanceof ButtonBase)
+            {
+                buttonControl.disabled(!(content && content.length > 0));
+            }
+        }
+    },
+
+    // General purpose -- Should move this into quickui.js. Also used by EditableField.
+    elementContent: function(element, value) {
+        var $element = $(element);
+        var $firstChild = $element.children().length == 0
+                              ? $element
+                              : $($element.children()[0]);
+        var result = ($firstChild.control() != undefined)
+            ? $firstChild.control().content(value)
+            : ($firstChild[0] instanceof HTMLInputElement || $firstChild[0] instanceof HTMLTextAreaElement)
+                ? $firstChild.val(value)
+                : $firstChild.items(value);
+        return result;
+    },
+    
+});
+</script>
+
+</Control>
