@@ -71,7 +71,7 @@ $.extend(SpriteButton.prototype, {
         {
             // WebKit thinks that two elements both at 50% width don't add up to 100%,
             // and will leave a tiny gap. Workaround is to make width slightly bigger than 50%.
-            this.$(".Sprite").css("width", "50.5%");
+            this.$("#backgroundLeft").css("width", "51%");
         }
 	},
 	

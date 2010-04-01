@@ -1,0 +1,16 @@
+<Control name="GalleryLink">
+
+<prototype>
+    <Link/>
+</prototype>
+
+<script>
+$.extend(GalleryLink.prototype, {
+    content: QuickUI.Property(function(content) {
+        GalleryLink.superProto.content.call(this, content);
+        this.href(href="/gallery/default.html?page=" + content + "About");
+    })
+});
+</script>
+
+</Control>

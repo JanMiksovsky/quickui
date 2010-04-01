@@ -6,16 +6,4 @@
 	<Link/>
 </prototype>
 
-<style>
-
-a {
-	padding: 2px 5px;
-}
-
-.NavigationLink.highlight a {
-	font-weight: bold;
-}
-
-</style>
-
 </Control>

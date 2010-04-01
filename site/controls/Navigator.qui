@@ -5,6 +5,14 @@
 	display: block;
 	margin: 7px 0;
 }
+
+a {
+    padding: 2px 5px;
+}
+
+.Link.highlight a {
+    font-weight: bold;
+}
 </style>
 
 <script>

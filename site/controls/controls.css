@@ -52,16 +52,6 @@
 	background-color: #47aaf0;
 }
 
-/*** NavigationLink ***/
-
-.NavigationLink a {
-	padding: 2px 5px;
-}
-
-.NavigationLink.highlight a {
-	font-weight: bold;
-}
-
 /*** Navigator ***/
 
 .Navigator .Link {
@@ -69,11 +59,25 @@
 	margin: 7px 0;
 }
 
+.Navigator a {
+    padding: 2px 5px;
+}
+
+.Navigator .Link.highlight a {
+    font-weight: bold;
+}
+
 /*** SitePage ***/
 
 .SitePage {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 	font-family: Tahoma, Arial, Helvetica, sans-serif;
 	font-size: 10pt;
+    height: 100%;
+    overflow-y: scroll;
 }
 
 .SitePage #tableMain {

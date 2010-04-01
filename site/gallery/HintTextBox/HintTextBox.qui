@@ -35,18 +35,39 @@ $.extend(HintTextBox.prototype, {
 	content: QuickUI.Element("HintTextBox_textBox").content(),
 	
 	ready: function() {
-		var self = this;
-		$(this.HintTextBox_textBox).bind("blur keydown keyup", function() {
-            // Show hint if empty.            
-            $(self.HintTextBox_hint).toggle(self.content().length == 0);
-		});
-		$(this.element).click(function() {
-			$(this.HintTextBox_hint).hide(); 
-			$(self.HintTextBox_textBox).focus();
-		}).focus(function() {
-            //$(self.HintTextBox_textBox).focus();
-        })
-	}
+		var me = this;
+        $(this.element).bind({
+            "click": function() { me._hideHint(); },
+            "focus": function() {
+                if (!me._isTextBoxFocused)
+                {
+                    $(me.HintTextBox_textBox).focus();
+                }
+            }
+        });
+		$(this.HintTextBox_textBox).bind({
+            "blur": function() {
+                me._isTextBoxFocused = false;
+                me._showHintIfEmpty();
+            },
+            "keydown keyup": function() { me._showHintIfEmpty(); },
+            "focus": function() { me._isTextBoxFocused = true; }
+        });
+        $(this.HintTextBox_hint).click(function() {
+            me._hideHint();
+        });
+	},
+    
+    _isTextBoxFocused: false,
+    
+    _hideHint: function() {
+        $(this.HintTextBox_hint).hide(); 
+        $(this.HintTextBox_textBox).focus();
+    },
+    
+    _showHintIfEmpty: function() {
+        $(this.HintTextBox_hint).toggle(this.content().length == 0);
+    }
     
 });
 </script>

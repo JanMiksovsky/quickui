@@ -1,12 +1,12 @@
 <Control name="TextBoxWithButtonAbout">
 <prototype>
-	<GalleryPage title="TextBoxWithButton" sourceFileExample="SearchBox/SearchBoxDemo.qui" sourceFileControl="TextBoxWithButton/TextBoxWithButton.qui">
+	<GalleryPage title="TextBoxWithButton" sourceFileControl="TextBoxWithButton/TextBoxWithButton.qui">
 		<summary>
             A control with a content area (usually some form of text box) and an associated "Go" button
             (labeled something like "Search"), where clicking the button does something with the content.
 		</summary>
 		<demo>
-            See <Link href="/gallery/default.html?page=SearchBoxAbout">SearchBox</Link> for a demo.
+            See <GalleryLink>SearchBox</GalleryLink> for a demo.
 		</demo>
 	</GalleryPage>
 </prototype>

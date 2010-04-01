@@ -3,10 +3,10 @@
 <content>
     <TextBoxWithButton>
         <textBox>
-            <HintTextBox id="searchTerms" hint="Search"/>
+            <HintTextBox id="searchTerms" hint="Enter search"/>
         </textBox>
         <goButton>
-            <SampleSpriteButton id="searchButton">Go</SampleSpriteButton>
+            <SampleSpriteButton id="searchButton">Search</SampleSpriteButton>
         </goButton>
     </TextBoxWithButton>
 </content>
@@ -29,9 +29,20 @@ input {
 
 <script>
 $.extend(SearchBox.prototype, {
+    
+    hint: QuickUI.Element("searchTerms").controlProperty("hint"),
+    query: QuickUI.Property(null, "%s"),
+    
     ready: function() {
+        var me = this;
+        $(this.element).bind("goButtonClick", function() {
+            var searchTerms = QuickUI(me.searchTerms).content();
+            var url = me.query().replace("%s", searchTerms);
+            window.location.href = url;
+        });
         $(this.searchTerms).focus();
     }
+    
 });
 </script>
 

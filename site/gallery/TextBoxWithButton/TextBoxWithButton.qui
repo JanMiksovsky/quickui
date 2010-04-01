@@ -17,6 +17,7 @@ Control with a content area (usually some form of text box) and an associated "G
 
 > * {
     display: inline-block;
+    vertical-align: middle;
 }
 </style>
 
@@ -28,13 +29,18 @@ $.extend(TextBoxWithButton.prototype, {
     
     ready: function() {
         var me = this;
-        $(this.TextBoxWithButton_textBox).bind("change keydown keyup", function() {
-            me.disableButtonIfContentEmpty();
+        $(this.TextBoxWithButton_textBox).bind("change keydown keyup", function(event) {
+            me._disableButtonIfContentEmpty();
+            var keyCode = event.keyCode || event.which;
+            if (!me._isContentEmpty() && keyCode == 13 /* Enter */)
+            {
+                $(me.element).trigger("goButtonClick");
+            }
         });
         $(this.TextBoxWithButton_goButton).click(function() {
             $(me.element).trigger("goButtonClick");
         });
-        this.disableButtonIfContentEmpty();
+        this._disableButtonIfContentEmpty();
     },
     
     content: function(value) {
@@ -46,7 +52,7 @@ $.extend(TextBoxWithButton.prototype, {
         return result;
     },
     
-    disableButtonIfContentEmpty: function() {
+    _disableButtonIfContentEmpty: function() {
         var content = this.content();
         var $goButton = $(this.TextBoxWithButton_goButton);
         if ($goButton.children().length > 0)
@@ -54,7 +60,7 @@ $.extend(TextBoxWithButton.prototype, {
             var buttonControl = QuickUI($goButton.children()[0]);
             if (buttonControl != null && buttonControl instanceof ButtonBase)
             {
-                buttonControl.disabled(!(content && content.length > 0));
+                buttonControl.disabled(this._isContentEmpty());
             }
         }
     },
@@ -72,6 +78,11 @@ $.extend(TextBoxWithButton.prototype, {
                 : $firstChild.items(value);
         return result;
     },
+    
+    _isContentEmpty: function() {
+        var content = this.content();
+        return !(content && content.length > 0);
+    }
     
 });
 </script>
