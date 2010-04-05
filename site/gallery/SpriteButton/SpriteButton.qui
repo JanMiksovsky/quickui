@@ -35,7 +35,10 @@
 
 #backgroundRight {
 	background-position: right 0;
-	right: 0;
+	/*
+	 * Use left: 50% instead of right: 0, as the latter doesn't work exactly right on WebKit.
+	 */
+	left: 50%;
 }
 
 button {
@@ -66,13 +69,6 @@ $.extend(SpriteButton.prototype, {
 		$(this.SpriteButton_content)
 			.blur(function() { self.blur(); })
 			.focus(function() { self.focus(); });
-            
-        if ($.browser.webkit)
-        {
-            // WebKit thinks that two elements both at 50% width don't add up to 100%,
-            // and will leave a tiny gap. Workaround is to make width slightly bigger than 50%.
-            this.$("#backgroundLeft").css("width", "51%");
-        }
 	},
 	
 	cellHeight: QuickUI.Element().css("height", function(value) {
