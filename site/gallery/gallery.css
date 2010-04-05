@@ -85,7 +85,10 @@
 
 .SpriteButton #backgroundRight {
 	background-position: right 0;
-	right: 0;
+	/*
+	 * Use left: 50% instead of right: 0, as the latter doesn't work exactly right on WebKit.
+	 */
+	left: 50%;
 }
 
 .SpriteButton button {
