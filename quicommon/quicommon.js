@@ -35,7 +35,7 @@ $.extend(ButtonBase.prototype, {
 	
 	blur: function(event) {
 		
-		$(self.element).removeClass("focused");
+		$(this.element).removeClass("focused");
 
 		// Losing focus causes the button to override any key that had been pressed.
 		this.isKeyPressed(false);
@@ -73,7 +73,7 @@ $.extend(ButtonBase.prototype, {
 	}, false),
 	
 	focus: function(event) {
-		$(self.element).addClass("focused");
+		$(this.element).addClass("focused");
 		this.isFocused(true);
 		this.renderButton();
 	},
@@ -92,19 +92,19 @@ $.extend(ButtonBase.prototype, {
 	},
 	
 	mousedown: function(event) {
-		$(self.element).addClass("pressed");
+		$(this.element).addClass("pressed");
 		this.isMouseButtonDown(true);
 		this.renderButton();
 	},
 	
 	mousein: function(event) {
-		$(self.element).addClass("hovered");
+		$(this.element).addClass("hovered");
 		this.isMouseOverControl(true);
 		this.renderButton();
 	},
 	
 	mouseout: function(event) {
-		$(self.element).removeClass("focused")
+		$(this.element).removeClass("focused")
 			.removeClass("hovered")
 			.removeClass("pressed");
 		this.isMouseOverControl(false);
@@ -112,7 +112,7 @@ $.extend(ButtonBase.prototype, {
 	},
 	
 	mouseup: function(event) {
-		$(self.element).removeClass("pressed");
+		$(this.element).removeClass("pressed");
 		this.isMouseButtonDown(false);
 		this.renderButton();
 	},
