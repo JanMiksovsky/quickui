@@ -1,0 +1,36 @@
+<Control name="PropertiesPage">
+
+<prototype>
+<SitePage area="Features" title="Defining a control’s content">
+
+<p>
+Often we want to define some stock content and styling, <i>and</i> we also
+want to define some custom content that varies per control.
+</p>
+
+<p>
+A simple example is the <GalleryLink>Tag</GalleryLink> control,
+used throughout the QuickUI site to format Quick markup tags such
+as a <Tag>Control</Tag> tag. This control surrounds its contents with “&lt;”
+and “&gt;” and styles itself in a non-proportional font suitable for code.
+</p>
+
+<h2>Defining a content property</h2>
+
+<p>
+
+</p>
+
+<SourceCode sourceFile="../controls/Tag.qui"/>
+
+<h2>Using a content property</h2>
+
+<p>
+*** explain content syntax here? ***
+</p>
+
+
+</SitePage>
+</prototype>
+
+</Control>

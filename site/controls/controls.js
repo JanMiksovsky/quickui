@@ -437,88 +437,21 @@ $.extend(Tag.prototype, {
 });
 
 //
-// TutorialPage
+// GalleryLink
 //
-TutorialPage = SitePage.extend({
-	className: "TutorialPage",
+GalleryLink = Link.extend({
+	className: "GalleryLink",
 	render: function() {
-		SitePage.prototype.render.call(this);
-		this.setClassProperties(SitePage, {
-			"area": "Tutorial",
-			"navigationLinks": [
-				" ",
-				QuickUI.Control.create(NavigationLink, {
-					"content": "Hello, world",
-					"href": "/tutorial/section01/default.html"
-				}),
-				" ",
-				QuickUI.Control.create(NavigationLink, {
-					"content": "How QuickUI works",
-					"href": "/tutorial/section02/default.html"
-				}),
-				" ",
-				QuickUI.Control.create(NavigationLink, {
-					"content": "Composing controls",
-					"href": "/tutorial/section03/default.html"
-				}),
-				" ",
-				QuickUI.Control.create(NavigationLink, {
-					"content": "Referencing control elements",
-					"href": "/tutorial/section04/default.html"
-				}),
-				" ",
-				QuickUI.Control.create(NavigationLink, {
-					"content": "Defining control properties",
-					"href": "/tutorial/section05/default.html"
-				}),
-				" ",
-				QuickUI.Control.create(NavigationLink, {
-					"content": "Setting control properties",
-					"href": "/tutorial/section06/default.html"
-				}),
-				" ",
-				QuickUI.Control.create(NavigationLink, {
-					"content": "Property factories",
-					"href": "/tutorial/section07/default.html"
-				}),
-				" ",
-				QuickUI.Control.create(NavigationLink, {
-					"content": "Markup within properties",
-					"href": "/tutorial/section08/default.html"
-				}),
-				" ",
-				QuickUI.Control.create(NavigationLink, {
-					"content": "Control content",
-					"href": "/tutorial/section09/default.html"
-				}),
-				" ",
-				QuickUI.Control.create(NavigationLink, {
-					"content": "Styling controls",
-					"href": "/tutorial/section10/default.html"
-				}),
-				" ",
-				QuickUI.Control.create(NavigationLink, {
-					"content": "More on styling",
-					"href": "/tutorial/section11/default.html"
-				}),
-				" ",
-				QuickUI.Control.create(NavigationLink, {
-					"content": "Defining interactivity",
-					"href": "/tutorial/section12/default.html"
-				}),
-				" ",
-				QuickUI.Control.create(NavigationLink, {
-					"content": "Controlling behavior",
-					"href": "/tutorial/section13/default.html"
-				}),
-				" ",
-				QuickUI.Control.create(NavigationLink, {
-					"content": "Subclassing controls",
-					"href": "/tutorial/section14/default.html"
-				}),
-				" "
-			]
+		Link.prototype.render.call(this);
+		this.setClassProperties(Link, {
+
 		});
 	}
+});
+$.extend(GalleryLink.prototype, {
+    content: QuickUI.Property(function(content) {
+        GalleryLink.superProto.content.call(this, content);
+        this.href(href="/gallery/default.html?page=" + content + "About");
+    })
 });
 
