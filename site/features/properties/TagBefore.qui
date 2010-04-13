@@ -1,0 +1,12 @@
+<Control name="TagBefore">
+
+<content>&lt;tag-name-goes-here&gt;</content>
+
+<style>
+{
+	display: inline;
+	font-family: Consolas, Lucida Console, Courier, Courier New, monospace;
+}
+</style>
+
+</Control>
