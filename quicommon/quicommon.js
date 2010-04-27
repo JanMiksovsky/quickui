@@ -586,6 +586,35 @@ $.extend(Sprite.prototype, {
 });
 
 //
+// ToggleButtonBase
+//
+ToggleButtonBase = ButtonBase.extend({
+	className: "ToggleButtonBase",
+	render: function() {
+		ButtonBase.prototype.render.call(this);
+		this.setClassProperties(ButtonBase, {
+
+		});
+	}
+});
+$.extend(ToggleButtonBase.prototype, {
+	
+	selected: QuickUI.Element().applyClass("selected"),
+	
+	ready: function() {
+		ToggleButtonBase.superProto.ready.call(this);
+		var me = this;
+		$(this.element).click(function() {
+			me.toggle();
+		});
+	},
+	
+	toggle: function() {
+		this.selected(!this.selected());
+	}
+});
+
+//
 // VerticalAlign
 //
 VerticalAlign = QuickUI.Control.extend({

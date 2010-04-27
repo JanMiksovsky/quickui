@@ -1,0 +1,26 @@
+<Control name="ToggleButtonBase">
+
+<prototype>
+	<ButtonBase/>
+</prototype>
+
+<script>
+$.extend(ToggleButtonBase.prototype, {
+	
+	selected: QuickUI.Element().applyClass("selected"),
+	
+	ready: function() {
+		ToggleButtonBase.superProto.ready.call(this);
+		var me = this;
+		$(this.element).click(function() {
+			me.toggle();
+		});
+	},
+	
+	toggle: function() {
+		this.selected(!this.selected());
+	}
+});
+</script>
+
+</Control>
