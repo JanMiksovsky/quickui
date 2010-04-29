@@ -1,23 +1,4 @@
 //
-// GalleryLink
-//
-GalleryLink = Link.extend({
-	className: "GalleryLink",
-	render: function() {
-		Link.prototype.render.call(this);
-		this.setClassProperties(Link, {
-
-		});
-	}
-});
-$.extend(GalleryLink.prototype, {
-    content: QuickUI.Property(function(content) {
-        GalleryLink.superProto.content.call(this, content);
-        this.href(href="/gallery/default.html?page=" + content + "About");
-    })
-});
-
-//
 // GalleryMainPage
 //
 GalleryMainPage = SitePage.extend({
@@ -27,16 +8,9 @@ GalleryMainPage = SitePage.extend({
 		this.setClassProperties(SitePage, {
 			"title": "Gallery",
 			"area": "Gallery",
-			"navigationLinks": [
-				" ",
-				QuickUI.Control.create(GalleryNavigationLinks),
-				" "
-			],
+			"navigationLinks": QuickUI.Control.create(GalleryNavigationLinks),
 			"content": [
-				" ",
-				" ",
-				"<p>\r\n\t\tThis gallery shows live examples and the full source for a handful of\r\n\t\tsimple QuickUI controls, representing a small range of what’s possible\r\n\t\tin QuickUI. Since a key goal of QuickUI is to produce easily readable\r\n\t\tcode, as you look at each control, ask yourself: Is it easy to\r\n\t\tunderstand the usage of the control by looking at the source code\r\n\t\tfor the control’s demo?\r\n\t\t</p>",
-				" ",
+				"<p>\r\n\t\tThis gallery shows live examples and the full source for a handful of\n\t\tsimple QuickUI controls, representing a small range of what’s possible\n\t\tin QuickUI. Since a key goal of QuickUI is to produce easily readable\n\t\tcode, as you look at each control, ask yourself: Is it easy to\n\t\tunderstand the usage of the control by looking at the source code\n\t\tfor the control’s demo?\n\t\t</p>",
 				$("<p />").items(
 					" Some of these controls are subclasses of controls defined elsewhere. The source code for all referenced classes is available in the ",
 					QuickUI.Control.create(Link, {
@@ -45,9 +19,7 @@ GalleryMainPage = SitePage.extend({
 					}),
 					". "
 				)[0],
-				" ",
-				"<p>\r\n\t\tSelect a control from the pane on the left.\r\n\t\t</p>",
-				" "
+				"<p>\r\n\t\tSelect a control from the pane on the left.\n\t\t</p>"
 			]
 		});
 	}
@@ -62,49 +34,38 @@ GalleryNavigationLinks = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				" ",
 				this.linkIndex = QuickUI.Control.create(NavigationLink, {
 					"content": "Index",
 					"id": "linkIndex",
 					"href": "/gallery/default.html"
 				}),
-				" ",
 				QuickUI.Control.create(GalleryLink, {
 					"content": "IfBrowser"
 				}),
-				" ",
 				QuickUI.Control.create(GalleryLink, {
 					"content": "GalleryPage"
 				}),
-				" ",
 				QuickUI.Control.create(GalleryLink, {
 					"content": "HintTextBox"
 				}),
-				" ",
 				QuickUI.Control.create(GalleryLink, {
 					"content": "SampleSpriteButton"
 				}),
-				" ",
 				QuickUI.Control.create(GalleryLink, {
 					"content": "SearchBox"
 				}),
-				" ",
 				QuickUI.Control.create(GalleryLink, {
 					"content": "Sprite"
 				}),
-				" ",
 				QuickUI.Control.create(GalleryLink, {
 					"content": "SpriteButton"
 				}),
-				" ",
 				QuickUI.Control.create(GalleryLink, {
 					"content": "Tag"
 				}),
-				" ",
 				QuickUI.Control.create(GalleryLink, {
 					"content": "TextBoxWithButton"
-				}),
-				" "
+				})
 			]
 		});
 	}
@@ -119,41 +80,23 @@ GalleryPage = SitePage.extend({
 		SitePage.prototype.render.call(this);
 		this.setClassProperties(SitePage, {
 			"area": "Gallery",
-			"navigationLinks": [
-				" ",
-				QuickUI.Control.create(GalleryNavigationLinks),
-				" "
-			],
+			"navigationLinks": QuickUI.Control.create(GalleryNavigationLinks),
 			"content": [
-				" ",
 				this.GalleryPage_summary = $("<div id=\"GalleryPage_summary\" />")[0],
-				" ",
 				"<h2>Live demo</h2>",
-				" ",
 				QuickUI.Control.create(CodeOutput, {
-					"content": [
-						" ",
-						this.GalleryPage_demo = $("<div id=\"GalleryPage_demo\" />")[0],
-						" "
-					]
+					"content": this.GalleryPage_demo = $("<div id=\"GalleryPage_demo\" />")[0]
 				}),
-				" ",
 				"<h2>Demo source code</h2>",
-				" ",
 				this.sourceCodeExample = QuickUI.Control.create(SourceCode, {
 					"id": "sourceCodeExample"
 				}),
-				" ",
 				"<h2>Full control source code</h2>",
-				" ",
 				this.sourceCodeControl = QuickUI.Control.create(SourceCode, {
 					"id": "sourceCodeControl"
 				}),
-				" ",
 				"<h2>Notes</h2>",
-				" ",
-				this.GalleryPage_notes = $("<div id=\"GalleryPage_notes\" />")[0],
-				" "
+				this.GalleryPage_notes = $("<div id=\"GalleryPage_notes\" />")[0]
 			]
 		});
 	}
@@ -192,14 +135,10 @@ GoogleSearchBox = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			"content": [
-				" ",
-				QuickUI.Control.create(SearchBox, {
-					"query": "http://www.google.com/search?q=%s",
-					"hint": "Search Google"
-				}),
-				" "
-			]
+			"content": QuickUI.Control.create(SearchBox, {
+				"query": "http://www.google.com/search?q=%s",
+				"hint": "Search Google"
+			})
 		});
 	}
 });
@@ -213,11 +152,8 @@ HintTextBox = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				" ",
 				this.HintTextBox_textBox = $("<input id=\"HintTextBox_textBox\" type=\"text\" />")[0],
-				" ",
-				this.HintTextBox_hint = $("<div id=\"HintTextBox_hint\" />")[0],
-				" "
+				this.HintTextBox_hint = $("<div id=\"HintTextBox_hint\" />")[0]
 			]
 		});
 	}
@@ -276,11 +212,7 @@ HintTextBoxAbout = GalleryPage.extend({
 			"sourceFileExample": "HintTextBox/HintTextBoxDemo.qui",
 			"sourceFileControl": "HintTextBox/HintTextBox.qui",
 			"summary": " A text box that displays a hint (instructions) when the text box is empty. ",
-			"demo": [
-				" ",
-				QuickUI.Control.create(HintTextBoxDemo),
-				" "
-			],
+			"demo": QuickUI.Control.create(HintTextBoxDemo),
 			"notes": " The standard approach to hint text is to display the hint as text in the text box itself, then remove it when the text box receives the focus. The problem is that there are occasions when the hint should still be visible after the control receives the focus. First, a user tabbing into a field may still want to have the hint visible until they begin typing. Second, there are times when it’s desirable to place the default focus for a page into a text box with a hint. Third, if the user erases what they have typed, it’s helpful to show the hint again. "
 		});
 	}
@@ -300,17 +232,11 @@ HintTextBoxDemo = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			"content": [
-				" ",
-				$("<div />").items(
-					" ",
-					QuickUI.Control.create(HintTextBox, {
-						"hint": "Type here"
-					}),
-					" "
-				)[0],
-				" "
-			]
+			"content": $("<div />").items(
+				QuickUI.Control.create(HintTextBox, {
+					"hint": "Type here"
+				})
+			)[0]
 		});
 	}
 });
@@ -339,11 +265,7 @@ IfBrowserAbout = GalleryPage.extend({
 				}),
 				"). "
 			],
-			"demo": [
-				" ",
-				QuickUI.Control.create(IfBrowserDemo),
-				" "
-			]
+			"demo": QuickUI.Control.create(IfBrowserDemo)
 		});
 	}
 });
@@ -363,8 +285,7 @@ IfBrowserDemo = QuickUI.Control.extend({
 					"browser": "msie",
 					"style": "display: inline",
 					"elseContent": "a browser other than Internet Explorer"
-				}),
-				" "
+				})
 			]
 		});
 	}
@@ -392,11 +313,7 @@ SampleSpriteButtonAbout = GalleryPage.extend({
 				}),
 				" (image strip) for the button’s various states. "
 			],
-			"demo": [
-				" ",
-				QuickUI.Control.create(SampleSpriteButtonDemo),
-				" "
-			]
+			"demo": QuickUI.Control.create(SampleSpriteButtonDemo)
 		});
 	}
 });
@@ -410,20 +327,16 @@ SampleSpriteButtonDemo = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				" ",
 				QuickUI.Control.create(SampleSpriteButton, {
 					"content": "Save"
 				}),
-				" ",
 				QuickUI.Control.create(SampleSpriteButton, {
 					"content": "Don't Save"
 				}),
-				" ",
 				QuickUI.Control.create(SampleSpriteButton, {
 					"content": "Cancel",
 					"disabled": "true"
-				}),
-				" "
+				})
 			]
 		});
 	}
@@ -444,28 +357,16 @@ SearchBox = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			"content": [
-				" ",
-				QuickUI.Control.create(TextBoxWithButton, {
-					"textBox": [
-						" ",
-						this.searchTerms = QuickUI.Control.create(HintTextBox, {
-							"id": "searchTerms",
-							"hint": "Enter search"
-						}),
-						" "
-					],
-					"goButton": [
-						" ",
-						this.searchButton = QuickUI.Control.create(SampleSpriteButton, {
-							"content": "Search",
-							"id": "searchButton"
-						}),
-						" "
-					]
+			"content": QuickUI.Control.create(TextBoxWithButton, {
+				"textBox": this.searchTerms = QuickUI.Control.create(HintTextBox, {
+					"id": "searchTerms",
+					"hint": "Enter search"
 				}),
-				" "
-			]
+				"goButton": this.searchButton = QuickUI.Control.create(SampleSpriteButton, {
+					"content": "Search",
+					"id": "searchButton"
+				})
+			})
 		});
 	}
 });
@@ -512,11 +413,7 @@ SearchBoxAbout = GalleryPage.extend({
 				}),
 				". "
 			],
-			"demo": [
-				" ",
-				QuickUI.Control.create(GoogleSearchBox),
-				" "
-			]
+			"demo": QuickUI.Control.create(GoogleSearchBox)
 		});
 	}
 });
@@ -533,11 +430,7 @@ SpriteAbout = GalleryPage.extend({
 			"sourceFileExample": "Sprite/SpriteDemo.qui",
 			"sourceFileControl": "../common/Sprite.qui",
 			"summary": " A very basic CSS sprite: shows a single image at a time from a strip of images. ",
-			"demo": [
-				" ",
-				QuickUI.Control.create(SpriteDemo),
-				" "
-			]
+			"demo": QuickUI.Control.create(SpriteDemo)
 		});
 	}
 });
@@ -551,17 +444,13 @@ SpriteButton = ButtonBase.extend({
 		ButtonBase.prototype.render.call(this);
 		this.setClassProperties(ButtonBase, {
 			"content": [
-				" ",
 				this.backgroundLeft = QuickUI.Control.create(Sprite, {
 					"id": "backgroundLeft"
 				}),
-				" ",
 				this.backgroundRight = QuickUI.Control.create(Sprite, {
 					"id": "backgroundRight"
 				}),
-				" ",
-				this.SpriteButton_content = $("<button id=\"SpriteButton_content\" />")[0],
-				" "
+				this.SpriteButton_content = $("<button id=\"SpriteButton_content\" />")[0]
 			]
 		});
 	}
@@ -642,18 +531,14 @@ SpriteDemo = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				" ",
 				this.sprite = QuickUI.Control.create(Sprite, {
 					"id": "sprite",
 					"image": "url(SampleSpriteButton/buttonStates.png)",
 					"currentCell": "4",
 					"cellHeight": "32"
 				}),
-				" ",
-				"<p>\r\n\t\tSelect a frame from the sprite image:\r\n\t</p>",
-				" ",
-				this.image = $("<img id=\"image\" src=\"SampleSpriteButton/buttonStates.png\" />")[0],
-				" "
+				"<p>\n\t\tSelect a frame from the sprite image:\n\t</p>",
+				this.image = $("<img id=\"image\" src=\"SampleSpriteButton/buttonStates.png\" />")[0]
 			]
 		});
 	}
@@ -681,13 +566,8 @@ TagAbout = GalleryPage.extend({
 			"sourceFileExample": "Tag/TagDemo.qui",
 			"sourceFileControl": "../controls/Tag.qui",
 			"summary": " The Tag control formats its content as an XML tag. The control is a simple example of what’s effectively a parameterized HTML macro that includes both content (opening and closing brackets) and styling (a fixed-width font). ",
-			"demo": [
-				" ",
-				QuickUI.Control.create(TagDemo),
-				" "
-			],
+			"demo": QuickUI.Control.create(TagDemo),
 			"notes": [
-				" ",
 				$("<p />").items(
 					" The ",
 					QuickUI.Control.create(Tag, {
@@ -699,9 +579,7 @@ TagAbout = GalleryPage.extend({
 					}),
 					" tag. "
 				)[0],
-				" ",
-				"<p>\r\n\t\t\tThe behavior of the Tag control is simple enough that it could be replicated purely\r\n\t\t\tin CSS 3 by making use of the “content” attribute. The content attribute allows one\r\n\t\t\tto specify text that should appear before and after a matching HTML element.\r\n\t\t\tThe QuickUI approach is more flexible in that it allows arbitrary elements to be\r\n\t\t\tplaced before and after the control’s content.\r\n\t\t\t</p>",
-				" "
+				"<p>\r\n\t\t\tThe behavior of the Tag control is simple enough that it could be replicated purely\n\t\t\tin CSS 3 by making use of the “content” attribute. The content attribute allows one\n\t\t\tto specify text that should appear before and after a matching HTML element.\n\t\t\tThe QuickUI approach is more flexible in that it allows arbitrary elements to be\n\t\t\tplaced before and after the control’s content.\n\t\t\t</p>"
 			]
 		});
 	}
@@ -735,11 +613,8 @@ TextBoxWithButton = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				" ",
 				this.TextBoxWithButton_textBox = $("<div id=\"TextBoxWithButton_textBox\" />")[0],
-				" ",
-				this.TextBoxWithButton_goButton = $("<div id=\"TextBoxWithButton_goButton\" />")[0],
-				" "
+				this.TextBoxWithButton_goButton = $("<div id=\"TextBoxWithButton_goButton\" />")[0]
 			]
 		});
 	}

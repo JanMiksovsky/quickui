@@ -8,7 +8,7 @@
 	display: inline-block;
 }
 
-ButtonBaseNew.disabled {
+.ButtonBase.disabled {
 	cursor: default;
 }
 </style>
@@ -77,19 +77,21 @@ $.extend(ButtonBase.prototype, {
 		return ButtonBase.state.normal;
 	},
 
-	disabled: QuickUI.Property.bool(function(value) {
-		$(this.element).toggleClass("disabled", value);
+    disabled: QuickUI.Element().applyClass("disabled", function(disabled) {
 		this.renderButton();
-	}, false),
+	}),
 	
 	focus: function(event) {
-		$(this.element).addClass("focused");
-		this.isFocused(true);
-		this.renderButton();
+        if (!this.disabled()) 
+        {
+            $(this.element).addClass("focused");
+            this.isFocused(true);
+            this.renderButton();
+        }
 	},
 	
 	keydown: function(event) {
-		if (event.keyCode == 32 /* space */ || event.keyCode == 13 /* return */)
+		if (!this.disabled() && (event.keyCode == 32 /* space */ || event.keyCode == 13 /* return */))
 		{
 			this.isKeyPressed(true);		
 			this.renderButton();
@@ -102,15 +104,21 @@ $.extend(ButtonBase.prototype, {
 	},
 	
 	mousedown: function(event) {
-		$(this.element).addClass("pressed");
-		this.isMouseButtonDown(true);
-		this.renderButton();
+        if (!this.disabled())
+        {
+            $(this.element).addClass("pressed");
+            this.isMouseButtonDown(true);
+            this.renderButton();
+        }
 	},
 	
 	mousein: function(event) {
-		$(this.element).addClass("hovered");
-		this.isMouseOverControl(true);
-		this.renderButton();
+        if (!this.disabled()) 
+        {
+            $(this.element).addClass("hovered");
+            this.isMouseOverControl(true);
+            this.renderButton();
+        }
 	},
 	
 	mouseout: function(event) {

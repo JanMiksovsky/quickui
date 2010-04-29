@@ -67,19 +67,21 @@ $.extend(ButtonBase.prototype, {
 		return ButtonBase.state.normal;
 	},
 
-	disabled: QuickUI.Property.bool(function(value) {
-		$(this.element).toggleClass("disabled", value);
+    disabled: QuickUI.Element().applyClass("disabled", function(disabled) {
 		this.renderButton();
-	}, false),
+	}),
 	
 	focus: function(event) {
-		$(this.element).addClass("focused");
-		this.isFocused(true);
-		this.renderButton();
+        if (!this.disabled()) 
+        {
+            $(this.element).addClass("focused");
+            this.isFocused(true);
+            this.renderButton();
+        }
 	},
 	
 	keydown: function(event) {
-		if (event.keyCode == 32 /* space */ || event.keyCode == 13 /* return */)
+		if (!this.disabled() && (event.keyCode == 32 /* space */ || event.keyCode == 13 /* return */))
 		{
 			this.isKeyPressed(true);		
 			this.renderButton();
@@ -92,15 +94,21 @@ $.extend(ButtonBase.prototype, {
 	},
 	
 	mousedown: function(event) {
-		$(this.element).addClass("pressed");
-		this.isMouseButtonDown(true);
-		this.renderButton();
+        if (!this.disabled())
+        {
+            $(this.element).addClass("pressed");
+            this.isMouseButtonDown(true);
+            this.renderButton();
+        }
 	},
 	
 	mousein: function(event) {
-		$(this.element).addClass("hovered");
-		this.isMouseOverControl(true);
-		this.renderButton();
+        if (!this.disabled()) 
+        {
+            $(this.element).addClass("hovered");
+            this.isMouseOverControl(true);
+            this.renderButton();
+        }
 	},
 	
 	mouseout: function(event) {
@@ -142,25 +150,15 @@ DockPanel = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				" ",
 				this.DockPanel_top = $("<div id=\"DockPanel_top\" />")[0],
-				" ",
 				this.rowCenter = $("<div id=\"rowCenter\" />").items(
-					" ",
 					this.centerTable = $("<div id=\"centerTable\" />").items(
-						" ",
 						this.DockPanel_left = $("<div id=\"DockPanel_left\" class=\"panel\" />")[0],
-						" ",
 						this.DockPanel_content = $("<div id=\"DockPanel_content\" />")[0],
-						" ",
-						this.DockPanel_right = $("<div id=\"DockPanel_right\" class=\"panel\" />")[0],
-						" "
-					)[0],
-					" "
+						this.DockPanel_right = $("<div id=\"DockPanel_right\" class=\"panel\" />")[0]
+					)[0]
 				)[0],
-				" ",
-				this.DockPanel_bottom = $("<div id=\"DockPanel_bottom\" />")[0],
-				" "
+				this.DockPanel_bottom = $("<div id=\"DockPanel_bottom\" />")[0]
 			]
 		});
 	}
@@ -217,11 +215,8 @@ IfBrowser = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
-				" ",
 				this.IfBrowser_content = $("<span id=\"IfBrowser_content\" />")[0],
-				" ",
-				this.IfBrowser_elseContent = $("<span id=\"IfBrowser_elseContent\" />")[0],
-				" "
+				this.IfBrowser_elseContent = $("<span id=\"IfBrowser_elseContent\" />")[0]
 			]
 		});
 	}
@@ -503,11 +498,7 @@ Repeater = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			"content": [
-				" ",
-				this.Repeater_expansion = $("<div id=\"Repeater_expansion\" />")[0],
-				" "
-			]
+			"content": this.Repeater_expansion = $("<div id=\"Repeater_expansion\" />")[0]
 		});
 	}
 });
@@ -605,7 +596,10 @@ $.extend(ToggleButtonBase.prototype, {
 		ToggleButtonBase.superProto.ready.call(this);
 		var me = this;
 		$(this.element).click(function() {
-			me.toggle();
+            if (!me.disabled())
+            {
+                me.toggle();
+            }
 		});
 	},
 	

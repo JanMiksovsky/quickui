@@ -13,7 +13,10 @@ $.extend(ToggleButtonBase.prototype, {
 		ToggleButtonBase.superProto.ready.call(this);
 		var me = this;
 		$(this.element).click(function() {
-			me.toggle();
+            if (!me.disabled())
+            {
+                me.toggle();
+            }
 		});
 	},
 	
