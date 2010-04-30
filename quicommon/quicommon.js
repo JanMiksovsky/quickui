@@ -150,15 +150,25 @@ DockPanel = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
+				" ",
 				this.DockPanel_top = $("<div id=\"DockPanel_top\" />")[0],
+				" ",
 				this.rowCenter = $("<div id=\"rowCenter\" />").items(
+					" ",
 					this.centerTable = $("<div id=\"centerTable\" />").items(
+						" ",
 						this.DockPanel_left = $("<div id=\"DockPanel_left\" class=\"panel\" />")[0],
+						" ",
 						this.DockPanel_content = $("<div id=\"DockPanel_content\" />")[0],
-						this.DockPanel_right = $("<div id=\"DockPanel_right\" class=\"panel\" />")[0]
-					)[0]
+						" ",
+						this.DockPanel_right = $("<div id=\"DockPanel_right\" class=\"panel\" />")[0],
+						" "
+					)[0],
+					" "
 				)[0],
-				this.DockPanel_bottom = $("<div id=\"DockPanel_bottom\" />")[0]
+				" ",
+				this.DockPanel_bottom = $("<div id=\"DockPanel_bottom\" />")[0],
+				" "
 			]
 		});
 	}
@@ -215,8 +225,11 @@ IfBrowser = QuickUI.Control.extend({
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
+				" ",
 				this.IfBrowser_content = $("<span id=\"IfBrowser_content\" />")[0],
-				this.IfBrowser_elseContent = $("<span id=\"IfBrowser_elseContent\" />")[0]
+				" ",
+				this.IfBrowser_elseContent = $("<span id=\"IfBrowser_elseContent\" />")[0],
+				" "
 			]
 		});
 	}
@@ -498,7 +511,11 @@ Repeater = QuickUI.Control.extend({
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
-			"content": this.Repeater_expansion = $("<div id=\"Repeater_expansion\" />")[0]
+			"content": [
+				" ",
+				this.Repeater_expansion = $("<div id=\"Repeater_expansion\" />")[0],
+				" "
+			]
 		});
 	}
 });
