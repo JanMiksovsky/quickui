@@ -144,7 +144,7 @@ $.extend(GalleryPage.prototype, {
 	notes: QuickUI.Element("GalleryPage_notes").content(),
 	sourceFileControl: QuickUI.Element("sourceCodeControl").controlProperty("sourceFile"),
 	sourceFileExample: QuickUI.Element("sourceCodeExample").controlProperty("sourceFile"),
-	summary: QuickUI.Element("GalleryPage_summary").content(),
+	summary: QuickUI.Element("GalleryPage_summary").content()
 });
 
 //

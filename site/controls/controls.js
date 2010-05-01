@@ -13,7 +13,7 @@ AddThis = QuickUI.Control.extend({
 var addthis_share = {
 	content: "Hello, world!",
 	templates: {
-		twitter: "QuickUI creates modular jQuery controls that can be used like new HTML tags {{url}}",
+		twitter: "QuickUI creates modular jQuery controls that can be used like new HTML tags {{url}}"
 	},
 	title: "QuickUI",
 	url: "http://quickui.org"
