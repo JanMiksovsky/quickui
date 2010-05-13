@@ -1,3 +1,41 @@
+/*** Feature ***/
+
+.Feature .table {
+    display: table;
+    width: 100%;
+}
+
+.Feature .row {
+    display: table-row;
+}
+
+.Feature .cell {
+    display: table-cell;
+    width: 50%;
+}
+
+.Feature .label {
+    color: royalblue;
+    font-size: 9pt;
+}
+
+.Feature .separator {
+    border-top: 1px solid royalblue;
+    margin-top: 10px;
+    padding-top: 4px;
+}
+
+.Feature pre {
+    background-color: white;
+    border: none;
+    margin: 4px 0;
+    padding: 0;
+}
+
+.Feature #Feature_description {
+    margin-bottom: 10px;
+}
+
 /*** GetStartedModule ***/
 
 .GetStartedModule {

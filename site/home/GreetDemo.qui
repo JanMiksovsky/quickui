@@ -1,0 +1,5 @@
+<Control name="GreetDemo">
+    <Greet2/>
+    Yes!
+    <Greet2/>
+</Control>

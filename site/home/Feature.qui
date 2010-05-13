@@ -1,0 +1,70 @@
+<Control name="Feature">
+
+<content>
+    <h2 id="Feature_name"/>
+    <div id="Feature_description"/>
+    <div class="table">
+        <div class="row">
+            <div class="cell">
+                <div class="label">Quick control</div>
+                <div id="Feature_control"/>
+            </div>
+            <div class="cell">
+                <div class="label">Example</div>
+                <div id="Feature_example"/>
+                <div class="label separator">Result</div>
+                <div id="Feature_result"/>
+            </div>
+        </div>
+    </div>
+</content>
+
+<style>
+.table {
+    display: table;
+    width: 100%;
+}
+
+.row {
+    display: table-row;
+}
+
+.cell {
+    display: table-cell;
+    width: 50%;
+}
+
+.label {
+    color: royalblue;
+    font-size: 9pt;
+}
+
+.separator {
+    border-top: 1px solid royalblue;
+    margin-top: 10px;
+    padding-top: 4px;
+}
+
+pre {
+    background-color: white;
+    border: none;
+    margin: 4px 0;
+    padding: 0;
+}
+
+#Feature_description {
+    margin-bottom: 10px;
+}
+</style>
+
+<script>
+$.extend(Feature.prototype, {
+    control: QuickUI.Element("Feature_control").content(),
+    description: QuickUI.Element("Feature_description").content(),
+    example: QuickUI.Element("Feature_example").content(),
+    name: QuickUI.Element("Feature_name").content(),
+    result: QuickUI.Element("Feature_result").content()
+});
+</script>
+
+</Control>
