@@ -35,14 +35,16 @@
 }
 
 .label {
-    color: royalblue;
+    color: #256da8;
     font-size: 9pt;
 }
 
 .separator {
-    border-top: 1px solid royalblue;
-    margin-top: 10px;
-    padding-top: 4px;
+    /* border-top: 1px solid royalblue; */
+    margin-bottom: .25em;
+    /* margin-top: 1em;
+    padding-top: .25em; */
+    margin-top: 2em;
 }
 
 pre {
@@ -52,8 +54,13 @@ pre {
     padding: 0;
 }
 
+#Feature_name {
+    border-top: 3px solid #928274;
+    padding-top: .5em;
+}
+
 #Feature_description {
-    margin-bottom: 10px;
+    margin-bottom: 1em;
 }
 </style>
 

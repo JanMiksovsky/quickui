@@ -1,0 +1,46 @@
+<Control name="FeatureScoping">
+<prototype>
+<Feature>
+
+<name>Prevent style rule collisions with style scoping</name>
+
+<description>
+Controls on a page are as independent of each other as possible, so you can mix controls freely without concern for collisions in the namespaces for DOM element IDs or CSS rule names. For example, the QuickUI compiler ensures that a control’s CSS only applies to instances of that control: each control defines a corresponding CSS class, and the DOM root of all that control’s instances are stamped with that CSS class. So if two controls define CSS for a class called, say, “container”, the generated CSS will only apply the correct rule to each control.
+</description>
+
+<control>
+<pre>
+&lt;Control name="Red">
+&lt;div class="message">I’m red&lt;/div>
+&lt;style>
+.message {
+    color: red;
+}
+&lt;/style>
+&lt;/Control>
+
+&lt;Control name="Green">
+&lt;div class="message">I’m green&lt;/div>
+&lt;style>
+.message {
+    color: green;
+}
+&lt;/style>
+&lt;/Control&gt;
+</pre>
+</control>
+
+<example>
+<pre>
+&lt;Red/&gt;
+&lt;Green/&gt;
+</pre>
+</example>
+
+<result>
+<FeatureScopingDemo/>
+</result>
+
+</Feature>
+</prototype>
+</Control>

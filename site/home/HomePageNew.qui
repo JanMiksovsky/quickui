@@ -7,28 +7,9 @@
 	<GetStartedModule/>
 </sidebar>
 
-<Feature name="Hello, world">
-    <description>
-        The simplest way to use QuickUI is to define your own tag to stand for a block of HTML content. This content will get inserted wherever you use that tag.
-    </description>
-    <control>
-<pre>
-&lt;Control name=”Greet”&gt;
-Hello &lt;i&gt;world!&lt;/i&gt;
-&lt;/Control&gt;
-</pre>        
-    </control>
-    <example>
-<pre>
-&lt;Greet/&gt;
-Yes!
-&lt;Greet/&gt;
-</pre>
-    </example>
-    <result>
-        <GreetDemo/>
-    </result>
-</Feature>
+<FeatureHello/>
+<FeatureMarkupAndCSS/>
+<FeatureScoping/>
 
 </SitePage>
 </prototype>

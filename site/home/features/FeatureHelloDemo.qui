@@ -1,4 +1,4 @@
-<Control name="GreetDemo">
+<Control name="FeatureHelloDemo">
     <Greet2/>
     Yes!
     <Greet2/>
