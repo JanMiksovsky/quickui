@@ -16,7 +16,7 @@ A simple example is the <GalleryLink>Tag</GalleryLink> control, used throughout 
 
 <p>
 Here the control’s content is the name of the tag—in the above examples, the string “style” or “script”. The Tag control surrounds this content with the “&lt;” and “&gt;”, and styles all the text in a non-proportional font suitable for code. Everywhere we use this Tag control, we’ll always get the brackets and the formatting, so we if we want to change either of those aspects later, we can.
-</p>
+</p> 
 
 <h2>Starting point</h2>
 

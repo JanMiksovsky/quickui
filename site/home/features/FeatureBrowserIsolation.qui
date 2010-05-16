@@ -1,0 +1,42 @@
+<Control name="FeatureBrowserIsolation">
+<prototype>
+<Feature>
+
+<name>Isolate browser inconsistencies</name>
+
+<description>
+Getting something working across the mainstream browsers often involves variations in the CSS or JavaScript you need. Bundle up that knowledge in a control so you can reapply it when needed.
+</description>
+
+<control>
+<pre>
+&lt;Control name="Gradient"&gt;
+&lt;script&gt;
+…
+if ($.browser.mozilla)
+{
+…
+    value = "-moz-linear-gradient(" + position + ", " + startColorString + ", " + endColorString + ")";
+}
+…
+$(this.element).css(property, value);
+…
+&lt;/script&gt;
+&lt;/Control&gt;
+</pre>
+</control>
+
+<example>
+<pre>
+&lt;Gradient start="#808080" end="#f0f0f0"/&gt;
+</pre>
+</example>
+
+<result>
+<FeatureBrowserIsolationDemo/>
+</result>
+
+
+</Feature>
+</prototype>
+</Control>

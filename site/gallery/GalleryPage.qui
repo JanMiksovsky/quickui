@@ -15,7 +15,7 @@
 				<div id="GalleryPage_demo" />
 			</CodeOutput>
 
-			<h2>Demo source code</h2>
+			<h2>Sample usage</h2>
 			<SourceCode id="sourceCodeExample" />
 
 			<h2>Full control source code</h2>

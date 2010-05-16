@@ -1,0 +1,23 @@
+<Control name="SearchBox">
+
+<content>
+    <input id="searchTerms" type="text"/>
+    <OrangeButton>Search</OrangeButton>
+</content>
+
+<script>
+$.extend(SearchBox.prototype, {
+    ready: function() {
+        var me = this;
+        $(".OrangeButton").click(function() {
+            debugger;
+            var searchTerms = $(me.searchTerms).val();
+            var query = "http://www.google.com/search?q=%s";
+            var url = query.replace("%s", searchTerms);
+            window.location.href = url;
+        });
+    }
+});  
+</script>
+
+</Control>

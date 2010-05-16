@@ -1,18 +1,17 @@
 <Control name="Feature">
 
 <content>
-    <h2 id="Feature_name"/>
-    <div id="Feature_description"/>
     <div class="table">
         <div class="row">
             <div class="cell">
-                <div class="label">Quick control</div>
+                <h2 id="Feature_name"/>
                 <div id="Feature_control"/>
             </div>
             <div class="cell">
-                <div class="label">Example</div>
+                <div id="Feature_description"/>
+                <div class="label">Sample usage</div>
                 <div id="Feature_example"/>
-                <div class="label separator">Result</div>
+                <div class="label separator">Live demo</div>
                 <div id="Feature_result"/>
             </div>
         </div>
@@ -20,6 +19,11 @@
 </content>
 
 <style>
+{
+    border-top: 3px solid #928274;
+    margin-top: 2em;
+}
+
 .table {
     display: table;
     width: 100%;
@@ -34,17 +38,17 @@
     width: 50%;
 }
 
+.cell:first-child {
+    padding-right: 20px;
+}
+
 .label {
     color: #256da8;
     font-size: 9pt;
 }
 
 .separator {
-    /* border-top: 1px solid royalblue; */
-    margin-bottom: .25em;
-    /* margin-top: 1em;
-    padding-top: .25em; */
-    margin-top: 2em;
+    margin: 1em 0 .25em 0;
 }
 
 pre {
@@ -55,11 +59,11 @@ pre {
 }
 
 #Feature_name {
-    border-top: 3px solid #928274;
-    padding-top: .5em;
+    margin-top: .5em;
 }
 
 #Feature_description {
+    font-size: 10pt;
     margin-bottom: 1em;
 }
 </style>

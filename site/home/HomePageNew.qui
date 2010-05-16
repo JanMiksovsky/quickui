@@ -7,11 +7,68 @@
 	<GetStartedModule/>
 </sidebar>
 
+<p>
+QuickUI (Quick User Interface) is a framework that simplifies the design, construction,
+and maintenance of web-based user interfaces. The easiest way to describe QuickUI is
+that <i>it lets you write HTML as if you could create your own tags</i>.
+</p>
+<p> 
+In QuickUI, the tags you create are called controls. You define controls with declarative
+markup that can include HTML (including other QuickUI controls), CSS styling,
+and JavaScript scripting. You can easily create new controls by bundling together a group
+of existing controls, or by subclassing an existing control to make it more special-purpose.
+The page you are reading here, and remainder of this site, is built entirely using QuickUI.
+</p>
+<p>
+QuickUI includes tools that compile your markup into regular JavaScript and CSS files.
+These tools run on Windows and OS/X (via the Mono project). The generated JavaScript
+makes use of the <Link href="http://jquery.com">jQuery</Link> library to
+build the web user interface on demand. QuickUI also includes a run-time library.
+Overall QuickUI is targetted at and tested against the mainstream browsers:
+Apple Safari 4.x, Google Chrome 3.x, Internet Explorer 8.x, and Mozilla Firefox 3.x.
+</p>
+<p>
+The following are brief examples to some features of QuickUI. Each demo shows
+the live output of a Quick control running on this page.
+</p>
+
 <FeatureHello/>
 <FeatureMarkupAndCSS/>
 <FeatureScoping/>
+<FeatureComposition/>
+<FeatureBrowserIsolation/>
+
+<h2 id="headingNextSteps">Next steps</h2>
+
+<p>
+The <Link href="/tutorial/section01/default.html">tutorial</Link>
+walks through the development of a simple control step-by-step.
+You can see some sample QuickUI controls in the <Link href="/gallery/default.html">Gallery</Link>.
+</p>
+
+<p>
+QuickUI is completely free, and the <Link href="http://code.google.com/p/quickui/">source code</Link>
+is open under the <Link href="http://www.opensource.org/licenses/mit-license.php">MIT License</Link>.
+</p>
+
+<p>
+<Link href="/downloads/default.html">Download QuickUI</Link>
+</p>
+
+<br/>
+
+<AddThis/>
 
 </SitePage>
 </prototype>
+
+<style>
+
+#headingNextSteps {
+    border-top: 3px solid #928274;
+    padding-top: .5em;
+}
+    
+</style>
 
 </Control>

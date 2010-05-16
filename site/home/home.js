@@ -1,4 +1,17 @@
 //
+// Ellipsis
+//
+Ellipsis = QuickUI.Control.extend({
+	className: "Ellipsis",
+	render: function() {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
+			"content": "…"
+		});
+	}
+});
+
+//
 // Feature
 //
 Feature = QuickUI.Control.extend({
@@ -8,17 +21,13 @@ Feature = QuickUI.Control.extend({
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
 				" ",
-				this.Feature_name = $("<h2 id=\"Feature_name\" />")[0],
-				" ",
-				this.Feature_description = $("<div id=\"Feature_description\" />")[0],
-				" ",
 				$("<div class=\"table\" />").items(
 					" ",
 					$("<div class=\"row\" />").items(
 						" ",
 						$("<div class=\"cell\" />").items(
 							" ",
-							"<div class=\"label\">Quick control</div>",
+							this.Feature_name = $("<h2 id=\"Feature_name\" />")[0],
 							" ",
 							this.Feature_control = $("<div id=\"Feature_control\" />")[0],
 							" "
@@ -26,11 +35,13 @@ Feature = QuickUI.Control.extend({
 						" ",
 						$("<div class=\"cell\" />").items(
 							" ",
-							"<div class=\"label\">Example</div>",
+							this.Feature_description = $("<div id=\"Feature_description\" />")[0],
+							" ",
+							"<div class=\"label\">Sample usage</div>",
 							" ",
 							this.Feature_example = $("<div id=\"Feature_example\" />")[0],
 							" ",
-							"<div class=\"label separator\">Result</div>",
+							"<div class=\"label separator\">Live demo</div>",
 							" ",
 							this.Feature_result = $("<div id=\"Feature_result\" />")[0],
 							" "
@@ -53,6 +64,74 @@ $.extend(Feature.prototype, {
 });
 
 //
+// FeatureBrowserIsolation
+//
+FeatureBrowserIsolation = Feature.extend({
+	className: "FeatureBrowserIsolation",
+	render: function() {
+		Feature.prototype.render.call(this);
+		this.setClassProperties(Feature, {
+			"name": "Isolate browser inconsistencies",
+			"description": " Getting something working across the mainstream browsers often involves variations in the CSS or JavaScript you need. Bundle up that knowledge in a control so you can reapply it when needed. ",
+			"control": " <pre>\r\n&lt;Control name=\"Gradient\"&gt;\r\n&lt;script&gt;\r\n…\r\nif ($.browser.mozilla)\r\n{\r\n…\r\n    value = \"-moz-linear-gradient(\" + position + \", \" + startColorString + \", \" + endColorString + \")\";\r\n}\r\n…\r\n$(this.element).css(property, value);\r\n…\r\n&lt;/script&gt;\r\n&lt;/Control&gt;\r\n</pre> ",
+			"example": " <pre>\r\n&lt;Gradient start=\"#808080\" end=\"#f0f0f0\"/&gt;\r\n</pre> ",
+			"result": [
+				" ",
+				QuickUI.Control.create(FeatureBrowserIsolationDemo),
+				" "
+			]
+		});
+	}
+});
+
+//
+// FeatureBrowserIsolationDemo
+//
+FeatureBrowserIsolationDemo = QuickUI.Control.extend({
+	className: "FeatureBrowserIsolationDemo",
+	render: function() {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
+			"content": [
+				" ",
+				QuickUI.Control.create(Gradient, {
+					"start": "#808080",
+					"end": "#f0f0f0"
+				}),
+				" "
+			]
+		});
+	}
+});
+
+//
+// FeatureComposition
+//
+FeatureComposition = Feature.extend({
+	className: "FeatureComposition",
+	render: function() {
+		Feature.prototype.render.call(this);
+		this.setClassProperties(Feature, {
+			"name": "Define new controls by composing existing ones",
+			"description": [
+				" QuickUI controls can be used as building blocks for larger and more complex controls. Snap together some markup, CSS, and JavaScript behavior—and now you have a new class that can be used anywhere you want. See the full ",
+				QuickUI.Control.create(GalleryLink, {
+					"content": "SearchBox"
+				}),
+				" example. "
+			],
+			"control": " <pre>\r\n&lt;Control name=\"SearchBox\"&gt;\r\n\r\n&lt;content&gt;\r\n&lt;input id=\"searchTerms\" type=\"text\"/&gt;\r\n&lt;OrangeButton&gt;Search&lt;/OrangeButton&gt;\r\n&lt;/content&gt;\r\n…\r\n&lt;/Control&gt;\r\n</pre> ",
+			"example": " <pre>\r\n&lt;SearchBox/&gt;\r\n</pre> ",
+			"result": [
+				" ",
+				QuickUI.Control.create(SearchBox),
+				" "
+			]
+		});
+	}
+});
+
+//
 // FeatureHello
 //
 FeatureHello = Feature.extend({
@@ -60,7 +139,7 @@ FeatureHello = Feature.extend({
 	render: function() {
 		Feature.prototype.render.call(this);
 		this.setClassProperties(Feature, {
-			"name": "Hello, world",
+			"name": "HTML macros",
 			"description": " Define your own tag to stand for a block of HTML content. This content will get inserted wherever you use that tag. ",
 			"control": " <pre>\r\n&lt;Control name=\"Greet\"&gt;\r\nHello &lt;i&gt;world!&lt;/i&gt;\r\n&lt;/Control&gt;\r\n</pre> ",
 			"example": " <pre>\r\n&lt;Greet/&gt;\r\nYes!\r\n&lt;Greet/&gt;\r\n</pre> ",
@@ -102,7 +181,7 @@ FeatureMarkupAndCSS = Feature.extend({
 		this.setClassProperties(Feature, {
 			"name": "Keep related markup and CSS right next to each other",
 			"description": " Old school HTML pages kept the markup and CSS right next to each other, which was great for simple pages but can’t scale up to today’s complex apps. QuickUI restores this simplicity in a scalable way by letting you define a control in a single file that keeps the control’s markup and CSS rules together. No more hunting around for all the styles defined for a particular component! ",
-			"control": " <pre>\r\n&lt;Control name=\"Tag\"&gt;\r\n\r\n&lt;content&gt;\r\n&lt;span id=\"Tag_content\" /&gt;\r\n&lt;/content&gt;\r\n\r\n&lt;style&gt;\r\n{\r\n    display: inline;\r\n    font-family: monospace;\r\n}\r\n&lt;/style&gt;\r\n\r\n…\r\n\r\n&lt;/Control&gt;\r\n</pre> ",
+			"control": " <pre>\r\n&lt;Control name=\"Tag\"&gt;\r\n\r\n&lt;content&gt;\r\n&amp;lt;&lt;span id=\"Tag_content\" /&gt;&amp;gt;\r\n&lt;/content&gt;\r\n\r\n&lt;style&gt;\r\n{\r\n    display: inline;\r\n    font-family: monospace;\r\n}\r\n&lt;/style&gt;\r\n\r\n…\r\n\r\n&lt;/Control&gt;\r\n</pre> ",
 			"example": " <pre>\r\nQuick markup has &lt;Tag&gt;style&lt;/Tag&gt; and &lt;Tag&gt;script&lt;/Tag&gt; elements, just like HTML.\r\n</pre> ",
 			"result": [
 				" ",
@@ -145,7 +224,7 @@ FeatureScoping = Feature.extend({
 		Feature.prototype.render.call(this);
 		this.setClassProperties(Feature, {
 			"name": "Prevent style rule collisions with style scoping",
-			"description": " Controls on a page are as independent of each other as possible, so you can mix controls freely without concern for collisions in the namespaces for DOM element IDs or CSS rule names. For example, the QuickUI compiler ensures that a control’s CSS only applies to instances of that control: each control defines a corresponding CSS class, and the DOM root of all that control’s instances are stamped with that CSS class. So if two controls define CSS for a class called, say, “container”, the generated CSS will only apply the correct rule to each control. ",
+			"description": " Controls on a page are as independent of each other as possible, so you can mix controls freely without concern for collisions in the namespaces for DOM element IDs or CSS rule names. For example, the QuickUI compiler ensures that a control’s CSS only applies to instances of that control: each control defines a corresponding CSS class, and the DOM root of all that control’s instances are stamped with that CSS class. So if two controls define CSS for a class called, say, “message”, the generated CSS will apply the correct rules to each control. ",
 			"control": " <pre>\r\n&lt;Control name=\"Red\"&gt;\r\n&lt;div class=\"message\"&gt;I’m red&lt;/div&gt;\r\n&lt;style&gt;\r\n.message {\r\n    color: red;\r\n}\r\n&lt;/style&gt;\r\n&lt;/Control&gt;\r\n\r\n&lt;Control name=\"Green\"&gt;\r\n&lt;div class=\"message\"&gt;I’m green&lt;/div&gt;\r\n&lt;style&gt;\r\n.message {\r\n    color: green;\r\n}\r\n&lt;/style&gt;\r\n&lt;/Control&gt;\r\n</pre> ",
 			"example": " <pre>\r\n&lt;Red/&gt;\r\n&lt;Green/&gt;\r\n</pre> ",
 			"result": [
@@ -209,6 +288,86 @@ GetStartedModule = QuickUI.Control.extend({
 			]
 		});
 	}
+});
+
+//
+// Gradient
+//
+Gradient = QuickUI.Control.extend({
+	className: "Gradient"
+});
+$.extend(Gradient.prototype, {
+    
+    ready: function() {
+        this._redraw();
+    },
+    
+    end: QuickUI.Property(function() { this._redraw(); }),
+    direction: QuickUI.Property(function() { this._redraw(); }, "vertical"),
+    start: QuickUI.Property(function() { this._redraw(); }),
+    
+    _redraw: function() {
+        var direction = this.direction();
+        var start = this.start();
+        var end = this.end();
+        if (direction && start && end)
+        {
+            var horizontal = (direction == "horizontal");
+            var startColorString = this._hexColorToRgbString(start);
+            var endColorString = this._hexColorToRgbString(end);
+            var property;
+            var value;
+            if ($.browser.mozilla)
+            {
+                property = "background-image";
+                var position = horizontal ? "left" : "top";
+                value = "-moz-linear-gradient(" + position + ", " + startColorString + ", " + endColorString + ")";
+            }
+            else if ($.browser.webkit)
+            {
+                property = "background-image"; 
+                var position2 = horizontal ? "right top" : "left bottom";
+                value = "-webkit-gradient(linear, left top, " + position2 + ", from(" + startColorString + "), to(" + endColorString + "))";
+            }
+            else if ($.browser.msie)
+            {
+                property = "filter";
+                var gradientType = horizontal ? 1 : 0;
+                value = "progid:DXImageTransform.Microsoft.gradient(gradientType=" + gradientType + ", startColorStr=" + start + ", endColorStr=" + end + ")"; 
+            }
+
+            $(this.element).css(property, value);
+        }
+    },
+    
+    /* Convert a hex color like #00ff00 to "rgb(0, 255, 0)" */
+    _hexColorToRgbString: function(hex) {
+        if (hex.substr(0, 1) == "#")
+        {
+            // Remove "#"
+            hex = hex.substring(1);
+        }
+        var hasAlpha = (hex.length == 8);
+        var color = parseInt(hex, 16);
+        var colorStringType = hasAlpha ? "rgba" : "rgb";
+        
+        var alphaString = "";
+        if (hasAlpha)
+        {
+            // Alpha
+            a = color & 0xFF;
+            alphaString = "," + a;
+            color = color >> 8;
+        }
+        
+        var r = (color >> 16) & 0xFF;
+        var g = (color >> 8)  & 0xFF;
+        var b = color         & 0xFF;
+        
+        var rgbString = colorStringType + "(" + r + "," + g + "," + b + alphaString + ")";
+        return rgbString;
+    }
+    
 });
 
 //
@@ -381,11 +540,73 @@ HomePageNew = SitePage.extend({
 			"content": [
 				" ",
 				" ",
+				"<p>\r\nQuickUI (Quick User Interface) is a framework that simplifies the design, construction,\r\nand maintenance of web-based user interfaces. The easiest way to describe QuickUI is\r\nthat <i>it lets you write HTML as if you could create your own tags</i>.\r\n</p>",
+				" ",
+				"<p> \r\nIn QuickUI, the tags you create are called controls. You define controls with declarative\r\nmarkup that can include HTML (including other QuickUI controls), CSS styling,\r\nand JavaScript scripting. You can easily create new controls by bundling together a group\r\nof existing controls, or by subclassing an existing control to make it more special-purpose.\r\nThe page you are reading here, and remainder of this site, is built entirely using QuickUI.\r\n</p>",
+				" ",
+				$("<p />").items(
+					" QuickUI includes tools that compile your markup into regular JavaScript and CSS files. These tools run on Windows and OS/X (via the Mono project). The generated JavaScript makes use of the ",
+					QuickUI.Control.create(Link, {
+						"content": "jQuery",
+						"href": "http://jquery.com"
+					}),
+					" library to build the web user interface on demand. QuickUI also includes a run-time library. Overall QuickUI is targetted at and tested against the mainstream browsers: Apple Safari 4.x, Google Chrome 3.x, Internet Explorer 8.x, and Mozilla Firefox 3.x. "
+				)[0],
+				" ",
+				"<p>\r\nThe following are brief examples to some features of QuickUI. Each demo shows\r\nthe live output of a Quick control running on this page.\r\n</p>",
+				" ",
 				QuickUI.Control.create(FeatureHello),
 				" ",
 				QuickUI.Control.create(FeatureMarkupAndCSS),
 				" ",
 				QuickUI.Control.create(FeatureScoping),
+				" ",
+				QuickUI.Control.create(FeatureComposition),
+				" ",
+				QuickUI.Control.create(FeatureBrowserIsolation),
+				" ",
+				this.headingNextSteps = $("<h2 id=\"headingNextSteps\">Next steps</h2>")[0],
+				" ",
+				$("<p />").items(
+					" The ",
+					QuickUI.Control.create(Link, {
+						"content": "tutorial",
+						"href": "/tutorial/section01/default.html"
+					}),
+					" walks through the development of a simple control step-by-step. You can see some sample QuickUI controls in the ",
+					QuickUI.Control.create(Link, {
+						"content": "Gallery",
+						"href": "/gallery/default.html"
+					}),
+					". "
+				)[0],
+				" ",
+				$("<p />").items(
+					" QuickUI is completely free, and the ",
+					QuickUI.Control.create(Link, {
+						"content": "source code",
+						"href": "http://code.google.com/p/quickui/"
+					}),
+					" is open under the ",
+					QuickUI.Control.create(Link, {
+						"content": "MIT License",
+						"href": "http://www.opensource.org/licenses/mit-license.php"
+					}),
+					". "
+				)[0],
+				" ",
+				$("<p />").items(
+					" ",
+					QuickUI.Control.create(Link, {
+						"content": "Download QuickUI",
+						"href": "/downloads/default.html"
+					}),
+					" "
+				)[0],
+				" ",
+				"<br />",
+				" ",
+				QuickUI.Control.create(AddThis),
 				" "
 			]
 		});
@@ -420,6 +641,113 @@ Sample = QuickUI.Control.extend({
 				QuickUI.Control.create(Greet),
 				" "
 			]
+		});
+	}
+});
+
+//
+// SearchBox
+//
+SearchBox = QuickUI.Control.extend({
+	className: "SearchBox",
+	render: function() {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
+			"content": [
+				" ",
+				this.searchTerms = $("<input id=\"searchTerms\" type=\"text\" />")[0],
+				" ",
+				QuickUI.Control.create(OrangeButton, {
+					"content": "Search"
+				}),
+				" "
+			]
+		});
+	}
+});
+$.extend(SearchBox.prototype, {
+    ready: function() {
+        var me = this;
+        $(".OrangeButton").click(function() {
+            debugger;
+            var searchTerms = $(me.searchTerms).val();
+            var query = "http://www.google.com/search?q=%s";
+            var url = query.replace("%s", searchTerms);
+            window.location.href = url;
+        });
+    }
+});
+
+//
+// SpriteButton
+//
+SpriteButton = ButtonBase.extend({
+	className: "SpriteButton",
+	render: function() {
+		ButtonBase.prototype.render.call(this);
+		this.setClassProperties(ButtonBase, {
+			"content": [
+				" ",
+				this.backgroundLeft = QuickUI.Control.create(Sprite, {
+					"id": "backgroundLeft"
+				}),
+				" ",
+				this.backgroundRight = QuickUI.Control.create(Sprite, {
+					"id": "backgroundRight"
+				}),
+				" ",
+				this.SpriteButton_content = $("<button id=\"SpriteButton_content\" />")[0],
+				" "
+			]
+		});
+	}
+});
+$.extend(SpriteButton.prototype, {
+	
+	content: QuickUI.Element("SpriteButton_content").content(),
+
+	ready: function() {
+		SpriteButton.superProto.ready.call(this);
+		var self = this;
+		$(this.SpriteButton_content)
+			.blur(function() { self.blur(); })
+			.focus(function() { self.focus(); });
+	},
+	
+	cellHeight: QuickUI.Element().css("height", function(value) {
+		$(this.SpriteButton_content).height(value + "px");
+		QuickUI(this.backgroundLeft).cellHeight(value);
+		QuickUI(this.backgroundRight).cellHeight(value);
+	}),
+	
+	disabled: function(value) {
+		if (value !== undefined)
+		{
+			$(this.SpriteButton_content).attr("disabled", String(value) == "true");
+		}
+		return SpriteButton.superProto.disabled.call(this, value);
+	},
+	
+	image: QuickUI.Element("backgroundLeft").controlProperty("image", function(value) {
+		QuickUI(this.backgroundRight).image(value);
+	}),
+	
+	renderButtonState: function(buttonState) {
+		QuickUI(this.backgroundLeft).currentCell(buttonState);
+		QuickUI(this.backgroundRight).currentCell(buttonState);
+	}
+});
+
+//
+// OrangeButton
+//
+OrangeButton = SpriteButton.extend({
+	className: "OrangeButton",
+	render: function() {
+		SpriteButton.prototype.render.call(this);
+		this.setClassProperties(SpriteButton, {
+			"image": "url(features/buttonStates.png)",
+			"cellHeight": "32"
 		});
 	}
 });

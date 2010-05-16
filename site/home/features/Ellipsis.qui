@@ -1,0 +1,11 @@
+<Control name="Ellipsis">
+
+<content>…</content>
+
+<style>
+{
+    color: gray;
+}
+</style>
+
+</Control>

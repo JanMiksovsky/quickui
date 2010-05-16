@@ -1,4 +1,15 @@
+/*** Ellipsis ***/
+
+.Ellipsis {
+    color: gray;
+}
+
 /*** Feature ***/
+
+.Feature {
+    border-top: 3px solid #928274;
+    margin-top: 2em;
+}
 
 .Feature .table {
     display: table;
@@ -14,17 +25,17 @@
     width: 50%;
 }
 
+.Feature .cell:first-child {
+    padding-right: 20px;
+}
+
 .Feature .label {
     color: #256da8;
     font-size: 9pt;
 }
 
 .Feature .separator {
-    /* border-top: 1px solid royalblue; */
-    margin-bottom: .25em;
-    /* margin-top: 1em;
-    padding-top: .25em; */
-    margin-top: 2em;
+    margin: 1em 0 .25em 0;
 }
 
 .Feature pre {
@@ -35,12 +46,19 @@
 }
 
 .Feature #Feature_name {
-    border-top: 3px solid #928274;
-    padding-top: .5em;
+    margin-top: .5em;
 }
 
 .Feature #Feature_description {
+    font-size: 10pt;
     margin-bottom: 1em;
+}
+
+/*** FeatureBrowserIsolationDemo ***/
+
+.FeatureBrowserIsolationDemo .Gradient {
+    height: 100px;
+    width: 100px;
 }
 
 /*** GetStartedModule ***/
@@ -67,9 +85,74 @@
     color: green;
 }
 
+/*** HomePageNew ***/
+
+.HomePageNew #headingNextSteps {
+    border-top: 3px solid #928274;
+    padding-top: .5em;
+}
+
 /*** Red ***/
 
 .Red .message {
     color: red;
+}
+
+/*** SpriteButton ***/
+
+.SpriteButton {
+	display: inline-block;
+	position: relative;
+}
+
+.SpriteButton .Sprite {
+	height: 100%;
+	position: absolute;
+	top: 0;
+	/* 
+	 * Each sprite covers half the background
+	 */
+	width: 50%;
+	z-index: 0;
+}
+
+.SpriteButton #backgroundLeft {
+	background-position: left 0;
+	left: 0;
+}
+
+.SpriteButton #backgroundRight {
+	background-position: right 0;
+	/*
+	 * Use left: 50% instead of right: 0, as the latter doesn't work exactly right on WebKit.
+	 */
+	left: 50%;
+}
+
+.SpriteButton button {
+	background: transparent none repeat scroll 0 0;
+	border: medium none;
+	cursor: pointer;
+	outline: none;
+	-moz-outline: none;
+	overflow: visible;
+	position: relative;
+	white-space: nowrap;
+}
+
+.SpriteButton.disabled button {
+	cursor: default;
+}
+
+/*** OrangeButton ***/
+
+.OrangeButton button {
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	padding: 6px 10px 8px 10px;
+}
+
+.OrangeButton.disabled {
+	color: #bbb;
 }
 

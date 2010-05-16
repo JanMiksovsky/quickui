@@ -2,7 +2,7 @@
 <prototype>
 <Feature>
 
-<name>Hello, world</name>
+<name>HTML macros</name>
 
 <description>
 Define your own tag to stand for a block of HTML content. This content will get inserted wherever you use that tag.

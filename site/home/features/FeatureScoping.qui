@@ -5,7 +5,7 @@
 <name>Prevent style rule collisions with style scoping</name>
 
 <description>
-Controls on a page are as independent of each other as possible, so you can mix controls freely without concern for collisions in the namespaces for DOM element IDs or CSS rule names. For example, the QuickUI compiler ensures that a control’s CSS only applies to instances of that control: each control defines a corresponding CSS class, and the DOM root of all that control’s instances are stamped with that CSS class. So if two controls define CSS for a class called, say, “container”, the generated CSS will only apply the correct rule to each control.
+Controls on a page are as independent of each other as possible, so you can mix controls freely without concern for collisions in the namespaces for DOM element IDs or CSS rule names. For example, the QuickUI compiler ensures that a control’s CSS only applies to instances of that control: each control defines a corresponding CSS class, and the DOM root of all that control’s instances are stamped with that CSS class. So if two controls define CSS for a class called, say, “message”, the generated CSS will apply the correct rules to each control.
 </description>
 
 <control>

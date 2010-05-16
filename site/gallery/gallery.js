@@ -119,7 +119,7 @@ GalleryPage = SitePage.extend({
 					]
 				}),
 				" ",
-				"<h2>Demo source code</h2>",
+				"<h2>Sample usage</h2>",
 				" ",
 				this.sourceCodeExample = QuickUI.Control.create(SourceCode, {
 					"id": "sourceCodeExample"
