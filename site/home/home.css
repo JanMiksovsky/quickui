@@ -1,3 +1,11 @@
+/*** Counter ***/
+
+.Counter {
+    user-select: none;
+    -khtml-user-select:none;
+    -moz-user-select: none;
+}
+
 /*** Ellipsis ***/
 
 .Ellipsis {
@@ -85,9 +93,9 @@
     color: green;
 }
 
-/*** HomePageNew ***/
+/*** HomePage ***/
 
-.HomePageNew #headingNextSteps {
+.HomePage #headingNextSteps {
     border-top: 3px solid #928274;
     padding-top: .5em;
 }

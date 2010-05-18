@@ -12,7 +12,7 @@ QuickUI (Quick User Interface) is a framework that simplifies the design, constr
 and maintenance of web-based user interfaces. The easiest way to describe QuickUI is
 that <i>it lets you write HTML as if you could create your own tags</i>.
 </p>
-<p>	
+<p> 
 In QuickUI, the tags you create are called controls. You define controls with declarative
 markup that can include HTML (including other QuickUI controls), CSS styling,
 and JavaScript scripting. You can easily create new controls by bundling together a group
@@ -27,96 +27,30 @@ build the web user interface on demand. QuickUI also includes a run-time library
 Overall QuickUI is targetted at and tested against the mainstream browsers:
 Apple Safari 4.x, Google Chrome 3.x, Internet Explorer 8.x, and Mozilla Firefox 3.x.
 </p>
-
-<h2>A quick example</h2>
-
 <p>
-	The following Quick markup defines a simple control called “Greet”.
+The following are brief examples to some features of QuickUI. Each demo shows
+the live output of a Quick control running on this page.
 </p>
 
-<SourceCode sourceFile="Greet.qui" />
+<FeatureHtmlMacros/>
+<FeatureMarkupAndCSS/>
+<FeatureScoping/>
+<FeatureComposition/>
+<FeatureElementIDs/>
+<FeatureBrowserIsolation/>
+
+<h2 id="headingNextSteps">Next steps</h2>
 
 <p>
-This control definition gives you a new tag
-<Tag>Greet</Tag> that can be used in other Quick markup like this:
+The <Link href="/tutorial/section01/default.html">tutorial</Link>
+walks through the development of a simple control step-by-step.
+You can see some sample QuickUI controls in the <Link href="/gallery/default.html">Gallery</Link>.
 </p>
-
-<SourceCode sourceFile="Sample.qui" />
 
 <p>
-Kicking everything off is accomplished in JavaScript via a jQuery extension:
-</p>
-
-<pre>
-$("div").control(Sample);
-</pre>
-
-<p>
-The div below shows the actual sample control above instantiated here on this page:
-</p>
-
-<CodeOutput>
-	<Sample/>
-</CodeOutput>
-
-<p>
-This is a trivial example. The <Link href="/tutorial/section01/default.html">tutorial</Link>
-examines controls with complex contents, control styling, and interactive behavior.
-When combined with the ability to compose and subclass controls,
-things can quickly become very interesting. You can see some sample QuickUI controls
-in the <Link href="/gallery/default.html">Gallery</Link>.
-</p>
-
-<h2>Why use QuickUI?</h2>
-
-<p>
-Consider using QuickUI because it:
-</p>
-
-<ul>
-	<li>
-		Allows you to create UI in a markup language that is easy to read,
-		is easy to work with, and can concisely express your design intention.
-		This speeds up UI development, and makes UI code more maintainable.
-	</li>
-	<li>
-		Works with the web’s native technologies, it doesn’t replace them.
-		QuickUI is true to HTML, CSS, and JavaScript. Familiar conventions are used
-		whenever possible. QuickUI is only meant to address the web’s painful lack
-		of an extensible control framework.
-	</li>
-	<li>
-		Allows designers and developers to share design artifacts. QuickUI can bridge
-		the gap between pure visual design tools and native web coding frameworks.
-		The markup language can be easily learned by HTML-savvy designers, and is
-		still powerful and flexible enough to appeal to developers.
-	</li>
-	<li>
-		Encourages well-factored UI code. Controls are as modular as possible,
-		easily composable, and easily subclassable. All the goodness of object-oriented
-		design can be applied to your UI code. Package up your hard-earned knowledge
-		of HTML and CSS idiosyncrasies into reusable controls that can be readily
-		applied to new problems.
-	</li>
-	<li>
-		Produces predictable compiled code. The QuickUI tools do a minimum of
-		compilation magic. The compiler’s output are legible, understandable,
-		readily debuggable JavaScript classes. The generated code takes care of 
-		populating the control’s run-time DOM — code that is often tedious to write
-		by hand, and normally hard to read. The behavior of these controls can
-		be programmed in JavaScript and jQuery.
-	</li>
-	<li>
-		Creates controls that can be used as top-level pages on their own,
-		or easily included in web pages built with other technologies.
-	</li>
-	<li>
-		Is fun to work in!
-	</li>
-</ul>
-
 QuickUI is completely free, and the <Link href="http://code.google.com/p/quickui/">source code</Link>
 is open under the <Link href="http://www.opensource.org/licenses/mit-license.php">MIT License</Link>.
+</p>
 
 <p>
 <Link href="/downloads/default.html">Download QuickUI</Link>
@@ -128,5 +62,14 @@ is open under the <Link href="http://www.opensource.org/licenses/mit-license.php
 
 </SitePage>
 </prototype>
+
+<style>
+
+#headingNextSteps {
+    border-top: 3px solid #928274;
+    padding-top: .5em;
+}
+    
+</style>
 
 </Control>

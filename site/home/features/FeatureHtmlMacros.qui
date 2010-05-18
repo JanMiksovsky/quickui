@@ -1,4 +1,4 @@
-<Control name="FeatureHello">
+<Control name="FeatureHtmlMacros">
 <prototype>
 <Feature>
 
@@ -25,7 +25,7 @@ Yes!
 </example>
 
 <result>
-<FeatureHelloDemo/>
+<FeatureHtmlMacrosDemo/>
 </result>
 
 </Feature>
