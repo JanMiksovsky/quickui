@@ -28,15 +28,16 @@ Overall QuickUI is targetted at and tested against the mainstream browsers:
 Apple Safari 4.x, Google Chrome 3.x, Internet Explorer 8.x, and Mozilla Firefox 3.x.
 </p>
 <p>
-The following are brief examples to some features of QuickUI. Each demo shows
+The following are brief examples of some aspects of QuickUI. Each demo shows
 the live output of a Quick control running on this page.
 </p>
 
 <FeatureHtmlMacros/>
 <FeatureMarkupAndCSS/>
-<FeatureScoping/>
 <FeatureComposition/>
 <FeatureElementIDs/>
+<FeatureProperties/>
+<FeatureScoping/>
 <FeatureBrowserIsolation/>
 
 <h2 id="headingNextSteps">Next steps</h2>

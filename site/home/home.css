@@ -69,6 +69,12 @@
     width: 100px;
 }
 
+/*** FeaturePropertiesDemo ***/
+
+.FeaturePropertiesDemo .Recipe:not(:first-child) {
+    margin-top: 1em;
+}
+
 /*** GetStartedModule ***/
 
 .GetStartedModule {

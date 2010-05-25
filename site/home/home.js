@@ -268,6 +268,54 @@ FeatureMarkupAndCSSDemo = QuickUI.Control.extend({
 });
 
 //
+// FeatureProperties
+//
+FeatureProperties = Feature.extend({
+	className: "FeatureProperties",
+	render: function() {
+		Feature.prototype.render.call(this);
+		this.setClassProperties(Feature, {
+			"name": "Easy property definition",
+			"description": " The QuickUI runtime includes a range of helper functions that make it trivial to define properties on a control class and map the property values to (and from) control DOM element content, CSS styles, and more. Properties can be specified in markup as tag attributes or tag content. Compound property syntax lets the markup for control consumers define rich property values. All proprties are directly accessible as JavaScript class members. ",
+			"control": " <pre>\r\n&lt;Control name=\"Recipe\"&gt;\r\n\r\n&lt;content&gt;\r\n    &lt;div&gt;\r\n        Name: &lt;span id=\"Recipe_name\"/&gt;\r\n        &lt;span id=\"Recipe_rating\"/&gt;\r\n    &lt;/div&gt;\r\n    &lt;div id=\"Recipe_content\"/&gt;\r\n&lt;/content&gt;\r\n\r\n&lt;script&gt;\r\n$.extend(Recipe.prototype, {\r\n\r\ncontent: QuickUI.Element(\"Recipe_content\").content(),\r\n\r\nname: QuickUI.Element(\"Recipe_name\").content(),\r\n\r\nrating: QuickUI.Property.integer(\r\nfunction(rating) {\r\n    $(this.Recipe_rating)\r\n     .text(\"*****\".substr(0, rating));\r\n}),\r\n\r\n})\r\n&lt;/script&gt;\r\n\r\n&lt;/Control&gt;\r\n</pre> ",
+			"example": " <pre>\r\n&lt;Recipe name=\"Lasagna\" rating=\"3\"&gt;\r\n    Quick and easy lasagna\r\n&lt;/Recipe&gt;\r\n&lt;Recipe&gt;\r\n    &lt;name&gt;\r\n        Pasta &lt;i&gt;con i fagioli&lt;/i&gt;\r\n    &lt;/name&gt;\r\n    &lt;rating&gt;5&lt;/rating&gt;\r\n    &lt;content&gt;\r\n        A &lt;b&gt;great&lt;/b&gt;\r\n        Tuscan peasant dish\r\n    &lt;/content&gt;\r\n&lt;/Recipe&gt;\r\n</pre> ",
+			"result": [
+				" ",
+				QuickUI.Control.create(FeaturePropertiesDemo),
+				" "
+			]
+		});
+	}
+});
+
+//
+// FeaturePropertiesDemo
+//
+FeaturePropertiesDemo = QuickUI.Control.extend({
+	className: "FeaturePropertiesDemo",
+	render: function() {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
+			"content": [
+				" ",
+				QuickUI.Control.create(Recipe, {
+					"content": " Quick and easy lasagna ",
+					"name": "Lasagna",
+					"rating": "3"
+				}),
+				" ",
+				QuickUI.Control.create(Recipe, {
+					"content": " A <b>great</b> Tuscan peasant dish ",
+					"name": " Pasta <i>con i fagioli</i> ",
+					"rating": "5"
+				}),
+				" "
+			]
+		});
+	}
+});
+
+//
 // FeatureScoping
 //
 FeatureScoping = Feature.extend({
@@ -276,7 +324,7 @@ FeatureScoping = Feature.extend({
 		Feature.prototype.render.call(this);
 		this.setClassProperties(Feature, {
 			"name": "Prevent style rule collisions with style scoping",
-			"description": " Controls on a page are as independent of each other as possible, so you can mix controls freely without concern for collisions in the namespaces for DOM element IDs or CSS rule names. For example, the QuickUI compiler ensures that a control’s CSS only applies to instances of that control: each control defines a corresponding CSS class, and the DOM root of all that control’s instances are stamped with that CSS class. So if two controls define CSS for a class called, say, “message”, the generated CSS will apply the correct rules to each control. ",
+			"description": " Controls on a page are as independent of each other as possible, so you can mix controls freely without concern for collisions in the namespaces for DOM element IDs or CSS rule names. For example, the QuickUI compiler ensures that a control’s CSS only applies to instances of that control: each control defines a corresponding CSS class, and the DOM roots of all that control’s instances are stamped with that CSS class. So if two controls define CSS for a class called, say, “message”, the generated CSS will apply the correct rules to each control. ",
 			"control": " <pre>\r\n&lt;Control name=\"Red\"&gt;\r\n&lt;div class=\"message\"&gt;I’m red&lt;/div&gt;\r\n&lt;style&gt;\r\n.message {\r\n    color: red;\r\n}\r\n&lt;/style&gt;\r\n&lt;/Control&gt;\r\n\r\n&lt;Control name=\"Green\"&gt;\r\n&lt;div class=\"message\"&gt;I’m green&lt;/div&gt;\r\n&lt;style&gt;\r\n.message {\r\n    color: green;\r\n}\r\n&lt;/style&gt;\r\n&lt;/Control&gt;\r\n</pre> ",
 			"example": " <pre>\r\n&lt;Red/&gt;\r\n&lt;Green/&gt;\r\n</pre> ",
 			"result": [
@@ -492,17 +540,19 @@ HomePage = SitePage.extend({
 					" library to build the web user interface on demand. QuickUI also includes a run-time library. Overall QuickUI is targetted at and tested against the mainstream browsers: Apple Safari 4.x, Google Chrome 3.x, Internet Explorer 8.x, and Mozilla Firefox 3.x. "
 				)[0],
 				" ",
-				"<p>\r\nThe following are brief examples to some features of QuickUI. Each demo shows\r\nthe live output of a Quick control running on this page.\r\n</p>",
+				"<p>\r\nThe following are brief examples of some aspects of QuickUI. Each demo shows\r\nthe live output of a Quick control running on this page.\r\n</p>",
 				" ",
 				QuickUI.Control.create(FeatureHtmlMacros),
 				" ",
 				QuickUI.Control.create(FeatureMarkupAndCSS),
 				" ",
-				QuickUI.Control.create(FeatureScoping),
-				" ",
 				QuickUI.Control.create(FeatureComposition),
 				" ",
 				QuickUI.Control.create(FeatureElementIDs),
+				" ",
+				QuickUI.Control.create(FeatureProperties),
+				" ",
+				QuickUI.Control.create(FeatureScoping),
 				" ",
 				QuickUI.Control.create(FeatureBrowserIsolation),
 				" ",
@@ -666,6 +716,38 @@ HomePageOld = SitePage.extend({
 		});
 	}
 });
+
+//
+// Recipe
+//
+Recipe = QuickUI.Control.extend({
+	className: "Recipe",
+	render: function() {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
+			"content": [
+				" ",
+				$("<div />").items(
+					" Name: ",
+					this.Recipe_name = $("<span id=\"Recipe_name\" />")[0],
+					" ",
+					this.Recipe_rating = $("<span id=\"Recipe_rating\" />")[0],
+					" "
+				)[0],
+				" ",
+				this.Recipe_content = $("<div id=\"Recipe_content\" />")[0],
+				" "
+			]
+		});
+	}
+});
+$.extend(Recipe.prototype, {
+    content: QuickUI.Element("Recipe_content").content(),
+    name: QuickUI.Element("Recipe_name").content(),
+    rating: QuickUI.Property.integer(function(rating) {
+        $(this.Recipe_rating).text("*****".substr(0, rating));
+    }),
+})
 
 //
 // Red
