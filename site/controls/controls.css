@@ -74,8 +74,6 @@
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
     -webkit-box-sizing: border-box;
-	font-family: Tahoma, Arial, Helvetica, sans-serif;
-	font-size: 10pt;
     height: 100%;
     overflow-y: scroll;
 }
@@ -161,50 +159,8 @@
 	max-width: 800px;
 }
 
-.SitePage h1 {
-	color: #391c01;
-	font-family: Tahoma, Arial, Helvetica, sans-serif;
-	font-size: 16pt;
-	margin-top: 2em;
-}
-
-.SitePage h1:first-child {
-	margin-top: .5em;
-}
-
-.SitePage h2 {
-	color: #928274;
-	font-family: Tahoma, Arial, Helvetica, sans-serif;
-	font-size: 12pt;
-	margin-top: 1.5em;
-}
-
-.SitePage a {
-	border-bottom: 1px dotted #2d7ab0;
-	color: #2d7ab0;
-	text-decoration: none;
-}
-
-.SitePage a:hover {
-	border-bottom: 1px solid #d7761b;
-	color: #d7761b;
-}
-
-.SitePage pre {
-	background-color: #faf3ed;
-	border: 1px solid #d7c5b4;
-	font-family: Consolas, Lucida Console, Courier, Courier New, monospace;
-	font-size: 11pt;
-	padding: 10px;
-	white-space: pre-wrap;
-}
-
 .SitePage .CodeOutput {
 	margin: 5px 0 10px 0;
-}
-
-.SitePage li {
-	margin-bottom: 6px;
 }
 
 /*** SourceCode ***/
