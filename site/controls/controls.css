@@ -67,6 +67,16 @@
     font-weight: bold;
 }
 
+/*** Popout ***/
+
+.Popout {
+    overflow: hidden;
+}
+
+.Popout.hovered {
+    color: red;
+}
+
 /*** SitePage ***/
 
 .SitePage {

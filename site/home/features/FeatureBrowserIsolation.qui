@@ -5,7 +5,10 @@
 <name>Isolate browser inconsistencies</name>
 
 <description>
-Getting something working across the mainstream browsers often involves variations in the CSS or JavaScript you need. Bundle up that knowledge in a control so you can reapply it when needed.
+Getting something working across the mainstream browsers often involves variations
+in the CSS or JavaScript you need. Bundle up that knowledge in a control so you
+can reapply it when needed. See the complete <GalleryLink>Gradient</GalleryLink>
+source.
 </description>
 
 <control>

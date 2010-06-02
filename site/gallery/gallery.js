@@ -59,6 +59,10 @@ GalleryNavigationLinks = QuickUI.Control.extend({
 				}),
 				" ",
 				QuickUI.Control.create(GalleryLink, {
+					"content": "Gradient"
+				}),
+				" ",
+				QuickUI.Control.create(GalleryLink, {
 					"content": "HintTextBox"
 				}),
 				" ",
@@ -178,6 +182,127 @@ GoogleSearchBox = QuickUI.Control.extend({
 				QuickUI.Control.create(SearchBox, {
 					"query": "http://www.google.com/search?q=%s",
 					"hint": "Search Google"
+				}),
+				" "
+			]
+		});
+	}
+});
+
+//
+// Gradient
+//
+Gradient = QuickUI.Control.extend({
+	className: "Gradient"
+});
+$.extend(Gradient.prototype, {
+    
+    ready: function() {
+        this._redraw();
+    },
+    
+    end: QuickUI.Property(function() { this._redraw(); }),
+    direction: QuickUI.Property(function() { this._redraw(); }, "vertical"),
+    start: QuickUI.Property(function() { this._redraw(); }),
+    
+    _redraw: function() {
+        var direction = this.direction();
+        var start = this.start();
+        var end = this.end();
+        if (direction && start && end)
+        {
+            var horizontal = (direction == "horizontal");
+            var startColorString = this._hexColorToRgbString(start);
+            var endColorString = this._hexColorToRgbString(end);
+            var property;
+            var value;
+            if ($.browser.mozilla)
+            {
+                property = "background-image";
+                var position = horizontal ? "left" : "top";
+                value = "-moz-linear-gradient(" + position + ", " + startColorString + ", " + endColorString + ")";
+            }
+            else if ($.browser.webkit)
+            {
+                property = "background-image"; 
+                var position2 = horizontal ? "right top" : "left bottom";
+                value = "-webkit-gradient(linear, left top, " + position2 + ", from(" + startColorString + "), to(" + endColorString + "))";
+            }
+            else if ($.browser.msie)
+            {
+                property = "filter";
+                var gradientType = horizontal ? 1 : 0;
+                value = "progid:DXImageTransform.Microsoft.gradient(gradientType=" + gradientType + ", startColorStr=" + start + ", endColorStr=" + end + ")"; 
+            }
+
+            $(this.element).css(property, value);
+        }
+    },
+    
+    /* Convert a hex color like #00ff00 to "rgb(0, 255, 0)" */
+    _hexColorToRgbString: function(hex) {
+        if (hex.substr(0, 1) == "#")
+        {
+            // Remove "#"
+            hex = hex.substring(1);
+        }
+        var hasAlpha = (hex.length == 8);
+        var color = parseInt(hex, 16);
+        var colorStringType = hasAlpha ? "rgba" : "rgb";
+        
+        var alphaString = "";
+        if (hasAlpha)
+        {
+            // Alpha
+            a = color & 0xFF;
+            alphaString = "," + a;
+            color = color >> 8;
+        }
+        
+        var r = (color >> 16) & 0xFF;
+        var g = (color >> 8)  & 0xFF;
+        var b = color         & 0xFF;
+        
+        var rgbString = colorStringType + "(" + r + "," + g + "," + b + alphaString + ")";
+        return rgbString;
+    }
+    
+});
+
+//
+// GradientAbout
+//
+GradientAbout = GalleryPage.extend({
+	className: "GradientAbout",
+	render: function() {
+		GalleryPage.prototype.render.call(this);
+		this.setClassProperties(GalleryPage, {
+			"title": "Gradient",
+			"sourceFileExample": "Gradient/GradientDemo.qui",
+			"sourceFileControl": "Gradient/Gradient.qui",
+			"summary": " The modern mainstream browsers all support CSS gradients—albeit with slightly different CSS syntax. The Gradient control presents an abstract representation of a horizontal or vertical linear gradient that invokes the browser's native gradient CSS support, freeing the developer from having to remember the specific per-browser syntax. ",
+			"demo": [
+				" ",
+				QuickUI.Control.create(GradientDemo),
+				" "
+			]
+		});
+	}
+});
+
+//
+// GradientDemo
+//
+GradientDemo = QuickUI.Control.extend({
+	className: "GradientDemo",
+	render: function() {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
+			"content": [
+				" ",
+				QuickUI.Control.create(Gradient, {
+					"start": "#808080",
+					"end": "#f0f0f0"
 				}),
 				" "
 			]

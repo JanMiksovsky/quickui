@@ -106,6 +106,24 @@
     padding-top: .5em;
 }
 
+/*** OrangeDialog ***/
+
+.OrangeDialog {
+    border: 2px solid orange;
+    padding: 20px;
+    min-width: 200px;
+    max-width: 500px;
+}
+
+.OrangeDialog h1 {
+    color: orange;
+    font-size: 14pt;
+}
+
+.OrangeDialog #OrangeDialog_buttons {
+    margin-top: 10px;
+}
+
 /*** Red ***/
 
 .Red .message {

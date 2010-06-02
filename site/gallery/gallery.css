@@ -4,6 +4,13 @@
 	margin-bottom: 15px;
 }
 
+/*** GradientDemo ***/
+
+.GradientDemo .Gradient {
+    height: 100px;
+    width: 100px;
+}
+
 /*** HintTextBox ***/
 
 .HintTextBox {

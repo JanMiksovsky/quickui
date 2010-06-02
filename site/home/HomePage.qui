@@ -37,6 +37,7 @@ the live output of a Quick control running on this page.
 <FeatureComposition/>
 <FeatureElementIDs/>
 <FeatureProperties/>
+<FeatureSubclassing/>
 <FeatureScoping/>
 <FeatureBrowserIsolation/>
 

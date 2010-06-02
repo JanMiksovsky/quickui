@@ -99,7 +99,13 @@ FeatureBrowserIsolation = Feature.extend({
 		Feature.prototype.render.call(this);
 		this.setClassProperties(Feature, {
 			"name": "Isolate browser inconsistencies",
-			"description": " Getting something working across the mainstream browsers often involves variations in the CSS or JavaScript you need. Bundle up that knowledge in a control so you can reapply it when needed. ",
+			"description": [
+				" Getting something working across the mainstream browsers often involves variations in the CSS or JavaScript you need. Bundle up that knowledge in a control so you can reapply it when needed. See the complete ",
+				QuickUI.Control.create(GalleryLink, {
+					"content": "Gradient"
+				}),
+				" source. "
+			],
 			"control": " <pre>\r\n&lt;Control name=\"Gradient\"&gt;\r\n&lt;script&gt;\r\n…\r\nif ($.browser.mozilla)\r\n{\r\n…\r\n    value = \"-moz-linear-gradient(\" + position + \", \" + startColorString + \", \" + endColorString + \")\";\r\n}\r\n…\r\n$(this.element).css(property, value);\r\n…\r\n&lt;/script&gt;\r\n&lt;/Control&gt;\r\n</pre> ",
 			"example": " <pre>\r\n&lt;Gradient start=\"#808080\" end=\"#f0f0f0\"/&gt;\r\n</pre> ",
 			"result": [
@@ -356,6 +362,54 @@ FeatureScopingDemo = QuickUI.Control.extend({
 });
 
 //
+// FeatureSubclassing
+//
+FeatureSubclassing = Feature.extend({
+	className: "FeatureSubclassing",
+	render: function() {
+		Feature.prototype.render.call(this);
+		this.setClassProperties(Feature, {
+			"name": "Subclassing",
+			"description": " ",
+			"control": " <pre>\r\n&lt;!-- Sample dialog template --&gt;\r\n&lt;Control name=\"OrangeDialog\"&gt;\r\n\r\n&lt;prototype&gt;\r\n&lt;Dialog&gt;\r\n    &lt;h1 id=\"OrangeDialog_title\"/&gt;\r\n    &lt;div id=\"OrangeDialog_content\"/&gt;\r\n    &lt;div id=\"OrangeDialog_buttons\"/&gt;\r\n&lt;/Dialog&gt;\r\n&lt;/prototype&gt;\r\n\r\n&lt;style&gt;\r\n{\r\n    border: 2px solid orange;\r\n    …\r\n}\r\n…\r\n&lt;/style&gt;\r\n\r\n&lt;script&gt;\r\n$.extend(OrangeDialog.prototype, {\r\nbuttons: QuickUI.Element(\"OrangeDialog_buttons\")\r\n.content(),\r\n…\r\n});\r\n&lt;/script&gt;\r\n\r\n&lt;/Control&gt;\r\n</pre> ",
+			"example": " <pre>\r\n&lt;Control name=\"SampleDialog\"&gt;\r\n\r\n&lt;prototype&gt;\r\n&lt;OrangeDialog title=\"What do you think?\"&gt;\r\n    It's easy to use subclassing\r\n    to create a new dialog --\r\n    or an entirely new template.\r\n    &lt;buttons&gt;\r\n        &lt;OrangeButton&gt;\r\n            Huh\r\n        &lt;/OrangeButton&gt;\r\n        &lt;OrangeButton&gt;\r\n            Neat!\r\n        &lt;/OrangeButton&gt;\r\n    &lt;/buttons&gt;\r\n&lt;/OrangeDialog&gt;\r\n&lt;/prototype&gt;\r\n\r\n&lt;/Control&gt;\r\n</pre> ",
+			"result": [
+				" ",
+				QuickUI.Control.create(FeatureSubclassingDemo),
+				" "
+			]
+		});
+	}
+});
+
+//
+// FeatureSubclassingDemo
+//
+FeatureSubclassingDemo = QuickUI.Control.extend({
+	className: "FeatureSubclassingDemo",
+	render: function() {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
+			"content": [
+				" ",
+				this.buttonShow = QuickUI.Control.create(OrangeButton, {
+					"content": "Show dialog",
+					"id": "buttonShow"
+				}),
+				" "
+			]
+		});
+	}
+});
+$.extend(FeatureSubclassingDemo.prototype, {
+    ready: function() {
+        $(this.buttonShow).click(function() {
+            Dialog.show(SampleDialog);
+        });
+    }
+});
+
+//
 // GetStartedModule
 //
 GetStartedModule = QuickUI.Control.extend({
@@ -552,6 +606,8 @@ HomePage = SitePage.extend({
 				" ",
 				QuickUI.Control.create(FeatureProperties),
 				" ",
+				QuickUI.Control.create(FeatureSubclassing),
+				" ",
 				QuickUI.Control.create(FeatureScoping),
 				" ",
 				QuickUI.Control.create(FeatureBrowserIsolation),
@@ -718,6 +774,32 @@ HomePageOld = SitePage.extend({
 });
 
 //
+// OrangeDialog
+//
+OrangeDialog = Dialog.extend({
+	className: "OrangeDialog",
+	render: function() {
+		Dialog.prototype.render.call(this);
+		this.setClassProperties(Dialog, {
+			"content": [
+				" ",
+				this.OrangeDialog_title = $("<h1 id=\"OrangeDialog_title\" />")[0],
+				" ",
+				this.OrangeDialog_content = $("<div id=\"OrangeDialog_content\" />")[0],
+				" ",
+				this.OrangeDialog_buttons = $("<div id=\"OrangeDialog_buttons\" />")[0],
+				" "
+			]
+		});
+	}
+});
+$.extend(OrangeDialog.prototype, {
+    buttons: QuickUI.Element("OrangeDialog_buttons").content(),
+    content: QuickUI.Element("OrangeDialog_content").content(),
+    title: QuickUI.Element("OrangeDialog_title").content()
+});
+
+//
 // Recipe
 //
 Recipe = QuickUI.Control.extend({
@@ -782,6 +864,39 @@ Sample = QuickUI.Control.extend({
 });
 
 //
+// SampleDialog
+//
+SampleDialog = OrangeDialog.extend({
+	className: "SampleDialog",
+	render: function() {
+		OrangeDialog.prototype.render.call(this);
+		this.setClassProperties(OrangeDialog, {
+			"title": "What do you think?",
+			"buttons": [
+				" ",
+				QuickUI.Control.create(OrangeButton, {
+					"content": "Huh"
+				}),
+				" ",
+				QuickUI.Control.create(OrangeButton, {
+					"content": "Neat!"
+				}),
+				" "
+			],
+			"content": " It's easy to use subclassing to create a new dialog -- or an entirely new template.  "
+		});
+	}
+});
+$.extend(SampleDialog.prototype, {
+    ready: function() {
+        var me = this;
+        $(this.OrangeDialog_buttons).click(function() {
+            me.close();
+        })
+    }
+});
+
+//
 // SearchBox
 //
 SearchBox = QuickUI.Control.extend({
@@ -793,8 +908,9 @@ SearchBox = QuickUI.Control.extend({
 				" ",
 				this.searchTerms = $("<input id=\"searchTerms\" type=\"text\" />")[0],
 				" ",
-				QuickUI.Control.create(OrangeButton, {
-					"content": "Search"
+				this.buttonSearch = QuickUI.Control.create(OrangeButton, {
+					"content": "Search",
+					"id": "buttonSearch"
 				}),
 				" "
 			]
@@ -804,8 +920,7 @@ SearchBox = QuickUI.Control.extend({
 $.extend(SearchBox.prototype, {
     ready: function() {
         var me = this;
-        $(".OrangeButton").click(function() {
-            debugger;
+        $(this.buttonSearch).click(function() {
             var searchTerms = $(me.searchTerms).val();
             var query = "http://www.google.com/search?q=%s";
             var url = query.replace("%s", searchTerms);

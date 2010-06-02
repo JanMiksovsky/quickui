@@ -273,6 +273,22 @@ $.extend(Navigator.prototype, {
 });
 
 //
+// Popout
+//
+Popout = QuickUI.Control.extend({
+	className: "Popout"
+});
+$.extend(Popout.prototype, {
+    ready: function() {
+        var $element = $(this.element);
+        $(this.element).hover(
+            function hoverIn() { $element.addClass("hovered"); },
+            function hoverOut() { $element.removeClass("hovered");  }
+        )
+    }
+});
+
+//
 // SitePage
 //
 SitePage = Page.extend({

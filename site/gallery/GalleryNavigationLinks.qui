@@ -4,6 +4,7 @@
 	<NavigationLink id="linkIndex" href="/gallery/default.html">Index</NavigationLink>
 	<GalleryLink>IfBrowser</GalleryLink>
 	<GalleryLink>GalleryPage</GalleryLink>
+    <GalleryLink>Gradient</GalleryLink>
 	<GalleryLink>HintTextBox</GalleryLink>
 	<GalleryLink>SampleSpriteButton</GalleryLink>
     <GalleryLink>SearchBox</GalleryLink>
