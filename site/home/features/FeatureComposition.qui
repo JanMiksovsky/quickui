@@ -13,8 +13,8 @@ QuickUI controls can be used as building blocks for larger and more complex cont
 &lt;Control name="SearchBox"&gt;
 
 &lt;content&gt;
-&lt;input id="searchTerms" type="text"/&gt;
-&lt;OrangeButton&gt;Search&lt;/OrangeButton&gt;
+  &lt;input id="terms" type="text"/&gt;
+  &lt;OrangeButton&gt;Search&lt;/OrangeButton&gt;
 &lt;/content&gt;
 …
 &lt;/Control&gt;

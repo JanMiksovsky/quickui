@@ -16,7 +16,7 @@ GalleryMainPage = SitePage.extend({
 			"content": [
 				" ",
 				" ",
-				"<p>\r\n\t\tThis gallery shows live examples and the full source for a handful of\r\n\t\tsimple QuickUI controls, representing a small range of what’s possible\r\n\t\tin QuickUI. Since a key goal of QuickUI is to produce easily readable\r\n\t\tcode, as you look at each control, ask yourself: Is it easy to\r\n\t\tunderstand the usage of the control by looking at the source code\r\n\t\tfor the control’s demo?\r\n\t\t</p>",
+				"<p>\r\n\t\tThis gallery shows live examples and the full source for a handful of\r\n\t\tsimple QuickUI controls, representing a small range of what’s possible\r\n\t\tin QuickUI. While many UI frameworks come with a library of controls,\r\n        the intent here is <i>not</i> to present such a library. Focus here\r\n        rather on the general range of expression. \r\n        Since a key goal of QuickUI is to produce easily readable\r\n\t\tcode, as you look at each control, ask yourself: <i>Is it easy to\r\n\t\tunderstand the usage of the control by looking at the source code\r\n\t\tfor the demo?</i>\r\n\t\t</p>",
 				" ",
 				$("<p />").items(
 					" Some of these controls are subclasses of controls defined elsewhere. The source code for all referenced classes is available in the ",

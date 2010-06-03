@@ -1,0 +1,17 @@
+<Control name="FeatureSubclassingDemo">
+    
+<content>
+    <OrangeButton id="buttonShow">Show dialog</OrangeButton>
+</content>
+
+<script>
+$.extend(FeatureSubclassingDemo.prototype, {
+    ready: function() {
+        $(this.buttonShow).click(function() {
+            Dialog.show(SampleDialog);
+        });
+    }
+});
+</script>
+
+</Control>

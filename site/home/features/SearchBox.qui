@@ -1,7 +1,7 @@
 <Control name="SearchBox">
 
 <content>
-    <input id="searchTerms" type="text"/>
+    <input id="terms" type="text"/>
     <OrangeButton id="buttonSearch">Search</OrangeButton>
 </content>
 
@@ -10,9 +10,9 @@ $.extend(SearchBox.prototype, {
     ready: function() {
         var me = this;
         $(this.buttonSearch).click(function() {
-            var searchTerms = $(me.searchTerms).val();
+            var terms = $(me.terms).val();
             var query = "http://www.google.com/search?q=%s";
-            var url = query.replace("%s", searchTerms);
+            var url = query.replace("%s", terms);
             window.location.href = url;
         });
     }

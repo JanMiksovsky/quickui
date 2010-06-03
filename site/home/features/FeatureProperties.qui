@@ -18,25 +18,25 @@ accessible as JavaScript class members.
 &lt;Control name="Recipe"&gt;
 
 &lt;content&gt;
-    &lt;div&gt;
-        Name: &lt;span id="Recipe_name"/&gt;
-        &lt;span id="Recipe_rating"/&gt;
-    &lt;/div&gt;
-    &lt;div id="Recipe_content"/&gt;
+  &lt;div&gt;
+    Name: &lt;span id="Recipe_name"/&gt;
+    &lt;span id="Recipe_rating"/&gt;
+  &lt;/div&gt;
+  &lt;div id="Recipe_content"/&gt;
 &lt;/content&gt;
 
 &lt;script&gt;
 $.extend(Recipe.prototype, {
 
-content: QuickUI.Element("Recipe_content").content(),
-
-name: QuickUI.Element("Recipe_name").content(),
-
+content: QuickUI.Element(
+  "Recipe_content").content(),
+name: QuickUI.Element(
+  "Recipe_name").content(),
 rating: QuickUI.Property.integer(
 function(rating) {
-    $(this.Recipe_rating)
-     .text("*****".substr(0, rating));
-}),
+  $(this.Recipe_rating)
+   .text("*****".substr(0, rating));
+})
 
 })
 &lt;/script&gt;
@@ -48,17 +48,17 @@ function(rating) {
 <example>
 <pre>
 &lt;Recipe name="Lasagna" rating="3"&gt;
-    Quick and easy lasagna
+  Quick and easy lasagna
 &lt;/Recipe&gt;
 &lt;Recipe&gt;
-    &lt;name&gt;
-        Pasta &lt;i&gt;con i fagioli&lt;/i&gt;
-    &lt;/name&gt;
-    &lt;rating&gt;5&lt;/rating&gt;
-    &lt;content&gt;
-        A &lt;b&gt;great&lt;/b&gt;
-        Tuscan peasant dish
-    &lt;/content&gt;
+  &lt;name&gt;
+    Pasta &lt;i&gt;con i fagioli&lt;/i&gt;
+  &lt;/name&gt;
+  &lt;rating&gt;5&lt;/rating&gt;
+  &lt;content&gt;
+    A &lt;b&gt;great&lt;/b&gt;
+    Tuscan peasant dish
+  &lt;/content&gt;
 &lt;/Recipe&gt;
 </pre>
 </example>

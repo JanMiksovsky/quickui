@@ -18,10 +18,11 @@ source.
 …
 if ($.browser.mozilla)
 {
-…
-    value = "-moz-linear-gradient(" + position + ", " + startColorString + ", " + endColorString + ")";
+  value = "-moz-linear-gradient("
+    + position + ", "
+    + startColorString + ", "
+    + endColorString + ")";
 }
-…
 $(this.element).css(property, value);
 …
 &lt;/script&gt;

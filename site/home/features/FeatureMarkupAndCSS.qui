@@ -13,18 +13,16 @@ Old school HTML pages kept the markup and CSS right next to each other, which wa
 &lt;Control name="Tag"&gt;
 
 &lt;content&gt;
-&amp;lt;&lt;span id="Tag_content" /&gt;&amp;gt;
+  &amp;lt;&lt;span id="Tag_content"/&gt;&amp;gt;
 &lt;/content&gt;
 
 &lt;style&gt;
 {
-    display: inline;
-    font-family: monospace;
+  display: inline;
+  font-family: monospace;
 }
 &lt;/style&gt;
-
 …
-
 &lt;/Control&gt;
 </pre>        
 </control>

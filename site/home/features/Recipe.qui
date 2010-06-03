@@ -14,7 +14,7 @@ $.extend(Recipe.prototype, {
     name: QuickUI.Element("Recipe_name").content(),
     rating: QuickUI.Property.integer(function(rating) {
         $(this.Recipe_rating).text("*****".substr(0, rating));
-    }),
+    })
 })
 </script>
 

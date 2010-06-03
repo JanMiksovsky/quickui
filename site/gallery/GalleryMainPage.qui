@@ -8,10 +8,13 @@
 		<p>
 		This gallery shows live examples and the full source for a handful of
 		simple QuickUI controls, representing a small range of what’s possible
-		in QuickUI. Since a key goal of QuickUI is to produce easily readable
-		code, as you look at each control, ask yourself: Is it easy to
+		in QuickUI. While many UI frameworks come with a library of controls,
+        the intent here is <i>not</i> to present such a library. Focus here
+        rather on the general range of expression. 
+        Since a key goal of QuickUI is to produce easily readable
+		code, as you look at each control, ask yourself: <i>Is it easy to
 		understand the usage of the control by looking at the source code
-		for the control’s demo?
+		for the demo?</i>
 		</p>
 		<p>
 		Some of these controls are subclasses of controls defined elsewhere.

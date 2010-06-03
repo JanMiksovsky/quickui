@@ -1,0 +1,39 @@
+<!-- Sample dialog template -->
+
+<Control name="OrangeDialog">
+
+<prototype>
+    <Dialog>
+        <h1 id="OrangeDialog_title"/>
+        <div id="OrangeDialog_content"/>
+        <div id="OrangeDialog_buttons"/>
+    </Dialog>
+</prototype>
+
+<style>
+{
+    border: 2px solid orange;
+    padding: 20px;
+    min-width: 200px;
+    max-width: 500px;
+}
+
+h1 {
+    color: orange;
+    font-size: 14pt;
+}
+
+#OrangeDialog_buttons {
+    margin-top: 10px;
+}
+</style>
+
+<script>
+$.extend(OrangeDialog.prototype, {
+    buttons: QuickUI.Element("OrangeDialog_buttons").content(),
+    content: QuickUI.Element("OrangeDialog_content").content(),
+    title: QuickUI.Element("OrangeDialog_title").content()
+});
+</script>
+
+</Control>
