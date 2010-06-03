@@ -110,6 +110,9 @@
 
 .OrangeDialog {
     border: 2px solid orange;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
     padding: 20px;
     min-width: 200px;
     max-width: 500px;

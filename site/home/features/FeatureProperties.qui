@@ -33,10 +33,10 @@ content: QuickUI.Element(
 name: QuickUI.Element(
   "Recipe_name").content(),
 rating: QuickUI.Property.integer(
-function(rating) {
-  $(this.Recipe_rating)
-   .text("*****".substr(0, rating));
-})
+  function(rating) {
+    $(this.Recipe_rating).text(
+      "*****".substr(0, rating));
+  })
 
 })
 &lt;/script&gt;

@@ -10,22 +10,22 @@ Controls on a page are as independent of each other as possible, so you can mix 
 
 <control>
 <pre>
-&lt;Control name="Red">
-&lt;div class="message">I’m red&lt;/div>
-&lt;style>
+&lt;Control name="Red"&gt;
+&lt;div class="message"&gt;I’m red&lt;/div&gt;
+&lt;style&gt;
 .message {
-    color: red;
+  color: red;
 }
-&lt;/style>
-&lt;/Control>
+&lt;/style&gt;
+&lt;/Control&gt;
 
-&lt;Control name="Green">
-&lt;div class="message">I’m green&lt;/div>
-&lt;style>
+&lt;Control name="Green"&gt;
+&lt;div class="message"&gt;I’m green&lt;/div&gt;
+&lt;style&gt;
 .message {
-    color: green;
+  color: green;
 }
-&lt;/style>
+&lt;/style&gt;
 &lt;/Control&gt;
 </pre>
 </control>
