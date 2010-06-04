@@ -56,11 +56,12 @@
 
 .Navigator .Link {
 	display: block;
-	margin: 7px 0;
+	margin: 3px;
 }
 
-.Navigator a {
-    padding: 2px 5px;
+.Navigator .Link a {
+    display: block;
+    padding: 3px;
 }
 
 .Navigator .Link.highlight a {
@@ -109,7 +110,6 @@
 
 .SitePage #logoCell {
 	vertical-align: bottom;
-	width: 260px;
 }
 
 .SitePage #logotype a {

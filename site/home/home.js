@@ -578,7 +578,7 @@ HomePage = SitePage.extend({
 		SitePage.prototype.render.call(this);
 		this.setClassProperties(SitePage, {
 			"area": "Home",
-			"title": "QuickUI modular web control framework",
+			"title": "QuickUI web control framework",
 			"sidebar": [
 				" ",
 				QuickUI.Control.create(GetStartedModule),

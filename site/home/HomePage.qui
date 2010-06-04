@@ -1,7 +1,7 @@
 <Control name="HomePage">
 
 <prototype>
-<SitePage area="Home" title="QuickUI modular web control framework">
+<SitePage area="Home" title="QuickUI web control framework">
 
 <sidebar>
 	<GetStartedModule/>

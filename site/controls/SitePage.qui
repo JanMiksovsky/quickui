@@ -8,7 +8,7 @@
 					<Link href="/home/default.html" id="logotype">
 						<span class="bracket">&lt;</span>QuickUI<span class="bracket">&gt;</span>
 					</Link>
-					<div id="tagline">Modular web control framework</div>
+					<div id="tagline">Web control framework</div>
 				</td>
 				<td id="topNavigation"><NavigationBar id="navigationBar"/></td>
 			</tr>
@@ -59,7 +59,6 @@ td {
 
 #logoCell {
 	vertical-align: bottom;
-	width: 260px;
 }
 
 #logotype a {

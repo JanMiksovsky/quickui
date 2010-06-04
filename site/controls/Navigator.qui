@@ -3,11 +3,12 @@
 <style>
 .Link {
 	display: block;
-	margin: 7px 0;
+	margin: 3px;
 }
 
-a {
-    padding: 2px 5px;
+.Link a {
+    display: block;
+    padding: 3px;
 }
 
 .Link.highlight a {

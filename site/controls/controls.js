@@ -311,7 +311,7 @@ SitePage = Page.extend({
 								"id": "logotype"
 							}),
 							" ",
-							this.tagline = $("<div id=\"tagline\">Modular web control framework</div>")[0],
+							this.tagline = $("<div id=\"tagline\">Web control framework</div>")[0],
 							" "
 						)[0],
 						" ",
