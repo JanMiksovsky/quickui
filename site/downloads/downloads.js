@@ -31,12 +31,12 @@ DownloadPage = SitePage.extend({
 				$("<ol />").items(
 					" ",
 					$("<li />").items(
-						"Download ",
+						" Download ",
 						QuickUI.Control.create(Link, {
 							"content": "Mono",
 							"href": "http://www.mono-project.com"
 						}),
-						". The QuickUI tools are written in .NET, and the Mono binaries allow QuickUI to run fine on OS/X."
+						". The QuickUI tools themselves are written in .NET, and the Mono binaries allow QuickUI to run fine on OS/X. (Beyond that, you can use the QuickUI tools with complete disregard for their .NET existence. Coding for Quick controls is done in plain JavaScript.) "
 					)[0],
 					" ",
 					$("<li />").items(

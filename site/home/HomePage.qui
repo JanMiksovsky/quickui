@@ -41,7 +41,54 @@ the live output of a Quick control running on this page.
 <FeatureScoping/>
 <FeatureBrowserIsolation/>
 
-<h2 id="headingNextSteps">Next steps</h2>
+<h2 class="section">Why use QuickUI?</h2>
+
+<p>
+QuickUI:
+</p>
+
+<ul>
+    <li>
+        Allows you to create UI in a markup language that is easy to read,
+        is easy to work with, and can concisely express your design intention.
+        This speeds up UI development, and makes UI code more maintainable.
+    </li>
+    <li>
+        Works with the web’s native technologies, it doesn’t replace them.
+        QuickUI is true to HTML, CSS, and JavaScript. Familiar conventions are used
+        whenever possible. QuickUI is only meant to address the web’s painful lack
+        of an extensible control framework.
+    </li>
+    <li>
+        Allows designers and developers to share design artifacts. QuickUI can bridge
+        the gap between pure visual design tools and native web coding frameworks.
+        The markup language can be easily learned by HTML-savvy designers, and is
+        still powerful and flexible enough to appeal to developers.
+    </li>
+    <li>
+        Encourages well-factored UI code. Controls are as modular as possible,
+        easily composable, and easily subclassable. All the goodness of object-oriented
+        design can be applied to your UI code.
+    </li>
+    <li>
+        Produces predictable compiled code. The QuickUI tools do a minimum of
+        compilation magic. The compiler’s output is legible, understandable,
+        readily debuggable JavaScript classes. The generated code takes care of 
+        populating the control’s run-time DOM — code that is often tedious to write
+        and hard to read. The behavior of these controls can
+        be programmed in JavaScript and jQuery.
+    </li>
+    <li>
+        Creates controls that can be used as top-level pages on their own,
+        or easily included in web pages built with other technologies
+        (jQuery UI, etc.).
+    </li>
+    <li>
+        Is fun to work in!
+    </li>
+</ul>
+
+<h2 class="section">Next steps</h2>
 
 <p>
 The <Link href="/tutorial/section01/default.html">tutorial</Link>
@@ -67,7 +114,7 @@ is open under the <Link href="http://www.opensource.org/licenses/mit-license.php
 
 <style>
 
-#headingNextSteps {
+h2.section {
     border-top: 3px solid #928274;
     padding-top: .5em;
 }

@@ -11,8 +11,13 @@
 
 <h2>Mac OS/X</h2>
 <ol>
-	<li>Download <Link href="http://www.mono-project.com">Mono</Link>. The QuickUI tools are written in .NET, and the Mono
-    binaries allow QuickUI to run fine on OS/X.</li>
+	<li>
+	Download <Link href="http://www.mono-project.com">Mono</Link>.
+    The QuickUI tools themselves are written in .NET,
+    and the Mono binaries allow QuickUI to run fine on OS/X. (Beyond that,
+    you can use the QuickUI tools with complete disregard for their .NET existence.
+    Coding for Quick controls is done in plain JavaScript.)
+    </li>
 	<li>Download <Link href="/downloads/QuickUI.zip">QuickUI.zip</Link> and expand it.</li>
     <li>Copy the expanded contents to a location, e.g., /Developer/Applications/QuickUI.</li>
     <li>Add the resulting location of the QuickUI bin folder (e.g., /Developer/Applications/QuickUI/bin) to your path.</li>

@@ -92,6 +92,7 @@
 .SitePage #tableMain {
 	border-collapse: collapse;
 	height: 100%;
+    position: absolute;
 	width: 100%;
 }
 

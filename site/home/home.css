@@ -101,7 +101,7 @@
 
 /*** HomePage ***/
 
-.HomePage #headingNextSteps {
+.HomePage h2.section {
     border-top: 3px solid #928274;
     padding-top: .5em;
 }
