@@ -1,7 +1,9 @@
 QuickUI Change Log
 
-0.7.4	Bug fixes, including fixes to support IE 7.
-0.7.3   Allow "class" as a attribute name on a control instance in Quick markup.
-0.7.2   Upgrade to jQuery 1.4, add QuickUI(element) helper, add Element.attr() property generator.
-0.7.1   Minor bug fix to $.items()
-0.7     Initial public release
+            0.7.6   Ability to specify "tag" on Control class declaration
+04/06/10    0.7.5   Performance
+            0.7.4	Bug fixes, including fixes to support IE 7.
+            0.7.3   Allow "class" as a attribute name on a control instance in Quick markup.
+            0.7.2   Upgrade to jQuery 1.4, add QuickUI(element) helper, add Element.attr() property generator.
+            0.7.1   Minor bug fix to $.items()
+            0.7     Initial public release

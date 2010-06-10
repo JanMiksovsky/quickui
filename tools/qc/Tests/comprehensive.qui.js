@@ -21,7 +21,8 @@ Comprehensive = SampleBaseClass.extend({
 				" "
 			]
 		});
-	}
+	},
+	tag: "div"
 });
 $.extend(Comprehensive.prototype, {
   content: QuickUI.Element("Comprehensive_content").content(),

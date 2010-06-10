@@ -21,6 +21,7 @@ namespace qc
         public string Name { get; set; }
         public string Script { get; set; }
         public string Style { get; set; }
+        public string Tag { get; set; }
         public MarkupNode Content { get; set; }
         public MarkupControlInstance Prototype { get; set; }
 
@@ -67,21 +68,26 @@ namespace qc
         public override string JavaScript(int indentLevel)
         {
             string renderFunction = EmitRenderFunction(indentLevel + 1);
+            string tag = EmitTag(indentLevel + 1);
             return Template.Format(
                 "//\n" +
                 "// {ClassName}\n" +
                 "//\n" +
                 "{ClassName} = {BaseClassName}.extend({\n" +
-                    "\tclassName: \"{ClassName}\"{Comma}\n" +
-                    "{RenderFunction}" +
+                    "\tclassName: \"{ClassName}\"{Comma1}\n" +
+                    "{RenderFunction}{Comma2}{NewLine}" +
+                    "{Tag}" +
                 "});\n" +
                 "{Script}\n", // Extra break at end helps delineate between successive controls in combined output.
                 new
                 {
                     ClassName = Name,
                     BaseClassName = BaseClassName,
+                    Comma1 = EmitCommaIfNotEmpty(renderFunction + tag),
                     RenderFunction = renderFunction,
-                    Comma = String.IsNullOrEmpty(renderFunction) ? "" : ",",
+                    Comma2 = String.IsNullOrEmpty(renderFunction) || String.IsNullOrEmpty(tag) ? "" : ",",
+                    NewLine = String.IsNullOrEmpty(renderFunction) ? "" : "\n",
+                    Tag = tag,
                     Script = EmitScript()
                 });
         }
@@ -92,6 +98,11 @@ namespace qc
             {
                 return (Prototype != null) ? Prototype.ClassName : DEFAULT_CLASS_NAME;
             }
+        }
+
+        private string EmitCommaIfNotEmpty(string s)
+        {
+            return String.IsNullOrEmpty(s) ? "" : ",";
         }
 
         /// <summary>
@@ -144,6 +155,11 @@ namespace qc
                         this.Style = text;
                         break;
 
+                    case "tag":
+                        VerifyPropertyIsNull(propertyName, this.Tag);
+                        this.Tag = text;
+                        break;
+
                     default:
                         throw new CompilerException(
                             String.Format("Unknown class definition element: \"{0}\".", propertyName));
@@ -161,7 +177,7 @@ namespace qc
                         "{Tabs}\tthis.setClassProperties({BaseClassName}, {\n" +
                             "{BaseClassProperties}" +
                         "{Tabs}\t});\n" +
-                    "{Tabs}}\n",
+                    "{Tabs}}",
                     new {
                         Tabs = Tabs(indentLevel),
                         BaseClassName = BaseClassName,
@@ -212,12 +228,25 @@ namespace qc
         /// </remarks>
         private string EmitScript()
         {
-            if (String.IsNullOrEmpty(Script))
-            {
-                return String.Empty;
-            }
+            return String.IsNullOrEmpty(Script)
+                ? String.Empty
+                : Script.Trim() + "\n";
+        }
 
-            return Script.Trim() + "\n";
+        /// <summary>
+        /// Emit the control's root tag element, if defined.
+        /// </summary>
+        private string EmitTag(int indentLevel)
+        {
+            return String.IsNullOrEmpty(Tag)
+                ? String.Empty
+                : Template.Format(
+                    "{Tabs}tag: \"{RootTag}\"\n",
+                    new
+                    {
+                        Tabs = Tabs(indentLevel),
+                        RootTag = Tag
+                    });
         }
 
         /// <summary>
@@ -332,6 +361,17 @@ namespace qc
                 MarkupControlInstance prototype = c.Prototype;
                 Assert.AreEqual("Button", prototype.ClassName);
                 Assert.AreEqual("Hello", ((MarkupHtmlElement) prototype.Properties["content"]).Html);
+            }
+
+            [Test]
+            public void ExplicitTag()
+            {
+                XElement element = new XElement("Control",
+                    new XAttribute("name", "Foo"),
+                    new XAttribute("tag", "span")
+                );
+                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
+                Assert.AreEqual("span", c.Tag);
             }
 
             [Test]

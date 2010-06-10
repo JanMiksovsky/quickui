@@ -17,7 +17,7 @@
         <SimpleSpan>A</SimpleSpan> <SimpleSpan>B</SimpleSpan>
     </test>
     <expect>
-        <div class="SimpleSpan Control">A</div> <div class="SimpleSpan Control">B</div>
+        <span class="SimpleSpan Control">A</span> <span class="SimpleSpan Control">B</span>
     </expect>
 </Test>
 
@@ -26,7 +26,7 @@
         <SimpleSpan>A</SimpleSpan>.
     </test>
     <expect>
-        <div class="SimpleSpan Control">A</div>.
+        <span class="SimpleSpan Control">A</span>.
     </expect>
 </Test>
 

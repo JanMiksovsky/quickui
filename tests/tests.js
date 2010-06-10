@@ -31,7 +31,8 @@ Simple = QuickUI.Control.extend({
 // SimpleSpan
 //
 SimpleSpan = QuickUI.Control.extend({
-	className: "SimpleSpan"
+	className: "SimpleSpan",
+	tag: "span"
 });
 
 //
@@ -132,7 +133,7 @@ TestSuite = QuickUI.Control.extend({
 						}),
 						" "
 					],
-					"expect": " <div class=\"SimpleSpan Control\">A</div> <div class=\"SimpleSpan Control\">B</div> "
+					"expect": " <span class=\"SimpleSpan Control\">A</span> <span class=\"SimpleSpan Control\">B</span> "
 				}),
 				" ",
 				QuickUI.Control.create(Test, {
@@ -144,7 +145,7 @@ TestSuite = QuickUI.Control.extend({
 						}),
 						". "
 					],
-					"expect": " <div class=\"SimpleSpan Control\">A</div>. "
+					"expect": " <span class=\"SimpleSpan Control\">A</span>. "
 				}),
 				" ",
 				QuickUI.Control.create(Test, {

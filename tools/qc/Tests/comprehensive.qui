@@ -1,6 +1,6 @@
 <!-- Comprehensive control tests a bunch of compiler features. -->
 
-<Control name="Comprehensive" >
+<Control name="Comprehensive" tag="div">
 
 <prototype>
   <SampleBaseClass>
