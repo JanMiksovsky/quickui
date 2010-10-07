@@ -28,14 +28,6 @@ Simple = QuickUI.Control.extend({
 });
 
 //
-// SimpleSpan
-//
-SimpleSpan = QuickUI.Control.extend({
-	className: "SimpleSpan",
-	tag: "span"
-});
-
-//
 // Test
 //
 Test = QuickUI.Control.extend({
