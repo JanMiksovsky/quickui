@@ -17,8 +17,15 @@ $.extend(List.prototype, {
         
     items: QuickUI.Property(function() { this._refresh(); }),
     
+    //
+    // This mapFn should be a function that accepts one object
+    // (typically a data object) and returns a new object whose
+    // properties map directly to property settors defined by the
+    // target itemClass.
+    //
     mapFn: QuickUI.Property(),
     
+    // Allows items and mapFn to both be set in one step.
     setItems: function(items, mapFn) {
         this.mapFn(mapFn);
         this.items(items);

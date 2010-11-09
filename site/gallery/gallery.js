@@ -67,6 +67,10 @@ GalleryNavigationLinks = QuickUI.Control.extend({
 				}),
 				" ",
 				QuickUI.Control.create(GalleryLink, {
+					"content": "List"
+				}),
+				" ",
+				QuickUI.Control.create(GalleryLink, {
 					"content": "SampleSpriteButton"
 				}),
 				" ",
@@ -474,6 +478,128 @@ IfBrowserDemo = QuickUI.Control.extend({
 			]
 		});
 	}
+});
+
+//
+// List
+//
+List = QuickUI.Control.extend({
+	className: "List"
+});
+$.extend(List.prototype, {
+    
+    itemClass: QuickUI.Property(
+        function() { this._refresh(); },
+        null,
+        function(className) {
+            return eval(className);
+        }
+    ),
+        
+    items: QuickUI.Property(function() { this._refresh(); }),
+    
+    //
+    // This mapFn should be a function that accepts one object
+    // (typically a data object) and returns a new object whose
+    // properties map directly to property settors defined by the
+    // target itemClass.
+    //
+    mapFn: QuickUI.Property(),
+    
+    // Allows items and mapFn to both be set in one step.
+    setItems: function(items, mapFn) {
+        this.mapFn(mapFn);
+        this.items(items);
+    },
+    
+    _refresh: function() {
+        var itemClass = this.itemClass();
+        var items = this.items();
+        var mapFn = this.mapFn();
+        if (itemClass && items)
+        {
+            var me = this;
+            var controls = $.map(items, function(item, index) {
+                var properties;
+                if (mapFn)
+                {
+                    // Map item to control properties with custom map function.
+                    properties = mapFn.call(me, item, index);
+                }
+                else if (typeof item == "string" || item instanceof String)
+                {
+                    // Simple string; use as content property.
+                    properties = { content: item };
+                }
+                else
+                {
+                    // Use the item as is for the control's properties.
+                    properties = item;
+                }
+                var control = QuickUI.Control.create(itemClass, properties);
+                return control;
+            });
+            $(this.element).items(controls);
+        }
+    }
+    
+});
+
+//
+// ListAbout
+//
+ListAbout = GalleryPage.extend({
+	className: "ListAbout",
+	render: function() {
+		GalleryPage.prototype.render.call(this);
+		this.setClassProperties(GalleryPage, {
+			"title": "List",
+			"sourceFileExample": "List/ListDemo.qui",
+			"sourceFileControl": "List/List.qui",
+			"summary": " Renders each element of a JavaScript array as a QuickUI control. ",
+			"demo": [
+				" ",
+				QuickUI.Control.create(ListDemo),
+				" "
+			],
+			"notes": " If the properties of the array elements map directly to control properties (as in the demo above), you can set the List's items property directly. Alternatively, you can define a mapping function that will be invoked once for each array element. "
+		});
+	}
+});
+
+//
+// ListDemo
+//
+ListDemo = QuickUI.Control.extend({
+	className: "ListDemo",
+	render: function() {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
+			"content": [
+				" ",
+				this.buttonList = QuickUI.Control.create(List, {
+					"id": "buttonList",
+					"itemClass": "SampleSpriteButton"
+				}),
+				" "
+			]
+		});
+	}
+});
+$.extend(ListDemo.prototype, {
+    ready: function() {
+        
+        // Sample array.
+        var data = [
+            { content: "One" },
+            { content: "Two" },
+            { content: "Three", disabled: true },
+            { content: "Four" }
+        ];
+        
+        // Render each member of the array as a list item.
+        QuickUI(this.buttonList).items(data);
+    }
 });
 
 //

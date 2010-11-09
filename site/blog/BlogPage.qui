@@ -1,0 +1,10 @@
+<Control name="BlogPage">
+
+<content>
+    <Blog url="http://feeds.feedburner.com/flowstate?format=xml"/>
+</content>
+
+<style>
+</style>
+
+</Control>

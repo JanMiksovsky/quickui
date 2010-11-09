@@ -6,6 +6,7 @@
 	<GalleryLink>GalleryPage</GalleryLink>
     <GalleryLink>Gradient</GalleryLink>
 	<GalleryLink>HintTextBox</GalleryLink>
+    <GalleryLink>List</GalleryLink>
 	<GalleryLink>SampleSpriteButton</GalleryLink>
     <GalleryLink>SearchBox</GalleryLink>
 	<GalleryLink>Sprite</GalleryLink>
