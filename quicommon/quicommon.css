@@ -55,6 +55,13 @@
 	width: 100%;
 }
 
+/*** PopupButton ***/
+
+.PopupButton {
+	cursor: pointer;
+	display: inline-block;
+}
+
 /*** Sprite ***/
 
 .Sprite {

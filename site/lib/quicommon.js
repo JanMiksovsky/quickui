@@ -35,7 +35,7 @@ $.extend(ButtonBase.prototype, {
 	
 	blur: function(event) {
 		
-		$(self.element).removeClass("focused");
+		$(this.element).removeClass("focused");
 
 		// Losing focus causes the button to override any key that had been pressed.
 		this.isKeyPressed(false);
@@ -67,19 +67,21 @@ $.extend(ButtonBase.prototype, {
 		return ButtonBase.state.normal;
 	},
 
-	disabled: QuickUI.Property.bool(function(value) {
-		$(this.element).toggleClass("disabled", value);
+    disabled: QuickUI.Element().applyClass("disabled", function(disabled) {
 		this.renderButton();
-	}, false),
+	}),
 	
 	focus: function(event) {
-		$(self.element).addClass("focused");
-		this.isFocused(true);
-		this.renderButton();
+        if (!this.disabled()) 
+        {
+            $(this.element).addClass("focused");
+            this.isFocused(true);
+            this.renderButton();
+        }
 	},
 	
 	keydown: function(event) {
-		if (event.keyCode == 32 /* space */ || event.keyCode == 13 /* return */)
+		if (!this.disabled() && (event.keyCode == 32 /* space */ || event.keyCode == 13 /* return */))
 		{
 			this.isKeyPressed(true);		
 			this.renderButton();
@@ -92,19 +94,25 @@ $.extend(ButtonBase.prototype, {
 	},
 	
 	mousedown: function(event) {
-		$(self.element).addClass("pressed");
-		this.isMouseButtonDown(true);
-		this.renderButton();
+        if (!this.disabled())
+        {
+            $(this.element).addClass("pressed");
+            this.isMouseButtonDown(true);
+            this.renderButton();
+        }
 	},
 	
 	mousein: function(event) {
-		$(self.element).addClass("hovered");
-		this.isMouseOverControl(true);
-		this.renderButton();
+        if (!this.disabled()) 
+        {
+            $(this.element).addClass("hovered");
+            this.isMouseOverControl(true);
+            this.renderButton();
+        }
 	},
 	
 	mouseout: function(event) {
-		$(self.element).removeClass("focused")
+		$(this.element).removeClass("focused")
 			.removeClass("hovered")
 			.removeClass("pressed");
 		this.isMouseOverControl(false);
@@ -112,7 +120,7 @@ $.extend(ButtonBase.prototype, {
 	},
 	
 	mouseup: function(event) {
-		$(self.element).removeClass("pressed");
+		$(this.element).removeClass("pressed");
 		this.isMouseButtonDown(false);
 		this.renderButton();
 	},
@@ -259,8 +267,15 @@ $.extend(List.prototype, {
         
     items: QuickUI.Property(function() { this._refresh(); }),
     
+    //
+    // This mapFn should be a function that accepts one object
+    // (typically a data object) and returns a new object whose
+    // properties map directly to property settors defined by the
+    // target itemClass.
+    //
     mapFn: QuickUI.Property(),
     
+    // Allows items and mapFn to both be set in one step.
     setItems: function(items, mapFn) {
         this.mapFn(mapFn);
         this.items(items);
@@ -348,17 +363,17 @@ $.extend(Overlay.prototype, {
 	
 	hide: function()
 	{
+        /*
 		$(this.element).remove();
-		/*
+        */
         $(this.element)
 			.hide()
 			.css("z-index", null); // No need to define Z-order any longer.
-        */
 		if (this.blanket() != null)
 		{
-			$(this.blanket()).remove();
-			this.blanket(null);
-			// $(this.blanket()).hide();
+			// $(this.blanket()).remove();
+			// this.blanket(null);
+			$(this.blanket()).hide();
 		}
 	},
 	
@@ -496,6 +511,82 @@ Popup = Overlay.extend({
 });
 
 //
+// PopupButton
+//
+PopupButton = QuickUI.Control.extend({
+	className: "PopupButton",
+	render: function() {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
+			"content": [
+				" ",
+				this.PopupButton_content = $("<div id=\"PopupButton_content\" />")[0],
+				" ",
+				this.PopupButton_popup = QuickUI.Control.create(Popup, {
+					"id": "PopupButton_popup"
+				}),
+				" "
+			]
+		});
+	}
+});
+$.extend(PopupButton.prototype, {
+	
+	content: QuickUI.Element("PopupButton_content").content(),
+	popup: QuickUI.Element("PopupButton_popup").content(),
+
+	ready: function()
+	{
+		var self = this;
+		$(this.PopupButton_content).click(function() {
+			self.showPopup();
+		});
+		var popupControl = QuickUI(this.PopupButton_popup); 
+		if (popupControl)
+		{
+			popupControl.position = function() {
+				self.positionPopup();
+			};
+		}
+	},
+	
+	showPopup: function()
+	{
+		$(this.PopupButton_popup).control().show();
+	},
+	
+	positionPopup: function()
+	{
+		var $contentElement = $(this.PopupButton_content);
+		var contentTop = $contentElement.offset().top;
+		var contentHeight = $contentElement.outerHeight(true);
+		var $popupElement = $(this.PopupButton_popup);
+		var popupHeight = $popupElement.outerHeight(true);
+
+		// Try showing popup below.
+		var top = contentTop + contentHeight;
+		if (top + popupHeight > $(document).height() &&
+            contentTop - popupHeight >= 0)         
+		{
+            // Show popup above.
+            top = contentTop - popupHeight;
+		}
+		$popupElement.css("top", top);
+        
+        var contentLeft = $contentElement.offset().left;
+        var popupWidth = $popupElement.outerWidth(true);
+        var left = $(document).width() - popupWidth;
+        if (contentLeft + popupWidth > $(document).width() &&
+            left > 0)
+        {
+            // Move popup left
+            $popupElement.css("left", left);
+        }
+	}
+	
+});
+
+//
 // Repeater
 //
 Repeater = QuickUI.Control.extend({
@@ -582,6 +673,38 @@ $.extend(Sprite.prototype, {
 				$(this.element).css("background-position-y", y);
 			}
 		}
+	}
+});
+
+//
+// ToggleButtonBase
+//
+ToggleButtonBase = ButtonBase.extend({
+	className: "ToggleButtonBase",
+	render: function() {
+		ButtonBase.prototype.render.call(this);
+		this.setClassProperties(ButtonBase, {
+
+		});
+	}
+});
+$.extend(ToggleButtonBase.prototype, {
+	
+	selected: QuickUI.Element().applyClass("selected"),
+	
+	ready: function() {
+		ToggleButtonBase.superProto.ready.call(this);
+		var me = this;
+		$(this.element).click(function() {
+            if (!me.disabled())
+            {
+                me.toggle();
+            }
+		});
+	},
+	
+	toggle: function() {
+		this.selected(!this.selected());
 	}
 });
 

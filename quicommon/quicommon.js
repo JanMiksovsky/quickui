@@ -511,6 +511,82 @@ Popup = Overlay.extend({
 });
 
 //
+// PopupButton
+//
+PopupButton = QuickUI.Control.extend({
+	className: "PopupButton",
+	render: function() {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
+			"content": [
+				" ",
+				this.PopupButton_content = $("<div id=\"PopupButton_content\" />")[0],
+				" ",
+				this.PopupButton_popup = QuickUI.Control.create(Popup, {
+					"id": "PopupButton_popup"
+				}),
+				" "
+			]
+		});
+	}
+});
+$.extend(PopupButton.prototype, {
+	
+	content: QuickUI.Element("PopupButton_content").content(),
+	popup: QuickUI.Element("PopupButton_popup").content(),
+
+	ready: function()
+	{
+		var self = this;
+		$(this.PopupButton_content).click(function() {
+			self.showPopup();
+		});
+		var popupControl = QuickUI(this.PopupButton_popup); 
+		if (popupControl)
+		{
+			popupControl.position = function() {
+				self.positionPopup();
+			};
+		}
+	},
+	
+	showPopup: function()
+	{
+		$(this.PopupButton_popup).control().show();
+	},
+	
+	positionPopup: function()
+	{
+		var $contentElement = $(this.PopupButton_content);
+		var contentTop = $contentElement.offset().top;
+		var contentHeight = $contentElement.outerHeight(true);
+		var $popupElement = $(this.PopupButton_popup);
+		var popupHeight = $popupElement.outerHeight(true);
+
+		// Try showing popup below.
+		var top = contentTop + contentHeight;
+		if (top + popupHeight > $(document).height() &&
+            contentTop - popupHeight >= 0)         
+		{
+            // Show popup above.
+            top = contentTop - popupHeight;
+		}
+		$popupElement.css("top", top);
+        
+        var contentLeft = $contentElement.offset().left;
+        var popupWidth = $popupElement.outerWidth(true);
+        var left = $(document).width() - popupWidth;
+        if (contentLeft + popupWidth > $(document).width() &&
+            left > 0)
+        {
+            // Move popup left
+            $popupElement.css("left", left);
+        }
+	}
+	
+});
+
+//
 // Repeater
 //
 Repeater = QuickUI.Control.extend({
