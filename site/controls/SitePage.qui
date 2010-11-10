@@ -2,6 +2,7 @@
 
 <prototype>
 	<Page fill="true">
+	    <GoogleAnalytics profileId="UA-11520232-1" />
 		<table id="tableMain">
 			<tr id="topRow">
 				<td id="logoCell">

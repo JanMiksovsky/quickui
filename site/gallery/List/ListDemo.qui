@@ -1,0 +1,25 @@
+<Control name="ListDemo">
+
+<content>
+    <List id="buttonList" itemClass="SampleSpriteButton"/>
+</content>
+
+<script>
+$.extend(ListDemo.prototype, {
+    ready: function() {
+        
+        // Sample array.
+        var data = [
+            { content: "One" },
+            { content: "Two" },
+            { content: "Three", disabled: true },
+            { content: "Four" }
+        ];
+        
+        // Render each member of the array as a list item.
+        QuickUI(this.buttonList).items(data);
+    }
+});
+</script>
+
+</Control>

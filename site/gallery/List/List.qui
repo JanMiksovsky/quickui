@@ -1,0 +1,68 @@
+<!--
+Instantiates an instance of another control class for each item in a list.
+-->
+
+<Control name="List">
+
+<script>
+$.extend(List.prototype, {
+    
+    itemClass: QuickUI.Property(
+        function() { this._refresh(); },
+        null,
+        function(className) {
+            return eval(className);
+        }
+    ),
+        
+    items: QuickUI.Property(function() { this._refresh(); }),
+    
+    //
+    // This mapFn should be a function that accepts one object
+    // (typically a data object) and returns a new object whose
+    // properties map directly to property settors defined by the
+    // target itemClass.
+    //
+    mapFn: QuickUI.Property(),
+    
+    // Allows items and mapFn to both be set in one step.
+    setItems: function(items, mapFn) {
+        this.mapFn(mapFn);
+        this.items(items);
+    },
+    
+    _refresh: function() {
+        var itemClass = this.itemClass();
+        var items = this.items();
+        var mapFn = this.mapFn();
+        if (itemClass && items)
+        {
+            var me = this;
+            var controls = $.map(items, function(item, index) {
+                var properties;
+                if (mapFn)
+                {
+                    // Map item to control properties with custom map function.
+                    properties = mapFn.call(me, item, index);
+                }
+                else if (typeof item == "string" || item instanceof String)
+                {
+                    // Simple string; use as content property.
+                    properties = { content: item };
+                }
+                else
+                {
+                    // Use the item as is for the control's properties.
+                    properties = item;
+                }
+                var control = QuickUI.Control.create(itemClass, properties);
+                return control;
+            });
+            $(this.element).items(controls);
+        }
+    }
+    
+});
+</script>
+
+</Control>

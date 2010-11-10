@@ -1,0 +1,18 @@
+<Control name="ListAbout">
+<prototype>
+	<GalleryPage title="List" sourceFileExample="List/ListDemo.qui" sourceFileControl="List/List.qui">
+		<summary>
+			Renders each element of a JavaScript array as a QuickUI control.
+		</summary>
+		<demo>
+			<ListDemo/>
+		</demo>
+        <notes>
+            If the properties of the array elements map directly to control
+            properties (as in the demo above), you can set the List's items
+            property directly. Alternatively, you can define a mapping function
+            that will be invoked once for each array element.
+        </notes>
+	</GalleryPage>
+</prototype>
+</Control>
