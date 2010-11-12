@@ -38,6 +38,27 @@
 	width: 0;
 }
 
+/*** HorizontalPanels ***/
+
+.HorizontalPanels {
+    display: table;
+}
+
+.HorizontalPanels.fill {
+    height: 100%;
+    position: absolute; /* Suppress normal table size-to-content */
+    width: 100%;
+}
+
+.HorizontalPanels > * {
+    display: table-cell;
+    vertical-align: top;
+}
+
+.HorizontalPanels .minimumWidth {
+    width: 1px;
+}
+
 /*** Overlay ***/
 
 .Overlay {
@@ -78,6 +99,26 @@
 .VerticalAlign > * {
 	display: table-cell;
 	vertical-align: middle;
+}
+
+/*** VerticalPanels ***/
+
+.VerticalPanels {
+    display: table;
+}
+
+.VerticalPanels.fill {
+    height: 100%;
+    position: absolute; /* Suppress normal table size-to-content */
+    width: 100%;
+}
+
+.VerticalPanels > * {
+    display: table-row;
+}
+
+.VerticalPanels .minimumHeight {
+    height: 1px;    /* 0 would make element disappear. */
 }
 
 /*** Dialog ***/

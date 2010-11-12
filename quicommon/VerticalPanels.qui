@@ -1,0 +1,42 @@
+<Control name="VerticalPanels">
+
+<content>
+    <div id="rowTop" class="minimumHeight">
+        <div id="VerticalPanels_top" />
+    </div>
+    <div id="VerticalPanels_content" />
+    <div id="rowBottom" class="minimumHeight">
+        <div id="VerticalPanels_bottom" />
+    </div>
+</content>
+
+<style>
+{
+    display: table;
+}
+
+.VerticalPanels.fill {
+    height: 100%;
+    position: absolute; /* Suppress normal table size-to-content */
+    width: 100%;
+}
+
+> * {
+    display: table-row;
+}
+
+.minimumHeight {
+    height: 1px;    /* 0 would make element disappear. */
+}
+</style>
+
+<script>
+$.extend(VerticalPanels.prototype, {
+    bottom: QuickUI.Element("VerticalPanels_bottom").content(),
+    content: QuickUI.Element("VerticalPanels_content").content(),
+    fill: QuickUI.Element().applyClass("fill"),
+    top: QuickUI.Element("VerticalPanels_top").content()
+});
+</script>
+
+</Control>

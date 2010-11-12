@@ -217,6 +217,33 @@ $.extend(DockPanel.prototype, {
 });
 
 //
+// HorizontalPanels
+//
+HorizontalPanels = QuickUI.Control.extend({
+	className: "HorizontalPanels",
+	render: function() {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
+			"content": [
+				" ",
+				this.HorizontalPanels_left = $("<div id=\"HorizontalPanels_left\" class=\"minimumWidth\" />")[0],
+				" ",
+				this.HorizontalPanels_content = $("<div id=\"HorizontalPanels_content\" />")[0],
+				" ",
+				this.HorizontalPanels_right = $("<div id=\"HorizontalPanels_right\" class=\"minimumWidth\" />")[0],
+				" "
+			]
+		});
+	}
+});
+$.extend(HorizontalPanels.prototype, {
+    content: QuickUI.Element("HorizontalPanels_content").content(),
+    fill: QuickUI.Element().applyClass("fill"),
+    left: QuickUI.Element("HorizontalPanels_left").content(),
+    right: QuickUI.Element("HorizontalPanels_right").content(),
+});
+
+//
 // IfBrowser
 //
 IfBrowser = QuickUI.Control.extend({
@@ -713,6 +740,41 @@ $.extend(ToggleButtonBase.prototype, {
 //
 VerticalAlign = QuickUI.Control.extend({
 	className: "VerticalAlign"
+});
+
+//
+// VerticalPanels
+//
+VerticalPanels = QuickUI.Control.extend({
+	className: "VerticalPanels",
+	render: function() {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
+			"content": [
+				" ",
+				this.rowTop = $("<div id=\"rowTop\" class=\"minimumHeight\" />").items(
+					" ",
+					this.VerticalPanels_top = $("<div id=\"VerticalPanels_top\" />")[0],
+					" "
+				)[0],
+				" ",
+				this.VerticalPanels_content = $("<div id=\"VerticalPanels_content\" />")[0],
+				" ",
+				this.rowBottom = $("<div id=\"rowBottom\" class=\"minimumHeight\" />").items(
+					" ",
+					this.VerticalPanels_bottom = $("<div id=\"VerticalPanels_bottom\" />")[0],
+					" "
+				)[0],
+				" "
+			]
+		});
+	}
+});
+$.extend(VerticalPanels.prototype, {
+    bottom: QuickUI.Element("VerticalPanels_bottom").content(),
+    content: QuickUI.Element("VerticalPanels_content").content(),
+    fill: QuickUI.Element().applyClass("fill"),
+    top: QuickUI.Element("VerticalPanels_top").content()
 });
 
 //

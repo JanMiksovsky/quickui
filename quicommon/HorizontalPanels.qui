@@ -1,0 +1,39 @@
+<Control name="HorizontalPanels">
+
+<content>
+    <div id="HorizontalPanels_left" class="minimumWidth" />
+    <div id="HorizontalPanels_content"/>
+    <div id="HorizontalPanels_right" class="minimumWidth" />
+</content>
+
+<style>
+{
+    display: table;
+}
+
+.HorizontalPanels.fill {
+    height: 100%;
+    position: absolute; /* Suppress normal table size-to-content */
+    width: 100%;
+}
+
+> * {
+    display: table-cell;
+    vertical-align: top;
+}
+
+.minimumWidth {
+    width: 1px;
+}
+</style>
+
+<script>
+$.extend(HorizontalPanels.prototype, {
+    content: QuickUI.Element("HorizontalPanels_content").content(),
+    fill: QuickUI.Element().applyClass("fill"),
+    left: QuickUI.Element("HorizontalPanels_left").content(),
+    right: QuickUI.Element("HorizontalPanels_right").content(),
+});
+</script>
+
+</Control>
