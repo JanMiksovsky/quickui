@@ -28,6 +28,11 @@
 .minimumHeight {
     height: 1px;    /* 0 would make element disappear. */
 }
+
+/* Supports nesting of HorizontalPanels or VerticalPanels with fill="true" */
+#VerticalPanels_content > * {
+	position: inherit;
+}
 </style>
 
 <script>

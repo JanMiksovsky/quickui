@@ -25,6 +25,11 @@
 .minimumWidth {
     width: 1px;
 }
+
+/* Supports nesting of HorizontalPanels or VerticalPanels with fill="true" */
+#HorizontalPanels_content > * {
+	position: inherit;
+}
 </style>
 
 <script>
