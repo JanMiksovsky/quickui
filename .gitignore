@@ -23,3 +23,7 @@ site/tutorial/section12/section12.*
 site/tutorial/section13/section13.*
 site/tutorial/section14/section14.*
 tests/tests.*
+tools/**/obj/*
+tools/**/bin
+tools/*.suo
+tools/**/*.user
