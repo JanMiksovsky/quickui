@@ -1,0 +1,16 @@
+<!--
+Control whose script contains characters ("&" and "<") that get interpreted as HTML entities.
+-->
+
+<Control name="Entities">
+<script>
+$.extend(Entities.prototype, {
+  ready: function() {
+    if (1 < 2 && 4 > 3)
+    {
+      alert("Success");
+    }
+  }
+});
+</script>
+</Control>

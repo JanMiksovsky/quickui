@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Text;
 using System.Text.RegularExpressions;
-
-#if DEBUG
-using NUnit.Framework;
-#endif
 
 namespace qc
 {
@@ -45,7 +40,7 @@ namespace qc
         /// Exception: if the selector already begins with .Foo, then the the class name
         /// is *not* prepended. This allows for the definition of rules like ".Foo.Bar".
         /// </remarks>
-        static string AddClassNameToSelectors(string className, string styles)
+        public static string AddClassNameToSelectors(string className, string styles)
         {
             // We could do a simple findClassNames.Replace() if it weren't for the
             // exception about not prepending the class name to the rule if the
@@ -78,76 +73,11 @@ namespace qc
         }
 
         // Regex to find selectors in CSS.
-        private const string findSelectors = 
+        private const string findSelectors =
             @"(?:/\*.*?\*/\s*)*" +              // Absorb comments
             @"(?<selector>.*?)\s*" +            // First selector
             @"(?:,\s*(?<selector>.*?)\s*)*" +   // Comma separated remaining selector
             @"\{[^\}]*\}";                      // Style
         private static Regex findSelectorsRegEx = new Regex(findSelectors, RegexOptions.Compiled);
-
-#if DEBUG
-        [TestFixture]
-        public class Tests
-        {
-            [Test]
-            public void ControlWithNoScript()
-            {
-                MarkupControlClass c = new MarkupControlClass() {
-                    // BaseClassName = "Control",
-                    Name = "Foo"
-                };
-                string compiledCss = CssForClass(c);
-                Assert.AreEqual(String.Empty, compiledCss);
-            }
-
-            [Test]
-            public void Basic()
-            {
-                string styles = "h1 { font-weight: bold; }";
-                string result = AddClassNameToSelectors("Foo", styles);
-                Assert.AreEqual(".Foo h1 { font-weight: bold; }", result);
-            }
-
-            [Test]
-            public void RuleOnDifferentLine()
-            {
-                string styles = "h1\n{ font-weight: bold; }";
-                string result = AddClassNameToSelectors("Foo", styles);
-                Assert.AreEqual(".Foo h1\n{ font-weight: bold; }", result);
-            }
-
-            [Test]
-            public void Multiple()
-            {
-                string styles = "h1 { color: red; }\nh2 { color: orange; }";
-                string result = AddClassNameToSelectors("Foo", styles);
-                Assert.AreEqual(".Foo h1 { color: red; }\n.Foo h2 { color: orange; }", result);
-            }
-
-            [Test]
-            public void CommaSeparatedRules()
-            {
-                string styles = "h1, h2, h3 { font-weight: bold; }";
-                string result = AddClassNameToSelectors("Foo", styles);
-                Assert.AreEqual(".Foo h1, .Foo h2, .Foo h3 { font-weight: bold; }", result);
-            }
-
-            [Test]
-            public void ClassNameAlreadyIncluded()
-            {
-                string styles = ".Foo.h1 { font-weight: bold; }";
-                string result = AddClassNameToSelectors("Foo", styles);
-                Assert.AreEqual(".Foo.h1 { font-weight: bold; }", result);
-            }
-
-            [Test]
-            public void FontFace()
-            {
-                string styles = "@font-face { font-family: Arial; local('Arial'); }";
-                string result = AddClassNameToSelectors("Foo", styles);
-                Assert.AreEqual(styles, result);
-            }
-        }
-#endif
     }
 }

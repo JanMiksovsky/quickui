@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Resources;
-using System.Xml;
-using System.Xml.Serialization;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace qc
 {
-    static class Utilities
+    public static class Utilities
     {
         /// <summary>
         /// Map each list item to a string and concatenate the results.
@@ -27,7 +25,8 @@ namespace qc
         public static string Concatenate<T>(this IEnumerable<T> list, Func<T, string> f, string separator)
         {
             StringBuilder stringBuilder = list.Aggregate(new StringBuilder(),
-                (s, item) => {
+                (s, item) =>
+                {
                     if (s.Length > 0)
                     {
                         s.Append(separator);
@@ -41,36 +40,41 @@ namespace qc
         /// <summary>
         /// Read the XML resource with the given name, deserialize it, and return the result.
         /// </summary>
-        public static T DeserializeXml<T>(string resourceName)
+        public static T DeserializeXml<T>(string resourceName, Assembly assembly)
         {
-            using (Stream resourceStream = GetResourceStream(resourceName))
+            using (Stream resourceStream = GetResourceStream(resourceName, assembly))
             {
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(T));
                 return (T)xmlSerializer.Deserialize(resourceStream);
             }
         }
 
-        public static Stream GetResourceStream(string resourceName)
+        public static Stream GetResourceStream(string resourceName, Assembly assembly)
         {
-            return Assembly.GetCallingAssembly().GetManifestResourceStream(resourceName);
+            var stream = assembly.GetManifestResourceStream(resourceName);
+            if (stream == null)
+            {
+                throw new ArgumentException(string.Format("Could not find resource '{0}' in assembly '{1}'", resourceName, assembly));
+            }
+            return stream;
         }
 
-        public static StreamReader GetEmbeddedFileReader(string fileName)
+        public static StreamReader GetEmbeddedFileReader(string fileName, Assembly assembly)
         {
-            Stream stream = GetResourceStream(fileName);
-
-            // HACK: The following StreamReader call appears to always fail if it
-            // directly follows the GetResourceStream call above. For some reason,
-            // inserting executable code between the calls seems to make it work.
-            // God help us.
-            int foo = 1; foo++;
-
-            return new StreamReader(stream);
+            Stream stream = GetResourceStream(fileName, assembly);
+            if (stream != null)
+            {
+                return new StreamReader(stream);
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        public static string GetEmbeddedFileContent(string fileName)
+        public static string GetEmbeddedFileContent(string fileName, Assembly assembly)
         {
-            using (StreamReader reader = new StreamReader(GetResourceStream(fileName)))
+            using (StreamReader reader = new StreamReader(GetResourceStream(fileName, assembly)))
             {
                 return reader.ReadToEnd();
             }

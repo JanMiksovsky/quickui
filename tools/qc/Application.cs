@@ -1,13 +1,9 @@
 using System;
 using System.IO;
 
-#if DEBUG
-using NUnit.Framework;
-#endif
-
 namespace qc
 {
-    class Application
+    public class Application
     {
         static void Main(string[] args)
         {
@@ -36,7 +32,7 @@ namespace qc
     /// <summary>
     /// Process command line arguments.
     /// </summary>
-    static class ArgumentProcessor
+    public static class ArgumentProcessor
     {
         public static void GetFileNames(string[] args,
             out string sourceFileName,
@@ -77,56 +73,5 @@ namespace qc
 
             s = value;
         }
-
-#if DEBUG
-        [TestFixture]
-        public class Tests
-        {
-            [Test]
-            public void NoArguments()
-            {
-                string sourceFileName;
-                string jsFileName;
-                string cssFileName;
-                string[] args = new string[] { };
-                GetFileNames(args, out sourceFileName, out jsFileName, out cssFileName);
-                Assert.IsNull(sourceFileName);
-                Assert.IsNull(jsFileName);
-                Assert.IsNull(cssFileName);
-            }
-
-            [Test]
-            public void FullArguments()
-            {
-                string sourceFileName;
-                string jsFileName;
-                string cssFileName;
-                string[] args = new string[] {
-                        "foo.css",
-                        "foo.qui",
-                        "foo.js"
-                    };
-                GetFileNames(args, out sourceFileName, out jsFileName, out cssFileName);
-                Assert.AreEqual("foo.qui", sourceFileName);
-                Assert.AreEqual("foo.js", jsFileName);
-                Assert.AreEqual("foo.css", cssFileName);
-            }
-
-            [Test]
-            [ExpectedException(typeof(ArgumentException))]
-            public void DuplicateArgument()
-            {
-                string sourceFileName;
-                string jsFileName;
-                string cssFileName;
-                string[] args = new string[] {
-                        "foo.qui",
-                        "foo.js",
-                        "foo.qui"
-                    };
-                GetFileNames(args, out sourceFileName, out jsFileName, out cssFileName);
-            }
-        }
-#endif
     }
 }

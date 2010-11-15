@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-
-#if DEBUG
-using NUnit.Framework;
-#endif
 
 namespace qc
 {
@@ -24,7 +17,8 @@ namespace qc
             this.Html = html;
         }
 
-        public MarkupHtmlElement(string html, string id) : this(html)
+        public MarkupHtmlElement(string html, string id)
+            : this(html)
         {
             this.Id = id;
         }
@@ -43,8 +37,8 @@ namespace qc
             MarkupNode childrenNode = MarkupNode.Parse(element.Nodes());
             if (childrenNode == null
                 || (childrenNode is MarkupHtmlElement
-                    && ((MarkupHtmlElement) childrenNode).Id == null
-                    && ((MarkupHtmlElement) childrenNode).ChildNodes == null))
+                    && ((MarkupHtmlElement)childrenNode).Id == null
+                    && ((MarkupHtmlElement)childrenNode).ChildNodes == null))
             {
                 // This node and everything it contains is plain HTML; use it as is.
                 Html = element.ToString(SaveOptions.DisableFormatting);
@@ -63,8 +57,8 @@ namespace qc
                 // Add in the children nodes.
                 ChildNodes =
                     childrenNode is MarkupElementCollection
-                        ? (MarkupElementCollection) childrenNode
-                        : new MarkupElementCollection(new MarkupElement[] { (MarkupElement) childrenNode });
+                        ? (MarkupElementCollection)childrenNode
+                        : new MarkupElementCollection(new MarkupElement[] { (MarkupElement)childrenNode });
             }
         }
 
@@ -96,7 +90,8 @@ namespace qc
                 // Simplest case; just quote the HTML and return it.
                 return Template.Format(
                     "{Html}",
-                    new {
+                    new
+                    {
                         Html = html
                     });
             }
@@ -156,122 +151,5 @@ namespace qc
         {
             return s.Replace("<", "&lt;");
         }
-
-#if DEBUG
-        [TestFixture]
-        public new class Tests
-        {
-            [Test]
-            public void Text()
-            {
-                XText element = new XText("Hello");
-                MarkupHtmlElement node = new MarkupHtmlElement(element);
-                Assert.AreEqual("Hello", node.Html);
-            }
-
-            [Test]
-            public void Html()
-            {
-                XElement element = new XElement("div",
-                    new XAttribute("id", "foo"),
-                    new XText("Hi")
-                );
-                MarkupHtmlElement node = new MarkupHtmlElement(element);
-                Assert.AreEqual("foo", node.Id);
-                Assert.AreEqual("<div id=\"foo\">Hi</div>", node.Html);
-                Assert.AreEqual("this.foo = $(\"<div id=\\\"foo\\\">Hi</div>\")[0]", node.JavaScript());
-            }
-
-            [Test]
-            public void HtmlWithPrivateId()
-            {
-                XElement element = new XElement("div",
-                    new XAttribute("id", "_foo")
-                );
-                MarkupHtmlElement node = new MarkupHtmlElement(element);
-                Assert.IsNull(node.Id);
-            }
-
-            [Test]
-            public void HtmlContainsText()
-            {
-                XElement element = new XElement("p",
-                    new XText("Hello")
-                );
-                MarkupHtmlElement node = new MarkupHtmlElement(element);
-                Assert.AreEqual("<p>Hello</p>", node.Html);
-            }
-
-            [Test]
-            public void HtmlContainsHtml()
-            {
-                XElement element = new XElement("div",
-                    new XElement("h1"),
-                    new XElement("p",
-                        new XText("Hello")
-                    )
-                );
-                MarkupHtmlElement node = new MarkupHtmlElement(element);
-                Assert.AreEqual("<div><h1 /><p>Hello</p></div>", node.Html);
-            }
-
-            [Test]
-            public void HtmlContainsHtmlWithId()
-            {
-                XElement element = new XElement("div",
-                    new XElement("p",
-                        new XAttribute("id", "content")
-                    )
-                );
-                MarkupHtmlElement node = new MarkupHtmlElement(element);
-                Assert.AreEqual("<div />", node.Html);
-                Assert.IsNotNull(node.ChildNodes);
-                Assert.AreEqual(1, node.ChildNodes.Count());
-                List<MarkupElement> items = new List<MarkupElement>(node.ChildNodes);
-                Assert.IsInstanceOf<MarkupHtmlElement>(items[0]);
-                MarkupHtmlElement contentNode = (MarkupHtmlElement) items[0];
-                Assert.AreEqual("<p id=\"content\" />", contentNode.Html);
-                Assert.AreEqual("content", contentNode.Id);
-            }
-
-            [Test]
-            public void HtmlContainsHtmlWithIdContainsText()
-            {
-                XElement element = new XElement("div",
-                    new XElement("h1"),
-                    new XElement("p",
-                        new XAttribute("id", "content"),
-                        new XText("Hello")
-                    )
-                );
-                MarkupHtmlElement node = new MarkupHtmlElement(element);
-                Assert.AreEqual("<div />", node.Html);
-                Assert.AreEqual(2, node.ChildNodes.Count());
-                List<MarkupElement> items = new List<MarkupElement>(node.ChildNodes);
-                Assert.IsInstanceOf<MarkupHtmlElement>(items[0]);
-                Assert.AreEqual("<h1 />", ((MarkupHtmlElement) items[0]).Html);
-                Assert.IsInstanceOf<MarkupHtmlElement>(items[1]);
-                MarkupHtmlElement contentNode = (MarkupHtmlElement) items[1];
-                Assert.AreEqual("<p id=\"content\">Hello</p>", contentNode.Html);
-                Assert.AreEqual("content", contentNode.Id);
-            }
-
-            [Test]
-            public void HtmlContainsControl()
-            {
-                XElement element = new XElement("div",
-                    new XElement("Foo",
-                        new XText("Control content")
-                    )
-                );
-                MarkupHtmlElement htmlNode = new MarkupHtmlElement(element);
-                Assert.AreEqual(1, htmlNode.ChildNodes.Count());
-                MarkupNode childNode = htmlNode.ChildNodes.ToArray()[0];
-                Assert.IsInstanceOf<MarkupControlInstance>(childNode);
-                MarkupControlInstance control = (MarkupControlInstance) childNode;
-                Assert.AreEqual("Foo", control.ClassName);
-            }
-        }
-#endif
     }
 }
