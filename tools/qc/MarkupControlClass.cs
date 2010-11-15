@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Linq;
 
 #if DEBUG
@@ -298,7 +295,7 @@ namespace qc
                         return (MarkupControlInstance) element;
                     }
                 }
-                catch (InvalidOperationException e)
+                catch (InvalidOperationException)
                 {
                 }
             }
