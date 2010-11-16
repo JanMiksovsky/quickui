@@ -1,5 +1,0 @@
-<!-- Simple control. -->
-
-<Control name="Simple">
-  <span id="Simple_content" />
-</Control>

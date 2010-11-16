@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-
-#if DEBUG
-using NUnit.Framework;
-#endif
 
 namespace qb
 {
@@ -140,43 +135,5 @@ namespace qb
             buildUnit = BuildUnits.FirstOrDefault(buildFile => buildFile.ClassName == className);
             return buildUnit != null;
         }
-
-#if DEBUG
-        [TestFixture]
-        public class Tests
-        {
-            [Test]
-            public void Typical()
-            {
-                string[] files = {
-                                        "Class.SuperClass.js",
-                                        "Foo.UnknownSuperClass.js",
-                                        "NoSuperClass.js",
-                                        "Subclass.Class.js",
-                                        "SuperClass.js"
-                                   };
-
-                Build build = new Build();
-                foreach (BuildUnit unit in files.Select(file => new BuildUnit(file)))
-                {
-                    build.Add(unit);
-                }
-
-                string[] expected = {
-                                        "Foo.UnknownSuperClass.js",
-                                        "NoSuperClass.js",
-                                        "SuperClass.js",
-                                        "Class.SuperClass.js",
-                                        "Subclass.Class.js"
-                                    };
-
-                BuildUnit[] sortedBuildFiles = build.SortBuildUnits().ToArray();
-                for (int i = 0; i < sortedBuildFiles.Count(); i++)
-                {
-                    Assert.AreEqual(expected[i], sortedBuildFiles[i].JsFileName);
-                }
-            }
-        }
-#endif
     }
 }

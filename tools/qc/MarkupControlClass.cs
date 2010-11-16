@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Linq;
-
-#if DEBUG
-using System.Xml.Linq;
-using NUnit.Framework;
-#endif
 
 namespace qc
 {
@@ -298,7 +290,7 @@ namespace qc
                         return (MarkupControlInstance) element;
                     }
                 }
-                catch (InvalidOperationException e)
+                catch (InvalidOperationException)
                 {
                 }
             }
@@ -306,125 +298,5 @@ namespace qc
             throw new CompilerException(
                 "A control's <prototype> must be a single instance of a QuickUI control class.");
         }
-
-#if DEBUG
-        [TestFixture]
-        public new class Tests
-        {
-            [Test]
-            public void ControlClass()
-            {
-                XElement element = new XElement("Control",
-                    new XAttribute("name", "Minimal")
-                );
-                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
-                Assert.AreEqual("Minimal", c.Name);
-                Assert.AreEqual("QuickUI.Control", c.BaseClassName);
-            }
-
-            [Test]
-            public void ImplicitContent()
-            {
-                XElement element = new XElement("Control",
-                    new XAttribute("name", "Foo"),
-                    new XText("Hello")
-                );
-                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
-                Assert.AreEqual("Hello", ((MarkupHtmlElement) c.Content).Html);
-            }
-
-            [Test]
-            public void ExplicitContent()
-            {
-                XElement element = new XElement("Control",
-                    new XAttribute("name", "Foo"),
-                    new XElement("content",
-                        new XText("Hello")
-                    )
-                );
-                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
-                Assert.AreEqual("Hello", ((MarkupHtmlElement) c.Content).Html);
-            }
-
-            [Test]
-            public void Prototype()
-            {
-                XElement element = new XElement("Control",
-                    new XAttribute("name", "Foo"),
-                    new XElement("prototype",
-                        new XElement("Button",
-                            new XAttribute("content", "Hello")
-                        )
-                    )
-                );
-                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
-                MarkupControlInstance prototype = c.Prototype;
-                Assert.AreEqual("Button", prototype.ClassName);
-                Assert.AreEqual("Hello", ((MarkupHtmlElement) prototype.Properties["content"]).Html);
-            }
-
-            [Test]
-            public void ExplicitTag()
-            {
-                XElement element = new XElement("Control",
-                    new XAttribute("name", "Foo"),
-                    new XAttribute("tag", "span")
-                );
-                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
-                Assert.AreEqual("span", c.Tag);
-            }
-
-            [Test]
-            [ExpectedException(typeof(CompilerException))]
-            public void MissingClassName()
-            {
-                XElement element = new XElement("Control");
-                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
-            }
-
-            [Test]
-            [ExpectedException(typeof(CompilerException))]
-            public void PrototypeNotClass()
-            {
-                XElement element = new XElement("Control",
-                    new XAttribute("name", "Foo"),
-                    new XElement("prototype",
-                        new XElement("div")
-                    )
-                );
-                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
-            }
-
-            [Test]
-            [ExpectedException(typeof(CompilerException))]
-            public void PrototypeNotSingleton()
-            {
-                XElement element = new XElement("Control",
-                    new XAttribute("name", "Foo"),
-                    new XElement("prototype",
-                        new XElement("Link"),
-                        new XElement("Button")
-                    )
-                );
-                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
-            }
-
-            [Test]
-            [ExpectedException(typeof(CompilerException))]
-            public void ContentAndPrototype()
-            {
-                XElement element = new XElement("Control",
-                    new XAttribute("name", "Foo"),
-                    new XElement("content",
-                        new XText("Hello")
-                    ),
-                    new XElement("prototype",
-                        new XElement("Button")
-                    )
-                );
-                MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
-            }
-        }
-#endif
     }
 }

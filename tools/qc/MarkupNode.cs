@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Xml;
 using System.Xml.Linq;
-
-#if DEBUG
-using NUnit.Framework;
-#endif
 
 namespace qc
 {
@@ -65,10 +59,10 @@ namespace qc
             // or HTML nodes with Ids, too.
             if (elements.All(element =>
                 element is MarkupHtmlElement
-                && ((MarkupHtmlElement) element).Id == null
-                && ((MarkupHtmlElement) element).ChildNodes == null))
+                && ((MarkupHtmlElement)element).Id == null
+                && ((MarkupHtmlElement)element).ChildNodes == null))
             {
-                return new MarkupHtmlElement(elements.Concatenate(node => ((MarkupHtmlElement) node).Html));
+                return new MarkupHtmlElement(elements.Concatenate(node => ((MarkupHtmlElement)node).Html));
             }
 
             // Return a heterogenous collection.
@@ -81,7 +75,7 @@ namespace qc
         /// <remarks>
         /// Adapted from "Enquote" found at json.org by Are Bjolseth.
         /// </remarks>
-        protected static string EscapeJavaScript(string s)
+        public static string EscapeJavaScript(string s)
         {
             StringBuilder stringBuilder = new StringBuilder(s.Length + 2);
 
@@ -164,19 +158,5 @@ namespace qc
             }
             return output.ToString();
         }
-
-#if DEBUG
-        [TestFixture]
-        public class Tests
-        {
-            [Test]
-            public void EscapeString()
-            {
-                string s = "\tHi\a;\n";
-                string escaped = EscapeJavaScript(s);
-                Assert.AreEqual("\"\\tHi\\u0007;\\n\"", escaped);
-            }
-        }
-#endif
     }
 }

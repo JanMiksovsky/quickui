@@ -3,10 +3,6 @@ using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 
-#if DEBUG
-using NUnit.Framework;
-#endif
-
 namespace qc
 {
     /// <summary>
@@ -54,51 +50,5 @@ namespace qc
                 defaultWriter :
                 new StreamWriter(fileName);
         }
-
-#if DEBUG
-        [TestFixture]
-        public class Tests
-        {
-            [TestCase("qc.Tests.simple.qui.js", null, "qc.Tests.simple.qui")]
-            [TestCase("qc.Tests.content.qui.js", null, "qc.Tests.content.qui")]
-            [TestCase("qc.Tests.simplehost.qui.js", null, "qc.Tests.simplehost.qui")]
-            [TestCase("qc.Tests.comprehensive.qui.js", "qc.Tests.comprehensive.qui.css", "qc.Tests.comprehensive.qui")]
-            [TestCase("qc.Tests.entities.qui.js", null, "qc.Tests.entities.qui")]
-            public void CompareCompilation(string fileNameExpectedJs, string fileNameExpectedCss, string fileNameSource)
-            {
-                StreamReader sourceReader = Utilities.GetEmbeddedFileReader(fileNameSource);
-                StringWriter jsWriter = new StringWriter();
-                StringWriter cssWriter = (fileNameExpectedCss == null)
-                    ? null
-                    : new StringWriter();
-
-                Compile(sourceReader, jsWriter, cssWriter);
-
-                string expectedJs = Utilities.GetEmbeddedFileContent(fileNameExpectedJs);
-                string compiledJs = jsWriter.ToString();
-                Assert.AreEqual(NormalizeLineEndings(expectedJs), NormalizeLineEndings(compiledJs));
-
-                if (fileNameExpectedCss != null)
-                {
-                    string expectedCss = Utilities.GetEmbeddedFileContent(fileNameExpectedCss);
-                    string compiledCss = cssWriter.ToString();
-                    Assert.AreEqual(NormalizeLineEndings(expectedCss), NormalizeLineEndings(compiledCss));
-                }
-            }
-
-            /// <summary>
-            /// Convert all "\r\n" sequences to "\n" for purposes of checking compilations.
-            /// </summary>
-            /// <remarks>
-            /// Otherwise way too much time is wasted trying to chase down irrelevant
-            /// inconsistencies in unit tests that result from writing tests on different
-            /// platforms.
-            /// </remarks>
-            static string NormalizeLineEndings(string s)
-            {
-                return s.Replace("\r\n", "\n");
-            }
-        }
-#endif
     }
 }
