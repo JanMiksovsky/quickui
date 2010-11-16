@@ -58,7 +58,7 @@ namespace Tests
             map.Add("A", "B");
             map.Add("B", "C");
             map.Add("C", "A");
-            IEnumerable<string> sorted = map.SortDependencies();
+            map.SortDependencies();
         }
 
         [Test]

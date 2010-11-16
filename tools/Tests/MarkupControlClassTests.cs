@@ -75,7 +75,7 @@ namespace Tests
         public void MissingClassName()
         {
             XElement element = new XElement("Control");
-            MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
+            new MarkupControlClass(new MarkupControlInstance(element));
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace Tests
                     new XElement("div")
                 )
             );
-            MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
+            new MarkupControlClass(new MarkupControlInstance(element));
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace Tests
                     new XElement("Button")
                 )
             );
-            MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
+            new MarkupControlClass(new MarkupControlInstance(element));
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace Tests
                     new XElement("Button")
                 )
             );
-            MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
+            new MarkupControlClass(new MarkupControlInstance(element));
         }
     }
 }

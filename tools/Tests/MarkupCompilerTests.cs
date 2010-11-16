@@ -84,7 +84,7 @@ namespace Tests
         public void NoRootElement()
         {
             string source = "This source has no root element";
-            MarkupControlClass c = MarkupCompiler.Compile(source);
+            MarkupCompiler.Compile(source);
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace Tests
         public void RootElementNotControl()
         {
             string source = "<Foo/>";
-            MarkupControlClass c = MarkupCompiler.Compile(source);
+            MarkupCompiler.Compile(source);
         }
 
         [Test]
