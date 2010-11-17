@@ -6,7 +6,7 @@
 	<NavigationLink href="/tutorial/section01/default.html">Tutorial</NavigationLink>
 	<NavigationLink href="/gallery/default.html">Gallery</NavigationLink>
 	<NavigationLink href="http://groups.google.com/group/quickui">Discuss</NavigationLink>
-	<NavigationLink href="http://code.google.com/p/quickui/">Contribute</NavigationLink>
+	<NavigationLink href="https://github.com/JanMiksovsky/quickui">Contribute</NavigationLink>
 </content>
 
 <style>

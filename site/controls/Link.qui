@@ -10,17 +10,8 @@
 
 <script>
 $.extend(Link.prototype, {
-	
 	content: QuickUI.Element("Link_content").content(),
-	href: QuickUI.Element("Link_content").attr("href", function(href) {
-        // HACK for testing under Aptana preview server.
-        if ((window.location.hostname == "127.0.0.1" || window.location.hostname == "localhost")
-            && href.substr(0,7) != "http://")
-        {
-            $(this.Link_content).attr("href", "/QuickUI/site" + href);
-        }
-    })
-   
+	href: QuickUI.Element("Link_content").attr("href")
 });
 </script>
 
