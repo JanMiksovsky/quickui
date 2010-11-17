@@ -1,6 +1,6 @@
 /*
  * QuickUI
- * Version 0.7.5
+ * Version 0.7.7
  * Modular web control framework
  * http://quickui.org/
  *
@@ -147,7 +147,13 @@ QuickUI.Control = QuickUI.Class.extend({
     style: function(value)
     {
         return jQuery(this.element).attr("style", value);
-    }
+    },
+    
+    /*
+     * By default, the root tag of the control will be a div.
+     * Control classes can override this: <Control name="Foo" tag="span">
+     */
+    tag: "div"
 
 });
 
@@ -200,7 +206,7 @@ jQuery.extend(QuickUI.Control, {
         var control = new controlClass();
         
         // Create a target if none was supplied.
-        var $element = jQuery(target || "<div/>");
+        var $element = jQuery(target || "<" + controlClass.prototype.tag + "/>");
         
         // Bind the control to the element.
         control.element = $element[0];
@@ -507,11 +513,23 @@ jQuery.extend(QuickUI.ElementPropertyFactory.prototype, {
         var elementId = this.elementId;    // "this" = property generator
         return function(value) {
             var $element = QuickUI.ElementPropertyFactory.$getElement(this, elementId);    // "this" = control
-            var result = ($element.control() != undefined)
-                ? $element.control().content(value)
-                  : (jQuery.nodeName($element[0], "input" ) || jQuery.nodeName($element[0], "textarea" ))
-                    ? $element.val(value)
-                    : $element.items(value);
+            var result;
+            if ($element.control() !== undefined)
+            {
+                // QuickUI control
+                result = $element.control().content(value);
+            }
+            else if (jQuery.nodeName($element[0], "input" ) || jQuery.nodeName($element[0], "select" ) || jQuery.nodeName($element[0], "textarea" ))
+            {
+                // Input control.
+                // $.val() checks its argument count, so we can't just pass in undefined to call it as a getter.
+                result = (value !== undefined) ? $element.val(value) : $element.val();
+            }
+            else
+            {
+                // Other DOM element
+                result = $element.items(value);
+            }
             
             if (value !== undefined && setterFunction != null)
             {
