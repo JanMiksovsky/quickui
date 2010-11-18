@@ -1,24 +1,34 @@
 <Control name="GalleryNavigationLinks">
 
 <content>
-	<NavigationLink id="linkIndex" href="/gallery/default.html">Index</NavigationLink>
-	<GalleryLink>IfBrowser</GalleryLink>
-	<GalleryLink>GalleryPage</GalleryLink>
-    <GalleryLink>Gradient</GalleryLink>
-	<GalleryLink>HintTextBox</GalleryLink>
-    <GalleryLink>List</GalleryLink>
-	<GalleryLink>SampleSpriteButton</GalleryLink>
-    <GalleryLink>SearchBox</GalleryLink>
-	<GalleryLink>Sprite</GalleryLink>
-	<GalleryLink>SpriteButton</GalleryLink>
-	<GalleryLink>Tag</GalleryLink>
-    <GalleryLink>TextBoxWithButton</GalleryLink>
+    <NavigationLink id="linkIndex" href="/gallery/default.html">Index</NavigationLink>
+    <List id="listClass" itemClass="GalleryLink"/>
 </content>
 
 <style>
 #linkIndex {
-	margin-bottom: 15px;
-}	
+    margin-bottom: 15px;
+}
 </style>
+
+<script>
+$.extend(GalleryNavigationLinks.prototype, {
+    ready: function() {
+        QuickUI(this.listClass).items([
+            "IfBrowser",
+            "GalleryPage",
+            "Gradient",
+            "HintTextBox",
+            "List",
+            "SampleSpriteButton",
+            "SearchBox",
+            "Sprite",
+            "SpriteButton",
+            "Tag",
+            "TextBoxWithButton"
+        ]);
+    }
+});
+</script>
 
 </Control>
