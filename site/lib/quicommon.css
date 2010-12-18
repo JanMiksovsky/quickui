@@ -9,33 +9,30 @@
 	cursor: default;
 }
 
-/*** DockPanel ***/
+/*** HorizontalPanels ***/
 
-.DockPanel {
-	/* border: 1px solid #f0f0f0; */
-	display: table;
-	width: 100%;
+.HorizontalPanels {
+    display: table;
 }
 
-.DockPanel > * {
-	/* border: 1px solid #f0f0f0; */
-	display: table-row;
+.HorizontalPanels.fill {
+    height: 100%;
+    position: absolute; /* Suppress normal table size-to-content */
+    width: 100%;
 }
 
-.DockPanel #centerTable {
-	display: table;
-	height: 100%;
-	width: 100%;
+.HorizontalPanels > * {
+    display: table-cell;
+    vertical-align: top;
 }
 
-.DockPanel #centerTable > * {
-	/* border: 1px solid #f0f0f0; */
-	display: table-cell;
-	vertical-align: top;
+.HorizontalPanels .minimumWidth {
+    width: 1px;
 }
 
-.DockPanel .panel {
-	width: 0;
+/* Supports nesting of HorizontalPanels or VerticalPanels with fill="true" */
+.HorizontalPanels #HorizontalPanels_content > * {
+	position: inherit;
 }
 
 /*** Overlay ***/
@@ -78,6 +75,31 @@
 .VerticalAlign > * {
 	display: table-cell;
 	vertical-align: middle;
+}
+
+/*** VerticalPanels ***/
+
+.VerticalPanels {
+    display: table;
+}
+
+.VerticalPanels.fill {
+    height: 100%;
+    position: absolute; /* Suppress normal table size-to-content */
+    width: 100%;
+}
+
+.VerticalPanels > * {
+    display: table-row;
+}
+
+.VerticalPanels .minimumHeight {
+    height: 1px;    /* 0 would make element disappear. */
+}
+
+/* Supports nesting of HorizontalPanels or VerticalPanels with fill="true" */
+.VerticalPanels #VerticalPanels_content > * {
+	position: inherit;
 }
 
 /*** Dialog ***/

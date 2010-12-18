@@ -41,17 +41,67 @@ $.extend(Page.prototype, {
  */
 $.extend(Page, {
     
-    //
-    // Return the URL parameters as a JavaScript object.
-    // E.g., if the URL looks like http://www.example.com/index.html?foo=hello&bar=world
-    // then this returns the object
-    //
-    //    { foo: "hello", bar: "world" }
-    //
+    /*
+     * Load the given class as the page's top-level class.
+     * 
+     * If element is supplied, that element is used to instantiate the control;
+     * otherwise the entire body is given over to the control. 
+     */
+    loadClass: function(pageClass, element) {
+    
+        var pageClassFn;
+        if ($.isFunction(pageClass))
+        {
+            pageClassFn = pageClass;
+        }
+        else
+        {
+            // Convert a string to a function.
+            // Only accept strings completely composed of word characters,
+            // in any effort to mitigate eval evil.
+            var pageClassName = /^\w+$/.exec(pageClass);
+            pageClassFn = eval(pageClass);
+        }
+        
+        var $element = element ? $(element) : $("body");
+        
+        $element
+            .empty()                // Remove elements
+            .attr("class", "")      // Remove classes
+            .control(pageClassFn);
+    },
+
+    /*
+     * Start actively tracking changes in a page specified on the URL.
+     * For a URL like www.example.com/index.html#page=Foo, load class Foo.
+     * If the page then navigates to www.example.com/index.html#page=Bar, this
+     * will load class Bar in situ, without forcing the browser to reload the page. 
+     */
+    trackClassFromUrl: function(defaultPageClass) {
+        
+        // Watch for changes in the URL after the hash.
+        $(window).hashchange(function() {
+            var pageClassName = Page.urlParameters().page;
+            var pageClass = pageClassName || defaultPageClass;
+            Page.loadClass(pageClass);
+        })
+            
+        // Trigger a page class load now.
+        $(window).hashchange();
+    },
+    
+    /*
+     * Return the URL parameters (after "&" and/or "#") as a JavaScript object.
+     * E.g., if the URL looks like http://www.example.com/index.html?foo=hello&bar=world
+     * then this returns the object
+     *
+     *    { foo: "hello", bar: "world" }
+     *
+     */
     urlParameters: function() {
-        var regex = /[?&](\w+)=([^&#]*)/g;
+        var regex = /[?#&](\w+)=([^?#&]*)/g;
         var results = {};
-        var match = regex.exec( window.location.search );
+        var match = regex.exec( window.location.href );
         while (match != null)
         {
             var parameterName = match[1];

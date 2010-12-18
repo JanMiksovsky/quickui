@@ -142,78 +142,30 @@ $.extend(ButtonBase, {
 });
 
 //
-// DockPanel
+// HorizontalPanels
 //
-DockPanel = QuickUI.Control.extend({
-	className: "DockPanel",
+HorizontalPanels = QuickUI.Control.extend({
+	className: "HorizontalPanels",
 	render: function() {
 		QuickUI.Control.prototype.render.call(this);
 		this.setClassProperties(QuickUI.Control, {
 			"content": [
 				" ",
-				this.DockPanel_top = $("<div id=\"DockPanel_top\" />")[0],
+				this.HorizontalPanels_left = $("<div id=\"HorizontalPanels_left\" class=\"minimumWidth\" />")[0],
 				" ",
-				this.rowCenter = $("<div id=\"rowCenter\" />").items(
-					" ",
-					this.centerTable = $("<div id=\"centerTable\" />").items(
-						" ",
-						this.DockPanel_left = $("<div id=\"DockPanel_left\" class=\"panel\" />")[0],
-						" ",
-						this.DockPanel_content = $("<div id=\"DockPanel_content\" />")[0],
-						" ",
-						this.DockPanel_right = $("<div id=\"DockPanel_right\" class=\"panel\" />")[0],
-						" "
-					)[0],
-					" "
-				)[0],
+				this.HorizontalPanels_content = $("<div id=\"HorizontalPanels_content\" />")[0],
 				" ",
-				this.DockPanel_bottom = $("<div id=\"DockPanel_bottom\" />")[0],
+				this.HorizontalPanels_right = $("<div id=\"HorizontalPanels_right\" class=\"minimumWidth\" />")[0],
 				" "
 			]
 		});
 	}
 });
-$.extend(DockPanel.prototype, {
-	
-	content: QuickUI.Element("DockPanel_content").content(),	
-	left: QuickUI.Element("DockPanel_left").content(),
-	right: QuickUI.Element("DockPanel_right").content(),
-	
-	ready: function() {
-		/*
-		var self = this;
-		$(this.element).click(function() {
-			self.recalc();
-		})
-		*/
-		// this.recalc();
-	},
-	
-	bottom: QuickUI.Element("DockPanel_bottom").content(function(value) {
-		this.recalc(this.DockPanel_bottom);
-	}),
-	
-	top: QuickUI.Element("DockPanel_top").content(function(value) {
-		this.recalc(this.DockPanel_top);
-	}),
-	
-	recalc: function(element) {
-		
-		if (element === undefined)
-		{
-			this.recalc(this.DockPanel_top);
-			this.recalc(this.DockPanel_bottom);
-			return;
-		}
-		
-		var height = 0;
-		$(element).children().each(function() {
-			height += $(this).outerHeight();
-		});
-		$(element).css("height", height + "px");
-		
-	}
-	
+$.extend(HorizontalPanels.prototype, {
+    content: QuickUI.Element("HorizontalPanels_content").content(),
+    fill: QuickUI.Element().applyClass("fill"),
+    left: QuickUI.Element("HorizontalPanels_left").content(),
+    right: QuickUI.Element("HorizontalPanels_right").content(),
 });
 
 //
@@ -456,17 +408,67 @@ $.extend(Page.prototype, {
  */
 $.extend(Page, {
     
-    //
-    // Return the URL parameters as a JavaScript object.
-    // E.g., if the URL looks like http://www.example.com/index.html?foo=hello&bar=world
-    // then this returns the object
-    //
-    //    { foo: "hello", bar: "world" }
-    //
+    /*
+     * Load the given class as the page's top-level class.
+     * 
+     * If element is supplied, that element is used to instantiate the control;
+     * otherwise the entire body is given over to the control. 
+     */
+    loadClass: function(pageClass, element) {
+    
+        var pageClassFn;
+        if ($.isFunction(pageClass))
+        {
+            pageClassFn = pageClass;
+        }
+        else
+        {
+            // Convert a string to a function.
+            // Only accept strings completely composed of word characters,
+            // in any effort to mitigate eval evil.
+            var pageClassName = /^\w+$/.exec(pageClass);
+            pageClassFn = eval(pageClass);
+        }
+        
+        var $element = element ? $(element) : $("body");
+        
+        $element
+            .empty()                // Remove elements
+            .attr("class", "")      // Remove classes
+            .control(pageClassFn);
+    },
+
+    /*
+     * Start actively tracking changes in a page specified on the URL.
+     * For a URL like www.example.com/index.html#page=Foo, load class Foo.
+     * If the page then navigates to www.example.com/index.html#page=Bar, this
+     * will load class Bar in situ, without forcing the browser to reload the page. 
+     */
+    trackClassFromUrl: function(defaultPageClass) {
+        
+        // Watch for changes in the URL after the hash.
+        $(window).hashchange(function() {
+            var pageClassName = Page.urlParameters().page;
+            var pageClass = pageClassName || defaultPageClass;
+            Page.loadClass(pageClass);
+        })
+            
+        // Trigger a page class load now.
+        $(window).hashchange();
+    },
+    
+    /*
+     * Return the URL parameters (after "&" and/or "#") as a JavaScript object.
+     * E.g., if the URL looks like http://www.example.com/index.html?foo=hello&bar=world
+     * then this returns the object
+     *
+     *    { foo: "hello", bar: "world" }
+     *
+     */
     urlParameters: function() {
-        var regex = /[?&](\w+)=([^&#]*)/g;
+        var regex = /[?#&](\w+)=([^?#&]*)/g;
         var results = {};
-        var match = regex.exec( window.location.search );
+        var match = regex.exec( window.location.href );
         while (match != null)
         {
             var parameterName = match[1];
@@ -713,6 +715,41 @@ $.extend(ToggleButtonBase.prototype, {
 //
 VerticalAlign = QuickUI.Control.extend({
 	className: "VerticalAlign"
+});
+
+//
+// VerticalPanels
+//
+VerticalPanels = QuickUI.Control.extend({
+	className: "VerticalPanels",
+	render: function() {
+		QuickUI.Control.prototype.render.call(this);
+		this.setClassProperties(QuickUI.Control, {
+			"content": [
+				" ",
+				this.rowTop = $("<div id=\"rowTop\" class=\"minimumHeight\" />").items(
+					" ",
+					this.VerticalPanels_top = $("<div id=\"VerticalPanels_top\" />")[0],
+					" "
+				)[0],
+				" ",
+				this.VerticalPanels_content = $("<div id=\"VerticalPanels_content\" />")[0],
+				" ",
+				this.rowBottom = $("<div id=\"rowBottom\" class=\"minimumHeight\" />").items(
+					" ",
+					this.VerticalPanels_bottom = $("<div id=\"VerticalPanels_bottom\" />")[0],
+					" "
+				)[0],
+				" "
+			]
+		});
+	}
+});
+$.extend(VerticalPanels.prototype, {
+    bottom: QuickUI.Element("VerticalPanels_bottom").content(),
+    content: QuickUI.Element("VerticalPanels_content").content(),
+    fill: QuickUI.Element().applyClass("fill"),
+    top: QuickUI.Element("VerticalPanels_top").content()
 });
 
 //

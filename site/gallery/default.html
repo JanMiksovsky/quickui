@@ -13,32 +13,15 @@
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
 <script type="text/javascript" src="../lib/quickui.js"></script>
+<script type="text/javascript" src="../lib/jquery.ba-hashchange.js"></script>
 <script type="text/javascript" src="../lib/quicommon.js"></script>
 <script type="text/javascript" src="../controls/controls.js"></script>
 <script type="text/javascript" src="gallery.js"></script>
 
 <script language="JavaScript">
-
-var defaultPageClass = GalleryMainPage;
-
 $(function() {
-
-	var pageClass;
-	var pageClassName = Page.urlParameters().page;
-	if (pageClassName != null)
-	{
-		pageClass = eval(pageClassName);
-	}
-	
-	if (pageClass == null)
-	{
-		pageClass = defaultPageClass;
-	}
-	
-	$("body").control(pageClass);
-	
+    Page.trackClassFromUrl(GalleryMainPage);
 });
-
 </script>
 
 </head>
