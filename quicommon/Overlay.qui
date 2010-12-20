@@ -13,9 +13,9 @@
 <script>
 $.extend(Overlay.prototype, {
 
-	blanket: QuickUI.Property(),
-	dismissOnInsideClick: QuickUI.Property.bool(),
-	dismissOnOutsideClick: QuickUI.Property.bool(null, true),
+	blanket: Control.Property(),
+	dismissOnInsideClick: Control.Property.bool(),
+	dismissOnOutsideClick: Control.Property.bool(null, true),
 	
 	ready: function()
 	{

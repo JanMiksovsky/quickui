@@ -30,13 +30,13 @@ input {
 <script>
 $.extend(SearchBox.prototype, {
     
-    hint: QuickUI.Element("searchTerms").controlProperty("hint"),
-    query: QuickUI.Property(null, "%s"),
+    hint: Control.Element("searchTerms").controlProperty("hint"),
+    query: Control.Property(null, "%s"),
     
     ready: function() {
         var me = this;
         $(this.element).bind("goButtonClick", function() {
-            var searchTerms = QuickUI(me.searchTerms).content();
+            var searchTerms = Control(me.searchTerms).content();
             var url = me.query().replace("%s", searchTerms);
             window.location.href = url;
         });

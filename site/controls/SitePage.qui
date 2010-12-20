@@ -130,14 +130,14 @@ td {
 <script>
 $.extend(SitePage.prototype, {
 	
-	area: QuickUI.Property(),
-	content: QuickUI.Element("SitePage_content").content(),
-	navigationLinks: QuickUI.Element("SitePage_navigationLinks").content(),
-	sidebar: QuickUI.Element("SitePage_sidebar").content(),
+	area: Control.Property(),
+	content: Control.Element("SitePage_content").content(),
+	navigationLinks: Control.Element("SitePage_navigationLinks").content(),
+	sidebar: Control.Element("SitePage_sidebar").content(),
 	
 	ready: function() {
-		QuickUI(this.navigationBar).highlightCurrentArea();
-		QuickUI(this.SitePage_navigationLinks).highlightCurrentPage();
+		Control(this.navigationBar).highlightCurrentArea();
+		Control(this.SitePage_navigationLinks).highlightCurrentPage();
 	},
 	
 	title: function(value) {

@@ -24,8 +24,8 @@ Control with a content area (usually some form of text box) and an associated "G
 <script>
 $.extend(TextBoxWithButton.prototype, {
     
-    goButton: QuickUI.Element("TextBoxWithButton_goButton").content(),    
-    textBox: QuickUI.Element("TextBoxWithButton_textBox").content(),
+    goButton: Control.Element("TextBoxWithButton_goButton").content(),    
+    textBox: Control.Element("TextBoxWithButton_textBox").content(),
     
     ready: function() {
         var me = this;
@@ -57,7 +57,7 @@ $.extend(TextBoxWithButton.prototype, {
         var $goButton = $(this.TextBoxWithButton_goButton);
         if ($goButton.children().length > 0)
         {
-            var buttonControl = QuickUI($goButton.children()[0]);
+            var buttonControl = Control($goButton.children()[0]);
             if (buttonControl != null && buttonControl instanceof ButtonBase)
             {
                 buttonControl.disabled(this._isContentEmpty());

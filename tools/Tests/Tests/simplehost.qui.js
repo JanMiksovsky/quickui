@@ -1,14 +1,14 @@
 ﻿//
 // SimpleHost
 //
-SimpleHost = QuickUI.Control.extend({
+SimpleHost = Control.extend({
 	className: "SimpleHost",
 	render: function() {
-		QuickUI.Control.prototype.render.call(this);
-		this.setClassProperties(QuickUI.Control, {
+		Control.prototype.render.call(this);
+		this.setClassProperties(Control, {
 			"content": [
 				" Text ",
-				QuickUI.Control.create(Simple, {
+				Control.create(Simple, {
 					"content": "Hello, world!"
 				}),
 				" "

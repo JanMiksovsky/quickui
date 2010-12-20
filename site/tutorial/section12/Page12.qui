@@ -12,7 +12,7 @@ the user click on the name and supply a new value for it.
 To do this, we’ll create an event handler for a click event on the <Tag>span</Tag>
 that holds the name. The most convenient time to wire up the event handler is after
 the control’s markup has been fully rendered, when the <Tag>span</Tag> is guaranteed to exist.
-The QuickUI invokes a method for this purpose called QuickUI.Control.ready(), similar to the document
+The QuickUI invokes a method for this purpose called Control.ready(), similar to the document
 ready() method invoked by jQuery when a document has finished loading. By overriding a
 control’s ready() function, a control can have its own code execute when the control is
 instantiated.

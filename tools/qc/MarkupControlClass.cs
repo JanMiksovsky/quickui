@@ -8,7 +8,7 @@ namespace qc
     /// </summary>
     public class MarkupControlClass : MarkupNode
     {
-        private const string DEFAULT_CLASS_NAME = "QuickUI.Control";
+        private const string DEFAULT_CLASS_NAME = "Control";
 
         public string Name { get; set; }
         public string Script { get; set; }

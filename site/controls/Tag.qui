@@ -11,7 +11,7 @@
 
 <script>
 $.extend(Tag.prototype, {
-	content: QuickUI.Element("Tag_content").content()
+	content: Control.Element("Tag_content").content()
 });
 </script>
 

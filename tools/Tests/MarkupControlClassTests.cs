@@ -15,7 +15,7 @@ namespace Tests
             );
             MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
             Assert.AreEqual("Minimal", c.Name);
-            Assert.AreEqual("QuickUI.Control", c.BaseClassName);
+            Assert.AreEqual("Control", c.BaseClassName);
         }
 
         [Test]

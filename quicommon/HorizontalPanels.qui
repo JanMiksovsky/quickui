@@ -34,10 +34,10 @@
 
 <script>
 $.extend(HorizontalPanels.prototype, {
-    content: QuickUI.Element("HorizontalPanels_content").content(),
-    fill: QuickUI.Element().applyClass("fill"),
-    left: QuickUI.Element("HorizontalPanels_left").content(),
-    right: QuickUI.Element("HorizontalPanels_right").content(),
+    content: Control.Element("HorizontalPanels_content").content(),
+    fill: Control.Element().applyClass("fill"),
+    left: Control.Element("HorizontalPanels_left").content(),
+    right: Control.Element("HorizontalPanels_right").content(),
 });
 </script>
 

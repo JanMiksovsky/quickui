@@ -7,9 +7,9 @@ $.extend(Gradient.prototype, {
         this._redraw();
     },
     
-    end: QuickUI.Property(function() { this._redraw(); }),
-    direction: QuickUI.Property(function() { this._redraw(); }, "vertical"),
-    start: QuickUI.Property(function() { this._redraw(); }),
+    end: Control.Property(function() { this._redraw(); }),
+    direction: Control.Property(function() { this._redraw(); }, "vertical"),
+    start: Control.Property(function() { this._redraw(); }),
     
     _redraw: function() {
         var direction = this.direction();

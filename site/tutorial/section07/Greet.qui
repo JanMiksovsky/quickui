@@ -4,8 +4,8 @@
 
 <script>
 $.extend(Greet.prototype, {
-	content: QuickUI.Element("Greet_content").content(),
-	punctuation: QuickUI.Element("Greet_punctuation").content()
+	content: Control.Element("Greet_content").content(),
+	punctuation: Control.Element("Greet_punctuation").content()
 });
 </script>
 

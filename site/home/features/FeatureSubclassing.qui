@@ -36,7 +36,7 @@ components.
 
 &lt;script&gt;
 $.extend(OrangeDialog.prototype, {
-buttons: QuickUI.Element(
+buttons: Control.Element(
   "OrangeDialog_buttons").content(),
 …
 });

@@ -19,10 +19,10 @@
 <script>
 $.extend(Greet.prototype, {
 	
-	content: QuickUI.Element("Greet_content").content(),
-	enabled: QuickUI.Element("Greet_content").applyClass("enabled"),
-	punctuation: QuickUI.Element("Greet_punctuation").content(),
-	text: QuickUI.Element("Greet_content").text(),
+	content: Control.Element("Greet_content").content(),
+	enabled: Control.Element("Greet_content").applyClass("enabled"),
+	punctuation: Control.Element("Greet_punctuation").content(),
+	text: Control.Element("Greet_content").text(),
 
 	ready: function() {
 		var self = this;

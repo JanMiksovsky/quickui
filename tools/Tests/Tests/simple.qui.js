@@ -1,11 +1,11 @@
 ﻿//
 // Simple
 //
-Simple = QuickUI.Control.extend({
+Simple = Control.extend({
 	className: "Simple",
 	render: function() {
-		QuickUI.Control.prototype.render.call(this);
-		this.setClassProperties(QuickUI.Control, {
+		Control.prototype.render.call(this);
+		this.setClassProperties(Control, {
 			"content": [
 				" ",
 				this.Simple_content = $("<span id=\"Simple_content\" />")[0],

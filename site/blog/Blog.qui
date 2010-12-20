@@ -20,7 +20,7 @@ $.extend(Blog.prototype, {
         // this._reload();
     },
 
-    url: QuickUI.Property(function() {
+    url: Control.Property(function() {
         this.loaded = false;
         // this._reload();
     }),

@@ -12,10 +12,10 @@ browser in use supports a given property defined by $.support.
 
 <script>
 $.extend(IfBrowser.prototype, {
-	browser: QuickUI.Property(),
-	content: QuickUI.Element("IfBrowser_content").content(),
-	elseContent: QuickUI.Element("IfBrowser_elseContent").content(),
-	support: QuickUI.Property(),
+	browser: Control.Property(),
+	content: Control.Element("IfBrowser_content").content(),
+	elseContent: Control.Element("IfBrowser_elseContent").content(),
+	support: Control.Property(),
 	
 	ready: function() {
 		var usingSpecifiedBrowser = (this.browser() == undefined) || $.browser[this.browser()];

@@ -30,7 +30,7 @@ a#link {
 <script>
 $.extend(SourceCode.prototype, {
 	
-	content: QuickUI.Element("SourceCode_content").content(),
+	content: Control.Element("SourceCode_content").content(),
 	
 	fileName: function(path) {
 		var pathNames = path.split("/");
@@ -39,7 +39,7 @@ $.extend(SourceCode.prototype, {
 			: pathNames[pathNames.length - 1];
 	},
 	
-	sourceFile: QuickUI.Property(function(value) {
+	sourceFile: Control.Property(function(value) {
 		var self = this;
 		// Load the file.
 		$.get(value, function(data) {

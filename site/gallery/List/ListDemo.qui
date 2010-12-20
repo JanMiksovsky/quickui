@@ -17,7 +17,7 @@ $.extend(ListDemo.prototype, {
         ];
         
         // Render each member of the array as a list item.
-        QuickUI(this.buttonList).items(data);
+        Control(this.buttonList).items(data);
     }
 });
 </script>

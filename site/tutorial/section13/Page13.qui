@@ -20,7 +20,7 @@ to false, the control will ignore clicks:
 <SourceCode sourceFile="Greet.qui" />
 
 <p>
-The enabled property is defined by calling the helper function QuickUI.Element().applyClass,
+The enabled property is defined by calling the helper function Control.Element().applyClass,
 which returns a function that adds or removes a CSS class from a named element.
 The resulting Greet.enabled() function can be called with no parameters to obtain a boolean
 that indicates whether the CSS class is currently applied. Alternatively, a boolean

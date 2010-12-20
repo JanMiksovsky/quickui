@@ -23,7 +23,7 @@ So we can replace the above property definition with this one:
 </p>
 
 <pre>
-content: QuickUI.Element("Greet_content").content()
+content: Control.Element("Greet_content").content()
 </pre>
 
 <p>
@@ -47,7 +47,7 @@ Quick markup language, to afford the developer more flexibility.
 <h2>Defining multiple “slots” with additional properties</h2>
 
 <p>
-Let’s adapt our Greet control to use the QuickUI.Element() property factory above.
+Let’s adapt our Greet control to use the Control.Element() property factory above.
 And since it’s so easy to define new control properties, let’s extend our Greet control
 with an additional property to control the type of punctuation used at the end of the
 greeting:

@@ -5,7 +5,7 @@
 $.extend(GoogleAnalytics.prototype, {
     
     // The Google Analytics profile ID
-    profileId: QuickUI.Property(),
+    profileId: Control.Property(),
     
     ready: function() {
         

@@ -19,7 +19,7 @@
 $.extend(Page.prototype, {
 	
 	// If true, have the page fill its container.
-	fill: QuickUI.Element().applyClass("fill"),
+	fill: Control.Element().applyClass("fill"),
 
     urlParameters: function() {
         return Page.urlParameters();
@@ -117,7 +117,7 @@ $.extend(Page, {
 /*
  * General utility functions made available to all controls.
  */
-$.extend(QuickUI.Control.prototype, {
+$.extend(Control.prototype, {
 	
 	/*
 	 * Look up the page hosting a control.

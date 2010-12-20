@@ -26,7 +26,7 @@ This control doesn’t define a <Tag>content</Tag> tag. Instead it uses a tag
 we haven’t seen yet: a <Tag>prototype</Tag>.
 A control class’ <Tag>prototype</Tag> identifies an object that will
 created to serve as the prototype or starting point for new instances of Greet.
-If no prototype is specified, the default prototype is the base QuickUI.Control
+If no prototype is specified, the default prototype is the base Control
 class. The Quick markup above overrides this default behavior, and specifies that
 new instances of the EmphaticGreet class should be created by first instantiating
 the Greet class. The generated code for EmphaticGreet will see to it that

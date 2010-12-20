@@ -61,7 +61,7 @@ button {
 <script>
 $.extend(SpriteButton.prototype, {
 	
-	content: QuickUI.Element("SpriteButton_content").content(),
+	content: Control.Element("SpriteButton_content").content(),
 
 	ready: function() {
 		SpriteButton.superProto.ready.call(this);
@@ -71,10 +71,10 @@ $.extend(SpriteButton.prototype, {
 			.focus(function() { self.focus(); });
 	},
 	
-	cellHeight: QuickUI.Element().css("height", function(value) {
+	cellHeight: Control.Element().css("height", function(value) {
 		$(this.SpriteButton_content).height(value + "px");
-		QuickUI(this.backgroundLeft).cellHeight(value);
-		QuickUI(this.backgroundRight).cellHeight(value);
+		Control(this.backgroundLeft).cellHeight(value);
+		Control(this.backgroundRight).cellHeight(value);
 	}),
 	
 	disabled: function(value) {
@@ -85,13 +85,13 @@ $.extend(SpriteButton.prototype, {
 		return SpriteButton.superProto.disabled.call(this, value);
 	},
 	
-	image: QuickUI.Element("backgroundLeft").controlProperty("image", function(value) {
-		QuickUI(this.backgroundRight).image(value);
+	image: Control.Element("backgroundLeft").controlProperty("image", function(value) {
+		Control(this.backgroundRight).image(value);
 	}),
 	
 	renderButtonState: function(buttonState) {
-		QuickUI(this.backgroundLeft).currentCell(buttonState);
-		QuickUI(this.backgroundRight).currentCell(buttonState);
+		Control(this.backgroundLeft).currentCell(buttonState);
+		Control(this.backgroundRight).currentCell(buttonState);
 	}
 });
 </script>

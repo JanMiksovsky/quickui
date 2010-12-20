@@ -28,11 +28,11 @@ accessible as JavaScript class members.
 &lt;script&gt;
 $.extend(Recipe.prototype, {
 
-content: QuickUI.Element(
+content: Control.Element(
   "Recipe_content").content(),
-name: QuickUI.Element(
+name: Control.Element(
   "Recipe_name").content(),
-rating: QuickUI.Property.integer(
+rating: Control.Property.integer(
   function(rating) {
     $(this.Recipe_rating).text(
       "*****".substr(0, rating));

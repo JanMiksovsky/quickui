@@ -29,11 +29,11 @@
 
 <script>
 $.extend(GalleryPage.prototype, {
-	demo: QuickUI.Element("GalleryPage_demo").content(),
-	notes: QuickUI.Element("GalleryPage_notes").content(),
-	sourceFileControl: QuickUI.Element("sourceCodeControl").controlProperty("sourceFile"),
-	sourceFileExample: QuickUI.Element("sourceCodeExample").controlProperty("sourceFile"),
-	summary: QuickUI.Element("GalleryPage_summary").content()
+	demo: Control.Element("GalleryPage_demo").content(),
+	notes: Control.Element("GalleryPage_notes").content(),
+	sourceFileControl: Control.Element("sourceCodeControl").controlProperty("sourceFile"),
+	sourceFileExample: Control.Element("sourceCodeExample").controlProperty("sourceFile"),
+	summary: Control.Element("GalleryPage_summary").content()
 });
 </script>
 

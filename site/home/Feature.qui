@@ -70,11 +70,11 @@ pre {
 
 <script>
 $.extend(Feature.prototype, {
-    control: QuickUI.Element("Feature_control").content(),
-    description: QuickUI.Element("Feature_description").content(),
-    example: QuickUI.Element("Feature_example").content(),
-    name: QuickUI.Element("Feature_name").content(),
-    result: QuickUI.Element("Feature_result").content()
+    control: Control.Element("Feature_control").content(),
+    description: Control.Element("Feature_description").content(),
+    example: Control.Element("Feature_example").content(),
+    name: Control.Element("Feature_name").content(),
+    result: Control.Element("Feature_result").content()
 });
 </script>
 

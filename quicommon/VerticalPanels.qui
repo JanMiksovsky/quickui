@@ -37,10 +37,10 @@
 
 <script>
 $.extend(VerticalPanels.prototype, {
-    bottom: QuickUI.Element("VerticalPanels_bottom").content(),
-    content: QuickUI.Element("VerticalPanels_content").content(),
-    fill: QuickUI.Element().applyClass("fill"),
-    top: QuickUI.Element("VerticalPanels_top").content()
+    bottom: Control.Element("VerticalPanels_bottom").content(),
+    content: Control.Element("VerticalPanels_content").content(),
+    fill: Control.Element().applyClass("fill"),
+    top: Control.Element("VerticalPanels_top").content()
 });
 </script>
 

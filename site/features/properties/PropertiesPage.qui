@@ -43,7 +43,7 @@ The <Tag>span</Tag> will hold the content people pass into the control by callin
 <pre>
 &lt;script&gt;
 $.extend(Tag.prototype, {
-	<b>content: QuickUI.Element("Tag_content").content()</b>
+	<b>content: Control.Element("Tag_content").content()</b>
 });
 &lt;/script&gt;
 </pre>

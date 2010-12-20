@@ -23,8 +23,8 @@ $.extend(SpriteDemo.prototype, {
 		var self = this;
 		$(this.image).click(function(event) {
 			var mouseY = event.pageY - $(this).offset().top;
-			var cellIndex = Math.floor(mouseY / QuickUI(self.sprite).cellHeight());
-			QuickUI(self.sprite).currentCell(cellIndex);
+			var cellIndex = Math.floor(mouseY / Control(self.sprite).cellHeight());
+			Control(self.sprite).currentCell(cellIndex);
 		});
 	}
 });

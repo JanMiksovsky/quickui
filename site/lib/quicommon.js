@@ -1,15 +1,15 @@
 //
 // ButtonBase
 //
-ButtonBase = QuickUI.Control.extend({
+ButtonBase = Control.extend({
 	className: "ButtonBase"
 });
 $.extend(ButtonBase.prototype, {
 	
-	isFocused: QuickUI.Property.bool(null, false),
-	isKeyPressed: QuickUI.Property.bool(null, false),
-	isMouseButtonDown: QuickUI.Property.bool(null, false),
-	isMouseOverControl: QuickUI.Property.bool(null, false),
+	isFocused: Control.Property.bool(null, false),
+	isKeyPressed: Control.Property.bool(null, false),
+	isMouseButtonDown: Control.Property.bool(null, false),
+	isMouseOverControl: Control.Property.bool(null, false),
 	
 	ready: function() {
 		var self = this;
@@ -67,7 +67,7 @@ $.extend(ButtonBase.prototype, {
 		return ButtonBase.state.normal;
 	},
 
-    disabled: QuickUI.Element().applyClass("disabled", function(disabled) {
+    disabled: Control.Element().applyClass("disabled", function(disabled) {
 		this.renderButton();
 	}),
 	
@@ -144,11 +144,11 @@ $.extend(ButtonBase, {
 //
 // HorizontalPanels
 //
-HorizontalPanels = QuickUI.Control.extend({
+HorizontalPanels = Control.extend({
 	className: "HorizontalPanels",
 	render: function() {
-		QuickUI.Control.prototype.render.call(this);
-		this.setClassProperties(QuickUI.Control, {
+		Control.prototype.render.call(this);
+		this.setClassProperties(Control, {
 			"content": [
 				" ",
 				this.HorizontalPanels_left = $("<div id=\"HorizontalPanels_left\" class=\"minimumWidth\" />")[0],
@@ -162,20 +162,20 @@ HorizontalPanels = QuickUI.Control.extend({
 	}
 });
 $.extend(HorizontalPanels.prototype, {
-    content: QuickUI.Element("HorizontalPanels_content").content(),
-    fill: QuickUI.Element().applyClass("fill"),
-    left: QuickUI.Element("HorizontalPanels_left").content(),
-    right: QuickUI.Element("HorizontalPanels_right").content(),
+    content: Control.Element("HorizontalPanels_content").content(),
+    fill: Control.Element().applyClass("fill"),
+    left: Control.Element("HorizontalPanels_left").content(),
+    right: Control.Element("HorizontalPanels_right").content(),
 });
 
 //
 // IfBrowser
 //
-IfBrowser = QuickUI.Control.extend({
+IfBrowser = Control.extend({
 	className: "IfBrowser",
 	render: function() {
-		QuickUI.Control.prototype.render.call(this);
-		this.setClassProperties(QuickUI.Control, {
+		Control.prototype.render.call(this);
+		this.setClassProperties(Control, {
 			"content": [
 				" ",
 				this.IfBrowser_content = $("<span id=\"IfBrowser_content\" />")[0],
@@ -187,10 +187,10 @@ IfBrowser = QuickUI.Control.extend({
 	}
 });
 $.extend(IfBrowser.prototype, {
-	browser: QuickUI.Property(),
-	content: QuickUI.Element("IfBrowser_content").content(),
-	elseContent: QuickUI.Element("IfBrowser_elseContent").content(),
-	support: QuickUI.Property(),
+	browser: Control.Property(),
+	content: Control.Element("IfBrowser_content").content(),
+	elseContent: Control.Element("IfBrowser_elseContent").content(),
+	support: Control.Property(),
 	
 	ready: function() {
 		var usingSpecifiedBrowser = (this.browser() == undefined) || $.browser[this.browser()];
@@ -204,12 +204,12 @@ $.extend(IfBrowser.prototype, {
 //
 // List
 //
-List = QuickUI.Control.extend({
+List = Control.extend({
 	className: "List"
 });
 $.extend(List.prototype, {
     
-    itemClass: QuickUI.Property(
+    itemClass: Control.Property(
         function() { this._refresh(); },
         null,
         function(className) {
@@ -217,7 +217,7 @@ $.extend(List.prototype, {
         }
     ),
         
-    items: QuickUI.Property(function() { this._refresh(); }),
+    items: Control.Property(function() { this._refresh(); }),
     
     //
     // This mapFn should be a function that accepts one object
@@ -225,7 +225,7 @@ $.extend(List.prototype, {
     // properties map directly to property settors defined by the
     // target itemClass.
     //
-    mapFn: QuickUI.Property(),
+    mapFn: Control.Property(),
     
     // Allows items and mapFn to both be set in one step.
     setItems: function(items, mapFn) {
@@ -257,7 +257,7 @@ $.extend(List.prototype, {
                     // Use the item as is for the control's properties.
                     properties = item;
                 }
-                var control = QuickUI.Control.create(itemClass, properties);
+                var control = Control.create(itemClass, properties);
                 return control;
             });
             $(this.element).items(controls);
@@ -269,14 +269,14 @@ $.extend(List.prototype, {
 //
 // Overlay
 //
-Overlay = QuickUI.Control.extend({
+Overlay = Control.extend({
 	className: "Overlay"
 });
 $.extend(Overlay.prototype, {
 
-	blanket: QuickUI.Property(),
-	dismissOnInsideClick: QuickUI.Property.bool(),
-	dismissOnOutsideClick: QuickUI.Property.bool(null, true),
+	blanket: Control.Property(),
+	dismissOnInsideClick: Control.Property.bool(),
+	dismissOnOutsideClick: Control.Property.bool(null, true),
 	
 	ready: function()
 	{
@@ -377,7 +377,7 @@ $.extend(Overlay.prototype, {
 //
 // Page
 //
-Page = QuickUI.Control.extend({
+Page = Control.extend({
 	className: "Page"
 });
 /*
@@ -386,7 +386,7 @@ Page = QuickUI.Control.extend({
 $.extend(Page.prototype, {
 	
 	// If true, have the page fill its container.
-	fill: QuickUI.Element().applyClass("fill"),
+	fill: Control.Element().applyClass("fill"),
 
     urlParameters: function() {
         return Page.urlParameters();
@@ -484,7 +484,7 @@ $.extend(Page, {
 /*
  * General utility functions made available to all controls.
  */
-$.extend(QuickUI.Control.prototype, {
+$.extend(Control.prototype, {
 	
 	/*
 	 * Look up the page hosting a control.
@@ -515,16 +515,16 @@ Popup = Overlay.extend({
 //
 // PopupButton
 //
-PopupButton = QuickUI.Control.extend({
+PopupButton = Control.extend({
 	className: "PopupButton",
 	render: function() {
-		QuickUI.Control.prototype.render.call(this);
-		this.setClassProperties(QuickUI.Control, {
+		Control.prototype.render.call(this);
+		this.setClassProperties(Control, {
 			"content": [
 				" ",
 				this.PopupButton_content = $("<div id=\"PopupButton_content\" />")[0],
 				" ",
-				this.PopupButton_popup = QuickUI.Control.create(Popup, {
+				this.PopupButton_popup = Control.create(Popup, {
 					"id": "PopupButton_popup"
 				}),
 				" "
@@ -534,8 +534,8 @@ PopupButton = QuickUI.Control.extend({
 });
 $.extend(PopupButton.prototype, {
 	
-	content: QuickUI.Element("PopupButton_content").content(),
-	popup: QuickUI.Element("PopupButton_popup").content(),
+	content: Control.Element("PopupButton_content").content(),
+	popup: Control.Element("PopupButton_popup").content(),
 
 	ready: function()
 	{
@@ -591,11 +591,11 @@ $.extend(PopupButton.prototype, {
 //
 // Repeater
 //
-Repeater = QuickUI.Control.extend({
+Repeater = Control.extend({
 	className: "Repeater",
 	render: function() {
-		QuickUI.Control.prototype.render.call(this);
-		this.setClassProperties(QuickUI.Control, {
+		Control.prototype.render.call(this);
+		this.setClassProperties(Control, {
 			"content": [
 				" ",
 				this.Repeater_expansion = $("<div id=\"Repeater_expansion\" />")[0],
@@ -610,11 +610,11 @@ $.extend(Repeater.prototype, {
 		this.expand();
 	},
 	
-	content: QuickUI.Property(function() {
+	content: Control.Property(function() {
 		this.expand();
 	}),
 	
-	count: QuickUI.Property.integer(function(value) {
+	count: Control.Property.integer(function(value) {
 		this.expand();
 	}, 0),
 	
@@ -640,21 +640,21 @@ $.extend(Repeater.prototype, {
 //
 // Sprite
 //
-Sprite = QuickUI.Control.extend({
+Sprite = Control.extend({
 	className: "Sprite"
 });
 $.extend(Sprite.prototype, {
 	
-	image: QuickUI.Element().css("background-image"),
+	image: Control.Element().css("background-image"),
 
 	// The height of a single cell in the strip, in pixels.
-	cellHeight: QuickUI.Property(function(value) {
+	cellHeight: Control.Property(function(value) {
 		$(this.element).css("height", value + "px");
 		this.shiftBackground();
 	}),
 	
 	// The cell currently being shown.
-	currentCell: QuickUI.Property(function(value) {
+	currentCell: Control.Property(function(value) {
 		this.shiftBackground();
 	}, 0),
 	
@@ -692,7 +692,7 @@ ToggleButtonBase = ButtonBase.extend({
 });
 $.extend(ToggleButtonBase.prototype, {
 	
-	selected: QuickUI.Element().applyClass("selected"),
+	selected: Control.Element().applyClass("selected"),
 	
 	ready: function() {
 		ToggleButtonBase.superProto.ready.call(this);
@@ -713,18 +713,18 @@ $.extend(ToggleButtonBase.prototype, {
 //
 // VerticalAlign
 //
-VerticalAlign = QuickUI.Control.extend({
+VerticalAlign = Control.extend({
 	className: "VerticalAlign"
 });
 
 //
 // VerticalPanels
 //
-VerticalPanels = QuickUI.Control.extend({
+VerticalPanels = Control.extend({
 	className: "VerticalPanels",
 	render: function() {
-		QuickUI.Control.prototype.render.call(this);
-		this.setClassProperties(QuickUI.Control, {
+		Control.prototype.render.call(this);
+		this.setClassProperties(Control, {
 			"content": [
 				" ",
 				this.rowTop = $("<div id=\"rowTop\" class=\"minimumHeight\" />").items(
@@ -746,10 +746,10 @@ VerticalPanels = QuickUI.Control.extend({
 	}
 });
 $.extend(VerticalPanels.prototype, {
-    bottom: QuickUI.Element("VerticalPanels_bottom").content(),
-    content: QuickUI.Element("VerticalPanels_content").content(),
-    fill: QuickUI.Element().applyClass("fill"),
-    top: QuickUI.Element("VerticalPanels_top").content()
+    bottom: Control.Element("VerticalPanels_bottom").content(),
+    content: Control.Element("VerticalPanels_content").content(),
+    fill: Control.Element().applyClass("fill"),
+    top: Control.Element("VerticalPanels_top").content()
 });
 
 //

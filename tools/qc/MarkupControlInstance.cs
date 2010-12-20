@@ -51,7 +51,7 @@ namespace qc
         public override string JavaScript(int indentLevel)
         {
             return Template.Format(
-                "{VariableDeclaration}QuickUI.Control.create({ClassName}{ControlConstructorArguments})",
+                "{VariableDeclaration}Control.create({ClassName}{ControlConstructorArguments})",
                 new
                 {
                     VariableDeclaration = EmitVariableDeclaration(),

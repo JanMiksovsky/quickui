@@ -41,10 +41,10 @@
 <script>
 $.extend(Test.prototype, {
     
-    expect: QuickUI.Element("Test_expect").content(),
-    name: QuickUI.Element("Test_name").content(),
-    result: QuickUI.Element("Test_result").content(),
-    test: QuickUI.Element("Test_test").content(),
+    expect: Control.Element("Test_expect").content(),
+    name: Control.Element("Test_name").content(),
+    result: Control.Element("Test_result").content(),
+    test: Control.Element("Test_test").content(),
     
     ready: function() {
         

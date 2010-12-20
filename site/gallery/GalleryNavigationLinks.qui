@@ -14,7 +14,7 @@
 <script>
 $.extend(GalleryNavigationLinks.prototype, {
     ready: function() {
-        QuickUI(this.listClass).items([
+        Control(this.listClass).items([
             "IfBrowser",
             "GalleryPage",
             "Gradient",

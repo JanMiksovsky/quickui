@@ -7,7 +7,7 @@
 <script>
 $.extend(ToggleButtonBase.prototype, {
 	
-	selected: QuickUI.Element().applyClass("selected"),
+	selected: Control.Element().applyClass("selected"),
 	
 	ready: function() {
 		ToggleButtonBase.superProto.ready.call(this);

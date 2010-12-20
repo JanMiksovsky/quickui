@@ -19,7 +19,7 @@ namespace Tests
             control.Properties.Add("id", new MarkupHtmlElement("foo"));
             control.Properties.Add("content", new MarkupHtmlElement("Hello"));
             Assert.AreEqual(
-                "this.foo = QuickUI.Control.create(Simple, {\n" +
+                "this.foo = Control.create(Simple, {\n" +
                 "\t\"content\": \"Hello\",\n" +
                 "\t\"id\": \"foo\"\n" +
                 "})",

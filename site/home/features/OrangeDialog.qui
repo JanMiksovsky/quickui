@@ -33,9 +33,9 @@ h1 {
 
 <script>
 $.extend(OrangeDialog.prototype, {
-    buttons: QuickUI.Element("OrangeDialog_buttons").content(),
-    content: QuickUI.Element("OrangeDialog_content").content(),
-    title: QuickUI.Element("OrangeDialog_title").content()
+    buttons: Control.Element("OrangeDialog_buttons").content(),
+    content: Control.Element("OrangeDialog_content").content(),
+    title: Control.Element("OrangeDialog_title").content()
 });
 </script>
 

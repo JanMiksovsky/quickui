@@ -1,20 +1,18 @@
 <Control name="LinkList">
 
-<prototype>
-	<QuickControl>
-		<List id="list">
-			<p>
-				<Link id="link"/>
-			</p>
-		</List>
-	</QuickControl>
-</prototype>
+<content>
+	<List id="list">
+		<p>
+			<Link id="link"/>
+		</p>
+	</List>
+</content>    
 
 <script>
 $.extend(LinkList.prototype, {
-	data: QuickUI.Element("list").controlProperty("data"),
+	data: Control.Element("list").controlProperty("data"),
 	ready: function() {
-		QuickUI(this.list).bind = function(value) {
+		Control(this.list).bind = function(value) {
 			$(this).find("#link").control().content(value);
 		};
 	}

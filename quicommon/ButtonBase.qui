@@ -16,10 +16,10 @@
 <script>
 $.extend(ButtonBase.prototype, {
 	
-	isFocused: QuickUI.Property.bool(null, false),
-	isKeyPressed: QuickUI.Property.bool(null, false),
-	isMouseButtonDown: QuickUI.Property.bool(null, false),
-	isMouseOverControl: QuickUI.Property.bool(null, false),
+	isFocused: Control.Property.bool(null, false),
+	isKeyPressed: Control.Property.bool(null, false),
+	isMouseButtonDown: Control.Property.bool(null, false),
+	isMouseOverControl: Control.Property.bool(null, false),
 	
 	ready: function() {
 		var self = this;
@@ -77,7 +77,7 @@ $.extend(ButtonBase.prototype, {
 		return ButtonBase.state.normal;
 	},
 
-    disabled: QuickUI.Element().applyClass("disabled", function(disabled) {
+    disabled: Control.Element().applyClass("disabled", function(disabled) {
 		this.renderButton();
 	}),
 	

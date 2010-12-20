@@ -13,11 +13,11 @@ $.extend(Repeater.prototype, {
 		this.expand();
 	},
 	
-	content: QuickUI.Property(function() {
+	content: Control.Property(function() {
 		this.expand();
 	}),
 	
-	count: QuickUI.Property.integer(function(value) {
+	count: Control.Property.integer(function(value) {
 		this.expand();
 	}, 0),
 	

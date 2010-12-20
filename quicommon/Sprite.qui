@@ -15,16 +15,16 @@ The images have to be stacked vertically, and all be the same height.
 
 $.extend(Sprite.prototype, {
 	
-	image: QuickUI.Element().css("background-image"),
+	image: Control.Element().css("background-image"),
 
 	// The height of a single cell in the strip, in pixels.
-	cellHeight: QuickUI.Property(function(value) {
+	cellHeight: Control.Property(function(value) {
 		$(this.element).css("height", value + "px");
 		this.shiftBackground();
 	}),
 	
 	// The cell currently being shown.
-	currentCell: QuickUI.Property(function(value) {
+	currentCell: Control.Property(function(value) {
 		this.shiftBackground();
 	}, 0),
 	

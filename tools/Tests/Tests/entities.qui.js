@@ -1,7 +1,7 @@
 //
 // Entities
 //
-Entities = QuickUI.Control.extend({
+Entities = Control.extend({
 	className: "Entities"
 });
 $.extend(Entities.prototype, {

@@ -9,7 +9,7 @@
 <script>
 $.extend(List.prototype, {
 
-	expansion: QuickUI.Element("List_expansion").content(),
+	expansion: Control.Element("List_expansion").content(),
 
 	ready: function() {
 		this.expand();
@@ -17,11 +17,11 @@ $.extend(List.prototype, {
 	
 	bind: null,
 	
-	content: QuickUI.Property(function() {
+	content: Control.Property(function() {
 		this.expand();
 	}),
 	
-	data: QuickUI.Property(function() {
+	data: Control.Property(function() {
 		this.expand();
 	}),
 	
@@ -55,7 +55,7 @@ $.extend(List.prototype, {
 	
 	cloneElementWithControl: function(element) {
 		var $newElement = $(element).clone();
-		var control = QuickUI(element);
+		var control = Control(element);
 		if (control !== undefined)
 		{
 			var newControl = new control.constructor();

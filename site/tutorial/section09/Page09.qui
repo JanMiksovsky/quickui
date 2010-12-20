@@ -38,7 +38,7 @@ In fact, this is just shorthand for an explicit form:
 In other words, the <Tag>content</Tag> within a top-level <Tag>Control</Tag>
 class defines the default contents of new instances of that class. The generated
 JavaScript code for a control class, in fact, simply creates a new instance of
-the QuickUI base class, QuickUI.Control, then invokes that class’ content()
+the QuickUI base class, Control, then invokes that class’ content()
 property setter.
 </p>
 

@@ -7,7 +7,7 @@ Instantiates an instance of another control class for each item in a list.
 <script>
 $.extend(List.prototype, {
     
-    itemClass: QuickUI.Property(
+    itemClass: Control.Property(
         function() { this._refresh(); },
         null,
         function(className) {
@@ -15,7 +15,7 @@ $.extend(List.prototype, {
         }
     ),
         
-    items: QuickUI.Property(function() { this._refresh(); }),
+    items: Control.Property(function() { this._refresh(); }),
     
     //
     // This mapFn should be a function that accepts one object
@@ -23,7 +23,7 @@ $.extend(List.prototype, {
     // properties map directly to property settors defined by the
     // target itemClass.
     //
-    mapFn: QuickUI.Property(),
+    mapFn: Control.Property(),
     
     // Allows items and mapFn to both be set in one step.
     setItems: function(items, mapFn) {
@@ -55,7 +55,7 @@ $.extend(List.prototype, {
                     // Use the item as is for the control's properties.
                     properties = item;
                 }
-                var control = QuickUI.Control.create(itemClass, properties);
+                var control = Control.create(itemClass, properties);
                 return control;
             });
             $(this.element).items(controls);

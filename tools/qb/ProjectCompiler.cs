@@ -79,7 +79,7 @@ namespace qb
 
             string outputFileNameBase = control.Name;
             if (!String.IsNullOrEmpty(control.BaseClassName) &&
-                control.BaseClassName != "QuickUI.Control")
+                control.BaseClassName != "Control")
             {
                 outputFileNameBase += "." + control.BaseClassName;
             }

@@ -23,7 +23,7 @@ $.extend(Navigator.prototype, {
 	highlightCurrentPage: function() {
 		var pageHref = window.location.href;
 		this.$(".Link").each(function() {
-			var linkHref = QuickUI(this).href();
+			var linkHref = Control(this).href();
 			var pageHrefRight = pageHref.substring(pageHref.length - linkHref.length)
 			$(this).toggleClass("highlight", pageHrefRight == linkHref);
 		});

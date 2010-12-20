@@ -10,8 +10,8 @@
 
 <script>
 $.extend(Link.prototype, {
-	content: QuickUI.Element("Link_content").content(),
-	href: QuickUI.Element("Link_content").attr("href")
+	content: Control.Element("Link_content").content(),
+	href: Control.Element("Link_content").attr("href")
 });
 </script>
 

@@ -31,8 +31,8 @@
 <script>
 $.extend(HintTextBox.prototype, {
 	
-	hint: QuickUI.Element("HintTextBox_hint").content(),
-	content: QuickUI.Element("HintTextBox_textBox").content(),
+	hint: Control.Element("HintTextBox_hint").content(),
+	content: Control.Element("HintTextBox_textBox").content(),
 	
 	ready: function() {
 		var me = this;

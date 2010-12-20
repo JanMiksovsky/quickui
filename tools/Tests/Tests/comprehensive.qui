@@ -32,7 +32,7 @@ p {
 
 <script>
 $.extend(Comprehensive.prototype, {
-  content: QuickUI.Element("Comprehensive_content").content(),
+  content: Control.Element("Comprehensive_content").content(),
   foo: function()
   {
       alert("Hello, world!");
