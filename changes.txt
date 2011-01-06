@@ -1,5 +1,6 @@
 QuickUI Version Log
 
+            0.7.8   Make "Control" (and not "QuickUI") the root of the QuickUI namespace
             0.7.7   Big fix to support jQuery 1.4.4.
             0.7.6   Ability to specify "tag" on Control class declaration
 04/06/10    0.7.5   Performance
