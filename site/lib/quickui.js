@@ -214,10 +214,8 @@ jQuery.extend(Control.prototype, {
     setProperties: function(properties) {
         for (var propertyName in properties)
         {
+            this._checkPropertyExists(propertyName);
             var value = properties[propertyName];
-            if (this[propertyName] === undefined) {
-                throw "No getter/setter functions is defined for property '" + propertyName +"'.";
-            }
             this[propertyName](value);
         }
     },
@@ -232,6 +230,7 @@ jQuery.extend(Control.prototype, {
     setClassProperties: function(setAsClass, properties) {
         for (var propertyName in properties)
         {
+            this._checkPropertyExists(propertyName);
             var value = properties[propertyName];
             setAsClass.prototype[propertyName].call(this, value);
         }
@@ -251,7 +250,18 @@ jQuery.extend(Control.prototype, {
      * By default, the root tag of the control will be a div.
      * Control classes can override this: <Control name="Foo" tag="span">
      */
-    tag: "div"
+    tag: "div",
+    
+    /*
+     * Throw an exception if a function called propertyName hasn't been defined,
+     * to assist debugging.
+     */
+    _checkPropertyExists: function(propertyName) {
+        if (this[propertyName] === undefined) {
+            var message = "Tried to access undefined getter/setter function for property \"" + propertyName + "\" on control class \"" + this.className + "\".";
+            throw message;
+        }
+    }
 
 });
 
