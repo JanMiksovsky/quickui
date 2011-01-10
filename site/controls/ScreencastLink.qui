@@ -1,0 +1,35 @@
+<Control name="ScreencastLink">
+    
+<content>
+    <img id="iconPlay" src="/resources/play.png"/>
+    <Link id="ScreencastLink_content"/>
+</content>
+
+<style>
+{
+    display: inline;
+}
+
+#iconPlay {
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+</style>
+
+<script>
+$.extend(ScreencastLink.prototype, {
+    
+    content: Control.Element("ScreencastLink_content").content(),
+    href: Control.Element("ScreencastLink_content").controlProperty("href"),
+    
+    ready: function() {
+        var self = this;
+        $(this.iconPlay).click(function() {
+            $(self.ScreencastLink_content).trigger("click");
+        });
+    }
+});
+</script>
+
+</Control>
