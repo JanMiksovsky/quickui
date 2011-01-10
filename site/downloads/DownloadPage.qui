@@ -1,7 +1,13 @@
 <Control name="DownloadPage">
 <prototype>
 <SitePage area="Download" title="Download QuickUI">
-	
+    
+<p>
+You can download the QuickUI tools here, or 
+build the QuickUI tools yourself from the
+<Link href="https://github.com/JanMiksovsky/quickui">source code</Link>.
+</p>
+    
 <h2>Windows</h2>
 
 <ol>
