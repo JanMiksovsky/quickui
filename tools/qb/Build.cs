@@ -79,6 +79,12 @@ namespace qb
         /// </summary>
         public void RemoveObsoleteFiles()
         {
+            if (!Directory.Exists(Path))
+            {
+                // No files were built.
+                return;
+            }
+            
             string[] jsFiles = Directory.GetFiles(Path, "*" + Project.fileExtensionJs);
             string[] cssFiles = Directory.GetFiles(Path, "*" + Project.fileExtensionCss);
             IEnumerable<string> allFiles = jsFiles.Concat(cssFiles);
