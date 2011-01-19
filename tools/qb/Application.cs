@@ -112,8 +112,11 @@ namespace qb
                 while (!streamReader.EndOfStream)
                 {
                     string subProject = streamReader.ReadLine();
-                    string subProjectPath = Path.Combine(projectFileFolder, subProject);
-                    projects.Add(subProjectPath);
+                    if (!String.IsNullOrEmpty(subProject))
+                    {
+                        string subProjectPath = Path.Combine(projectFileFolder, subProject);
+                        projects.Add(subProjectPath);
+                    }
                 }
             }
 
