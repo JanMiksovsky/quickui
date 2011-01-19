@@ -39,7 +39,7 @@
 
 .Overlay {
 	display: none;
-	position: fixed;
+	position: absolute;
 	z-index: 1;
 }
 
@@ -107,5 +107,6 @@
 .Dialog {
 	background-color: white;
 	border: 1px solid black;
+	position: fixed;
 }
 

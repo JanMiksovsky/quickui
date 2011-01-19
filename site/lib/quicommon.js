@@ -543,7 +543,7 @@ $.extend(PopupButton.prototype, {
 		$(this.PopupButton_content).click(function() {
 			self.showPopup();
 		});
-		var popupControl = QuickUI(this.PopupButton_popup); 
+		var popupControl = Control(this.PopupButton_popup); 
 		if (popupControl)
 		{
 			popupControl.position = function() {
