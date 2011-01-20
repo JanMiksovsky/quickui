@@ -77,7 +77,27 @@ namespace qb
                 return false;
             }
 
-            string outputFileNameBase = control.Name;
+            //string outputFileNameBase = control.Name;
+            /* Pick output file names. For a class Foo with a base class
+             * called Base, we want to end up with output files Foo.Base.js
+             * and Foo.Base.css.
+             * 
+             * Most of the time, this would be fine -- as long as the class
+             * Foo is defined in a file called Foo.qui. The file name is
+             * all the ProjectScanner has to go by when looking for files that
+             * need to be recompiled. So if class Foo is defined in a file
+             * called something like Bar.qui, then output files like Foo.Base.js
+             * couldn't be correctly identified as an output for Bar.qui.
+             * The build process would keep trying to build Bar.qui each time
+             * a build was run.
+             * 
+             * To avoid this, we name the output file a combination of the input
+             * file name and the base class name (which is ignored by the 
+             * scanner). So a class Foo defined in a file Bar.qui will generate
+             * output files Bar.Base.js and Bar.Base.css.
+             */
+            string outputFileNameBase = Path.GetFileNameWithoutExtension(quiFileName);
+
             if (!String.IsNullOrEmpty(control.BaseClassName) &&
                 control.BaseClassName != "Control")
             {
