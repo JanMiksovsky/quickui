@@ -1,6 +1,6 @@
 /*
  * QuickUI
- * Version 0.7.8
+ * Version 0.7.9
  * Modular web control framework
  * http://quickui.org/
  *
@@ -318,7 +318,7 @@ jQuery.fn.control = function(arg1, arg2) {
  * This function allows one to code against, e.g., a control element without
  * needing to track whether that element is a QuickUI control or a standard element.
  */
-jQuery.fn.controlContent = function(value) {
+jQuery.fn.content = function(value) {
 	
 	var getterResult;
     this.each(function() {
@@ -561,7 +561,7 @@ jQuery.extend(Control.ElementPropertyFactory.prototype, {
         var elementId = this.elementId;    // "this" = property generator
         return function(value) {
             var $element = Control.ElementPropertyFactory.$getElement(this, elementId);    // "this" = control
-            var result = $element.controlContent(value);
+            var result = $element.content(value);
             if (value !== undefined && setterFunction != null)
             {
                 setterFunction.call(this, value);
@@ -607,11 +607,16 @@ jQuery.extend(Control.ElementPropertyFactory.prototype, {
     /*
      * The text (only) of the element. Like $.text().
      */
-    text: function(setterFunction, defaultValue) {
+    text: function(setterFunction) {
         var elementId = this.elementId;
         return function(value) {
             var $element = Control.ElementPropertyFactory.$getElement(this, elementId);
-            return $element.text(value);
+            var result = $element.text(value);
+            if (value !== undefined && setterFunction != null)
+            {
+                setterFunction.call(this, value);
+            }
+            return result;
         };
     },
     
