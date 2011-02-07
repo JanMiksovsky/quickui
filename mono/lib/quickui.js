@@ -23,12 +23,12 @@ function QuickUI(element) {
  * A subclassable class.
  * Modeled after John Resig's "Simple Javascript Inheritance".
  */
-QuickUI.Class = function() {};
+Class = function() {};
 
 /*
  * Create a subclass of this class.
  */
-QuickUI.Class.extend = function(properties) {
+Class.extend = function(properties) {
 	var subclass = function() {};
 	subclass.prototype = new this();
 	subclass.prototype.constructor = subclass;
@@ -50,7 +50,7 @@ QuickUI.Class.extend = function(properties) {
  * Base QuickUI control class.
  * All compiled Quick controls ultimately derive from this class.
  */
-QuickUI.Control = QuickUI.Class.extend({
+QuickUI.Control = Class.extend({
     
     /* Use jQuery to search within the control's DOM. */
     $: function(selector)
