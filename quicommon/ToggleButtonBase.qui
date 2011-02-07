@@ -20,8 +20,8 @@ $.extend(ToggleButtonBase.prototype, {
 		});
 	},
 	
-	toggle: function() {
-		this.selected(!this.selected());
+	toggle: function(value) {
+		this.selected(value || !this.selected());
 	}
 });
 </script>

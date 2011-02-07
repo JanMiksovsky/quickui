@@ -66,6 +66,8 @@ $.extend(Overlay.prototype, {
 			// this.blanket(null);
 			$(this.blanket()).hide();
 		}
+		
+        $(this.element).trigger("overlayClosed");
 	},
 	
 	/* Return the maximum Z-index in use by the page and its top-level controls. */
@@ -110,6 +112,8 @@ $.extend(Overlay.prototype, {
 			.css("z-index", maximumZIndex + 2)
 			.show();
 		this.position();
+		
+		$(this.element).trigger("overlayOpened");
 	}
 });
 </script>
