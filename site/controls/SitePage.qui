@@ -2,29 +2,29 @@
 
 <prototype>
 	<Page fill="true">
+	
 	    <GoogleAnalytics profileId="UA-11520232-1" />
-		<table id="tableMain">
-			<tr id="topRow">
-				<td id="logoCell">
-					<Link href="/home/default.html" id="logotype">
-						<span class="bracket">&lt;</span>QuickUI<span class="bracket">&gt;</span>
-					</Link>
-					<div id="tagline">Web control framework</div>
-				</td>
-				<td id="topNavigation"><NavigationBar id="navigationBar"/></td>
-			</tr>
-			<tr>
-				<td id="leftNavigation">
-					<h1> </h1> <!-- h1 won't actually appear, just used for space -->
+	    
+		<div id="tableMain">
+		
+			<div id="topRow">
+				<Logo id="logo"/>
+				<NavigationBar id="navigationBar"/>
+			</div>
+			
+			<div>
+				<div id="leftNavigation">
+					<h1/> <!-- Won't actually appear, just used for space -->
 					<Navigator id="SitePage_navigationLinks"/>
 					<div id="SitePage_sidebar" />
-				</td>
-				<td id="pageCanvas">
+				</div>
+				<div id="pageCanvas">
 					<h1 id="SitePage_title" />
 					<div id="SitePage_content" />
-				</td>
-			</tr>
-		</table>
+				</div>
+			</div>
+			
+		</div>
 	</Page>
 </prototype>
 
@@ -41,12 +41,16 @@
 
 #tableMain {
 	border-collapse: collapse;
+	display: table;
 	height: 100%;
     position: absolute;
 	width: 100%;
 }
-
-td {
+#tableMain > * {
+	display: table-row;
+}
+#tableMain > * > * {
+	display: table-cell;
 	padding: 20px;
 	vertical-align: top;
 }
@@ -59,27 +63,11 @@ td {
 	color: white;
 }
 
-#logoCell {
+#logo {
 	vertical-align: bottom;
 }
 
-#logotype a {
-	border: none !important;
-	color: white !important;
-	font-size: 24pt;
-	font-weight: bold;
-}
-
-.bracket {
-	color: #D7C5B4;
-	font-weight: normal;
-}
-
-#tagline {
-	font-size: 10pt;
-}
-
-#topNavigation {
+#navigationBar {
 	padding-left: 40px;
 	vertical-align: bottom;
 }
