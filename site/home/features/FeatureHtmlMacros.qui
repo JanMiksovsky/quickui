@@ -6,10 +6,12 @@
 
 <description>
 
-Define your own tag to stand for a block of HTML content. This content will get inserted wherever you use that tag.
-
 <p>
     <ScreencastLink href="http://www.youtube.com/watch?v=LF8agaCt0v4">Video: Creating an HTML macro</ScreencastLink>
+</p>
+
+<p>
+Define your own tag to stand for a block of HTML content. This content will get inserted wherever you use that tag.
 </p>
 
 </description>

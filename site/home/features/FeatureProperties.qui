@@ -5,12 +5,20 @@
 <name>Easy property definition</name>
 
 <description>
+
+<p>
+    <ScreencastLink href="http://www.youtube.com/watch?v=SX4Wt6eYg4M">Video: Defining control properties in QuickUI</ScreencastLink>
+</p>
+
+<p>
 The QuickUI runtime includes a range of helper functions that make it trivial
 to define properties on a control class and map the property values to (and from)
 control DOM element content, CSS styles, and more. Properties can be specified
 in markup as tag attributes or tag content. Compound property syntax lets the markup
 for control consumers define rich property values. All proprties are directly
 accessible as JavaScript class members.
+</p>
+
 </description>
 
 <control>
