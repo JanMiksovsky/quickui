@@ -25,7 +25,7 @@ These tools run on Windows and OS/X (via the Mono project). The generated JavaSc
 makes use of the <Link href="http://jquery.com">jQuery</Link> library to
 build the web user interface on demand. QuickUI also includes a run-time library.
 Overall QuickUI is targetted at and tested against the mainstream browsers:
-Apple Safari 4.x, Google Chrome 3.x, Internet Explorer 8.x, and Mozilla Firefox 3.x.
+Apple Safari, Google Chrome, Internet Explorer 8.x, and Mozilla Firefox.
 </p>
 <p>
 The following are brief examples of some aspects of QuickUI. Each demo shows
