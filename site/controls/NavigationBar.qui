@@ -4,6 +4,7 @@
 	<NavigationLink href="/home/default.html">Home</NavigationLink>
 	<NavigationLink href="/downloads/default.html">Download</NavigationLink>
 	<NavigationLink href="/tutorial/section01/default.html">Tutorial</NavigationLink>
+	<NavigationLink href="/screencasts/default.html">Screencasts</NavigationLink>
 	<NavigationLink href="/gallery/default.html">Gallery</NavigationLink>
 	<NavigationLink href="http://groups.google.com/group/quickui">Discuss</NavigationLink>
 	<NavigationLink href="https://github.com/JanMiksovsky/quickui">Contribute</NavigationLink>
