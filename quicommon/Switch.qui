@@ -1,7 +1,7 @@
-<!-- Pick exactly one child to show. Like a switch statement, but for elements. -->
+<!-- Pick exactly one child to show. -->
 
 <Control name="Switch">
-    
+
 <style>
 .hidden {
 	display: none !important;
@@ -12,26 +12,45 @@
 $.extend(Switch.prototype, {
 	
 	ready: function() {
-		this.index(0);
+	    if ($(this.element).children().not(".hidden").length > 1)
+	    {
+            // Show first child by default. 
+            this.index(0);
+	    }
 	},
     
-    index: function(value)
-    {
-        if (value === undefined)
+    // The currently visible child.
+    activeChild: function(activeChild) {
+        if (activeChild === undefined)
         {
-            return $(this.element).children().indexOf(this.selectedChild);
+            return $(this.element).children().not(".hidden")[0];
         }
         else
         {
-            this.selectedChild($(this.element).children()[value]);
+            /*
+             * Apply a "hidden" style instead of just forcing display to none.
+             * If we did that, we would have no good way to undo the hiding.
+             * A simple .toggle(true) would set display: block, which wouldn't
+             * be what we'd want for inline elements.
+             */
+            $(this.element).children().not(activeChild).toggleClass("hidden", true);
+            $(activeChild).toggleClass("hidden", false);
         }
     },
     
-    selectedChild: Control.Property(function(newSelectedChild) {
-		$(this.element).children().toggleClass("hidden", true);
-		$(newSelectedChild).toggleClass("hidden", false);
-    })
-    
+    // The index of the currently visible child.
+    index: function(index)
+    {
+        if (index === undefined)
+        {
+            return $(this.element).children().index(this.activeChild());
+        }
+        else
+        {
+            this.activeChild($(this.element).children()[index]);
+        }
+    }
+        
 });
 </script>
 

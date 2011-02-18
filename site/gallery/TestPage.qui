@@ -1,0 +1,20 @@
+<Control name="TestPage">
+    
+<content>
+    <VerticalAlign>
+        <div>Hello</div>
+    </VerticalAlign>
+</content>
+
+<style>
+{
+    height: 400px;
+}
+
+.VerticalAlign {
+    background-color: #e0e0e0;
+    height: 100%;
+}
+</style>
+
+</Control>

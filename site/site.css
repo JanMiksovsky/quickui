@@ -1,11 +1,13 @@
-body {
+body, input {
     font-family: Tahoma, Arial, Helvetica, sans-serif;
+}
+
+body {
     font-size: 10pt;
 }
 
 h1 {
     color: #391c01;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
     font-size: 16pt;
     margin-top: 2em;
 }
@@ -16,7 +18,6 @@ h1:first-child {
 
 h2 {
     color: #928274;
-    font-family: Tahoma, Arial, Helvetica, sans-serif;
     font-size: 12pt;
     margin-top: 1.5em;
 }
@@ -43,4 +44,8 @@ pre {
     font-size: 12pt;
     padding: 10px;
     white-space: pre-wrap;
+}
+
+input[type="text"] {
+    font-size: 11pt;
 }
