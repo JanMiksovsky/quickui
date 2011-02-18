@@ -4,6 +4,7 @@
 	<NavigationLink href="/home/default.html">Home</NavigationLink>
 	<NavigationLink href="/downloads/default.html">Download</NavigationLink>
 	<NavigationLink href="/tutorial/section01/default.html">Tutorial</NavigationLink>
+	<NavigationLink href="/screencasts/default.html">Screencasts</NavigationLink>
 	<NavigationLink href="/gallery/default.html">Gallery</NavigationLink>
 	<NavigationLink href="http://groups.google.com/group/quickui">Discuss</NavigationLink>
 	<NavigationLink href="https://github.com/JanMiksovsky/quickui">Contribute</NavigationLink>
@@ -12,18 +13,20 @@
 <style>
 .NavigationLink {
 	font-size: 12pt;
-	margin-right: 20px;
+	margin-right: 0.5em;
+	padding: 0.25em 0.5em;
+}
+.NavigationLink.highlight {
+    background-color: #2D7AB0;
+}
+.NavigationLink:hover {
+	background-color: #47aaf0;
 }
 
 a {
 	border: none !important;
 	color: white !important;
 }
-
-a:hover {
-	background-color: #47aaf0;
-}
-
 </style>
 
 <script>

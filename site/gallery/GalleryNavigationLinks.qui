@@ -24,6 +24,7 @@ $.extend(GalleryNavigationLinks.prototype, {
             "SearchBox",
             "Sprite",
             "SpriteButton",
+            "Switch",
             "Tag",
             "TextBoxWithButton"
         ]);

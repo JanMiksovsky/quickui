@@ -327,6 +327,8 @@ $.extend(Overlay.prototype, {
 			// this.blanket(null);
 			$(this.blanket()).hide();
 		}
+		
+        $(this.element).trigger("overlayClosed");
 	},
 	
 	/* Return the maximum Z-index in use by the page and its top-level controls. */
@@ -371,6 +373,8 @@ $.extend(Overlay.prototype, {
 			.css("z-index", maximumZIndex + 2)
 			.show();
 		this.position();
+		
+		$(this.element).trigger("overlayOpened");
 	}
 });
 
@@ -679,6 +683,56 @@ $.extend(Sprite.prototype, {
 });
 
 //
+// Switch
+//
+Switch = Control.extend({
+	className: "Switch"
+});
+$.extend(Switch.prototype, {
+	
+	ready: function() {
+	    if ($(this.element).children().not(".hidden").length > 1)
+	    {
+            // Show first child by default. 
+            this.index(0);
+	    }
+	},
+    
+    // The currently visible child.
+    activeChild: function(activeChild) {
+        if (activeChild === undefined)
+        {
+            return $(this.element).children().not(".hidden")[0];
+        }
+        else
+        {
+            /*
+             * Apply a "hidden" style instead of just forcing display to none.
+             * If we did that, we would have no good way to undo the hiding.
+             * A simple .toggle(true) would set display: block, which wouldn't
+             * be what we'd want for inline elements.
+             */
+            $(this.element).children().not(activeChild).toggleClass("hidden", true);
+            $(activeChild).toggleClass("hidden", false);
+        }
+    },
+    
+    // The index of the currently visible child.
+    index: function(index)
+    {
+        if (index === undefined)
+        {
+            return $(this.element).children().index(this.activeChild());
+        }
+        else
+        {
+            this.activeChild($(this.element).children()[index]);
+        }
+    }
+        
+});
+
+//
 // ToggleButtonBase
 //
 ToggleButtonBase = ButtonBase.extend({
@@ -705,8 +759,8 @@ $.extend(ToggleButtonBase.prototype, {
 		});
 	},
 	
-	toggle: function() {
-		this.selected(!this.selected());
+	toggle: function(value) {
+		this.selected(value || !this.selected());
 	}
 });
 
