@@ -77,13 +77,13 @@ $.extend(Page, {
      * If the page then navigates to www.example.com/index.html#page=Bar, this
      * will load class Bar in situ, without forcing the browser to reload the page. 
      */
-    trackClassFromUrl: function(defaultPageClass) {
+    trackClassFromUrl: function(defaultPageClass, element) {
         
         // Watch for changes in the URL after the hash.
         $(window).hashchange(function() {
             var pageClassName = Page.urlParameters().page;
             var pageClass = pageClassName || defaultPageClass;
-            Page.loadClass(pageClass);
+            Page.loadClass(pageClass, element);
         })
             
         // Trigger a page class load now.
