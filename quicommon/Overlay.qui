@@ -14,6 +14,8 @@
 $.extend(Overlay.prototype, {
 
 	blanket: Control.Property(),
+	blanketColor: Control.Property(),
+	blanketOpacity: Control.Property(),
 	dismissOnInsideClick: Control.Property.bool(),
 	dismissOnOutsideClick: Control.Property.bool(null, true),
 	
@@ -29,9 +31,17 @@ $.extend(Overlay.prototype, {
 	},
 	
 	createBlanket: function() {
+	    
 		var newBlanket = $(this.element)
 			.after("<div id='blanket'/>")
 			.next()[0];
+			
+        var dismissOnOutsideClick = this.dismissOnOutsideClick();
+	    var color = this.blanketColor() ||
+	                    (dismissOnOutsideClick ? false : "black");
+	    var opacity = this.blanketOpacity() ||
+                        (dismissOnOutsideClick ? 0.01 : 0.25);
+			
 		var self = this;
 		$(newBlanket)
 			.click(function() {
@@ -43,12 +53,17 @@ $.extend(Overlay.prototype, {
 			.css({
 				cursor: "default",
 				position: "fixed",
-				opacity: 0.01,
+				opacity: opacity,
 				top: 0,
 				left: 0,
 				width: "100%",
 				height: "100%"
 			});
+        if (color)
+        {
+            $(newBlanket).css("background-color", color);
+        }
+        
 		return newBlanket;
 	},
 	
@@ -93,14 +108,6 @@ $.extend(Overlay.prototype, {
 		if (this.blanket() == null)
 		{
 			this.blanket(this.createBlanket());
-		}
-		
-		if (!this.dismissOnOutsideClick())
-		{
-			$(this.blanket()).css({
-				"background-color": "black",
-				opacity: 0.25
-			});
 		}
 		
 		/* Show control and blanket at the top of the Z-order. */
