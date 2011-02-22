@@ -69,6 +69,8 @@ $.extend(Page, {
             .empty()                // Remove elements
             .attr("class", "")      // Remove classes
             .control(pageClassFn);
+        
+        return $element.control();
     },
 
     /*
