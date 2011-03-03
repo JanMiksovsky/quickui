@@ -59,6 +59,15 @@ $.extend(List.prototype, {
                 return control;
             });
             $(this.element).items(controls);
+            
+            // HACK: For the time being, QuickUI controls added programmatically
+            // as a group won't have their ready() event fired. Force this to happen.
+            var c = Control._readyQueue.shift();
+            while (c)
+            {
+                c.ready();
+                c = Control._readyQueue.shift();
+            }
         }
     }
     
