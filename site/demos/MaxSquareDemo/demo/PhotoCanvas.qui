@@ -1,0 +1,62 @@
+<Control name="PhotoCanvas">
+
+<style>
+{
+    line-height: 0;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.Photo {
+    border: 10px solid white;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    display: inline-block;
+}
+</style>
+
+<script>
+$.extend(PhotoCanvas.prototype, {
+
+    ready: function() {
+        var self = this;
+        $(window).resize(function() { self._resize(); });
+        this._resize();
+    },
+    
+    // An array of URLs pointing to images.
+    photos: Control.Property(function(photos) {
+        var photoElements = $.map(photos, function(photo) {
+            return Control.create(Photo, {
+                src: photo.src,
+                href: photo.href
+            });
+        });
+        $(this.element).items(photoElements);
+        
+        // HACK to trigger invocation of new control's ready() event.
+        var c = Control._readyQueue.shift();
+        while (c)
+        {
+            c.ready();
+            c = Control._readyQueue.shift();
+        }
+        
+        this._resize();
+    }),
+
+    _resize: function() {
+        var $element = $(this.element);
+        var $children = $element.children();
+        var width = $element.width();
+        var height = $element.height();
+        var cellCount = $children.length;
+        var cellSize = maxSquare.optimalCellSize(width, height, cellCount);
+        $children.css(cellSize);
+    }    
+});  
+</script>
+
+</Control>

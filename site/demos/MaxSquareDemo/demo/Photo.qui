@@ -1,0 +1,54 @@
+<Control name="Photo">
+
+<content>
+    <img id="Photo_src"/>
+</content>
+
+<style>
+{
+    position: relative;
+}
+
+#Photo_src {
+    -moz-box-shadow: 5px 5px 10px #b0b0b0;
+    -webkit-box-shadow: 5px 5px 10px #b0b0b0;
+    box-shadow: 5px 5px 10px #b0b0b0;
+    bottom: 0;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    max-height: 100%;
+    max-width: 100%;
+    /* vertical-align: top; */
+    position: absolute;
+}
+</style>
+
+<script>
+$.extend(Photo.prototype, {
+    href: Control.Property(),
+    src: Control.Element("Photo_src").attr("src"),
+    ready: function() {
+        var self = this;
+        $(this.Photo_src).click(function() {
+            window.location.href = self.href();
+        });
+        /*
+        var $img = $(this.Photo_src);
+        $img.load(function() {
+            var image = $img[0];
+            var aspect = image.naturalWidth / image.naturalHeight;
+            var narrow = (aspect < 1);
+            var width = narrow ? "auto" : "100%";
+            var height = narrow ? "100%" : "auto";
+            $img.css({
+                width: width,
+                height: height
+            });
+        });
+        */
+    }
+});
+</script>
+
+</Control>
