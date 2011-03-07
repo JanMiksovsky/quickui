@@ -1,0 +1,6 @@
+This folder contains a demo of the MaxSquare layout algorithm.
+
+* The standalone maxSquare.js implements the algorithm, whose workings
+  are covered in the comments.
+* The running demo can be found at http://quickui.org/demos/MaxSquareDemo.
+  A "?count=<number>" parameter can be added to change the number of photos.
