@@ -92,10 +92,15 @@ maxSquare.lengthOfInscribedSquare = function(canvasWidth, canvasHeight, tableDim
  * Return the cell size if the canvas is divided with these table dimensions.
  */
 maxSquare.cellSize = function(canvasWidth, canvasHeight, tableDimensions) {
-    return {
-        width: canvasWidth / tableDimensions.columns,
-        height: canvasHeight / tableDimensions.rows
-    };
+    return (tableDimensions.columns > 0 && tableDimensions.rows > 0) 
+        ? {
+            width: canvasWidth / tableDimensions.columns,
+            height: canvasHeight / tableDimensions.rows
+          }
+        : {
+            width: 0,
+            height: 0
+        };
 }
 
 /*
