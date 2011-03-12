@@ -52,13 +52,18 @@ namespace qc
         private static XElement GetControlElement(string markup)
         {
             StringReader markupReader = new StringReader(markup);
+			
+			// Need both XmlReader and XDocument to preserve white space.
+			// By default, .Net XDocument seems to preserve white space, but
+			// Mono XDocument seems to ignore white space by default.
             XmlReaderSettings xmlReaderSettings = new XmlReaderSettings
             {
                 IgnoreComments = true,
                 IgnoreProcessingInstructions = true
             };
             XmlReader xmlReader = XmlReader.Create(markupReader, xmlReaderSettings);
-            XDocument document = XDocument.Load(xmlReader);
+            XDocument document = XDocument.Load(xmlReader, LoadOptions.PreserveWhitespace);
+			
             XElement controlElement = document.Element("Control");
 
             // Ensure the root element actually is "Control".
