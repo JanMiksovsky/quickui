@@ -59,7 +59,11 @@ $.extend(Page, {
             // Convert a string to a function.
             // Only accept strings completely composed of word characters,
             // in any effort to mitigate eval evil.
-            var pageClassName = /^\w+$/.exec(pageClass);
+            var regexFunctionName = /^[$A-Za-z_][$0-9A-Za-z_]*$/;
+            if (!regexFunctionName.test(pageClass))
+            {
+            	return null;
+            }
             pageClassFn = eval(pageClass);
         }
         
