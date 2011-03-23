@@ -47,7 +47,7 @@ $.extend(Page, {
      * If element is supplied, that element is used to instantiate the control;
      * otherwise the entire body is given over to the control. 
      */
-    loadClass: function(pageClass, element) {
+    loadClass: function(pageClass, element, properties) {
     
         var pageClassFn;
         if ($.isFunction(pageClass))
@@ -57,8 +57,8 @@ $.extend(Page, {
         else
         {
             // Convert a string to a function.
-            // Only accept strings completely composed of word characters,
-            // in any effort to mitigate eval evil.
+            // Only do the conversion if the string is a single, legal
+            // JavaScript function name.
             var regexFunctionName = /^[$A-Za-z_][$0-9A-Za-z_]*$/;
             if (!regexFunctionName.test(pageClass))
             {
@@ -72,7 +72,7 @@ $.extend(Page, {
         $element
             .empty()                // Remove elements
             .attr("class", "")      // Remove classes
-            .control(pageClassFn);
+            .control(pageClassFn, properties);
         
         return $element.control();
     },
