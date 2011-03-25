@@ -19,3 +19,6 @@ if [ -f QuickUI.zip ]; then
     rm QuickUI.zip
 fi
 7z a QuickUI.zip ../mono/* -r
+
+# Copy ZIP output to site downloads folder.
+cp QuickUI.zip ../site/downloads
