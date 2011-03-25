@@ -4,15 +4,16 @@
 
 # Clear mono lib folder.
 if [ -d ../mono/lib ]; then
-    rm -r ../mono/lib/*
+    rm -r ../mono/lib
 fi
+mkdir ../mono/lib
 
 # Copy tool outputs to lib folder.
 cp ../tools/qb/bin/Release/qb.exe ../mono/lib
 cp ../tools/qb/bin/Release/qc.exe ../mono/lib
 
 # Copy QuickUI library to lib folder.
-cp ../lib/quickui.js ../mono/lib 
+cp ../lib/quickui.js ../mono/lib
 
 # Build ZIP file for OS/X.
 if [ -f QuickUI.zip ]; then
