@@ -1,0 +1,24 @@
+#!/bin/bash
+# Gather up the QuickUI tools (binaries, scripts, etc.).
+# Relies on the ZIP utility 7-Zip from 7-zip.org.
+
+# Clear mono lib folder.
+if [ -d ../mono/lib ]; then
+    rm -r ../mono/lib/*
+fi
+
+# Copy tool outputs to lib folder.
+cp ../tools/qb/bin/Release/qb.exe ../mono/lib
+cp ../tools/qb/bin/Release/qc.exe ../mono/lib
+
+# Copy QuickUI library to lib folder.
+cp ../lib/quickui.js ../mono/lib 
+
+# Build ZIP file for OS/X.
+if [ -f QuickUI.zip ]; then
+    rm QuickUI.zip
+fi
+7z a QuickUI.zip ../mono/* -r
+
+# Copy ZIP output to site downloads folder.
+cp QuickUI.zip ../site/downloads
