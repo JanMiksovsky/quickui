@@ -12,8 +12,10 @@ mkdir ../mono/lib
 cp ../tools/qb/bin/Release/qb.exe ../mono/lib
 cp ../tools/qb/bin/Release/qc.exe ../mono/lib
 
-# Copy QuickUI library to lib folder.
+# Copy QuickUI libraries to lib folder.
 cp ../lib/quickui.js ../mono/lib
+cp ../quicommon/quicommon.js ../mono/lib
+cp ../quicommon/quicommon.css ../mono/lib
 
 # Build ZIP file for OS/X.
 if [ -f QuickUI.zip ]; then
