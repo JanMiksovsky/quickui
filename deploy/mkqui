@@ -2,26 +2,38 @@
 # Gather up the QuickUI tools (binaries, scripts, etc.).
 # Relies on the ZIP utility 7-Zip from 7-zip.org.
 
+# Get location of parent QuickUI folder relative to location of this script.
+scriptPath=$(cd ${0%/*} && echo $PWD/${0##*/})
+scriptFolder=`dirname "$scriptPath"`
+quickui="$scriptFolder/.."
+
+#display the paths to prove it works
+echo $quickui
+ls $quickui
+
 # Clear mono lib folder.
-if [ -d ../mono/lib ]; then
-    rm -r ../mono/lib
+mono="$quickui/mono"
+lib="$mono/lib"
+if [ -d $lib ]; then
+    rm -r $lib
 fi
-mkdir ../mono/lib
+mkdir $lib
 
 # Copy tool outputs to lib folder.
-cp ../tools/qb/bin/Release/qb.exe ../mono/lib
-cp ../tools/qb/bin/Release/qc.exe ../mono/lib
+cp $quickui/tools/qb/bin/Release/qb.exe $lib
+cp $quickui/tools/qb/bin/Release/qc.exe $lib
 
 # Copy QuickUI libraries to lib folder.
-cp ../lib/quickui.js ../mono/lib
-cp ../quicommon/quicommon.js ../mono/lib
-cp ../quicommon/quicommon.css ../mono/lib
+cp $quickui/lib/quickui.js $lib
+cp $quickui/quicommon/quicommon.js $lib
+cp $quickui/quicommon/quicommon.css $lib
 
 # Build ZIP file for OS/X.
-if [ -f QuickUI.zip ]; then
-    rm QuickUI.zip
+zipFile=$scriptPath/QuickUI.zip
+if [ -f $zipFile ]; then
+    rm $zipFile
 fi
-7z a QuickUI.zip ../mono/* -r
+7z a $zipFile $mono/* -r
 
 # Copy ZIP output to site downloads folder.
-cp QuickUI.zip ../site/downloads
+cp $zipFile $quickui/site/downloads
