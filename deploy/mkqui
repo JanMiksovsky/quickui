@@ -7,14 +7,12 @@ scriptPath=$(cd ${0%/*} && echo $PWD/${0##*/})
 scriptFolder=`dirname "$scriptPath"`
 quickui="$scriptFolder/.."
 
-#display the paths to prove it works
-echo $quickui
-ls $quickui
-
 # Clear mono lib folder.
 mono="$quickui/mono"
 lib="$mono/lib"
 if [ -d $lib ]; then
+    # Remove write protection on lib files like quicommon.*
+    chmod +w $lib/*
     rm -r $lib
 fi
 mkdir $lib
@@ -29,11 +27,11 @@ cp $quickui/quicommon/quicommon.js $lib
 cp $quickui/quicommon/quicommon.css $lib
 
 # Build ZIP file for OS/X.
-zipFile=$scriptPath/QuickUI.zip
+zipFile="$scriptFolder/QuickUI.zip"
 if [ -f $zipFile ]; then
     rm $zipFile
 fi
-7z a $zipFile $mono/* -r
+7z a $zipFile $mono/* -r > /dev/null
 
 # Copy ZIP output to site downloads folder.
 cp $zipFile $quickui/site/downloads
