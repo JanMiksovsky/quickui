@@ -51,7 +51,7 @@ namespace qc
         public override string JavaScript(int indentLevel)
         {
             return Template.Format(
-                "{VariableDeclaration}Control.create({ClassName}{ControlConstructorArguments})",
+                "{VariableDeclaration}{ClassName}.create({ControlConstructorArguments})",
                 new
                 {
                     VariableDeclaration = EmitVariableDeclaration(),
@@ -68,7 +68,7 @@ namespace qc
             return (!Properties.Any())
                 ? String.Empty
                 : Template.Format(
-                    ", {\n{ControlProperties}{Tabs}}",
+                    "{\n{ControlProperties}{Tabs}}",
                     new
                     {
                         ControlProperties = EmitControlProperties(indentLevel + 1),

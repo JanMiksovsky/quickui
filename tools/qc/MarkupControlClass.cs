@@ -59,27 +59,19 @@ namespace qc
         /// </summary>
         public override string JavaScript(int indentLevel)
         {
-            string renderFunction = EmitRenderFunction(indentLevel + 1);
-            string tag = EmitTag(indentLevel + 1);
+            string renderFunction = EmitRenderFunction(indentLevel);
             return Template.Format(
                 "//\n" +
                 "// {ClassName}\n" +
                 "//\n" +
-                "{ClassName} = {BaseClassName}.extend({\n" +
-                    "\tclassName: \"{ClassName}\"{Comma1}\n" +
-                    "{RenderFunction}{Comma2}{NewLine}" +
-                    "{Tag}" +
-                "});\n" +
+                "{ClassName} = {BaseClassName}.subclass(\"{ClassName}\"{Comma}{RenderFunction});\n" +
                 "{Script}\n", // Extra break at end helps delineate between successive controls in combined output.
                 new
                 {
                     ClassName = Name,
                     BaseClassName = BaseClassName,
-                    Comma1 = EmitCommaIfNotEmpty(renderFunction + tag),
+                    Comma = String.IsNullOrEmpty(renderFunction) ? "" : ", ",
                     RenderFunction = renderFunction,
-                    Comma2 = String.IsNullOrEmpty(renderFunction) || String.IsNullOrEmpty(tag) ? "" : ",",
-                    NewLine = String.IsNullOrEmpty(renderFunction) ? "" : "\n",
-                    Tag = tag,
                     Script = EmitScript()
                 });
         }
@@ -90,11 +82,6 @@ namespace qc
             {
                 return (Prototype != null) ? Prototype.ClassName : DEFAULT_CLASS_NAME;
             }
-        }
-
-        private string EmitCommaIfNotEmpty(string s)
-        {
-            return String.IsNullOrEmpty(s) ? "" : ",";
         }
 
         /// <summary>
@@ -164,11 +151,10 @@ namespace qc
             return (Content == null && Prototype == null)
                 ? String.Empty
                 : Template.Format(
-                    "{Tabs}render: function() {\n" +
-                        "{Tabs}\t{BaseClassName}.prototype.render.call(this);\n" +
-                        "{Tabs}\tthis.setClassProperties({BaseClassName}, {\n" +
+                    "{Tabs}function() {\n" +
+                        "{Tabs}\tthis.properties({\n" +
                             "{BaseClassProperties}" +
-                        "{Tabs}\t});\n" +
+                        "{Tabs}\t}, {BaseClassName});\n" +
                     "{Tabs}}",
                     new {
                         Tabs = Tabs(indentLevel),
@@ -223,22 +209,6 @@ namespace qc
             return String.IsNullOrEmpty(Script)
                 ? String.Empty
                 : Script.Trim() + "\n";
-        }
-
-        /// <summary>
-        /// Emit the control's root tag element, if defined.
-        /// </summary>
-        private string EmitTag(int indentLevel)
-        {
-            return String.IsNullOrEmpty(Tag)
-                ? String.Empty
-                : Template.Format(
-                    "{Tabs}tag: \"{RootTag}\"\n",
-                    new
-                    {
-                        Tabs = Tabs(indentLevel),
-                        RootTag = Tag
-                    });
         }
 
         /// <summary>

@@ -66,7 +66,7 @@ namespace qc
         {
             return (Id == null)
                 ? String.Empty
-                : String.Format("this.{0} = ", Id);
+                : String.Format("this.${0} = ", Id);
         }
     }
 }

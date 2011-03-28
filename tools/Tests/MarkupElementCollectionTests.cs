@@ -28,7 +28,7 @@ namespace Tests
             Assert.IsInstanceOf<MarkupHtmlElement>(items[1]);
             Assert.AreEqual(
                 "[\n" +
-                "\tthis.bar = Control.create(Bar, {\n" +
+                "\tthis.$bar = Bar.create({\n" +
                 "\t\t\"content\": \"Control content\",\n" +
                 "\t\t\"id\": \"bar\"\n" +
                 "\t}),\n" +

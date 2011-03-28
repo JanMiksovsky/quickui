@@ -97,7 +97,7 @@ namespace qc
             }
 
             return Template.Format(
-                "{VariableDeclaration}$({Html}){ChildNodes}[0]",
+                "{VariableDeclaration}$({Html}){ChildNodes}",
                 new
                 {
                     VariableDeclaration = EmitVariableDeclaration(),
@@ -136,7 +136,7 @@ namespace qc
             return (ChildNodes == null)
                 ? String.Empty
                 : Template.Format(
-                    ".items(\n{ChildNodes}{Tabs})",
+                    ".content(\n{ChildNodes}{Tabs})",
                     new
                     {
                         ChildNodes = ChildNodes.EmitItems(indentLevel + 1),
