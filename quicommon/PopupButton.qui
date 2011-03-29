@@ -11,6 +11,7 @@
 {
 	cursor: pointer;
 	display: inline-block;
+	position: relative;
 }	
 </style>
 
