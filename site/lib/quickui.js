@@ -528,13 +528,18 @@ jQuery.extend(Control.ElementPropertyFactory.prototype, {
      * Like $.toggleClass(), but if no value is supplied, the current CSS class state
      * (has / has not) is returned rather than toggling that state.
      */
-    applyClass: function(className) {
+    applyClass: function(className, setterFunction) {
         var elementId = this.elementId;
         return function(value) {
             var $element = Control.ElementPropertyFactory.$getElement(this, elementId);
-            return (value === undefined)
+            var result = (value === undefined)
                 ? $element.hasClass(className)
                 : $element.toggleClass(className, value);
+            if (value !== undefined && setterFunction != null)
+            {
+                setterFunction.call(this, value);
+            }
+            return result;
         };
     },
     
