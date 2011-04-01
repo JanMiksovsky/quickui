@@ -11,6 +11,7 @@
 {
 	cursor: pointer;
 	display: inline-block;
+	position: relative;
 }	
 </style>
 
@@ -50,23 +51,32 @@ $.extend(PopupButton.prototype, {
 		var popupHeight = $popupElement.outerHeight(true);
 
 		// Try showing popup below.
-		var top = contentTop + contentHeight;
-		if (top + popupHeight > $(document).height() &&
-            contentTop - popupHeight >= 0)         
+		var top;
+		if (contentTop + contentHeight + popupHeight > $(document).height() &&
+            contentTop - popupHeight >= 0)
 		{
             // Show popup above.
-            top = contentTop - popupHeight;
+            top = -popupHeight;
+		}
+		else
+		{
+		    // Show popup below.
+		    top = contentHeight;
 		}
 		$popupElement.css("top", top);
         
         var contentLeft = $contentElement.offset().left;
         var popupWidth = $popupElement.outerWidth(true);
-        var left = $(document).width() - popupWidth;
-        if (contentLeft + popupWidth > $(document).width() &&
-            left > 0)
+        if (contentLeft + popupWidth > $(document).width())
         {
-            // Move popup left
-            $popupElement.css("left", left);
+            // Popup will go off right edge of viewport
+            var left = $(document).width() - contentLeft - popupWidth;
+            left -= 20; // HACK to adjust for scroll bar on right; should really test for that.
+            if (contentLeft + left >= 0)
+            {
+                // Move popup left
+                $popupElement.css("left", left);
+            }
         }
 	}
 	
