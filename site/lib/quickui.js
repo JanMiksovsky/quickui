@@ -1,6 +1,6 @@
 /*
  * QuickUI
- * Version 0.7.9
+ * Version 0.7.10
  * Modular web control framework
  * http://quickui.org/
  *
@@ -100,20 +100,7 @@ jQuery.extend(Control, {
         }
         
         // Tell the control it's ready.
-        Control._readyQueue.push(control);
-        if ($element.parent().length > 0)
-        {
-            // Control is part of the document's DOM.
-            // Invoke the ready() handler of all queued controls.
-            // This will also pick up any children of this element that were
-            // added before this element was added to the document.
-            var c = Control._readyQueue.shift();
-            while (c)
-            {
-                c.ready();
-                c = Control._readyQueue.shift();
-            }
-        }
+        control.ready();
 
         return control.element;
     },
@@ -138,10 +125,7 @@ jQuery.extend(Control, {
         subclass.extend = arguments.callee;
         
         return subclass;
-    },
-    
-    // Queue of controls waiting for their ready() handler to be called.
-    _readyQueue: []
+    }
     
 });
 
