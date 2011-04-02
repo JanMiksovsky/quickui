@@ -34,4 +34,8 @@ fi
 7z a $zipFile $mono/* -r > /dev/null
 
 # Copy ZIP output to site downloads folder.
-cp $zipFile $quickui/site/downloads
+downloadsFolder="$quickui/site/downloads"
+cp $zipFile $downloadsFolder
+
+# Copy Setup app to site downloads folder.
+cp $quickui/tools/Setup/Setup/Release/*.msi $downloadsFolder
