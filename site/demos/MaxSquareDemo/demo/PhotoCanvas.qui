@@ -23,7 +23,6 @@ $.extend(PhotoCanvas.prototype, {
     ready: function() {
         var self = this;
         $(window).resize(function() { self._resize(); });
-        this._resize();
     },
     
     // An array of URLs pointing to images.
@@ -35,15 +34,6 @@ $.extend(PhotoCanvas.prototype, {
             });
         });
         $(this.element).items(photoElements);
-        
-        // HACK to trigger invocation of new control's ready() event.
-        var c = Control._readyQueue.shift();
-        while (c)
-        {
-            c.ready();
-            c = Control._readyQueue.shift();
-        }
-        
         this._resize();
     }),
 
