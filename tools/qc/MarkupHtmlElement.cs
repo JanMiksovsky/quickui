@@ -97,7 +97,7 @@ namespace qc
             }
 
             return Template.Format(
-                "{VariableDeclaration}$({Html}){ChildNodes}",
+                "{VariableDeclaration}Control({Html}){ChildNodes}",
                 new
                 {
                     VariableDeclaration = EmitVariableDeclaration(),
