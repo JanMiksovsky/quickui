@@ -3,7 +3,7 @@
 <content><span id="SampleProperties_content"/></content>
 
 <script>
-$.extend(SampleProperties.prototype, {
+SampleProperties.prototype.extend({
     content: Control.element("SampleProperties_content").content()
 });
 </script>

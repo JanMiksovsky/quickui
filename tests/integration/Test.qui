@@ -39,14 +39,14 @@
 </style>
 
 <script>
-$.extend(Test.prototype, {
+Test.prototype.extend({
     
     expect: Control.element("Test_expect").content(),
     name: Control.element("Test_name").content(),
     result: Control.element("Test_result").content(),
     test: Control.element("Test_test").content(),
     
-    ready: function() {
+    initialize: function() {
         
         var htmlActual = this.$Test_test.html();
         var htmlExpected = this.$Test_expect.html();
