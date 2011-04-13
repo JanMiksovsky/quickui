@@ -1,9 +1,12 @@
 <Control name="TestPage">
     
 <content>
-    <ButtonBase id="button">
-        Hello
-    </ButtonBase>
+	<p>
+	    <ButtonBase id="button">
+	        Show test dialog
+	    </ButtonBase>
+	</p>
+    <List id="list" itemClass="ButtonBase"/>
 </content>
 
 <script>
@@ -11,6 +14,14 @@ TestPage.prototype.extend({
 	initialize: function() {
 		this.$button.click(function() {
 			Dialog.showDialog(TestDialog);
+		});
+		this.$list.items([
+			"One",
+			"Two",
+			"Three"
+		]);
+		this.$list.find(".ButtonBase").click(function() {
+			alert("You clicked " + Control(this).content());
 		});
 	}	
 });
