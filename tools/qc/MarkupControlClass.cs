@@ -60,18 +60,24 @@ namespace qc
         public override string JavaScript(int indentLevel)
         {
             string renderFunction = EmitRenderFunction(indentLevel);
+            if (!String.IsNullOrEmpty(Tag) && String.IsNullOrEmpty(renderFunction))
+            {
+                renderFunction = "null";    // Placeholder for render function parameter so we can specify tag.
+            }
             return Template.Format(
                 "//\n" +
                 "// {ClassName}\n" +
                 "//\n" +
-                "{ClassName} = {BaseClassName}.subclass(\"{ClassName}\"{Comma}{RenderFunction});\n" +
+                "{ClassName} = {BaseClassName}.subclass(\"{ClassName}\"{Comma1}{RenderFunction}{Comma2}{Tag});\n" +
                 "{Script}\n", // Extra break at end helps delineate between successive controls in combined output.
                 new
                 {
                     ClassName = Name,
                     BaseClassName = BaseClassName,
-                    Comma = String.IsNullOrEmpty(renderFunction) ? "" : ", ",
+                    Comma1 = String.IsNullOrEmpty(renderFunction) ? "" : ", ",
                     RenderFunction = renderFunction,
+                    Comma2 = String.IsNullOrEmpty(Tag) ? "" : ", ",
+                    Tag = String.IsNullOrEmpty(Tag) ? "" : ("\"" + Tag + "\""),
                     Script = EmitScript()
                 });
         }
