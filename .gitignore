@@ -13,6 +13,7 @@ build
 quicommon/quicommon.*
 site/blog/blog.*
 site/controls/controls.*
+site/demos/MaxSquareDemo/MaxSquareDemo.*
 site/downloads/downloads.*
 site/features/features.*
 site/gallery/gallery.*
@@ -31,7 +32,7 @@ site/tutorial/section11/section11.*
 site/tutorial/section12/section12.*
 site/tutorial/section13/section13.*
 site/tutorial/section14/section14.*
-tests/tests.js
+tests/integration/integration.*
 
 deploy/QuickUI
 mono/lib

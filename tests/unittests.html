@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>QuickUI Unit Tests</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/qunit/git/qunit.css" />
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/qunit/git/qunit.js"></script>
+<script type="text/javascript" src="../lib/quickui.js"></script>
+
+<script>
+/*
+ * QUnit tests
+ */
+function runTests() {
+
+    /*
+     * Control.content() tests
+     */
+    test("Content: HTML text", function() {
+        var $c = Control.create();
+        $c.content("Hello");
+        equal($c.content(), "Hello");
+        equal($c.html(), "Hello");
+    });
+
+    test("Content: HTML text, return canonical form", function() {
+        var $c = Control.create();
+        $c.content(["Hello"]);
+        equal($c.content(), "Hello");
+        equal($c.html(), "Hello");
+    });
+    
+    test("Content: HTML array", function() {
+        var $c = Control.create();
+        var b = $("<b>there</b>")[0];
+        $c.content(["Hello", b, "world"]);
+        deepEqual($c.content(), ["Hello", b, "world"]);        
+        equal($c.html(), "Hello<b>there</b>world");
+    });
+
+    test("Content: input element", function() {
+        var $c = Control("<input type='text'/>");
+        $c.content("Hello");
+        equal($c.content(), "Hello");
+        equal($c.val(), "Hello");
+    });
+    
+    /*
+     * Control.method() tests
+     */
+    test("method", function() {
+        
+        var MyControl = Control.subclass("MyControl");
+        MyControl.prototype.foo = Control.method(function() {
+            this.content("bar");
+        });
+        
+        var $inner1;
+        var $inner2
+        var $outer = Control.create({
+            content: [
+                $inner1 = MyControl.create({ content: "Hello" }),
+                $inner2 = MyControl.create({ content: "world" })
+            ]
+        });
+        
+        $outer.$inner1 = $inner1;
+        $outer.$inner2 = $inner2;
+        MyControl($outer.find(".MyControl")).foo();
+        equal($inner1.content(), "bar");
+        equal($inner2.content(), "bar");
+    });
+        
+    /*
+     * Control.property() tests
+     */
+    test("property", function() {
+        var $c = Control.create();
+        $c.foo = Control.property();
+        $c.foo("Hello");
+        equal($c.foo(), "Hello");
+    });
+    
+    test("property: bool", function() {
+        var $c = Control.create();
+        $c.foo = Control.property.bool();
+        $c.foo("true"); // Set as string
+        equal($c.foo(), true);
+        $c.foo(false);  // Set as bool
+        equal($c.foo(), false);
+    });
+    
+    test("property: integer", function() {
+        var $c = Control.create();
+        $c.foo = Control.property.integer();
+        $c.foo("123"); // Set as string
+        equal($c.foo(), 123);
+        $c.foo(0);     // Set as integer
+        equal($c.foo(), 0);
+    });
+    
+    /*
+     * Control.element() tests
+     */
+    test("Element: root content", function() {
+        var $c = Control.create({ content: "<span>Hello</span>" });
+        $c.foo = Control.element().content();
+        var result = $c.foo();
+        equal(result.nodeName.toLowerCase(), "span");
+        equal(result.innerHTML, "Hello");
+        $c.foo("world");
+        equal($c.html(), "world");
+    });
+    
+    test("Element: element content", function() {
+        var $c = Control.create({ content: "Hello <span id='name'>Ann</span>" }).control();
+        $c.foo = Control.element("name").content();
+        $c.$name = $c.find("#name")[0];
+        equal($c.foo(), "Ann");
+        $c.foo("Bob");
+        equal($c.html(), "Hello <span id=\"name\">Bob</span>");
+    });
+    
+    test("Element: element looping", function() {
+
+        var MyControl = Control.subclass("MyControl", function() {
+            this.properties({
+                content: this.$foo = $("<span id='foo'/>")
+            }, Control);
+        });
+        MyControl.prototype.bar = Control.element("foo").content();
+
+        var $inner1 = MyControl.create({ bar: "Hello" });
+        var $inner2 = MyControl.create({ bar: "world" });
+        var $outer = Control.create({
+            content: [
+                $inner1,
+                $inner2
+            ]
+        });
+        
+        equal($outer.html(), "<div class=\"MyControl Control\"><span id=\"foo\">Hello</span></div><div class=\"MyControl Control\"><span id=\"foo\">world</span></div>");
+        var $controls = MyControl($outer.find(".MyControl"));
+        equal($controls.bar(), "Hello");
+        $controls.bar("Hi");
+        equal($outer.html(), "<div class=\"MyControl Control\"><span id=\"foo\">Hi</span></div><div class=\"MyControl Control\"><span id=\"foo\">Hi</span></div>");
+    });
+
+    test("Element: element content with setter function", function() {
+        var $c = Control.create({ content: "<div>Hello <span id='name'/>" }).control();
+        $c.$name = $c.find("#name")[0];
+        var x;
+        $c.foo = Control.element("name").content(function(name) {
+            x = name;
+        });
+        $c.foo("Ann");
+        equal(x, "Ann");
+    });
+    
+    test("Element: applyClass", function() {
+        var $c = Control.create().control();
+        $c.foo = Control.element().applyClass("enabled");
+        equal($c.foo(), false);
+        $c.foo(true);
+        equal($c.attr("class"), "Control enabled");
+        equal($c.foo(), true);
+    });
+        
+    test("Element: attr", function() {
+        var $image;
+        var $c = Control.create({
+            content: $image = $("<img/>") 
+        }).control();
+        $c.$image = $image;
+        $c.foo = Control.element("image").attr("src");
+        $c.foo("a.png");
+        equal($image.attr("src"), "a.png");
+    });
+         
+    test("Element: controlProperty", function() {
+        var $inner;
+        var $outer = Control.create({
+            content: $inner = Control.create({
+                "content": "Hello"
+            })
+        }).control();
+        $outer.$inner = $inner;
+        $outer.foo = Control.element("inner").controlProperty("content");
+        equal($outer.foo(), "Hello");
+        $outer.foo("world");
+        equal($inner.content(), "world");
+    });
+               
+    test("Element: css", function() {
+        var $c = Control.create();
+        $c.foo = Control.element().css("line-height");
+        $c.foo("20px");
+        equal($c.css("line-height"), "20px");
+    });
+                   
+    test("Element: text", function() {
+        var $c = Control.create();
+        $c.foo = Control.element().text();
+        $c.foo("Hello");
+        equal($c.text(), "Hello");
+    });
+                   
+    test("Element: visibility", function() {
+        var $c = Control.create();
+        $c.foo = Control.element().visibility();
+        equal($c.foo(), false); // control isn't in DOM, so is not visible.
+    });
+
+}
+    
+$(function() {
+    runTests();
+});
+</script>
+
+</head>
+
+<body>
+    <h1 id="qunit-header">QuickUI Unit Tests</h1>
+    <h2 id="qunit-banner"></h2>
+    <div id="qunit-testrunner-toolbar"></div>
+    <h2 id="qunit-userAgent"></h2>
+    <ol id="qunit-tests"></ol>
+    <div id="qunit-fixture">test markup, will be hidden</div>
+</body>
+
+</html>

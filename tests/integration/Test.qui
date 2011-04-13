@@ -41,25 +41,25 @@
 <script>
 $.extend(Test.prototype, {
     
-    expect: Control.Element("Test_expect").content(),
-    name: Control.Element("Test_name").content(),
-    result: Control.Element("Test_result").content(),
-    test: Control.Element("Test_test").content(),
+    expect: Control.element("Test_expect").content(),
+    name: Control.element("Test_name").content(),
+    result: Control.element("Test_result").content(),
+    test: Control.element("Test_test").content(),
     
     ready: function() {
         
-        var htmlActual = $(this.Test_test).html();
-        var htmlExpected = $(this.Test_expect).html();
-        $(this.htmlActual).text(htmlActual);
-        $(this.htmlExpected).text(htmlExpected);
+        var htmlActual = this.$Test_test.html();
+        var htmlExpected = this.$Test_expect.html();
+        this.$htmlActual.text(htmlActual);
+        this.$htmlExpected.text(htmlExpected);
         
         var equal = (htmlActual === htmlExpected);
         this.result(equal ? "Pass" : "Fail");
-        $(this.element).toggleClass("fail", !equal);
+        this.toggleClass("fail", !equal);
         
-        var me = this;
-        $(this.element).click(function() {
-            $(me.details).toggle();
+        var self = this;
+        this.click(function() {
+            self.$details.toggle();
         });
     }
 });
