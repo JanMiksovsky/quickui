@@ -10,15 +10,15 @@ Comprehensive = SampleBaseClass.subclass("Comprehensive", function() {
 				"id": "message"
 			}),
 			" ",
-			$("<div />").content(
+			Control("<div />").content(
 				" ",
-				this.$Comprehensive_content = $("<p id=\"Comprehensive_content\" />"),
+				this.$Comprehensive_content = Control("<p id=\"Comprehensive_content\" />"),
 				" "
 			),
 			" "
 		]
 	}, SampleBaseClass);
-});
+}, "div");
 Comprehensive.prototype.extend({
   content: Control.element("Comprehensive_content").content(),
   foo: function()
