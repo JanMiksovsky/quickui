@@ -17,38 +17,38 @@
 </style>
 
 <script>
-$.extend(ButtonBase.prototype, {
+ButtonBase.prototype.extend({
 	
-	isFocused: Control.Property.bool(null, false),
-	isKeyPressed: Control.Property.bool(null, false),
-	isMouseButtonDown: Control.Property.bool(null, false),
-	isMouseOverControl: Control.Property.bool(null, false),
+	isFocused: Control.property.bool(null, false),
+	isKeyPressed: Control.property.bool(null, false),
+	isMouseButtonDown: Control.property.bool(null, false),
+	isMouseOverControl: Control.property.bool(null, false),
 	
-	ready: function() {
+	initialize: function() {
 		var self = this;
-		$(this.element)
-			.blur(function(event) { self.blur(event); })
+		this
+			.blur(function(event) { self.trackBlur(event); })
 			.click(function(event) {
 				if (self.disabled())
 				{
 					event.stopImmediatePropagation();
 				}
 			})
-			.focus(function(event) { self.focus(event); })
+			.focus(function(event) { self.trackFocus(event); })
 			.hover(
-				function(event) { self.mousein(event); },
-				function(event) { self.mouseout(event); }
+				function(event) { self.trackMousein(event); },
+				function(event) { self.trackMouseout(event); }
 			)
-			.keydown (function(event) { self.keydown(event); })
-			.keyup (function(event) { self.keyup(event); })
-			.mousedown(function(event) { self.mousedown(event); })
-			.mouseup(function(event) { self.mouseup(event); });
+			.keydown (function(event) { self.trackKeydown(event); })
+			.keyup (function(event) { self.trackKeyup(event); })
+			.mousedown(function(event) { self.trackMousedown(event); })
+			.mouseup(function(event) { self.trackMouseup(event); });
 		this.renderButton();
 	},
 	
-	blur: function(event) {
+	trackBlur: function(event) {
 		
-		$(this.element).removeClass("focused");
+		this.removeClass("focused");
 
 		// Losing focus causes the button to override any key that had been pressed.
 		this.isKeyPressed(false);
@@ -80,20 +80,20 @@ $.extend(ButtonBase.prototype, {
 		return ButtonBase.state.normal;
 	},
 
-    disabled: Control.Element().applyClass("disabled", function(disabled) {
+    disabled: Control.element().applyClass("disabled", function(disabled) {
 		this.renderButton();
 	}),
 	
-	focus: function(event) {
+	trackFocus: function(event) {
         if (!this.disabled()) 
         {
-            $(this.element).addClass("focused");
+            this.addClass("focused");
             this.isFocused(true);
             this.renderButton();
         }
 	},
 	
-	keydown: function(event) {
+	trackKeydown: function(event) {
 		if (!this.disabled() && (event.keyCode == 32 /* space */ || event.keyCode == 13 /* return */))
 		{
 			this.isKeyPressed(true);		
@@ -101,39 +101,40 @@ $.extend(ButtonBase.prototype, {
 		}
 	},
 	
-	keyup: function(event) {
+	trackKeyup: function(event) {
 		this.isKeyPressed(false);
 		this.renderButton();
 	},
 	
-	mousedown: function(event) {
+	trackMousedown: function(event) {
         if (!this.disabled())
         {
-            $(this.element).addClass("pressed");
+            this.addClass("pressed");
             this.isMouseButtonDown(true);
             this.renderButton();
         }
 	},
 	
-	mousein: function(event) {
+	trackMousein: function(event) {
         if (!this.disabled()) 
         {
-            $(this.element).addClass("hovered");
+            this.addClass("hovered");
             this.isMouseOverControl(true);
             this.renderButton();
         }
 	},
 	
-	mouseout: function(event) {
-		$(this.element).removeClass("focused")
+	trackMouseout: function(event) {
+		this
+			.removeClass("focused")
 			.removeClass("hovered")
 			.removeClass("pressed");
 		this.isMouseOverControl(false);
 		this.renderButton();
 	},
 	
-	mouseup: function(event) {
-		$(this.element).removeClass("pressed");
+	trackMouseup: function(event) {
+		this.removeClass("pressed");
 		this.isMouseButtonDown(false);
 		this.renderButton();
 	},

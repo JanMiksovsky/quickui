@@ -2,12 +2,8 @@
     
 <content>
     <ButtonBase>
-        <div>Hello</div>
+        Hello
     </ButtonBase>
 </content>
-
-<style>
-
-</style>
 
 </Control>
