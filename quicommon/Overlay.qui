@@ -11,30 +11,66 @@
 </style>
 
 <script>
-$.extend(Overlay.prototype, {
+Overlay.prototype.extend({
 
-	blanket: Control.Property(),
-	blanketColor: Control.Property(),
-	blanketOpacity: Control.Property(),
-	dismissOnInsideClick: Control.Property.bool(),
-	dismissOnOutsideClick: Control.Property.bool(null, true),
+	$blanket: Control.property(),
+	blanketColor: Control.property(),
+	blanketOpacity: Control.property(),
+	dismissOnInsideClick: Control.property.bool(),
+	dismissOnOutsideClick: Control.property.bool(null, true),
 	
-	ready: function()
+	initialize: function()
 	{
 		var self = this;
-		$(this.element).click(function() {
+		this.click(function() {
 			if (self.dismissOnInsideClick())
 			{
-				self.hide();
+				self.hideOverlay();
 			}
 		});
 	},
+		
+	hideOverlay: Control.method(function()
+	{
+        this
+			.hide()
+			.css("z-index", null); // No need to define Z-order any longer.
+		if (this.$blanket() != null)
+		{
+			this.$blanket().remove();
+			this.$blanket(null);
+		}
+		
+        this.trigger("overlayClosed");
+	}),
 	
-	createBlanket: function() {
+	// Subclasses should override this to position themselves.
+	positionOverlay: Control.method(function() {}),
+	
+	showOverlay: Control.method(function()
+	{
+		if (this.$blanket() == null)
+		{
+			this.$blanket(this._createBlanket());
+		}
+		
+		/* Show control and blanket at the top of the Z-order. */
+		var maximumZIndex = this._maximumZIndex();
+		this.$blanket()
+			.css("z-index", maximumZIndex + 1)
+			.show();
+		this
+			.css("z-index", maximumZIndex + 2)
+			.show()
+			.positionOverlay()
+			.trigger("overlayOpened");
+	}),
+
+	_createBlanket: function() {
 	    
-		var newBlanket = $(this.element)
+		var $blanket = this
 			.after("<div id='blanket'/>")
-			.next()[0];
+			.next();
 			
         var dismissOnOutsideClick = this.dismissOnOutsideClick();
 	    var color = this.blanketColor() ||
@@ -43,11 +79,11 @@ $.extend(Overlay.prototype, {
                         (dismissOnOutsideClick ? 0.01 : 0.25);
 			
 		var self = this;
-		$(newBlanket)
+		$blanket
 			.click(function() {
 				if (self.dismissOnOutsideClick())
 				{
-					self.hide();
+					self.hideOverlay();
 				}
 			})
 			.css({
@@ -61,32 +97,14 @@ $.extend(Overlay.prototype, {
 			});
         if (color)
         {
-            $(newBlanket).css("background-color", color);
+            $blanket.css("background-color", color);
         }
         
-		return newBlanket;
+		return $blanket;
 	},
-	
-	hide: function()
-	{
-        /*
-		$(this.element).remove();
-        */
-        $(this.element)
-			.hide()
-			.css("z-index", null); // No need to define Z-order any longer.
-		if (this.blanket() != null)
-		{
-			// $(this.blanket()).remove();
-			// this.blanket(null);
-			$(this.blanket()).hide();
-		}
 		
-        $(this.element).trigger("overlayClosed");
-	},
-	
 	/* Return the maximum Z-index in use by the page and its top-level controls. */
-	maximumZIndex: function()
+	_maximumZIndex: function()
 	{
 		var topLevelElements = $("body").children().andSelf();
 		var zIndices = $.map(topLevelElements, function(element) {
@@ -98,29 +116,6 @@ $.extend(Overlay.prototype, {
 			}
 		});
 		return Math.max.apply(null, zIndices);
-	},
-	
-	// Subclasses should override this to position themselves.
-	position: function() {},
-	
-	show: function()
-	{
-		if (this.blanket() == null)
-		{
-			this.blanket(this.createBlanket());
-		}
-		
-		/* Show control and blanket at the top of the Z-order. */
-		var maximumZIndex = this.maximumZIndex();
-		$(this.blanket())
-			.css("z-index", maximumZIndex + 1)
-			.show();
-		$(this.element)
-			.css("z-index", maximumZIndex + 2)
-			.show();
-		this.position();
-		
-		$(this.element).trigger("overlayOpened");
 	}
 });
 </script>

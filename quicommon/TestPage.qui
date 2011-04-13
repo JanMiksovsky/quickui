@@ -1,9 +1,19 @@
 <Control name="TestPage">
     
 <content>
-    <ButtonBase>
+    <ButtonBase id="button">
         Hello
     </ButtonBase>
 </content>
+
+<script>
+TestPage.prototype.extend({
+	initialize: function() {
+		this.$button.click(function() {
+			Dialog.showDialog(TestDialog);
+		});
+	}	
+});
+</script>
 
 </Control>
