@@ -24,14 +24,18 @@
         </Switch>
         <HorizontalPanels id="horiziontalPanels">
             <left>Left</left>
-            <content>Content</content>
+            <content>Horizontal panels</content>
             <right>Right</right>
         </HorizontalPanels>
+        <VerticalPanels style="height: 200px;">
+        	<top>Top</top>
+        	<content>Vertical panels</content>
+        	<bottom>Bottom</bottom>
+        </VerticalPanels>
         <BrowserDependent ifBrowser="webkit">
             <content>You are using WebKit</content>
             <elseContent>A browser other than WebKit</elseContent>
         </BrowserDependent>
-
     </Page>
 </prototype>
 
