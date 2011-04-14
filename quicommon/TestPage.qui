@@ -7,11 +7,14 @@
     	        Show test dialog
     	    </ButtonBase>
     	    <PopupButton>
-    	        Show popup
+    	        <ButtonBase>Show popup</ButtonBase>
     	        <popup>
     	            Popup content
     	        </popup>
     	    </PopupButton>
+    	    <ToggleButton>
+    	    	Toggle
+    	    </ToggleButton>
     	</p>
         <List id="list" itemClass="ButtonBase"/>
         <Switch id="switch">
@@ -33,6 +36,16 @@
 </prototype>
 
 <style>
+.ButtonBase {
+	border: 1px solid gray;
+}
+.ButtonBase.hovered {
+	border-color: orange;
+}
+.ToggleButton.selected {
+	background-color: #ccc;
+}
+
 #horiziontalPanels {
     width: 100%;
 }

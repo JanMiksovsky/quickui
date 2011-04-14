@@ -1,0 +1,29 @@
+<Control name="ToggleButton">
+
+<prototype>
+	<ButtonBase/>
+</prototype>
+
+<script>
+ToggleButton.prototype.extend({
+	
+	selected: Control.element().applyClass("selected"),
+	
+	initialize: function() {
+		ToggleButton.superclass.prototype.initialize.call(this);
+		var me = this;
+		this.click(function() {
+            if (!me.disabled())
+            {
+                me.toggle();
+            }
+		});
+	},
+	
+	toggle: Control.method(function(value) {
+		this.selected(value || !this.selected());
+	})
+});
+</script>
+
+</Control>
