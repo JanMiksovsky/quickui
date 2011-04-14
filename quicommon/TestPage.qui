@@ -14,6 +14,11 @@
     	    </PopupButton>
     	</p>
         <List id="list" itemClass="ButtonBase"/>
+        <Switch id="switch">
+        	<div>Panel one</div>
+        	<div>Panel two</div>
+        	<div>Panel three</div>
+        </Switch>
         <HorizontalPanels id="horiziontalPanels">
             <left>Left</left>
             <content>Content</content>
@@ -23,6 +28,7 @@
             <content>You are using WebKit</content>
             <elseContent>A browser other than WebKit</elseContent>
         </BrowserDependent>
+
     </Page>
 </prototype>
 
@@ -43,8 +49,11 @@ TestPage.prototype.extend({
 			"Two",
 			"Three"
 		]);
+		var self = this;
 		this.$list.find(".ButtonBase").click(function() {
-			alert("You clicked " + Control(this).content());
+			var button = this;
+			var index = self.$list.children().index(button);
+			self.$switch.index(index);
 		});
 	}	
 });
