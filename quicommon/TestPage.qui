@@ -8,8 +8,19 @@
     	    </ButtonBase>
     	</p>
         <List id="list" itemClass="ButtonBase"/>
+        <HorizontalPanels id="horiziontalPanels">
+            <left>Left</left>
+            <content>Content</content>
+            <right>Right</right>
+        </HorizontalPanels>
     </Page>
 </prototype>
+
+<style>
+#horiziontalPanels {
+    width: 100%;
+}
+</style>
 
 <script>
 TestPage.prototype.extend({
