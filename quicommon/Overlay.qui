@@ -29,7 +29,13 @@ Overlay.prototype.extend({
 			}
 		});
 	},
-		
+	
+	closeOverlay: Control.method(function() {
+	    this
+	        .hideOverlay()
+	        .remove();
+	}),
+	
 	hideOverlay: Control.method(function()
 	{
         this
@@ -41,11 +47,8 @@ Overlay.prototype.extend({
 			this.$blanket(null);
 		}
 		
-        this.trigger("overlayClosed");
+        this.trigger("overlayClosed");  // TODO: Rename to overlayHidden? Move trigger to closeOverlay?
 	}),
-	
-	// Subclasses should override this to position themselves.
-	positionOverlay: Control.method(function() {}),
 	
 	showOverlay: Control.method(function()
 	{
@@ -62,7 +65,7 @@ Overlay.prototype.extend({
 		this
 			.css("z-index", maximumZIndex + 2)
 			.show()
-			.positionOverlay()
+			._positionOverlay()
 			.trigger("overlayOpened");
 	}),
 
@@ -116,7 +119,10 @@ Overlay.prototype.extend({
 			}
 		});
 		return Math.max.apply(null, zIndices);
-	}
+	},
+	
+	// Subclasses should override this to position themselves.
+	_positionOverlay: Control.method(function() {})
 });
 </script>
 

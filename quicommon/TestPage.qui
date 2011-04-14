@@ -6,6 +6,12 @@
     	    <ButtonBase id="button">
     	        Show test dialog
     	    </ButtonBase>
+    	    <PopupButton>
+    	        Show popup
+    	        <popup>
+    	            Popup content
+    	        </popup>
+    	    </PopupButton>
     	</p>
         <List id="list" itemClass="ButtonBase"/>
         <HorizontalPanels id="horiziontalPanels">

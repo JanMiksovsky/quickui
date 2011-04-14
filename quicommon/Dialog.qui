@@ -55,15 +55,14 @@ Dialog.prototype.extend({
 
 	cancel: Control.method(function() {
 		this
-			.hideOverlay()
-			.trigger("cancel");
+			.trigger("cancel")
+			.closeOverlay();
 	}),
 	
 	close: Control.method(function() {
 		this
-			.hideOverlay()
 			.trigger("ok")
-			.remove();
+			.closeOverlay();
 	}),
 	
 	positionOverlay: Control.method(function() {

@@ -16,37 +16,33 @@
 
 <script>
 
-$.extend(PopupButton.prototype, {
+PopupButton.prototype.extend({
 	
-	content: Control.Element("PopupButton_content").content(),
-	popup: Control.Element("PopupButton_popup").content(),
+	content: Control.element("PopupButton_content").content(),
+	popup: Control.element("PopupButton_popup").content(),
 
-	ready: function()
+	initialize: function()
 	{
 		var self = this;
-		$(this.PopupButton_content).click(function() {
+		this.$PopupButton_content.click(function() {
 			self.showPopup();
 		});
-		var popupControl = Control(this.PopupButton_popup); 
-		if (popupControl)
-		{
-			popupControl.position = function() {
-				self.positionPopup();
-			};
-		}
+		this.$PopupButton_popup._positionOverlay = function() {
+			self._positionPopup();
+		};
 	},
 	
-	showPopup: function()
+	showPopup: Control.method(function()
 	{
-		$(this.PopupButton_popup).control().show();
-	},
+		this.$PopupButton_popup.showOverlay();
+	}),
 	
-	positionPopup: function()
+	_positionPopup: function()
 	{
-		var $contentElement = $(this.PopupButton_content);
+		var $contentElement = this.$PopupButton_content;
 		var contentTop = $contentElement.offset().top;
 		var contentHeight = $contentElement.outerHeight(true);
-		var $popupElement = $(this.PopupButton_popup);
+		var $popupElement = this.$PopupButton_popup;
 		var popupHeight = $popupElement.outerHeight(true);
 
 		// Try showing popup below.
