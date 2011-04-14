@@ -13,6 +13,10 @@
             <content>Content</content>
             <right>Right</right>
         </HorizontalPanels>
+        <BrowserDependent ifBrowser="webkit">
+            <content>You are using WebKit</content>
+            <elseContent>A browser other than WebKit</elseContent>
+        </BrowserDependent>
     </Page>
 </prototype>
 
