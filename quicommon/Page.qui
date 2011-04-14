@@ -7,6 +7,7 @@
     height: 100%;
 	margin: 0;
 	padding: 0;
+	position: absolute;
 	width: 100%;
 }
 </style>
@@ -16,10 +17,10 @@
 /*
  * General page utility functions.
  */
-$.extend(Page.prototype, {
+Page.prototype.extend({
 	
 	// If true, have the page fill its container.
-	fill: Control.Element().applyClass("fill"),
+	fill: Control.element().applyClass("fill"),
 
     urlParameters: function() {
         return Page.urlParameters();
@@ -37,9 +38,9 @@ $.extend(Page.prototype, {
 });
 
 /*
- * Static members.
+ * Class members.
  */
-$.extend(Page, {
+Page.extend({
     
     /*
      * Load the given class as the page's top-level class.
@@ -69,12 +70,12 @@ $.extend(Page, {
         
         var $element = element ? $(element) : $("body");
         
-        $element
+        var $page = $element
             .empty()                // Remove elements
             .attr("class", "")      // Remove classes
             .control(pageClassFn, properties);
         
-        return $element.control();
+        return $page;
     },
 
     /*
@@ -123,14 +124,14 @@ $.extend(Page, {
 /*
  * General utility functions made available to all controls.
  */
-$.extend(Control.prototype, {
+Control.prototype.extend({
 	
 	/*
 	 * Look up the page hosting a control.
 	 */
 	page: function() {
 		// Get the containing DOM element subclassing Page that contains the element
-		var pages = $(this.element).closest(".Page");
+		var pages = this.closest(".Page");
 		
 		// From the DOM element, get the associated QuickUI control.
 		return (pages.length > 0) ? pages.control() : null;
