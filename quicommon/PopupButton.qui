@@ -27,9 +27,9 @@ PopupButton.prototype.extend({
 		this.$PopupButton_content.click(function() {
 			self.showPopup();
 		});
-		this.$PopupButton_popup._positionOverlay = function() {
+		this.$PopupButton_popup._positionOverlay = Control.method(function() {
 			self._positionPopup();
-		};
+		});
 	},
 	
 	showPopup: Control.method(function()
