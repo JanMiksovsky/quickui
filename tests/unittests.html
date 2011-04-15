@@ -215,12 +215,61 @@ function runTests() {
         $c.foo = Control.element().visibility();
         equal($c.foo(), false); // control isn't in DOM, so is not visible.
     });
+    
+    test("Extend with iteration", function() {
+    	var c = Control.subclass();
+    	c.prototype.defineMembers({
+    		
+			myMethod: function() {
+    			this._calledMethod = true;
+    		},
+    		    		
+    		myProperty: function(value) {
+    			if (value === undefined)
+    			{
+    				return this._property;
+    			}
+    			else
+    			{
+    				this._property = value;
+    			}
+    		}
+    		
+    	});
+    	var $elements = Control("<div/>").add("<div/>");
+    	var $c = $elements.control(c);
+    	$c.myMethod();
+    	equal($c.eq(0).control()._calledMethod, true);
+    	equal($c.eq(1).control()._calledMethod, true);
+    });
 
 }
     
 $(function() {
     runTests();
 });
+
+Control.prototype.defineMembers = function(members) {
+	for (member in members) {
+		// this[member] = this.createIterator(members[member]);
+		this[member] = (function(fn) {
+			return function() {
+				return this.each(function(index, element) {
+					var $control = $(element).control();
+					fn.call($control);
+				});
+			}
+		})(members[member]);
+	}
+};
+Control.prototype.createIterator = function(fn) {
+	return function() {
+		return this.each(function(index, element) {
+			var $control = $(element).control();
+			fn.call($control);
+		});
+	}
+}
 </script>
 
 </head>
