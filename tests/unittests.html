@@ -233,7 +233,9 @@ function runTests() {
     			{
     				this._property = value;
     			}
-    		}
+    		},
+    		
+    		s: "Hello"
     		
     	});
     	var $elements = Control("<div/>").add("<div/>");
@@ -241,6 +243,11 @@ function runTests() {
     	$c.myMethod();
     	equal($c.eq(0).control()._calledMethod, true);
     	equal($c.eq(1).control()._calledMethod, true);
+    	$c.myProperty(1);
+        equal($c.myProperty(), 1);
+        equal($c.eq(0).control().myProperty(), 1);
+        equal($c.eq(1).control().myProperty(), 1);
+        equal($c.s, "Hello");
     });
 
 }
@@ -249,25 +256,42 @@ $(function() {
     runTests();
 });
 
+/*
+ * Define the given members on the current object.
+ * This is similar to jQuery.extend(), but is designed for extending
+ * control classes. This implicitly wraps any function-valued member
+ * in an iterator.
+ */
 Control.prototype.defineMembers = function(members) {
 	for (member in members) {
-		// this[member] = this.createIterator(members[member]);
-		this[member] = (function(fn) {
-			return function() {
-				return this.each(function(index, element) {
-					var $control = $(element).control();
-					fn.call($control);
-				});
-			}
-		})(members[member]);
+	    var value = members[member];
+		this[member] = $.isFunction(value)
+    		? this.createIterator(value)
+    		: value;
 	}
 };
+
+/*
+ * Given a function, return a new function that will apply that function
+ * to each element in a jQuery array. If the function returns a result
+ * (something other than undefined), then the function is assumed to be
+ * a property getter, and the iteration will cease and return the result
+ * of the first invocation. If the function does not return a result, it
+ * will iterate over the entire array.
+ */
 Control.prototype.createIterator = function(fn) {
 	return function() {
-		return this.each(function(index, element) {
+        var args = arguments;
+	    var result;
+		this.each(function(index, element) {
 			var $control = $(element).control();
-			fn.call($control);
+			result = fn.apply($control, args);
+			if (!!result)
+			{
+			    return false;
+			}
 		});
+		return result || this;
 	}
 }
 </script>
