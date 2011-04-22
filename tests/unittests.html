@@ -154,12 +154,11 @@ function runTests() {
     test("Element: element content with setter function", function() {
         var $c = Control.create({ content: "<div>Hello <span id='name'/>" }).control();
         $c.$name = $c.find("#name")[0];
-        var x;
         $c.foo = Control.element("name").content(function(name) {
-            x = name;
+            this._name = name;
         });
         $c.foo("Ann");
-        equal(x, "Ann");
+        equal($c._name, "Ann");
     });
     
     test("Element: applyClass", function() {
