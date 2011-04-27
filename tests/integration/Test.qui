@@ -34,12 +34,12 @@
 
 .Test.fail #details {
     display: block;
-} 
+}
 
 </style>
 
 <script>
-Test.prototype.extend({
+Test.prototype.define({
     
     expect: Control.element("Test_expect").content(),
     name: Control.element("Test_name").content(),

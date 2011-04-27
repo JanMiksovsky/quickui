@@ -17,14 +17,14 @@
 </style>
 
 <script>
-ButtonBase.prototype.extend({
+ButtonBase.prototype.define({
 	
 	isFocused: Control.property.bool(null, false),
 	isKeyPressed: Control.property.bool(null, false),
 	isMouseButtonDown: Control.property.bool(null, false),
 	isMouseOverControl: Control.property.bool(null, false),
 	
-	initialize: Control.method(function() {
+	initialize: function() {
 		var self = this;
 		this
 			.blur(function(event) { self.trackBlur(event); })
@@ -44,9 +44,9 @@ ButtonBase.prototype.extend({
 			.mousedown(function(event) { self.trackMousedown(event); })
 			.mouseup(function(event) { self.trackMouseup(event); });
 		this._renderButton();
-	}),
+	},
 	
-	trackBlur: Control.method(function(event) {
+	trackBlur: function(event) {
 		
 		this.removeClass("focused");
 
@@ -55,10 +55,10 @@ ButtonBase.prototype.extend({
 
 		this.isFocused(false);
 		this._renderButton();
-	}),
+	},
 	
 	// The current state of the button.
-	buttonState: Control.method(function() {
+	buttonState: function() {
 		if (this.disabled())
 		{
 			return ButtonBase.state.disabled;
@@ -78,66 +78,66 @@ ButtonBase.prototype.extend({
 		}
 
 		return ButtonBase.state.normal;
-	}),
+	},
 
     disabled: Control.element().applyClass("disabled", function(disabled) {
 		this._renderButton();
 	}),
 	
-	trackFocus: Control.method(function(event) {
+	trackFocus: function(event) {
         if (!this.disabled()) 
         {
             this.addClass("focused");
             this.isFocused(true);
             this._renderButton();
         }
-	}),
+	},
 	
-	trackKeydown: Control.method(function(event) {
+	trackKeydown: function(event) {
 		if (!this.disabled() && (event.keyCode == 32 /* space */ || event.keyCode == 13 /* return */))
 		{
 			this.isKeyPressed(true);		
 			this._renderButton();
 		}
-	}),
+	},
 	
-	trackKeyup: Control.method(function(event) {
+	trackKeyup: function(event) {
 		this.isKeyPressed(false);
 		this._renderButton();
-	}),
+	},
 	
-	trackMousedown: Control.method(function(event) {
+	trackMousedown: function(event) {
         if (!this.disabled())
         {
             this.addClass("pressed");
             this.isMouseButtonDown(true);
             this._renderButton();
         }
-	}),
+	},
 	
-	trackMousein: Control.method(function(event) {
+	trackMousein: function(event) {
         if (!this.disabled()) 
         {
             this.addClass("hovered");
             this.isMouseOverControl(true);
             this._renderButton();
         }
-	}),
+	},
 	
-	trackMouseout: Control.method(function(event) {
+	trackMouseout: function(event) {
 		this
 			.removeClass("focused")
 			.removeClass("hovered")
 			.removeClass("pressed");
 		this.isMouseOverControl(false);
 		this._renderButton();
-	}),
+	},
 	
-	trackMouseup: Control.method(function(event) {
+	trackMouseup: function(event) {
 		this.removeClass("pressed");
 		this.isMouseButtonDown(false);
 		this._renderButton();
-	}),
+	},
 	
 	_renderButtonState: function(buttonState) {},
 	

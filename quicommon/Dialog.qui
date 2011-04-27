@@ -40,7 +40,7 @@ Dialog.extend({
 	}
 });
 
-Dialog.prototype.extend({
+Dialog.prototype.define({
 	
 	initialize: function() {
 		Dialog.superClass.prototype.initialize.call(this);
@@ -53,19 +53,19 @@ Dialog.prototype.extend({
 		});
 	},
 
-	cancel: Control.method(function() {
+	cancel: function() {
 		this
 			.trigger("cancel")
 			.closeOverlay();
-	}),
+	},
 	
-	close: Control.method(function() {
+	close: function() {
 		this
 			.trigger("ok")
 			.closeOverlay();
-	}),
+	},
 	
-	positionOverlay: Control.method(function() {
+	positionOverlay: function() {
 		// Center dialog horizontally and vertically.
 		var left = ($(window).width() - $(this.element).outerWidth()) / 2;
 		var top = ($(window).height() - $(this.element).outerHeight()) / 2;
@@ -73,7 +73,7 @@ Dialog.prototype.extend({
 			left: left,
 			top: top
 		});
-	})
+	}
 });
 </script>
 

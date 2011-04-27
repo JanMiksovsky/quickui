@@ -10,7 +10,7 @@
 </prototype>
 
 <script>
-TestDialog.prototype.extend({
+TestDialog.prototype.define({
 	initialize: function() {
 		var self = this;
 		this.$buttonOk.click(function() {

@@ -5,7 +5,7 @@ Instantiates an instance of another control class for each item in a list.
 <Control name="List">
 
 <script>
-List.prototype.extend({
+List.prototype.define({
     
     itemClass: Control.property(
         function() { this._refresh(); },

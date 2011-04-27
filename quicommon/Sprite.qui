@@ -13,7 +13,7 @@ The images have to be stacked vertically, and all be the same height.
 
 <script>
 
-Sprite.prototype.extend({
+Sprite.prototype.define({
 	
 	image: Control.element().css("background-image"),
 

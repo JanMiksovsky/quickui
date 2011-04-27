@@ -5,7 +5,7 @@
 </prototype>
 
 <script>
-ToggleButton.prototype.extend({
+ToggleButton.prototype.define({
 	
 	selected: Control.element().applyClass("selected"),
 	
@@ -20,9 +20,9 @@ ToggleButton.prototype.extend({
 		});
 	},
 	
-	toggle: Control.method(function(value) {
+	toggle: function(value) {
 		this.selected(value || !this.selected());
-	})
+	}
 });
 </script>
 

@@ -36,7 +36,7 @@
 </style>
 
 <script>
-VerticalPanels.prototype.extend({
+VerticalPanels.prototype.define({
     bottom: Control.element("VerticalPanels_bottom").content(),
     content: Control.element("VerticalPanels_content").content(),
     fill: Control.element().applyClass("fill"),

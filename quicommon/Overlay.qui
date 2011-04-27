@@ -11,7 +11,7 @@
 </style>
 
 <script>
-Overlay.prototype.extend({
+Overlay.prototype.define({
 
 	$blanket: Control.property(),
 	blanketColor: Control.property(),
@@ -30,13 +30,13 @@ Overlay.prototype.extend({
 		});
 	},
 	
-	closeOverlay: Control.method(function() {
+	closeOverlay: function() {
 	    this
 	        .hideOverlay()
 	        .remove();
-	}),
+	},
 	
-	hideOverlay: Control.method(function()
+	hideOverlay: function()
 	{
         this
 			.hide()
@@ -48,9 +48,9 @@ Overlay.prototype.extend({
 		}
 		
         this.trigger("overlayClosed");  // TODO: Rename to overlayHidden? Move trigger to closeOverlay?
-	}),
+	},
 	
-	showOverlay: Control.method(function()
+	showOverlay: function()
 	{
 		if (this.$blanket() == null)
 		{
@@ -67,7 +67,7 @@ Overlay.prototype.extend({
 			.show()
 			._positionOverlay()
 			.trigger("overlayOpened");
-	}),
+	},
 
 	_createBlanket: function() {
 	    
@@ -122,7 +122,7 @@ Overlay.prototype.extend({
 	},
 	
 	// Subclasses should override this to position themselves.
-	_positionOverlay: Control.method(function() {})
+	_positionOverlay: function() {}
 });
 </script>
 

@@ -56,7 +56,7 @@
 </style>
 
 <script>
-TestPage.prototype.extend({
+TestPage.prototype.define({
 	initialize: function() {
 		this.$button.click(function() {
 			Dialog.showDialog(TestDialog);

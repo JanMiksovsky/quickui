@@ -11,7 +11,7 @@ browser in use supports a given property defined by $.support.
 </content>
 
 <script>
-BrowserDependent.prototype.extend({
+BrowserDependent.prototype.define({
     
 	ifBrowser: Control.property(),
 	content: Control.element("BrowserDependent_content").content(),

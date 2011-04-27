@@ -33,7 +33,7 @@
 </style>
 
 <script>
-HorizontalPanels.prototype.extend({
+HorizontalPanels.prototype.define({
     content: Control.element("HorizontalPanels_content").content(),
     fill: Control.element().applyClass("fill"),
     left: Control.element("HorizontalPanels_left").content(),

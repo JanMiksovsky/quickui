@@ -16,7 +16,7 @@
 
 <script>
 
-PopupButton.prototype.extend({
+PopupButton.prototype.define({
 	
 	content: Control.element("PopupButton_content").content(),
 	popup: Control.element("PopupButton_popup").content(),
@@ -27,15 +27,15 @@ PopupButton.prototype.extend({
 		this.$PopupButton_content.click(function() {
 			self.showPopup();
 		});
-		this.$PopupButton_popup._positionOverlay = Control.method(function() {
+		this.$PopupButton_popup._positionOverlay = function() {
 			self._positionPopup();
-		});
+		};
 	},
 	
-	showPopup: Control.method(function()
+	showPopup: function()
 	{
 		this.$PopupButton_popup.showOverlay();
-	}),
+	},
 	
 	_positionPopup: function()
 	{

@@ -9,7 +9,7 @@
 </style>
 
 <script>
-Switch.prototype.extend({
+Switch.prototype.define({
 	
 	initialize: function() {
 	    if (this.children().not(".hidden").length > 1)

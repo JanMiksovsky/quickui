@@ -17,7 +17,7 @@
 /*
  * General page utility functions.
  */
-Page.prototype.extend({
+Page.prototype.define({
 	
 	// If true, have the page fill its container.
 	fill: Control.element().applyClass("fill"),
