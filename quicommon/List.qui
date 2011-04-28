@@ -23,7 +23,7 @@ List.prototype.define({
     // properties map directly to property settors defined by the
     // target itemClass.
     //
-    mapFn: Control.property(),
+    mapFn: Control.property(null, null),
     
     _refresh: function() {
         var itemClass = this.itemClass();
