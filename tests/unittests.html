@@ -51,9 +51,18 @@ function runTests() {
     });
     
     /*
-     * Define method
+     * Define tests
      */
-    test("method", function() {
+    test("Define scalar", function() {
+        var MyControl = Control.subclass("MyControl");
+        MyControl.prototype.define({
+			foo: "Hello"
+	    });
+	    var $c = MyControl.create();
+	    equal($c.foo, "Hello");
+    });
+    
+    test("Define method", function() {
         
         var MyControl = Control.subclass("MyControl");
         MyControl.prototype.define({
@@ -108,7 +117,29 @@ function runTests() {
     	equal($c.eq(0).control().myProperty(), "foo");
     	equal($c.eq(1).control().myProperty(), "foo");
     });
-
+    
+    test("Define getter/setter with binding", function() {
+    	var MyControl = Control.subclass();
+    	MyControl.prototype.define({
+    		myProperty: "=this.content()"
+    	});
+    	var $c = MyControl.create();
+    	$c.myProperty("foo");
+    	equal($c.content(), "foo");
+    	equal($c.myProperty(), "foo");
+    });
+        
+    /*
+     * Binding tests
+     */
+    test("Bind to element content", function() {
+        var $c = Control("<div>Hello</div>");
+        $c.foo = Control.binding("=this.content()");
+        equal($c.foo(), "Hello");
+        $c.foo("world");
+        equal($c.foo(), "world");
+    });
+    
     /*
      * Control.property() tests
      */
@@ -249,28 +280,7 @@ function runTests() {
         $c.foo = Control.element().visibility();
         equal($c.foo(), false); // control isn't in DOM, so is not visible.
     });
-    
-    test("Parse binding", function() {
-        var $c = Control("<div>Hello</div>");
-        $c.foo = Control.binding("=this.content()");
-        equal($c.foo(), "Hello");
-        $c.foo("world");
-        equal($c.foo(), "world");
-    });
 }
-
-Control.binding = function(s) {
-    var regexp = /^=this\.(\w*)\(\)$/;
-    var match = regexp.exec(s);
-    if (!match)
-    {
-        throw "Couldn't parse binding: " + s;
-    }
-    var fnName = match[1];
-    return function(value) {
-        return this[fnName](value);
-    };
-};
     
 $(function() {
     runTests();
