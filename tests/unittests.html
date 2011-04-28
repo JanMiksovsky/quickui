@@ -260,7 +260,7 @@ function runTests() {
 }
 
 Control.binding = function(s) {
-    var regexp = /^=this.(.*)\(\)$/;
+    var regexp = /^=this\.(\w*)\(\)$/;
     var match = regexp.exec(s);
     if (!match)
     {
