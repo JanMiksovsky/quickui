@@ -249,7 +249,28 @@ function runTests() {
         $c.foo = Control.element().visibility();
         equal($c.foo(), false); // control isn't in DOM, so is not visible.
     });
+    
+    test("Parse binding", function() {
+        var $c = Control("<div>Hello</div>");
+        $c.foo = Control.binding("=this.content()");
+        equal($c.foo(), "Hello");
+        $c.foo("world");
+        equal($c.foo(), "world");
+    });
 }
+
+Control.binding = function(s) {
+    var regexp = /^=this.(.*)\(\)$/;
+    var match = regexp.exec(s);
+    if (!match)
+    {
+        throw "Couldn't parse binding: " + s;
+    }
+    var fnName = match[1];
+    return function(value) {
+        return this[fnName](value);
+    };
+};
     
 $(function() {
     runTests();
