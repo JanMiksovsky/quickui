@@ -285,7 +285,7 @@ function runTests() {
     	
         var MyControl = Control.subclass("MyControl", function() {
             this.properties({
-                content: this.elementReference("foo", Control("<span id='foo'/>"))
+                content: this.element("foo", Control("<span id='foo'/>"))
             }, Control);
         });
         MyControl.prototype.defineElementFunctions([ "$foo" ]);
@@ -303,7 +303,7 @@ function runTests() {
     })
 }
 
-Control.prototype.elementReference = function(elementId, value) {
+Control.prototype.element = function(elementId, value) {
 	if (value === undefined)
 	{
 		return this.data(elementId);
@@ -331,7 +331,7 @@ Control.prototype.defineElementFunctions = function(functionNames) {
 Control._elementFunction = function(elementId) {
 	return function() {
 		return this.map(function(index, element) {
-			return Control(element).elementReference(elementId)[0];
+			return Control(element).element(elementId)[0];
 		});
 	}
 };
