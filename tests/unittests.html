@@ -285,23 +285,21 @@ function runTests() {
     	
         var MyControl = Control.subclass("MyControl", function() {
             this.properties({
-                content: this.elementReference("foo", $("<span id='foo'/>"))
+                content: this.elementReference("foo", Control("<span id='foo'/>"))
             }, Control);
         });
         MyControl.prototype.defineElementFunctions([ "$foo" ]);
         
         MyControl.prototype.define({
-        	foo: "=this.$foo()"
+        	foo: "=this.$foo().content()"
         });
         
         var $c = MyControl.create();
         equal($c.data("foo")[0], $c.find("#foo")[0]);
-        equal($c.foo()[0], $c.find("#foo")[0]);
-        /*
+        equal($c.$foo()[0], $c.find("#foo")[0]);
         $c.foo("Hello");
         equal($c.find("#foo").text(), "Hello");
         equal($c.foo(), "Hello");
-        */
     })
 }
 
