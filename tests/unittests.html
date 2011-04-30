@@ -113,11 +113,13 @@ function runTests() {
     	});
     	var $elements = Control("<div/>").add("<div/>");
     	var $c = $elements.control(c);
+        equal($c.myProperty() === undefined, true);
     	$c.myProperty("foo");
     	equal($c.eq(0).control().myProperty(), "foo");
     	equal($c.eq(1).control().myProperty(), "foo");
     });
     
+    /*
     test("Define getter/setter with binding", function() {
     	var MyControl = Control.subclass();
     	MyControl.prototype.define({
@@ -128,10 +130,12 @@ function runTests() {
     	equal($c.content(), "foo");
     	equal($c.myProperty(), "foo");
     });
+    */
         
     /*
      * Binding tests
      */
+     /*
     test("Bind to element content", function() {
         var $c = Control("<div>Hello</div>");
         $c.foo = Control.binding("=this.content()");
@@ -139,6 +143,7 @@ function runTests() {
         $c.foo("world");
         equal($c.foo(), "world");
     });
+    */
     
     /*
      * Control.property() tests
@@ -146,6 +151,7 @@ function runTests() {
     test("property", function() {
         var $c = Control.create();
         $c.foo = Control.property();
+        equal($c.foo() === undefined, true);
         $c.foo("Hello");
         equal($c.foo(), "Hello");
     });
@@ -281,6 +287,7 @@ function runTests() {
         equal($c.foo(), false); // control isn't in DOM, so is not visible.
     });
     
+    /*
     test("Element reference function", function() {
     	
         var MyControl = Control.subclass("MyControl", function() {
@@ -301,6 +308,7 @@ function runTests() {
         equal($c.find("#foo").text(), "Hello");
         equal($c.foo(), "Hello");
     })
+    */
 }
 
 Control.prototype.element = function(elementId, value) {
