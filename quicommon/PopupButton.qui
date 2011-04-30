@@ -27,33 +27,28 @@ PopupButton.prototype.define({
 		this.$PopupButton_content.click(function() {
 			self.showPopup();
 		});
-		this.$PopupButton_popup._positionOverlay = function() {
-			self._positionPopup();
+		this.$PopupButton_popup.positionOverlay = function() {
+			return self.positionPopup();
 		};
 	},
 	
-	showPopup: function()
-	{
-		this.$PopupButton_popup.showOverlay();
-	},
-	
-	_positionPopup: function()
-	{
-		var $contentElement = this.$PopupButton_content;
-		var contentTop = $contentElement.offset().top;
-		var contentHeight = $contentElement.outerHeight(true);
-		var $popupElement = this.$PopupButton_popup;
-		var popupHeight = $popupElement.outerHeight(true);
+    positionPopup: function()
+    {
+        var $contentElement = this.$PopupButton_content;
+        var contentTop = $contentElement.offset().top;
+        var contentHeight = $contentElement.outerHeight(true);
+        var $popupElement = this.$PopupButton_popup;
+        var popupHeight = $popupElement.outerHeight(true);
 
-		// Try showing popup below.
-		var top = contentTop + contentHeight;
-		if (top + popupHeight > $(document).height() &&
+        // Try showing popup below.
+        var top = contentTop + contentHeight;
+        if (top + popupHeight > $(document).height() &&
             contentTop - popupHeight >= 0)         
-		{
+        {
             // Show popup above.
             top = contentTop - popupHeight;
-		}
-		$popupElement.css("top", top);
+        }
+        $popupElement.css("top", top);
         
         var contentLeft = $contentElement.offset().left;
         var popupWidth = $popupElement.outerWidth(true);
@@ -64,6 +59,13 @@ PopupButton.prototype.define({
             // Move popup left
             $popupElement.css("left", left);
         }
+        
+        return this;
+    },
+    	
+	showPopup: function()
+	{
+		this.$PopupButton_popup.showOverlay();
 	}
 	
 });

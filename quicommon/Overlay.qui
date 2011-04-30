@@ -49,7 +49,12 @@ Overlay.prototype.define({
 		
         this.trigger("overlayClosed");  // TODO: Rename to overlayHidden? Move trigger to closeOverlay?
 	},
-	
+    
+    // Subclasses should override this to position themselves.
+    positionOverlay: function() {
+        return this;
+    },
+    	
 	showOverlay: function()
 	{
 		if (this.$blanket() == null)
@@ -65,7 +70,7 @@ Overlay.prototype.define({
 		this
 			.css("z-index", maximumZIndex + 2)
 			.show()
-			._positionOverlay()
+			.positionOverlay()
 			.trigger("overlayOpened");
 	},
 
@@ -119,10 +124,7 @@ Overlay.prototype.define({
 			}
 		});
 		return Math.max.apply(null, zIndices);
-	},
-	
-	// Subclasses should override this to position themselves.
-	_positionOverlay: function() {}
+	}
 });
 </script>
 
