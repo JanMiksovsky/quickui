@@ -1,0 +1,23 @@
+<Control name="TestDialog">
+    
+<prototype>
+    <Dialog>
+        Dialog
+        <div>
+        	<ButtonBase id="buttonOk">OK</ButtonBase>
+        </div>
+    </Dialog>
+</prototype>
+
+<script>
+TestDialog.prototype.define({
+	initialize: function() {
+		var self = this;
+		this.$buttonOk.click(function() {
+			self.close();
+		});
+	}	
+});
+</script>
+
+</Control>
