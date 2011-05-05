@@ -17,15 +17,15 @@
 </style>
 
 <script>
-$.extend(Navigator.prototype, {
+Navigator.prototype.extend({
 
 	// Highlight the link for the page we're on.
 	highlightCurrentPage: function() {
 		var pageHref = window.location.href;
-		this.$(".Link").each(function() {
-			var linkHref = Control(this).href();
+		this.find(".Link").each(function() {
+			var linkHref = this.$href;
 			var pageHrefRight = pageHref.substring(pageHref.length - linkHref.length)
-			$(this).toggleClass("highlight", pageHrefRight == linkHref);
+			this.toggleClass("highlight", pageHrefRight == linkHref);
 		});
 	}
 	

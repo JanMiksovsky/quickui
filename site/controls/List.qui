@@ -7,21 +7,21 @@
 </content>
 
 <script>
-$.extend(List.prototype, {
+List.prototype.extend({
 
-	expansion: Control.Element("List_expansion").content(),
+	expansion: Control.element("List_expansion").content(),
 
-	ready: function() {
+	initialize: function() {
 		this.expand();
 	},
 	
 	bind: null,
 	
-	content: Control.Property(function() {
+	content: Control.property(function() {
 		this.expand();
 	}),
 	
-	data: Control.Property(function() {
+	data: Control.property(function() {
 		this.expand();
 	}),
 	
@@ -29,7 +29,7 @@ $.extend(List.prototype, {
 		var template = this.content();
 		if (template != null)
 		{
-			$(this.List_expansion).empty();
+			this.$List_expansion.empty();
 			var data = this.data();
 			if (data != null)
 			{

@@ -3,6 +3,9 @@
 .ButtonBase {
 	cursor: pointer;
 	display: inline-block;
+    -moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .ButtonBase.disabled {
@@ -49,6 +52,7 @@
     height: 100%;
 	margin: 0;
 	padding: 0;
+	position: absolute;
 	width: 100%;
 }
 
@@ -69,6 +73,22 @@
 
 .Switch .hidden {
 	display: none !important;
+}
+
+/*** TestPage ***/
+
+.TestPage .ButtonBase {
+	border: 1px solid gray;
+}
+.TestPage .ButtonBase.hovered {
+	border-color: orange;
+}
+.TestPage .ToggleButton.selected {
+	background-color: #ccc;
+}
+
+.TestPage #horiziontalPanels {
+    width: 100%;
 }
 
 /*** VerticalAlign ***/

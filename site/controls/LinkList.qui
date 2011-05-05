@@ -9,10 +9,10 @@
 </content>    
 
 <script>
-$.extend(LinkList.prototype, {
-	data: Control.Element("list").controlProperty("data"),
-	ready: function() {
-		Control(this.list).bind = function(value) {
+LinkList.prototype.extend({
+	data: Control.element("list").controlProperty("data"),
+	initialize: function() {
+		this.$list.bind = function(value) {
 			$(this).find("#link").control().content(value);
 		};
 	}

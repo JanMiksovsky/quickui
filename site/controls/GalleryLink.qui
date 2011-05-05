@@ -5,9 +5,9 @@
 </prototype>
 
 <script>
-$.extend(GalleryLink.prototype, {
-    content: Control.Property(function(content) {
-        GalleryLink.superProto.content.call(this, content);
+GalleryLink.prototype.extend({
+    content: Control.property(function(content) {
+        GalleryLink.superclass.prototype.content.call(this, content);
         this.href(href="/gallery/default.html#page=" + content + "About");
     })
 });

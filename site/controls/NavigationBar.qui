@@ -30,15 +30,14 @@ a {
 </style>
 
 <script>
-$.extend(NavigationBar.prototype, {
+NavigationBar.prototype.extend({
 
 	highlightCurrentArea: function() {
 		// Highlight the link for the area we're in.
 		var area = this.page() && this.page().area();
 		if (area != null) {
-			this.$(".Link").each(function() {
-				var control = Control(this);
-				$(this).toggleClass("highlight", control.content() == area);
+			this.find(".Link").eachControl(function() {
+				this.toggleClass("highlight", this.content() == area);
 			});
 		}
 	}

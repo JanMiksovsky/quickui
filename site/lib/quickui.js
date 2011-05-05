@@ -1,6 +1,6 @@
 /*
  * QuickUI
- * Version 0.8
+ * Version 0.8.1
  * Modular web control framework
  * http://quickui.org/
  *
@@ -66,7 +66,28 @@ jQuery.fn.control = function(arg1, arg2) {
  */
 var Control = jQuery.sub();
 jQuery.extend(Control, {
-	
+
+    /*
+	binding: function(s) {
+	    var regexp = /^=this\.([a-zA-Z0-9$_]+)\(\)(\.([a-zA-Z0-9$_]+)\(\))?$/;
+	    var match = regexp.exec(s);
+	    if (!match)
+	    {
+	        throw "Couldn't parse binding: " + s;
+	    }
+	    var fnName1 = match[1];
+	    var fnName2 = match[3];
+	    if (fnName2)
+	    {
+	    	return function(value) { return this[fnName1]()[fnName2](value); };
+	    }
+	    else
+	    {
+	    	return function(value) { return this[fnName1](value); };
+	    }
+	},
+	*/
+		
     /*
      * Create an instance of this control class around a default element.
      * The class prototype's tag member can define a specific element tag. 
@@ -119,6 +140,12 @@ jQuery.extend(Control, {
 
 		return $control;
     },
+    
+    // Mark the given function as an iterator, to avoid having define() wrap it.
+    iterator: function(fn) {
+        fn._isIterator = true;
+        return fn;        
+    },
 
     // Return true if the given element is a control.    
     isControl: function(element) {
@@ -157,10 +184,7 @@ jQuery.extend(Control, {
 	    
 		newClass.subclass = superClass.subclass;
 		return newClass;
-	},
-    
-    // Queue of controls waiting for their ready() handler to be called.
-    _initializeQueue: []
+	}
 });
 
 /*
@@ -295,10 +319,44 @@ jQuery.extend(Control.fn, {
         }
 	},
 	
+	/*
+	 * Define control methods and properties as iterators over a jQuery array.
+	 * This is similar to jQuery.extend(), but functions defined in this way
+	 * will be automatically wrapped such that they: a) implicitly iterate over
+	 * "this", and b) implicitly dereference controls. 
+	 */
+	define: function(members) {
+		for (member in members) {
+			var value = members[member];
+			var result;
+			if (jQuery.isFunction(value))
+			{
+				result = (value._isIterator || member[0] === "_")
+				            ? value // No need to wrap
+				            : this._createIterator(value);
+			}
+			/*
+			else if ((typeof value == "string" || value instanceof String) && value[0] == "=")
+			{
+				result = Control.binding(value);
+			}
+			*/
+			else
+			{
+				result = value;
+			}
+			this[member] = result;
+		}
+	},
+	
+	/*
+	 * Execute a function against an array of controls.
+	 * Like jQuery.each(), but performs implicit control dereferencing.
+	 */
 	eachControl: function(fn) {
 	    return this.each(function(index, element) {
-	        var original = Control(element).control();
-	        fn.call(original, index, original);
+	        var $control = Control(element).control();
+	        return fn.call($control, index, $control);
 	    });
 	},
 
@@ -357,24 +415,34 @@ jQuery.extend(Control.fn, {
      * By default, the root tag of the control will be a div.
      * Control classes can override this: <Control name="Foo" tag="span">
      */
-    tag: "div"
-    	
+    tag: "div",
+	
+	/*
+	 * Convert a function into an interator that loops over the elements of
+	 * a jQuery array. If the inner function returns a defined value, then
+	 * the function is assumed to be a property getter, and that result is
+	 * return immediately. Otherwise, "this" is returned to permit chaining.
+	 * 
+	 * Used by Control.define().
+	 */
+	_createIterator: function(fn) {
+		return Control.iterator(function() {
+			var args = arguments;
+			var iteratorResult;
+			this.eachControl(function(index, $control) {
+				var result = fn.apply($control, args);
+				if (result !== undefined)
+				{
+					iteratorResult = result;
+					return false;
+				}
+			});
+			return (iteratorResult !== undefined)
+				? iteratorResult // Getter
+				: this // Method or setter;
+		});
+	},
 });
-
-/*
- * Generic factory for a method.
- * 
- * This wraps a calc function that will be applied to all control instances
- * in a Control reference.
- */
-Control.method = function(calcFunction) {
-    return function(value) {
-        // Here "this" = a Control reference (a subclass of jQuery)
-        return this.eachControl(function(index, control) {
-            calcFunction.call(control, value);
-        });
-    };
-};
 
 /*
  * Property factories for common types of properties in QuickUI classes.
@@ -383,42 +451,33 @@ Control.method = function(calcFunction) {
 
 /*
  * Generic factory for a property getter/setter.
- * 
- * Unlike Control.method(), a property() used as a getter (i.e., with
- * an undefined value) will only be evaluated against the first control
- * in a Control reference.
  */
 Control.property = function(setterFunction, defaultValue, converterFunction) {
     var backingPropertyName = "_property" + Control.property._symbolCounter++;
-    return function(value) {
-        var original;
+    return this.iterator(function(value) {
         var result;
         if (value === undefined)
         {
             // Getter
-            original = this.control();
-            result = original.data(backingPropertyName);
-            if (result === undefined)
-            {
-                result = defaultValue;
-            }
-            return result;
+            result = this.control().data(backingPropertyName);
+            return (result === undefined)
+            	? defaultValue
+            	: result;
         }
         else
         {
-            // Setter.
-            // Allows chaining.
-            return this.eachControl(function(index, control) {
+            // Setter. Allow chaining.
+            return this.eachControl(function(index, $control) {
                 result = (converterFunction !== undefined)
-                    ? converterFunction.call(control, value)
+                    ? converterFunction.call($control, value)
                     : value;
-                control.data(backingPropertyName, result);
+                $control.data(backingPropertyName, result);
                 if (setterFunction) {
-                    setterFunction.call(control, result);            
+                    setterFunction.call($control, result);            
                 }
-            });
+            })
         }
-    };
+    });
 };
 
 /*
@@ -536,27 +595,24 @@ jQuery.extend(Control.ElementPropertyFactory.prototype, {
      */
     _elementProperty: function(calcFunction, setterFunction) {
         var elementId = this.elementId;    // "this" = property factory
-        return function(value) {
+        return function elementProperty(value) {
             // Here, "this" = a QuickUI control instance
+            var $element = Control.ElementPropertyFactory.$getElement(this, elementId);
             if (value === undefined)
             {
                 // Getter
-                var $element = Control.ElementPropertyFactory.$getElement(this, elementId);
                 var result = calcFunction($element, value);
                 return result;
             }
             else
             {
                 // Setter
-                return this.eachControl(function(index, $control) {
-                    var $element = Control.ElementPropertyFactory.$getElement($control, elementId);
-                    var result = calcFunction($element, value);
-                    if (setterFunction != null)
-                    {
-                        // Invoke custom setter function.
-                        setterFunction.call($element, value);
-                    }
-                });
+                var result = calcFunction($element, value);
+                if (setterFunction != null)
+                {
+                    // Invoke custom setter function.
+                    setterFunction.call(this, value);
+                }
             }
         };
     },

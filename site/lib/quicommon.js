@@ -1,47 +1,75 @@
 //
+// BrowserDependent
+//
+BrowserDependent = Control.subclass("BrowserDependent", function() {
+	this.properties({
+		"content": [
+			" ",
+			this.$BrowserDependent_content = Control("<span id=\"BrowserDependent_content\" />"),
+			" ",
+			this.$BrowserDependent_elseContent = Control("<span id=\"BrowserDependent_elseContent\" />"),
+			" "
+		]
+	}, Control);
+});
+BrowserDependent.prototype.define({
+    
+	ifBrowser: Control.property(),
+	content: Control.element("BrowserDependent_content").content(),
+	elseContent: Control.element("BrowserDependent_elseContent").content(),
+	ifSupport: Control.property(),
+	
+	initialize: function() {
+		var usingSpecifiedBrowser = (this.ifBrowser() === undefined) || !!$.browser[this.ifBrowser()];
+		var browserSupportsProperty = (this.ifSupport() === undefined) || !!$.support[this.ifSupport()];
+		var allConditionsSatisfied = usingSpecifiedBrowser && browserSupportsProperty;
+		this.$BrowserDependent_content.toggle(allConditionsSatisfied);
+		this.$BrowserDependent_elseContent.toggle(!allConditionsSatisfied);
+	}
+});
+
+//
 // ButtonBase
 //
-ButtonBase = Control.extend({
-	className: "ButtonBase"
-});
-$.extend(ButtonBase.prototype, {
+ButtonBase = Control.subclass("ButtonBase");
+ButtonBase.prototype.define({
 	
-	isFocused: Control.Property.bool(null, false),
-	isKeyPressed: Control.Property.bool(null, false),
-	isMouseButtonDown: Control.Property.bool(null, false),
-	isMouseOverControl: Control.Property.bool(null, false),
+	isFocused: Control.property.bool(null, false),
+	isKeyPressed: Control.property.bool(null, false),
+	isMouseButtonDown: Control.property.bool(null, false),
+	isMouseOverControl: Control.property.bool(null, false),
 	
-	ready: function() {
+	initialize: function() {
 		var self = this;
-		$(this.element)
-			.blur(function(event) { self.blur(event); })
+		this
+			.blur(function(event) { self.trackBlur(event); })
 			.click(function(event) {
 				if (self.disabled())
 				{
 					event.stopImmediatePropagation();
 				}
 			})
-			.focus(function(event) { self.focus(event); })
+			.focus(function(event) { self.trackFocus(event); })
 			.hover(
-				function(event) { self.mousein(event); },
-				function(event) { self.mouseout(event); }
+				function(event) { self.trackMousein(event); },
+				function(event) { self.trackMouseout(event); }
 			)
-			.keydown (function(event) { self.keydown(event); })
-			.keyup (function(event) { self.keyup(event); })
-			.mousedown(function(event) { self.mousedown(event); })
-			.mouseup(function(event) { self.mouseup(event); });
-		this.renderButton();
+			.keydown (function(event) { self.trackKeydown(event); })
+			.keyup (function(event) { self.trackKeyup(event); })
+			.mousedown(function(event) { self.trackMousedown(event); })
+			.mouseup(function(event) { self.trackMouseup(event); });
+		this._renderButton();
 	},
 	
-	blur: function(event) {
+	trackBlur: function(event) {
 		
-		$(this.element).removeClass("focused");
+		this.removeClass("focused");
 
 		// Losing focus causes the button to override any key that had been pressed.
 		this.isKeyPressed(false);
 
 		this.isFocused(false);
-		this.renderButton();
+		this._renderButton();
 	},
 	
 	// The current state of the button.
@@ -67,68 +95,69 @@ $.extend(ButtonBase.prototype, {
 		return ButtonBase.state.normal;
 	},
 
-    disabled: Control.Element().applyClass("disabled", function(disabled) {
-		this.renderButton();
+    disabled: Control.element().applyClass("disabled", function(disabled) {
+		this._renderButton();
 	}),
 	
-	focus: function(event) {
+	trackFocus: function(event) {
         if (!this.disabled()) 
         {
-            $(this.element).addClass("focused");
+            this.addClass("focused");
             this.isFocused(true);
-            this.renderButton();
+            this._renderButton();
         }
 	},
 	
-	keydown: function(event) {
+	trackKeydown: function(event) {
 		if (!this.disabled() && (event.keyCode == 32 /* space */ || event.keyCode == 13 /* return */))
 		{
 			this.isKeyPressed(true);		
-			this.renderButton();
+			this._renderButton();
 		}
 	},
 	
-	keyup: function(event) {
+	trackKeyup: function(event) {
 		this.isKeyPressed(false);
-		this.renderButton();
+		this._renderButton();
 	},
 	
-	mousedown: function(event) {
+	trackMousedown: function(event) {
         if (!this.disabled())
         {
-            $(this.element).addClass("pressed");
+            this.addClass("pressed");
             this.isMouseButtonDown(true);
-            this.renderButton();
+            this._renderButton();
         }
 	},
 	
-	mousein: function(event) {
+	trackMousein: function(event) {
         if (!this.disabled()) 
         {
-            $(this.element).addClass("hovered");
+            this.addClass("hovered");
             this.isMouseOverControl(true);
-            this.renderButton();
+            this._renderButton();
         }
 	},
 	
-	mouseout: function(event) {
-		$(this.element).removeClass("focused")
+	trackMouseout: function(event) {
+		this
+			.removeClass("focused")
 			.removeClass("hovered")
 			.removeClass("pressed");
 		this.isMouseOverControl(false);
-		this.renderButton();
+		this._renderButton();
 	},
 	
-	mouseup: function(event) {
-		$(this.element).removeClass("pressed");
+	trackMouseup: function(event) {
+		this.removeClass("pressed");
 		this.isMouseButtonDown(false);
-		this.renderButton();
+		this._renderButton();
 	},
 	
-	renderButtonState: function(buttonState) {},
+	_renderButtonState: function(buttonState) {},
 	
-	renderButton: function() {
-		this.renderButtonState(this.buttonState());
+	_renderButton: function() {
+		this._renderButtonState(this.buttonState());
 	}
 });
 $.extend(ButtonBase, {
@@ -144,72 +173,33 @@ $.extend(ButtonBase, {
 //
 // HorizontalPanels
 //
-HorizontalPanels = Control.extend({
-	className: "HorizontalPanels",
-	render: function() {
-		Control.prototype.render.call(this);
-		this.setClassProperties(Control, {
-			"content": [
-				" ",
-				this.HorizontalPanels_left = $("<div id=\"HorizontalPanels_left\" class=\"minimumWidth\" />")[0],
-				" ",
-				this.HorizontalPanels_content = $("<div id=\"HorizontalPanels_content\" />")[0],
-				" ",
-				this.HorizontalPanels_right = $("<div id=\"HorizontalPanels_right\" class=\"minimumWidth\" />")[0],
-				" "
-			]
-		});
-	}
+HorizontalPanels = Control.subclass("HorizontalPanels", function() {
+	this.properties({
+		"content": [
+			" ",
+			this.$HorizontalPanels_left = Control("<div id=\"HorizontalPanels_left\" class=\"minimumWidth\" />"),
+			" ",
+			this.$HorizontalPanels_content = Control("<div id=\"HorizontalPanels_content\" />"),
+			" ",
+			this.$HorizontalPanels_right = Control("<div id=\"HorizontalPanels_right\" class=\"minimumWidth\" />"),
+			" "
+		]
+	}, Control);
 });
-$.extend(HorizontalPanels.prototype, {
-    content: Control.Element("HorizontalPanels_content").content(),
-    fill: Control.Element().applyClass("fill"),
-    left: Control.Element("HorizontalPanels_left").content(),
-    right: Control.Element("HorizontalPanels_right").content(),
-});
-
-//
-// IfBrowser
-//
-IfBrowser = Control.extend({
-	className: "IfBrowser",
-	render: function() {
-		Control.prototype.render.call(this);
-		this.setClassProperties(Control, {
-			"content": [
-				" ",
-				this.IfBrowser_content = $("<span id=\"IfBrowser_content\" />")[0],
-				" ",
-				this.IfBrowser_elseContent = $("<span id=\"IfBrowser_elseContent\" />")[0],
-				" "
-			]
-		});
-	}
-});
-$.extend(IfBrowser.prototype, {
-	browser: Control.Property(),
-	content: Control.Element("IfBrowser_content").content(),
-	elseContent: Control.Element("IfBrowser_elseContent").content(),
-	support: Control.Property(),
-	
-	ready: function() {
-		var usingSpecifiedBrowser = (this.browser() == undefined) || $.browser[this.browser()];
-		var browserSupportsProperty = (this.support() == undefined) || $.support[this.support()];
-		var allConditionsSatisfied = usingSpecifiedBrowser && browserSupportsProperty;
-		$(this.IfBrowser_content).toggle(allConditionsSatisfied);
-		$(this.IfBrowser_elseContent).toggle(!allConditionsSatisfied);
-	}
+HorizontalPanels.prototype.define({
+    content: Control.element("HorizontalPanels_content").content(),
+    fill: Control.element().applyClass("fill"),
+    left: Control.element("HorizontalPanels_left").content(),
+    right: Control.element("HorizontalPanels_right").content()
 });
 
 //
 // List
 //
-List = Control.extend({
-	className: "List"
-});
-$.extend(List.prototype, {
+List = Control.subclass("List");
+List.prototype.define({
     
-    itemClass: Control.Property(
+    itemClass: Control.property(
         function() { this._refresh(); },
         null,
         function(className) {
@@ -217,7 +207,7 @@ $.extend(List.prototype, {
         }
     ),
         
-    items: Control.Property(function() { this._refresh(); }),
+    items: Control.property(function() { this._refresh(); }),
     
     //
     // This mapFn should be a function that accepts one object
@@ -225,13 +215,7 @@ $.extend(List.prototype, {
     // properties map directly to property settors defined by the
     // target itemClass.
     //
-    mapFn: Control.Property(),
-    
-    // Allows items and mapFn to both be set in one step.
-    setItems: function(items, mapFn) {
-        this.mapFn(mapFn);
-        this.items(items);
-    },
+    mapFn: Control.property(null, null),
     
     _refresh: function() {
         var itemClass = this.itemClass();
@@ -239,13 +223,13 @@ $.extend(List.prototype, {
         var mapFn = this.mapFn();
         if (itemClass && items)
         {
-            var me = this;
+            var self = this;
             var controls = $.map(items, function(item, index) {
                 var properties;
                 if (mapFn)
                 {
                     // Map item to control properties with custom map function.
-                    properties = mapFn.call(me, item, index);
+                    properties = mapFn.call(self, item, index);
                 }
                 else if (typeof item == "string" || item instanceof String)
                 {
@@ -257,10 +241,10 @@ $.extend(List.prototype, {
                     // Use the item as is for the control's properties.
                     properties = item;
                 }
-                var control = Control.create(itemClass, properties);
+                var control = itemClass.create(properties);
                 return control;
             });
-            $(this.element).items(controls);
+            this.content(controls);
         }
     }
     
@@ -269,33 +253,75 @@ $.extend(List.prototype, {
 //
 // Overlay
 //
-Overlay = Control.extend({
-	className: "Overlay"
-});
-$.extend(Overlay.prototype, {
+Overlay = Control.subclass("Overlay");
+Overlay.prototype.define({
 
-	blanket: Control.Property(),
-	blanketColor: Control.Property(),
-	blanketOpacity: Control.Property(),
-	dismissOnInsideClick: Control.Property.bool(),
-	dismissOnOutsideClick: Control.Property.bool(null, true),
+	$blanket: Control.property(),
+	blanketColor: Control.property(),
+	blanketOpacity: Control.property(),
+	dismissOnInsideClick: Control.property.bool(),
+	dismissOnOutsideClick: Control.property.bool(null, true),
 	
-	ready: function()
+	initialize: function()
 	{
 		var self = this;
-		$(this.element).click(function() {
+		this.click(function() {
 			if (self.dismissOnInsideClick())
 			{
-				self.hide();
+				self.hideOverlay();
 			}
 		});
 	},
 	
-	createBlanket: function() {
+	closeOverlay: function() {
+	    this
+	        .hideOverlay()
+	        .remove();
+	},
+	
+	hideOverlay: function()
+	{
+        this
+			.hide()
+			.css("z-index", null); // No need to define Z-order any longer.
+		if (this.$blanket() != null)
+		{
+			this.$blanket().remove();
+			this.$blanket(null);
+		}
+		
+        this.trigger("overlayClosed");  // TODO: Rename to overlayHidden? Move trigger to closeOverlay?
+	},
+    
+    // Subclasses should override this to position themselves.
+    positionOverlay: function() {
+        return this;
+    },
+    	
+	showOverlay: function()
+	{
+		if (this.$blanket() == null)
+		{
+			this.$blanket(this._createBlanket());
+		}
+		
+		/* Show control and blanket at the top of the Z-order. */
+		var maximumZIndex = this._maximumZIndex();
+		this.$blanket()
+			.css("z-index", maximumZIndex + 1)
+			.show();
+		this
+			.css("z-index", maximumZIndex + 2)
+			.show()
+			.positionOverlay()
+			.trigger("overlayOpened");
+	},
+
+	_createBlanket: function() {
 	    
-		var newBlanket = $(this.element)
+		var $blanket = this
 			.after("<div id='blanket'/>")
-			.next()[0];
+			.next();
 			
         var dismissOnOutsideClick = this.dismissOnOutsideClick();
 	    var color = this.blanketColor() ||
@@ -304,11 +330,11 @@ $.extend(Overlay.prototype, {
                         (dismissOnOutsideClick ? 0.01 : 0.25);
 			
 		var self = this;
-		$(newBlanket)
+		$blanket
 			.click(function() {
 				if (self.dismissOnOutsideClick())
 				{
-					self.hide();
+					self.hideOverlay();
 				}
 			})
 			.css({
@@ -322,32 +348,14 @@ $.extend(Overlay.prototype, {
 			});
         if (color)
         {
-            $(newBlanket).css("background-color", color);
+            $blanket.css("background-color", color);
         }
         
-		return newBlanket;
+		return $blanket;
 	},
-	
-	hide: function()
-	{
-        /*
-		$(this.element).remove();
-        */
-        $(this.element)
-			.hide()
-			.css("z-index", null); // No need to define Z-order any longer.
-		if (this.blanket() != null)
-		{
-			// $(this.blanket()).remove();
-			// this.blanket(null);
-			$(this.blanket()).hide();
-		}
 		
-        $(this.element).trigger("overlayClosed");
-	},
-	
 	/* Return the maximum Z-index in use by the page and its top-level controls. */
-	maximumZIndex: function()
+	_maximumZIndex: function()
 	{
 		var topLevelElements = $("body").children().andSelf();
 		var zIndices = $.map(topLevelElements, function(element) {
@@ -359,45 +367,20 @@ $.extend(Overlay.prototype, {
 			}
 		});
 		return Math.max.apply(null, zIndices);
-	},
-	
-	// Subclasses should override this to position themselves.
-	position: function() {},
-	
-	show: function()
-	{
-		if (this.blanket() == null)
-		{
-			this.blanket(this.createBlanket());
-		}
-		
-		/* Show control and blanket at the top of the Z-order. */
-		var maximumZIndex = this.maximumZIndex();
-		$(this.blanket())
-			.css("z-index", maximumZIndex + 1)
-			.show();
-		$(this.element)
-			.css("z-index", maximumZIndex + 2)
-			.show();
-		this.position();
-		
-		$(this.element).trigger("overlayOpened");
 	}
 });
 
 //
 // Page
 //
-Page = Control.extend({
-	className: "Page"
-});
+Page = Control.subclass("Page");
 /*
  * General page utility functions.
  */
-$.extend(Page.prototype, {
+Page.prototype.define({
 	
 	// If true, have the page fill its container.
-	fill: Control.Element().applyClass("fill"),
+	fill: Control.element().applyClass("fill"),
 
     urlParameters: function() {
         return Page.urlParameters();
@@ -415,9 +398,9 @@ $.extend(Page.prototype, {
 });
 
 /*
- * Static members.
+ * Class members.
  */
-$.extend(Page, {
+Page.extend({
     
     /*
      * Load the given class as the page's top-level class.
@@ -425,7 +408,7 @@ $.extend(Page, {
      * If element is supplied, that element is used to instantiate the control;
      * otherwise the entire body is given over to the control. 
      */
-    loadClass: function(pageClass, element) {
+    loadClass: function(pageClass, element, properties) {
     
         var pageClassFn;
         if ($.isFunction(pageClass))
@@ -435,18 +418,24 @@ $.extend(Page, {
         else
         {
             // Convert a string to a function.
-            // Only accept strings completely composed of word characters,
-            // in any effort to mitigate eval evil.
-            var pageClassName = /^\w+$/.exec(pageClass);
+            // Only do the conversion if the string is a single, legal
+            // JavaScript function name.
+            var regexFunctionName = /^[$A-Za-z_][$0-9A-Za-z_]*$/;
+            if (!regexFunctionName.test(pageClass))
+            {
+            	return null;
+            }
             pageClassFn = eval(pageClass);
         }
         
         var $element = element ? $(element) : $("body");
         
-        $element
+        var $page = $element
             .empty()                // Remove elements
             .attr("class", "")      // Remove classes
-            .control(pageClassFn);
+            .control(pageClassFn, properties);
+        
+        return $page;
     },
 
     /*
@@ -455,13 +444,13 @@ $.extend(Page, {
      * If the page then navigates to www.example.com/index.html#page=Bar, this
      * will load class Bar in situ, without forcing the browser to reload the page. 
      */
-    trackClassFromUrl: function(defaultPageClass) {
+    trackClassFromUrl: function(defaultPageClass, element) {
         
         // Watch for changes in the URL after the hash.
         $(window).hashchange(function() {
             var pageClassName = Page.urlParameters().page;
             var pageClass = pageClassName || defaultPageClass;
-            Page.loadClass(pageClass);
+            Page.loadClass(pageClass, element);
         })
             
         // Trigger a page class load now.
@@ -495,14 +484,14 @@ $.extend(Page, {
 /*
  * General utility functions made available to all controls.
  */
-$.extend(Control.prototype, {
+Control.prototype.extend({
 	
 	/*
 	 * Look up the page hosting a control.
 	 */
 	page: function() {
 		// Get the containing DOM element subclassing Page that contains the element
-		var pages = $(this.element).closest(".Page");
+		var pages = this.closest(".Page");
 		
 		// From the DOM element, get the associated QuickUI control.
 		return (pages.length > 0) ? pages.control() : null;
@@ -513,78 +502,61 @@ $.extend(Control.prototype, {
 //
 // Popup
 //
-Popup = Overlay.extend({
-	className: "Popup",
-	render: function() {
-		Overlay.prototype.render.call(this);
-		this.setClassProperties(Overlay, {
-			"dismissOnInsideClick": "true"
-		});
-	}
+Popup = Overlay.subclass("Popup", function() {
+	this.properties({
+		"dismissOnInsideClick": "true"
+	}, Overlay);
 });
 
 //
 // PopupButton
 //
-PopupButton = Control.extend({
-	className: "PopupButton",
-	render: function() {
-		Control.prototype.render.call(this);
-		this.setClassProperties(Control, {
-			"content": [
-				" ",
-				this.PopupButton_content = $("<div id=\"PopupButton_content\" />")[0],
-				" ",
-				this.PopupButton_popup = Control.create(Popup, {
-					"id": "PopupButton_popup"
-				}),
-				" "
-			]
-		});
-	}
+PopupButton = Control.subclass("PopupButton", function() {
+	this.properties({
+		"content": [
+			" ",
+			this.$PopupButton_content = Control("<div id=\"PopupButton_content\" />"),
+			" ",
+			this.$PopupButton_popup = Popup.create({
+				"id": "PopupButton_popup"
+			}),
+			" "
+		]
+	}, Control);
 });
-$.extend(PopupButton.prototype, {
+PopupButton.prototype.define({
 	
-	content: Control.Element("PopupButton_content").content(),
-	popup: Control.Element("PopupButton_popup").content(),
+	content: Control.element("PopupButton_content").content(),
+	popup: Control.element("PopupButton_popup").content(),
 
-	ready: function()
+	initialize: function()
 	{
 		var self = this;
-		$(this.PopupButton_content).click(function() {
+		this.$PopupButton_content.click(function() {
 			self.showPopup();
 		});
-		var popupControl = Control(this.PopupButton_popup); 
-		if (popupControl)
-		{
-			popupControl.position = function() {
-				self.positionPopup();
-			};
-		}
+		this.$PopupButton_popup.positionOverlay = function() {
+			return self.positionPopup();
+		};
 	},
 	
-	showPopup: function()
-	{
-		$(this.PopupButton_popup).control().show();
-	},
-	
-	positionPopup: function()
-	{
-		var $contentElement = $(this.PopupButton_content);
-		var contentTop = $contentElement.offset().top;
-		var contentHeight = $contentElement.outerHeight(true);
-		var $popupElement = $(this.PopupButton_popup);
-		var popupHeight = $popupElement.outerHeight(true);
+    positionPopup: function()
+    {
+        var $contentElement = this.$PopupButton_content;
+        var contentTop = $contentElement.offset().top;
+        var contentHeight = $contentElement.outerHeight(true);
+        var $popupElement = this.$PopupButton_popup;
+        var popupHeight = $popupElement.outerHeight(true);
 
-		// Try showing popup below.
-		var top = contentTop + contentHeight;
-		if (top + popupHeight > $(document).height() &&
+        // Try showing popup below.
+        var top = contentTop + contentHeight;
+        if (top + popupHeight > $(document).height() &&
             contentTop - popupHeight >= 0)         
-		{
+        {
             // Show popup above.
             top = contentTop - popupHeight;
-		}
-		$popupElement.css("top", top);
+        }
+        $popupElement.css("top", top);
         
         var contentLeft = $contentElement.offset().left;
         var popupWidth = $popupElement.outerWidth(true);
@@ -595,55 +567,13 @@ $.extend(PopupButton.prototype, {
             // Move popup left
             $popupElement.css("left", left);
         }
-	}
-	
-});
-
-//
-// Repeater
-//
-Repeater = Control.extend({
-	className: "Repeater",
-	render: function() {
-		Control.prototype.render.call(this);
-		this.setClassProperties(Control, {
-			"content": [
-				" ",
-				this.Repeater_expansion = $("<div id=\"Repeater_expansion\" />")[0],
-				" "
-			]
-		});
-	}
-});
-$.extend(Repeater.prototype, {
-
-	ready: function() {
-		this.expand();
-	},
-	
-	content: Control.Property(function() {
-		this.expand();
-	}),
-	
-	count: Control.Property.integer(function(value) {
-		this.expand();
-	}, 0),
-	
-	expand: function() {
-		var template = $(this.content());
-		if (template != null)
-		{
-			$(this.Repeater_expansion).empty();
-			var count = this.count();
-			for (var i = 0; i < count; i++)
-			{
-				template.clone(true).appendTo(this.Repeater_expansion); // Deep copy
-			}
-		}
-	},
-	
-	expansion: function() {
-		return $(this.Repeater_expansion).html();
+        
+        return this;
+    },
+    	
+	showPopup: function()
+	{
+		this.$PopupButton_popup.showOverlay();
 	}
 	
 });
@@ -651,21 +581,19 @@ $.extend(Repeater.prototype, {
 //
 // Sprite
 //
-Sprite = Control.extend({
-	className: "Sprite"
-});
-$.extend(Sprite.prototype, {
+Sprite = Control.subclass("Sprite");
+Sprite.prototype.define({
 	
-	image: Control.Element().css("background-image"),
+	image: Control.element().css("background-image"),
 
 	// The height of a single cell in the strip, in pixels.
-	cellHeight: Control.Property(function(value) {
-		$(this.element).css("height", value + "px");
+	cellHeight: Control.property(function(value) {
+		this.css("height", value + "px");
 		this.shiftBackground();
 	}),
 	
 	// The cell currently being shown.
-	currentCell: Control.Property(function(value) {
+	currentCell: Control.property(function(value) {
 		this.shiftBackground();
 	}, 0),
 	
@@ -676,14 +604,14 @@ $.extend(Sprite.prototype, {
 			{
 				// Firefox 3.5.x doesn't support background-position-y,
 				// use background-position instead.
-				var backgroundPosition = $(this.element).css("background-position").split(" ");
+				var backgroundPosition = this.css("background-position").split(" ");
 				backgroundPosition[1] = y;
-				$(this.element).css("background-position", backgroundPosition.join(" "));			
+				this.css("background-position", backgroundPosition.join(" "));			
 			}
 			else
 			{
 				// Not Firefox
-				$(this.element).css("background-position-y", y);
+				this.css("background-position-y", y);
 			}
 		}
 	}
@@ -692,13 +620,11 @@ $.extend(Sprite.prototype, {
 //
 // Switch
 //
-Switch = Control.extend({
-	className: "Switch"
-});
-$.extend(Switch.prototype, {
+Switch = Control.subclass("Switch");
+Switch.prototype.define({
 	
-	ready: function() {
-	    if ($(this.element).children().not(".hidden").length > 1)
+	initialize: function() {
+	    if (this.children().not(".hidden").length > 1)
 	    {
             // Show first child by default. 
             this.index(0);
@@ -709,7 +635,7 @@ $.extend(Switch.prototype, {
     activeChild: function(activeChild) {
         if (activeChild === undefined)
         {
-            return $(this.element).children().not(".hidden")[0];
+            return this.children().not(".hidden")[0];
         }
         else
         {
@@ -719,46 +645,126 @@ $.extend(Switch.prototype, {
              * A simple .toggle(true) would set display: block, which wouldn't
              * be what we'd want for inline elements.
              */
-            $(this.element).children().not(activeChild).toggleClass("hidden", true);
+            this.children().not(activeChild).toggleClass("hidden", true);
             $(activeChild).toggleClass("hidden", false);
         }
     },
     
     // The index of the currently visible child.
-    index: function(index)
-    {
+    index: function(index) {
         if (index === undefined)
         {
-            return $(this.element).children().index(this.activeChild());
+            return this.children().index(this.activeChild());
         }
         else
         {
-            this.activeChild($(this.element).children()[index]);
+            this.activeChild(this.children()[index]);
         }
     }
         
 });
 
 //
-// ToggleButtonBase
+// TestPage
 //
-ToggleButtonBase = ButtonBase.extend({
-	className: "ToggleButtonBase",
-	render: function() {
-		ButtonBase.prototype.render.call(this);
-		this.setClassProperties(ButtonBase, {
-
-		});
-	}
+TestPage = Page.subclass("TestPage", function() {
+	this.properties({
+		"title": "Test Page",
+		"content": [
+			" ",
+			Control("<p />").content(
+				" ",
+				this.$button = ButtonBase.create({
+					"content": " Show test dialog ",
+					"id": "button"
+				}),
+				" ",
+				PopupButton.create({
+					"content": [
+						" ",
+						ButtonBase.create({
+							"content": "Show popup"
+						}),
+						" ",
+						" "
+					],
+					"popup": " Popup content "
+				}),
+				" ",
+				ToggleButton.create({
+					"content": " Toggle "
+				}),
+				" "
+			),
+			" ",
+			this.$list = List.create({
+				"id": "list",
+				"itemClass": "ButtonBase"
+			}),
+			" ",
+			this.$switch = Switch.create({
+				"content": " <div>Panel one</div> <div>Panel two</div> <div>Panel three</div> ",
+				"id": "switch"
+			}),
+			" ",
+			this.$horiziontalPanels = HorizontalPanels.create({
+				"content": "Horizontal panels",
+				"id": "horiziontalPanels",
+				"left": "Left",
+				"right": "Right"
+			}),
+			" ",
+			VerticalPanels.create({
+				"content": "Vertical panels",
+				"style": "height: 200px;",
+				"top": "Top",
+				"bottom": "Bottom"
+			}),
+			" ",
+			BrowserDependent.create({
+				"content": "You are using WebKit",
+				"ifBrowser": "webkit",
+				"elseContent": "A browser other than WebKit"
+			}),
+			" "
+		]
+	}, Page);
 });
-$.extend(ToggleButtonBase.prototype, {
+TestPage.prototype.define({
+	initialize: function() {
+		this.$button.click(function() {
+			Dialog.showDialog(TestDialog);
+		});
+		this.$list.items([
+			"One",
+			"Two",
+			"Three"
+		]);
+		var self = this;
+		this.$list.find(".ButtonBase").click(function() {
+			var button = this;
+			var index = self.$list.children().index(button);
+			self.$switch.index(index);
+		});
+	}	
+});
+
+//
+// ToggleButton
+//
+ToggleButton = ButtonBase.subclass("ToggleButton", function() {
+	this.properties({
+
+	}, ButtonBase);
+});
+ToggleButton.prototype.define({
 	
-	selected: Control.Element().applyClass("selected"),
+	selected: Control.element().applyClass("selected"),
 	
-	ready: function() {
-		ToggleButtonBase.superProto.ready.call(this);
+	initialize: function() {
+		ToggleButton.superclass.prototype.initialize.call(this);
 		var me = this;
-		$(this.element).click(function() {
+		this.click(function() {
             if (!me.disabled())
             {
                 me.toggle();
@@ -774,89 +780,78 @@ $.extend(ToggleButtonBase.prototype, {
 //
 // VerticalAlign
 //
-VerticalAlign = Control.extend({
-	className: "VerticalAlign"
-});
+VerticalAlign = Control.subclass("VerticalAlign");
 
 //
 // VerticalPanels
 //
-VerticalPanels = Control.extend({
-	className: "VerticalPanels",
-	render: function() {
-		Control.prototype.render.call(this);
-		this.setClassProperties(Control, {
-			"content": [
+VerticalPanels = Control.subclass("VerticalPanels", function() {
+	this.properties({
+		"content": [
+			" ",
+			this.$rowTop = Control("<div id=\"rowTop\" class=\"minimumHeight\" />").content(
 				" ",
-				this.rowTop = $("<div id=\"rowTop\" class=\"minimumHeight\" />").items(
-					" ",
-					this.VerticalPanels_top = $("<div id=\"VerticalPanels_top\" />")[0],
-					" "
-				)[0],
-				" ",
-				this.VerticalPanels_content = $("<div id=\"VerticalPanels_content\" />")[0],
-				" ",
-				this.rowBottom = $("<div id=\"rowBottom\" class=\"minimumHeight\" />").items(
-					" ",
-					this.VerticalPanels_bottom = $("<div id=\"VerticalPanels_bottom\" />")[0],
-					" "
-				)[0],
+				this.$VerticalPanels_top = Control("<div id=\"VerticalPanels_top\" />"),
 				" "
-			]
-		});
-	}
+			),
+			" ",
+			this.$VerticalPanels_content = Control("<div id=\"VerticalPanels_content\" />"),
+			" ",
+			this.$rowBottom = Control("<div id=\"rowBottom\" class=\"minimumHeight\" />").content(
+				" ",
+				this.$VerticalPanels_bottom = Control("<div id=\"VerticalPanels_bottom\" />"),
+				" "
+			),
+			" "
+		]
+	}, Control);
 });
-$.extend(VerticalPanels.prototype, {
-    bottom: Control.Element("VerticalPanels_bottom").content(),
-    content: Control.Element("VerticalPanels_content").content(),
-    fill: Control.Element().applyClass("fill"),
-    top: Control.Element("VerticalPanels_top").content()
+VerticalPanels.prototype.define({
+    bottom: Control.element("VerticalPanels_bottom").content(),
+    content: Control.element("VerticalPanels_content").content(),
+    fill: Control.element().applyClass("fill"),
+    top: Control.element("VerticalPanels_top").content()
 });
 
 //
 // Dialog
 //
-Dialog = Overlay.extend({
-	className: "Dialog",
-	render: function() {
-		Overlay.prototype.render.call(this);
-		this.setClassProperties(Overlay, {
-			"dismissOnOutsideClick": "false"
-		});
-	}
+Dialog = Overlay.subclass("Dialog", function() {
+	this.properties({
+		"dismissOnOutsideClick": "false"
+	}, Overlay);
 });
-$.extend(Dialog, {
-	show: function(dialogClass, properties, callbackOk, callbackCancel) {
-		var dialog = $("body")
+// Class method
+Dialog.extend({
+	showDialog: function(dialogClass, properties, callbackOk, callbackCancel) {
+		$("body")
 			.append("<div/>")
 			.find(":last")
-			.control(dialogClass)
-			.control();
-        $(dialog.element).bind({
-            ok: function() {
-                if (callbackOk)
-                {
-                    callbackOk.call(this);
-                }
-            },
-            cancel: function() {
-                if (callbackCancel)
-                {
-                    callbackCancel.call(this);
-                }
-            }
-        });
-		dialog.setProperties(properties);
-		dialog.show();
+	        .bind({
+	            ok: function() {
+	                if (callbackOk)
+	                {
+	                    callbackOk.call(this);
+	                }
+	            },
+	            cancel: function() {
+	                if (callbackCancel)
+	                {
+	                    callbackCancel.call(this);
+	                }
+	            }
+	        })
+			.control(dialogClass, properties)
+			.showOverlay();
 	}
 });
 
-$.extend(Dialog.prototype, {
+Dialog.prototype.define({
 	
-	ready: function() {
-		Dialog.superProto.ready.call(this);
+	initialize: function() {
+		Dialog.superClass.prototype.initialize.call(this);
 		var self = this;
-		$(this.element).keydown(function(event) {
+		this.keydown(function(event) {
 			if (event.keyCode == 27)
 			{
 				self.cancel();
@@ -865,23 +860,53 @@ $.extend(Dialog.prototype, {
 	},
 
 	cancel: function() {
-		this.hide();
-		$(this.element).trigger("cancel");
+		this
+			.trigger("cancel")
+			.closeOverlay();
 	},
 	
 	close: function() {
-		this.hide();
-		$(this.element).trigger("ok");
+		this
+			.trigger("ok")
+			.closeOverlay();
 	},
 	
-	position: function() {
+	positionOverlay: function() {
 		// Center dialog horizontally and vertically.
 		var left = ($(window).width() - $(this.element).outerWidth()) / 2;
 		var top = ($(window).height() - $(this.element).outerHeight()) / 2;
-		$(this.element).css({
+		this.css({
 			left: left,
 			top: top
 		});
 	}
+});
+
+//
+// TestDialog
+//
+TestDialog = Dialog.subclass("TestDialog", function() {
+	this.properties({
+		"content": [
+			" Dialog ",
+			Control("<div />").content(
+				" ",
+				this.$buttonOk = ButtonBase.create({
+					"content": "OK",
+					"id": "buttonOk"
+				}),
+				" "
+			),
+			" "
+		]
+	}, Dialog);
+});
+TestDialog.prototype.define({
+	initialize: function() {
+		var self = this;
+		this.$buttonOk.click(function() {
+			self.close();
+		});
+	}	
 });
 

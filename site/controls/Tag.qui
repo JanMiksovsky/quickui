@@ -10,8 +10,8 @@
 </style>
 
 <script>
-$.extend(Tag.prototype, {
-	content: Control.Element("Tag_content").content()
+Tag.prototype.extend({
+	content: Control.element("Tag_content").content()
 });
 </script>
 

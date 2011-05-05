@@ -113,27 +113,27 @@
 </style>
 
 <script>
-$.extend(SitePage.prototype, {
+SitePage.prototype.extend({
 	
-	area: Control.Property(),
-	content: Control.Element("SitePage_content").content(),
-	navigationLinks: Control.Element("SitePage_navigationLinks").content(),
-	sidebar: Control.Element("SitePage_sidebar").content(),
+	area: Control.property(),
+	content: Control.element("SitePage_content").content(),
+	navigationLinks: Control.element("SitePage_navigationLinks").content(),
+	sidebar: Control.element("SitePage_sidebar").content(),
 	
-	ready: function() {
-		Control(this.navigationBar).highlightCurrentArea();
-		Control(this.SitePage_navigationLinks).highlightCurrentPage();
+	initialize: function() {
+		this.$navigationBar.highlightCurrentArea();
+		this.$SitePage_navigationLinks.highlightCurrentPage();
 	},
 	
 	title: function(value) {
 		if (value !== undefined)
 		{
-			$(this.SitePage_title).html(value);
-			return SitePage.superProto.title.call(this, value + " - QuickUI");
+			this.$SitePage_title.html(value);
+			return SitePage.superclass.prototype.title.call(this, value + " - QuickUI");
 		}
 		else
 		{
-			return SitePage.superProto.title.call(this);
+			return SitePage.superclass.prototype.title.call(this);
 		}
 	}
 	
