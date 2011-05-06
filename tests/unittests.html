@@ -66,8 +66,11 @@ function runTests() {
         
         var MyControl = Control.subclass("MyControl");
         MyControl.prototype.define({
-			myMethod: function() {
-    			this._calledMethod = true;
+			publicMethod: function() {
+    			this._calledPublicMethod = true;
+    		},
+    		_privateMethod: function() {
+    		    this._calledPrivateMethod = true;
     		}
 	    });
         
@@ -78,11 +81,18 @@ function runTests() {
             ]
         });
         
-        var $myControls = MyControl($c.find(".MyControl")); 
-        var result = $myControls.myMethod();
+        var $myControls = MyControl($c.find(".MyControl"));
+        
+        var result = $myControls.publicMethod();
         equal(result, $myControls); // i.e., should return "this"
-    	equal($myControls.eq(0).control()._calledMethod, true);
-    	equal($myControls.eq(1).control()._calledMethod, true);
+    	equal($myControls.eq(0).control()._calledPublicMethod, true);
+    	equal($myControls.eq(1).control()._calledPublicMethod, true);
+    	
+    	// The private method (indicated with "_" prefix) should *not* get wrapped
+    	// with an interator.
+    	$myControls._privateMethod();
+    	equal($myControls.eq(0).control()._calledPrivateMethod, undefined);
+    	equal($myControls.eq(1).control()._calledPrivateMethod, undefined);
     });
         
     test("Define getter/setter by hand", function() {

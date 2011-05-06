@@ -33,6 +33,7 @@ site/tutorial/section12/section12.*
 site/tutorial/section13/section13.*
 site/tutorial/section14/section14.*
 tests/integration/integration.*
+tests/common/common.*
 
 deploy/QuickUI
 mono/lib
