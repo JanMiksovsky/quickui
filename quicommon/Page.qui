@@ -124,18 +124,18 @@ Page.extend({
 /*
  * General utility functions made available to all controls.
  */
-Control.prototype.extend({
+Control.prototype.define({
 	
 	/*
 	 * Look up the page hosting a control.
 	 */
-	page: function() {
-		// Get the containing DOM element subclassing Page that contains the element
-		var pages = this.closest(".Page");
-		
-		// From the DOM element, get the associated QuickUI control.
-		return (pages.length > 0) ? pages.control() : null;
-	}
+	page: Control.iterator(function() {
+        // Get the containing DOM element subclassing Page that contains the element
+        var pages = this.closest(".Page");
+        
+        // From the DOM element, get the associated QuickUI control.
+        return (pages.length > 0) ? pages.control() : null;
+	})
     
 });
 </script>
