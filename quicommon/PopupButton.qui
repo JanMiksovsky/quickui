@@ -35,7 +35,7 @@ PopupButton.prototype.define({
     positionPopup: function()
     {
         var $contentElement = this.$PopupButton_content;
-        var contentTop = $contentElement.offset().top;
+        var contentTop = $contentElement.position().top;
         var contentHeight = $contentElement.outerHeight(true);
         var $popupElement = this.$PopupButton_popup;
         var popupHeight = $popupElement.outerHeight(true);
@@ -50,7 +50,7 @@ PopupButton.prototype.define({
         }
         $popupElement.css("top", top);
         
-        var contentLeft = $contentElement.offset().left;
+        var contentLeft = $contentElement.position().left;
         var popupWidth = $popupElement.outerWidth(true);
         var left = $(document).width() - popupWidth;
         if (contentLeft + popupWidth > $(document).width() &&
