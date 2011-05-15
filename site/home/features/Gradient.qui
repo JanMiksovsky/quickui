@@ -1,15 +1,15 @@
 <Control name="Gradient">
 
 <script>
-$.extend(Gradient.prototype, {
+Gradient.prototype.extend({
     
-    ready: function() {
+    initialize: function() {
         this._redraw();
     },
     
-    end: Control.Property(function() { this._redraw(); }),
-    direction: Control.Property(function() { this._redraw(); }, "vertical"),
-    start: Control.Property(function() { this._redraw(); }),
+    end: Control.property(function() { this._redraw(); }),
+    direction: Control.property(function() { this._redraw(); }, "vertical"),
+    start: Control.property(function() { this._redraw(); }),
     
     _redraw: function() {
         var direction = this.direction();
@@ -41,7 +41,7 @@ $.extend(Gradient.prototype, {
                 value = "progid:DXImageTransform.Microsoft.gradient(gradientType=" + gradientType + ", startColorStr=" + start + ", endColorStr=" + end + ")"; 
             }
 
-            $(this.element).css(property, value);
+            this.css(property, value);
         }
     },
     

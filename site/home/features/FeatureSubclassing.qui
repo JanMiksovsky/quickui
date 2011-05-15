@@ -35,8 +35,8 @@ components.
 &lt;/style&gt;
 
 &lt;script&gt;
-$.extend(OrangeDialog.prototype, {
-buttons: Control.Element(
+OrangeDialog.prototype.extend({
+buttons: Control.element(
   "OrangeDialog_buttons").content(),
 …
 });

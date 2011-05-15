@@ -32,10 +32,10 @@ h1 {
 </style>
 
 <script>
-$.extend(OrangeDialog.prototype, {
-    buttons: Control.Element("OrangeDialog_buttons").content(),
-    content: Control.Element("OrangeDialog_content").content(),
-    title: Control.Element("OrangeDialog_title").content()
+OrangeDialog.prototype.extend({
+    buttons: Control.element("OrangeDialog_buttons").content(),
+    content: Control.element("OrangeDialog_content").content(),
+    title: Control.element("OrangeDialog_title").content()
 });
 </script>
 

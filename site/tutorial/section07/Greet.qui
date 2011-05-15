@@ -3,9 +3,9 @@
 	Hello, <i><span id="Greet_content"/></i><span id="Greet_punctuation">.</span>
 
 <script>
-$.extend(Greet.prototype, {
-	content: Control.Element("Greet_content").content(),
-	punctuation: Control.Element("Greet_punctuation").content()
+Greet.prototype.extend({
+	content: Control.element("Greet_content").content(),
+	punctuation: Control.element("Greet_punctuation").content()
 });
 </script>
 

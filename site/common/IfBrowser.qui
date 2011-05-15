@@ -11,18 +11,18 @@ browser in use supports a given property defined by $.support.
 </prototype>
 
 <script>
-$.extend(IfBrowser.prototype, {
-	browser: Control.Property(),
-	content: Control.Element("IfBrowser_content").content(),
-	elseContent: Control.Element("IfBrowser_elseContent").content(),
-	support: Control.Property(),
+IfBrowser.prototype.extend({
+	browser: Control.property(),
+	content: Control.element("IfBrowser_content").content(),
+	elseContent: Control.element("IfBrowser_elseContent").content(),
+	support: Control.property(),
 	
-	ready: function() {
+	initialize: function() {
 		var usingSpecifiedBrowser = (this.browser() == undefined) || $.browser[this.browser()];
 		var browserSupportsProperty = (this.support() == undefined) || $.support[this.support()];
 		var allConditionsSatisfied = usingSpecifiedBrowser && browserSupportsProperty;
-		$(this.IfBrowser_content).toggle(allConditionsSatisfied);
-		$(this.IfBrowser_elseContent).toggle(!allConditionsSatisfied);
+		this.$IfBrowser_content.toggle(allConditionsSatisfied);
+		this.$IfBrowser_elseContent.toggle(!allConditionsSatisfied);
 	}
 });
 </script>

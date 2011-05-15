@@ -6,10 +6,10 @@
 </content>
 
 <script>
-$.extend(SearchBox.prototype, {
-    ready: function() {
+SearchBox.prototype.extend({
+    initialize: function() {
         var me = this;
-        $(this.buttonSearch).click(function() {
+        this.$buttonSearch.click(function() {
             var terms = $(me.terms).val();
             var query = "http://www.google.com/search?q=%s";
             var url = query.replace("%s", terms);

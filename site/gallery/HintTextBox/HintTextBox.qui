@@ -29,14 +29,14 @@
 </style>
 
 <script>
-$.extend(HintTextBox.prototype, {
+HintTextBox.prototype.extend({
 	
-	hint: Control.Element("HintTextBox_hint").content(),
-	content: Control.Element("HintTextBox_textBox").content(),
+	hint: Control.element("HintTextBox_hint").content(),
+	content: Control.element("HintTextBox_textBox").content(),
 	
-	ready: function() {
+	initialize: function() {
 		var me = this;
-        $(this.element).bind({
+        this.bind({
             "click": function() { me._hideHint(); },
             "focus": function() {
                 if (!me._isTextBoxFocused)
@@ -45,7 +45,7 @@ $.extend(HintTextBox.prototype, {
                 }
             }
         });
-		$(this.HintTextBox_textBox).bind({
+		this.$HintTextBox_textBox.bind({
             "blur": function() {
                 me._isTextBoxFocused = false;
                 me._showHintIfEmpty();
@@ -53,7 +53,7 @@ $.extend(HintTextBox.prototype, {
             "keydown keyup": function() { me._showHintIfEmpty(); },
             "focus": function() { me._isTextBoxFocused = true; }
         });
-        $(this.HintTextBox_hint).click(function() {
+        this.$HintTextBox_hint.click(function() {
             me._hideHint();
         });
 	},
@@ -61,12 +61,12 @@ $.extend(HintTextBox.prototype, {
     _isTextBoxFocused: false,
     
     _hideHint: function() {
-        $(this.HintTextBox_hint).hide(); 
-        $(this.HintTextBox_textBox).focus();
+        this.$HintTextBox_hint.hide(); 
+        this.$HintTextBox_textBox.focus();
     },
     
     _showHintIfEmpty: function() {
-        $(this.HintTextBox_hint).toggle(this.content().length == 0);
+        this.$HintTextBox_hint.toggle(this.content().length == 0);
     }
     
 });

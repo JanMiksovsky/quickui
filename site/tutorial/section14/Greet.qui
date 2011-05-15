@@ -17,16 +17,16 @@
 </style>
 
 <script>
-$.extend(Greet.prototype, {
+Greet.prototype.extend({
 	
-	content: Control.Element("Greet_content").content(),
-	enabled: Control.Element("Greet_content").applyClass("enabled"),
-	punctuation: Control.Element("Greet_punctuation").content(),
-	text: Control.Element("Greet_content").text(),
+	content: Control.element("Greet_content").content(),
+	enabled: Control.element("Greet_content").applyClass("enabled"),
+	punctuation: Control.element("Greet_punctuation").content(),
+	text: Control.element("Greet_content").text(),
 
-	ready: function() {
+	initialize: function() {
 		var self = this;
-		$(this.Greet_content).click(function() {
+		this.$Greet_content.click(function() {
 			if (self.enabled()) {
 				var newName = prompt("Enter name:", self.text());
 				if (newName != null) {

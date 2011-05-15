@@ -28,19 +28,19 @@ input {
 </style>
 
 <script>
-$.extend(SearchBox.prototype, {
+SearchBox.prototype.extend({
     
-    hint: Control.Element("searchTerms").controlProperty("hint"),
-    query: Control.Property(null, "%s"),
+    hint: Control.element("searchTerms").controlProperty("hint"),
+    query: Control.property(null, "%s"),
     
-    ready: function() {
+    initialize: function() {
         var me = this;
-        $(this.element).bind("goButtonClick", function() {
+        this.bind("goButtonClick", function() {
             var searchTerms = Control(me.searchTerms).content();
             var url = me.query().replace("%s", searchTerms);
             window.location.href = url;
         });
-        $(this.searchTerms).focus();
+        this.$searchTerms.focus();
     }
     
 });

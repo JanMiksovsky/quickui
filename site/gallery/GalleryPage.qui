@@ -28,12 +28,12 @@
 </prototype>
 
 <script>
-$.extend(GalleryPage.prototype, {
-	demo: Control.Element("GalleryPage_demo").content(),
-	notes: Control.Element("GalleryPage_notes").content(),
-	sourceFileControl: Control.Element("sourceCodeControl").controlProperty("sourceFile"),
-	sourceFileExample: Control.Element("sourceCodeExample").controlProperty("sourceFile"),
-	summary: Control.Element("GalleryPage_summary").content()
+GalleryPage.prototype.extend({
+	demo: Control.element("GalleryPage_demo").content(),
+	notes: Control.element("GalleryPage_notes").content(),
+	sourceFileControl: Control.element("sourceCodeControl").controlProperty("sourceFile"),
+	sourceFileExample: Control.element("sourceCodeExample").controlProperty("sourceFile"),
+	summary: Control.element("GalleryPage_summary").content()
 });
 </script>
 

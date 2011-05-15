@@ -14,10 +14,10 @@
 </prototype>
 
 <script>
-$.extend(SampleDialog.prototype, {
-    ready: function() {
+SampleDialog.prototype.extend({
+    initialize: function() {
         var me = this;
-        $(this.OrangeDialog_buttons).click(function() {
+        this.$OrangeDialog_buttons.click(function() {
             me.close();
         })
     }

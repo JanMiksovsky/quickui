@@ -23,7 +23,7 @@ if ($.browser.mozilla)
     + startColorString + ", "
     + endColorString + ")";
 }
-$(this.element).css(property, value);
+this.css(property, value);
 …
 &lt;/script&gt;
 &lt;/Control&gt;

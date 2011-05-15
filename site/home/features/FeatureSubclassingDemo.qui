@@ -5,9 +5,9 @@
 </content>
 
 <script>
-$.extend(FeatureSubclassingDemo.prototype, {
-    ready: function() {
-        $(this.buttonShow).click(function() {
+FeatureSubclassingDemo.prototype.extend({
+    initialize: function() {
+        this.$buttonShow.click(function() {
             Dialog.show(SampleDialog);
         });
     }

@@ -12,9 +12,9 @@
 </style>
 
 <script>
-$.extend(Greet.prototype, {
-	content: Control.Element("Greet_content").content(),
-	punctuation: Control.Element("Greet_punctuation").content()
+Greet.prototype.extend({
+	content: Control.element("Greet_content").content(),
+	punctuation: Control.element("Greet_punctuation").content()
 });
 </script>
 

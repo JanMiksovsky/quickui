@@ -13,9 +13,9 @@
 </style>
 
 <script>
-$.extend(SampleSpriteButtonDemo.prototype, {
-	ready: function() {
-		this.$(".SampleSpriteButton").click(function() {
+SampleSpriteButtonDemo.prototype.extend({
+	initialize: function() {
+		this.find(".SampleSpriteButton").click(function() {
 			alert("You clicked " + Control(this).content());
 		});
 	}

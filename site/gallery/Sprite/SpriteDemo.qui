@@ -18,10 +18,10 @@
 </style>
 
 <script>
-$.extend(SpriteDemo.prototype, {
-	ready: function() {
+SpriteDemo.prototype.extend({
+	initialize: function() {
 		var self = this;
-		$(this.image).click(function(event) {
+		this.$image.click(function(event) {
 			var mouseY = event.pageY - $(this).offset().top;
 			var cellIndex = Math.floor(mouseY / Control(self.sprite).cellHeight());
 			Control(self.sprite).currentCell(cellIndex);

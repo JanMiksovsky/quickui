@@ -22,14 +22,14 @@ Control with a content area (usually some form of text box) and an associated "G
 </style>
 
 <script>
-$.extend(TextBoxWithButton.prototype, {
+TextBoxWithButton.prototype.extend({
     
-    goButton: Control.Element("TextBoxWithButton_goButton").content(),    
-    textBox: Control.Element("TextBoxWithButton_textBox").content(),
+    goButton: Control.element("TextBoxWithButton_goButton").content(),    
+    textBox: Control.element("TextBoxWithButton_textBox").content(),
     
-    ready: function() {
+    initialize: function() {
         var me = this;
-        $(this.TextBoxWithButton_textBox).bind("change keydown keyup", function(event) {
+        this.$TextBoxWithButton_textBox.bind("change keydown keyup", function(event) {
             me._disableButtonIfContentEmpty();
             var keyCode = event.keyCode || event.which;
             if (!me._isContentEmpty() && keyCode == 13 /* Enter */)
@@ -37,14 +37,14 @@ $.extend(TextBoxWithButton.prototype, {
                 $(me.element).trigger("goButtonClick");
             }
         });
-        $(this.TextBoxWithButton_goButton).click(function() {
+        this.$TextBoxWithButton_goButton.click(function() {
             $(me.element).trigger("goButtonClick");
         });
         this._disableButtonIfContentEmpty();
     },
     
     content: function(value) {
-        result = this.elementContent(this.TextBoxWithButton_textBox, value); 
+        result = this.$TextBoxWithButton_textBox.content(value); 
         if (value !== undefined) 
         {
             this.disableButtonIfContentEmpty();
@@ -54,7 +54,7 @@ $.extend(TextBoxWithButton.prototype, {
     
     _disableButtonIfContentEmpty: function() {
         var content = this.content();
-        var $goButton = $(this.TextBoxWithButton_goButton);
+        var $goButton = this.$TextBoxWithButton_goButton;
         if ($goButton.children().length > 0)
         {
             var buttonControl = Control($goButton.children()[0]);

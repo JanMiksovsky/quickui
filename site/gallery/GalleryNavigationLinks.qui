@@ -12,9 +12,9 @@
 </style>
 
 <script>
-$.extend(GalleryNavigationLinks.prototype, {
-    ready: function() {
-        Control(this.listClass).items([
+GalleryNavigationLinks.prototype.extend({
+    initialize: function() {
+        this.$listClass.items([
             "IfBrowser",
             "GalleryPage",
             "Gradient",
