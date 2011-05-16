@@ -44,7 +44,7 @@ SourceCode.prototype.extend({
 		// Load the file.
 		$.get(value, function(data) {
 			// Using $.text() escapes the HTML/XML.
-			$(self.SourceCode_content).text(self._tabsToSpaces(data));
+			self.$SourceCode_content.text(self._tabsToSpaces(data));
 		});
 		this.$link.attr("href", value);
 		this.$linkText.html(this.fileName(value));
