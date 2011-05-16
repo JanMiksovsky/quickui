@@ -16,7 +16,7 @@
 SampleSpriteButtonDemo.prototype.extend({
 	initialize: function() {
 		this.find(".SampleSpriteButton").click(function() {
-			alert("You clicked " + Control(this).content());
+			alert("You clicked \"" + $(this).control().content() + "\".");
 		});
 	}
 });
