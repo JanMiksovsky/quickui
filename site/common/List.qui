@@ -5,7 +5,7 @@ Instantiates an instance of another control class for each item in a list.
 <Control name="List">
 
 <script>
-List.prototype.extend({
+List.prototype.define({
     
     itemClass: Control.property(
         function() { this._refresh(); },
@@ -23,13 +23,7 @@ List.prototype.extend({
     // properties map directly to property settors defined by the
     // target itemClass.
     //
-    mapFn: Control.property(),
-    
-    // Allows items and mapFn to both be set in one step.
-    setItems: function(items, mapFn) {
-        this.mapFn(mapFn);
-        this.items(items);
-    },
+    mapFn: Control.property(null, null),
     
     _refresh: function() {
         var itemClass = this.itemClass();
@@ -37,13 +31,13 @@ List.prototype.extend({
         var mapFn = this.mapFn();
         if (itemClass && items)
         {
-            var me = this;
+            var self = this;
             var controls = $.map(items, function(item, index) {
                 var properties;
                 if (mapFn)
                 {
                     // Map item to control properties with custom map function.
-                    properties = mapFn.call(me, item, index);
+                    properties = mapFn.call(self, item, index);
                 }
                 else if (typeof item == "string" || item instanceof String)
                 {
@@ -55,10 +49,10 @@ List.prototype.extend({
                     // Use the item as is for the control's properties.
                     properties = item;
                 }
-                var control = Control.create(itemClass, properties);
+                var control = itemClass.create(properties);
                 return control;
             });
-            this.items(controls);
+            this.content(controls);
         }
     }
     

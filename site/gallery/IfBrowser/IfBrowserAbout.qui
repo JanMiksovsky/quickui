@@ -1,6 +1,6 @@
 <Control name="IfBrowserAbout">
 <prototype>
-	<GalleryPage title="IfBrowser" sourceFileExample="IfBrowser/IfBrowserDemo.qui" sourceFileControl="../common/IfBrowser.qui">
+	<GalleryPage title="IfBrowser" sourceFileExample="IfBrowser/IfBrowserDemo.qui" sourceFileControl="IfBrowser/IfBrowser.qui">
 		<summary>
 			Conditionally shows contents if the given browser is in use (defined by 
 			<Link href="http://docs.jquery.com/Utilities/jQuery.browser">jQuery.browser</Link>),

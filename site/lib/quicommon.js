@@ -484,18 +484,18 @@ Page.extend({
 /*
  * General utility functions made available to all controls.
  */
-Control.prototype.extend({
+Control.prototype.define({
 	
 	/*
 	 * Look up the page hosting a control.
 	 */
-	page: function() {
-		// Get the containing DOM element subclassing Page that contains the element
-		var pages = this.closest(".Page");
-		
-		// From the DOM element, get the associated QuickUI control.
-		return (pages.length > 0) ? pages.control() : null;
-	}
+	page: Control.iterator(function() {
+        // Get the containing DOM element subclassing Page that contains the element
+        var pages = this.closest(".Page");
+        
+        // From the DOM element, get the associated QuickUI control.
+        return (pages.length > 0) ? pages.control() : null;
+	})
     
 });
 
@@ -543,7 +543,7 @@ PopupButton.prototype.define({
     positionPopup: function()
     {
         var $contentElement = this.$PopupButton_content;
-        var contentTop = $contentElement.offset().top;
+        var contentTop = $contentElement.position().top;
         var contentHeight = $contentElement.outerHeight(true);
         var $popupElement = this.$PopupButton_popup;
         var popupHeight = $popupElement.outerHeight(true);
@@ -558,7 +558,7 @@ PopupButton.prototype.define({
         }
         $popupElement.css("top", top);
         
-        var contentLeft = $contentElement.offset().left;
+        var contentLeft = $contentElement.position().left;
         var popupWidth = $popupElement.outerWidth(true);
         var left = $(document).width() - popupWidth;
         if (contentLeft + popupWidth > $(document).width() &&
@@ -662,91 +662,6 @@ Switch.prototype.define({
         }
     }
         
-});
-
-//
-// TestPage
-//
-TestPage = Page.subclass("TestPage", function() {
-	this.properties({
-		"title": "Test Page",
-		"content": [
-			" ",
-			Control("<p />").content(
-				" ",
-				this.$button = ButtonBase.create({
-					"content": " Show test dialog ",
-					"id": "button"
-				}),
-				" ",
-				PopupButton.create({
-					"content": [
-						" ",
-						ButtonBase.create({
-							"content": "Show popup"
-						}),
-						" ",
-						" "
-					],
-					"popup": " Popup content "
-				}),
-				" ",
-				ToggleButton.create({
-					"content": " Toggle "
-				}),
-				" "
-			),
-			" ",
-			this.$list = List.create({
-				"id": "list",
-				"itemClass": "ButtonBase"
-			}),
-			" ",
-			this.$switch = Switch.create({
-				"content": " <div>Panel one</div> <div>Panel two</div> <div>Panel three</div> ",
-				"id": "switch"
-			}),
-			" ",
-			this.$horiziontalPanels = HorizontalPanels.create({
-				"content": "Horizontal panels",
-				"id": "horiziontalPanels",
-				"left": "Left",
-				"right": "Right"
-			}),
-			" ",
-			VerticalPanels.create({
-				"content": "Vertical panels",
-				"style": "height: 200px;",
-				"top": "Top",
-				"bottom": "Bottom"
-			}),
-			" ",
-			BrowserDependent.create({
-				"content": "You are using WebKit",
-				"ifBrowser": "webkit",
-				"elseContent": "A browser other than WebKit"
-			}),
-			" "
-		]
-	}, Page);
-});
-TestPage.prototype.define({
-	initialize: function() {
-		this.$button.click(function() {
-			Dialog.showDialog(TestDialog);
-		});
-		this.$list.items([
-			"One",
-			"Two",
-			"Three"
-		]);
-		var self = this;
-		this.$list.find(".ButtonBase").click(function() {
-			var button = this;
-			var index = self.$list.children().index(button);
-			self.$switch.index(index);
-		});
-	}	
 });
 
 //
@@ -880,33 +795,5 @@ Dialog.prototype.define({
 			top: top
 		});
 	}
-});
-
-//
-// TestDialog
-//
-TestDialog = Dialog.subclass("TestDialog", function() {
-	this.properties({
-		"content": [
-			" Dialog ",
-			Control("<div />").content(
-				" ",
-				this.$buttonOk = ButtonBase.create({
-					"content": "OK",
-					"id": "buttonOk"
-				}),
-				" "
-			),
-			" "
-		]
-	}, Dialog);
-});
-TestDialog.prototype.define({
-	initialize: function() {
-		var self = this;
-		this.$buttonOk.click(function() {
-			self.close();
-		});
-	}	
 });
 

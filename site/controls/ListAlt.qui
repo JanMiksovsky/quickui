@@ -1,15 +1,15 @@
 <!-- Instantiate its contents, once for each item in a supplied array. -->
 
-<Control name="List">
+<Control name="ListAlt">
 
 <content>
-	<div id="List_expansion"/>
+	<div id="ListAlt_expansion"/>
 </content>
 
 <script>
-List.prototype.extend({
+ListAlt.prototype.extend({
 
-	expansion: Control.element("List_expansion").content(),
+	expansion: Control.element("ListAlt_expansion").content(),
 
 	initialize: function() {
 		this.expand();
@@ -29,7 +29,7 @@ List.prototype.extend({
 		var template = this.content();
 		if (template != null)
 		{
-			this.$List_expansion.empty();
+			this.$ListAlt_expansion.empty();
 			var data = this.data();
 			if (data != null)
 			{
@@ -40,10 +40,10 @@ List.prototype.extend({
 					if (this.bind != null) {
 						this.bind.call(newElement, data[i]);
 					}
-					$(newElement).appendTo(this.List_expansion);
+					$(newElement).appendTo(this.ListAlt_expansion);
 					*/
 					var $newElement = $(template).clone();
-					$newElement.appendTo(this.List_expansion);
+					$newElement.appendTo(this.ListAlt_expansion);
 				}
 			}
 		}
