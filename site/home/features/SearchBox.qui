@@ -7,14 +7,27 @@
 
 <script>
 SearchBox.prototype.extend({
+    
     initialize: function() {
         var self = this;
         this.$buttonSearch.click(function() {
-            var terms = self.$terms.content();
-            var query = "http://www.google.com/search?q=%s";
-            var url = query.replace("%s", terms);
-            window.location.href = url;
+            self._navigate();
         });
+        this.$terms.bind("change keydown keyup", function(event) {
+            var content = self.content();
+            var isContentEmpty = !(content && content.length > 0);
+            var keyCode = event.keyCode || event.which;
+            if (!isContentEmpty && keyCode === 13 /* Enter */)
+            {
+                self._navigate();
+            }
+        });
+    },
+    
+    _navigate: function() {
+        var terms = this.$terms.content();
+        var query = "http://www.google.com/search?q=%s";
+        window.location.href = query.replace("%s", terms);
     }
 });  
 </script>
