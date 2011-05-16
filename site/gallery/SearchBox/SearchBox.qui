@@ -34,11 +34,11 @@ SearchBox.prototype.extend({
     query: Control.property(null, "%s"),
     
     initialize: function() {
-        var me = this;
+        var self = this;
         this.bind("goButtonClick", function() {
-            var searchTerms = Control(me.searchTerms).content();
+            var searchTerms = self.$searchTerms().content();
             var url = me.query().replace("%s", searchTerms);
-            window.location.href = url;
+            window.location.href = url;self
         });
         this.$searchTerms.focus();
     }

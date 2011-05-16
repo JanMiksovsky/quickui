@@ -8,9 +8,9 @@
 <script>
 SearchBox.prototype.extend({
     initialize: function() {
-        var me = this;
+        var self = this;
         this.$buttonSearch.click(function() {
-            var terms = $(me.terms).val();
+            var terms = self.$terms.content();
             var query = "http://www.google.com/search?q=%s";
             var url = query.replace("%s", terms);
             window.location.href = url;
