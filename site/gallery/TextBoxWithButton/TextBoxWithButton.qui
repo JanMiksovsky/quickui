@@ -28,17 +28,17 @@ TextBoxWithButton.prototype.extend({
     textBox: Control.element("TextBoxWithButton_textBox").content(),
     
     initialize: function() {
-        var me = this;
+        var self = this;
         this.$TextBoxWithButton_textBox.bind("change keydown keyup", function(event) {
-            me._disableButtonIfContentEmpty();
+            self._disableButtonIfContentEmpty();
             var keyCode = event.keyCode || event.which;
-            if (!me._isContentEmpty() && keyCode == 13 /* Enter */)
+            if (!self._isContentEmpty() && keyCode == 13 /* Enter */)
             {
-                $(me.element).trigger("goButtonClick");
+                self.trigger("goButtonClick");
             }
         });
         this.$TextBoxWithButton_goButton.click(function() {
-            $(me.element).trigger("goButtonClick");
+            self.trigger("goButtonClick");
         });
         this._disableButtonIfContentEmpty();
     },
@@ -63,20 +63,6 @@ TextBoxWithButton.prototype.extend({
                 buttonControl.disabled(this._isContentEmpty());
             }
         }
-    },
-
-    // General purpose -- Should move this into quickui.js. Also used by EditableField.
-    elementContent: function(element, value) {
-        var $element = $(element);
-        var $firstChild = $element.children().length == 0
-                              ? $element
-                              : $($element.children()[0]);
-        var result = ($firstChild.control() != undefined)
-            ? $firstChild.control().content(value)
-            : ($firstChild[0] instanceof HTMLInputElement || $firstChild[0] instanceof HTMLTextAreaElement)
-                ? $firstChild.val(value)
-                : $firstChild.items(value);
-        return result;
     },
     
     _isContentEmpty: function() {

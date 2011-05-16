@@ -36,9 +36,9 @@ SearchBox.prototype.extend({
     initialize: function() {
         var self = this;
         this.bind("goButtonClick", function() {
-            var searchTerms = self.$searchTerms().content();
-            var url = me.query().replace("%s", searchTerms);
-            window.location.href = url;self
+            var searchTerms = self.$searchTerms.content();
+            var url = self.query().replace("%s", searchTerms);
+            window.location.href = url;
         });
         this.$searchTerms.focus();
     }
