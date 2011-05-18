@@ -788,11 +788,9 @@ Dialog.prototype.define({
 	
 	positionOverlay: function() {
 		// Center dialog horizontally and vertically.
-		var left = ($(window).width() - $(this.element).outerWidth()) / 2;
-		var top = ($(window).height() - $(this.element).outerHeight()) / 2;
 		this.css({
-			left: left,
-			top: top
+			left: ($(window).width() - this.outerWidth()) / 2,
+			top: ($(window).height() - this.outerHeight()) / 2
 		});
 	}
 });
