@@ -1,7 +1,7 @@
 <Control name="GalleryNavigationLinks">
 
 <content>
-    <NavigationLink id="linkIndex" href="/gallery/default.html">Index</NavigationLink>
+    <Link id="linkIndex" href="/gallery/default.html">Index</Link>
     <List id="listClass" itemClass="GalleryLink"/>
 </content>
 
