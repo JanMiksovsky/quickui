@@ -9,13 +9,13 @@
 </style>
 
 <script>
-Switch.prototype.define({
+Switch.prototype.extend({
 	
 	initialize: function() {
-	    if (this.children().not(".hidden").length > 1)
+	    if ($(this.element).children().not(".hidden").length > 1)
 	    {
             // Show first child by default. 
-            this.index(0);
+            this.activeIndex(0);
 	    }
 	},
     
@@ -39,7 +39,8 @@ Switch.prototype.define({
     },
     
     // The index of the currently visible child.
-    index: function(index) {
+    activeIndex: function(index)
+    {
         if (index === undefined)
         {
             return this.children().index(this.activeChild());
