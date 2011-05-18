@@ -37,7 +37,7 @@ NavigationBar.prototype.extend({
 		var area = this.page() && this.page().area();
 		if (area != null) {
 			this.find(".Link").eachControl(function() {
-				this.toggleClass("highlight", this.content() == area);
+				this.toggleClass("highlight", this.content() === area);
 			});
 		}
 	}
