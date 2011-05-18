@@ -1,0 +1,31 @@
+<!--
+Conditionally shows contents if the given browser is in use and/or if the
+browser in use supports a given property defined by $.support.
+-->
+
+<Control name="BrowserSpecific">
+
+<content>
+	<span id="BrowserSpecific_content"/>
+	<span id="BrowserSpecific_elseContent"/>
+</content>
+
+<script>
+BrowserSpecific.prototype.extend({
+
+	content: Control.element("BrowserSpecific_content").content(),
+	elseContent: Control.element("BrowserSpecific_elseContent").content(),
+	ifBrowser: Control.property(),
+	ifSupport: Control.property(),
+	
+	initialize: function() {
+		var usingSpecifiedBrowser = (this.ifBrowser() === undefined) || !!$.browser[this.ifBrowser()];
+		var browserSupportsProperty = (this.ifSupport() === undefined) || !!$.support[this.ifSupport()];
+		var allConditionsSatisfied = usingSpecifiedBrowser && browserSupportsProperty;
+		this.$BrowserSpecific_content.toggle(allConditionsSatisfied);
+		this.$BrowserSpecific_elseContent.toggle(!allConditionsSatisfied);
+	}
+});
+</script>
+
+</Control>
