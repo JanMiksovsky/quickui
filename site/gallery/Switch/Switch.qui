@@ -9,13 +9,13 @@
 </style>
 
 <script>
-$.extend(Switch.prototype, {
+Switch.prototype.extend({
 	
-	ready: function() {
+	initialize: function() {
 	    if ($(this.element).children().not(".hidden").length > 1)
 	    {
             // Show first child by default. 
-            this.index(0);
+            this.activeIndex(0);
 	    }
 	},
     
@@ -23,7 +23,7 @@ $.extend(Switch.prototype, {
     activeChild: function(activeChild) {
         if (activeChild === undefined)
         {
-            return $(this.element).children().not(".hidden")[0];
+            return this.children().not(".hidden")[0];
         }
         else
         {
@@ -33,21 +33,21 @@ $.extend(Switch.prototype, {
              * A simple .toggle(true) would set display: block, which wouldn't
              * be what we'd want for inline elements.
              */
-            $(this.element).children().not(activeChild).toggleClass("hidden", true);
+            this.children().not(activeChild).toggleClass("hidden", true);
             $(activeChild).toggleClass("hidden", false);
         }
     },
     
     // The index of the currently visible child.
-    index: function(index)
+    activeIndex: function(index)
     {
         if (index === undefined)
         {
-            return $(this.element).children().index(this.activeChild());
+            return this.children().index(this.activeChild());
         }
         else
         {
-            this.activeChild($(this.element).children()[index]);
+            this.activeChild(this.children()[index]);
         }
     }
         

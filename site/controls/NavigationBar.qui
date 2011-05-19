@@ -1,25 +1,25 @@
 <Control name="NavigationBar">
 
 <content>
-	<NavigationLink href="/home/default.html">Home</NavigationLink>
-	<NavigationLink href="/downloads/default.html">Download</NavigationLink>
-	<NavigationLink href="/tutorial/section01/default.html">Tutorial</NavigationLink>
-	<NavigationLink href="/screencasts/default.html">Screencasts</NavigationLink>
-	<NavigationLink href="/gallery/default.html">Gallery</NavigationLink>
-	<NavigationLink href="http://groups.google.com/group/quickui">Discuss</NavigationLink>
-	<NavigationLink href="https://github.com/JanMiksovsky/quickui">Contribute</NavigationLink>
+	<Link href="/home/default.html">Home</Link>
+	<Link href="/downloads/default.html">Download</Link>
+	<Link href="/tutorial/section01/default.html">Tutorial</Link>
+	<Link href="/screencasts/default.html">Screencasts</Link>
+	<Link href="/gallery/default.html">Gallery</Link>
+	<Link href="http://groups.google.com/group/quickui">Discuss</Link>
+	<Link href="https://github.com/JanMiksovsky/quickui">Contribute</Link>
 </content>
 
 <style>
-.NavigationLink {
+.Link {
 	font-size: 12pt;
 	margin-right: 0.5em;
 	padding: 0.25em 0.5em;
 }
-.NavigationLink.highlight {
+.Link.highlight {
     background-color: #2D7AB0;
 }
-.NavigationLink:hover {
+.Link:hover {
 	background-color: #47aaf0;
 }
 
@@ -37,7 +37,7 @@ NavigationBar.prototype.extend({
 		var area = this.page() && this.page().area();
 		if (area != null) {
 			this.find(".Link").eachControl(function() {
-				this.toggleClass("highlight", this.content() == area);
+				this.toggleClass("highlight", this.content() === area);
 			});
 		}
 	}

@@ -1,7 +1,7 @@
-<Control name="IfBrowserDemo">
+<Control name="BrowserSpecificDemo">
 	You are using:
-	<IfBrowser browser="msie" style="display: inline">
+	<BrowserSpecific ifBrowser="msie" style="display: inline">
 		<content>Internet Explorer</content>
 		<elseContent>a browser other than Internet Explorer</elseContent>
-	</IfBrowser>
+	</BrowserSpecific>
 </Control>

@@ -8,7 +8,7 @@
 FeatureSubclassingDemo.prototype.extend({
     initialize: function() {
         this.$buttonShow.click(function() {
-            Dialog.show(SampleDialog);
+            Dialog.showDialog(SampleDialog);
         });
     }
 });

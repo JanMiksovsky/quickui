@@ -1,9 +1,0 @@
-<!-- A link used in the site's main navigation elements -->
-
-<Control name="NavigationLink">
-
-<prototype>
-	<Link/>
-</prototype>
-
-</Control>
