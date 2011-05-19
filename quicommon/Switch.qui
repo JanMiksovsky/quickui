@@ -12,7 +12,7 @@
 Switch.prototype.extend({
 	
 	initialize: function() {
-	    if ($(this.element).children().not(".hidden").length > 1)
+	    if (this.children().not(".hidden").length > 1)
 	    {
             // Show first child by default. 
             this.activeIndex(0);
