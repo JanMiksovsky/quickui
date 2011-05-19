@@ -11,6 +11,24 @@
 <script type="text/javascript" src="../lib/quickui.js"></script>
 
 <script language="JavaScript">
+
+var MyControl = Control.subclass("MyControl");
+MyControl.prototype.define({
+	publicMethod: function() {
+		this._calledPublicMethod = true;
+	},
+	_privateMethod: function() {
+	    this._calledPrivateMethod = true;
+	}
+});
+
+var $c = Control.create({
+    content: [
+        MyControl.create({ content: "Hello" }),
+        MyControl.create({ content: "world" })
+    ]
+});
+
 $(function() {
     $("body")
         .control(Control)
