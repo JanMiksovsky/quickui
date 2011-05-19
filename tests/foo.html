@@ -12,26 +12,24 @@
 
 <script language="JavaScript">
 
+/*
+var initOriginal = Control.fn.init;
+Control.fn.init = function() {
+    var result = initOriginal.apply(this, arguments);
+    return result;
+}
+*/
+
 var MyControl = Control.subclass("MyControl");
 MyControl.prototype.define({
-	publicMethod: function() {
-		this._calledPublicMethod = true;
-	},
-	_privateMethod: function() {
-	    this._calledPrivateMethod = true;
-	}
-});
-
-var $c = Control.create({
-    content: [
-        MyControl.create({ content: "Hello" }),
-        MyControl.create({ content: "world" })
-    ]
+	foo: Control.iterator(function() {
+		return "bar";
+	})
 });
 
 $(function() {
     $("body")
-        .control(Control)
+        .control(MyControl)
         .content("Hello, world!");
 });
 </script>
