@@ -17,6 +17,26 @@
  * QUnit tests
  */
 function runTests() {
+    
+    /*
+     * Control tests
+     */
+    test("Create control", function() {
+        var $element = $("<div/>");
+        var $c = $element.control(Control);
+        equal($c.attr("class"), "Control");
+        equal($element.control()[0] === $c[0], true);
+    });
+    
+    test("Map elements back to original controls", function() {
+        var MyControl = Control.subclass("MyControl");
+        MyControl.prototype.foo = function() {
+            return "Hello";
+        };
+    	var $elements = Control("<div/>").add("<div/>");
+    	var $c = $elements.control(MyControl);
+    	equal($c.control().length, 2);
+    });
 
     /*
      * Control.content() tests
