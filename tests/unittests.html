@@ -114,7 +114,36 @@ function runTests() {
     	equal($myControls.eq(0).control()._calledPrivateMethod, undefined);
     	equal($myControls.eq(1).control()._calledPrivateMethod, undefined);
     });
+    
+    test("Define iterators", function() {
         
+        var MyControl = Control.subclass("MyControl");
+        MyControl.prototype.iterators({
+			foo: function() {
+    			this._calledFoo = true;
+    		},
+    		bar: function() {
+    		    this._calledBar = true;
+    		    return "Hello";    // Force getter behavior.
+    		}
+	    });
+        
+    	var $elements = Control("<div/>").add("<div/>");
+    	var $c = $elements.control(MyControl);
+        
+        var methodResult = $c.foo();
+        equal(methodResult, $c); // i.e., should return "this"
+    	equal($c.eq(0).control()._calledFoo, true);
+    	equal($c.eq(1).control()._calledFoo, true);
+    	
+    	// The private method (indicated with "_" prefix) should *not* get wrapped
+    	// with an interator.
+    	var getterResult = $c.bar();
+    	equal(getterResult, "Hello");
+    	equal($c.eq(0).control()._calledBar, true);
+    	equal($c.eq(1).control()._calledBar, undefined);
+    });
+            
     test("Define getter/setter by hand", function() {
     	var c = Control.subclass();
     	c.prototype.define({
