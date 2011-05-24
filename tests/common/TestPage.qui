@@ -70,7 +70,7 @@ TestPage.prototype.define({
 		this.$list.find(".ButtonBase").click(function() {
 			var button = this;
 			var index = self.$list.children().index(button);
-			self.$switch.index(index);
+			self.$switch.activeIndex(index);
 		});
 	}	
 });
