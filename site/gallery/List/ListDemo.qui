@@ -5,8 +5,8 @@
 </content>
 
 <script>
-$.extend(ListDemo.prototype, {
-    ready: function() {
+ListDemo.prototype.extend({
+    initialize: function() {
         
         // Sample array.
         var data = [
@@ -17,7 +17,7 @@ $.extend(ListDemo.prototype, {
         ];
         
         // Render each member of the array as a list item.
-        Control(this.buttonList).items(data);
+        this.$buttonList.items(data);
     }
 });
 </script>

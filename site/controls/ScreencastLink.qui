@@ -18,14 +18,14 @@
 </style>
 
 <script>
-$.extend(ScreencastLink.prototype, {
+ScreencastLink.prototype.extend({
     
-    content: Control.Element("ScreencastLink_content").content(),
-    href: Control.Element("ScreencastLink_content").controlProperty("href"),
+    content: Control.element("ScreencastLink_content").content(),
+    href: Control.element("ScreencastLink_content").controlProperty("href"),
     
-    ready: function() {
+    initialize: function() {
         var self = this;
-        $(this.iconPlay).click(function() {
+        this.$iconPlay.click(function() {
             $(self.ScreencastLink_content).trigger("click");
         });
     }

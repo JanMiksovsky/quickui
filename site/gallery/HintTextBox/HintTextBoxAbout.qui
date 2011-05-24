@@ -22,10 +22,10 @@
 </prototype>
 
 <script>
-$.extend(HintTextBoxAbout.prototype, {
-	ready: function() {
-		HintTextBoxAbout.superProto.ready.call(this);
-		this.$("input").focus();
+HintTextBoxAbout.prototype.extend({
+	initialize: function() {
+		HintTextBoxAbout.superclass.prototype.initialize.call(this);
+		this.find("input").focus();
 	}
 });
 </script>

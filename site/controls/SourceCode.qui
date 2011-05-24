@@ -28,9 +28,9 @@ a#link {
 </style>
 
 <script>
-$.extend(SourceCode.prototype, {
+SourceCode.prototype.extend({
 	
-	content: Control.Element("SourceCode_content").content(),
+	content: Control.element("SourceCode_content").content(),
 	
 	fileName: function(path) {
 		var pathNames = path.split("/");
@@ -39,18 +39,18 @@ $.extend(SourceCode.prototype, {
 			: pathNames[pathNames.length - 1];
 	},
 	
-	sourceFile: Control.Property(function(value) {
+	sourceFile: Control.property(function(value) {
 		var self = this;
 		// Load the file.
 		$.get(value, function(data) {
 			// Using $.text() escapes the HTML/XML.
-			$(self.SourceCode_content).text(self.tabsToSpaces(data));
+			self.$SourceCode_content.text(self._tabsToSpaces(data));
 		});
-		$(this.link).attr("href", value);
-		$(this.linkText).html(this.fileName(value));
+		this.$link.attr("href", value);
+		this.$linkText.html(this.fileName(value));
 	}),
 	
-	tabsToSpaces: function(s) {
+	_tabsToSpaces: function(s) {
 		return s.replace(/\t/g, "    ");
 	}
 	

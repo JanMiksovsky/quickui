@@ -3,9 +3,9 @@
 	Hello, <i><span id="Greet_content"/></i>!
 
 <script>
-$.extend(Greet.prototype, {
+Greet.prototype.extend({
 	content: function(value) {
-		return $(this.Greet_content).html(value);
+		return this.$Greet_content.html(value);
 	}
 });
 </script>

@@ -11,12 +11,12 @@
 </style>
 
 <script>
-$.extend(Popout.prototype, {
-    ready: function() {
-        var $element = $(this.element);
-        $(this.element).hover(
-            function hoverIn() { $element.addClass("hovered"); },
-            function hoverOut() { $element.removeClass("hovered");  }
+Popout.prototype.extend({
+    initialize: function() {
+        var self = this;
+        this.hover(
+            function hoverIn() { self.addClass("hovered"); },
+            function hoverOut() { self.removeClass("hovered");  }
         )
     }
 });  

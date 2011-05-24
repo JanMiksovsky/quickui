@@ -30,8 +30,8 @@ h1 {
 </style>
 
 <script>
-$.extend(CodeOutput.prototype, {
-	content: Control.Element("CodeOutput_content").content()
+CodeOutput.prototype.extend({
+	content: Control.element("CodeOutput_content").content()
 })
 </script>
 

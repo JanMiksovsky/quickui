@@ -1,0 +1,79 @@
+<Control name="TestPage">
+    
+<prototype>
+    <Page title="Test Page">
+    	<p>
+    	    <ButtonBase id="button">
+    	        Show test dialog
+    	    </ButtonBase>
+    	    <PopupButton>
+    	        <ButtonBase>Show popup</ButtonBase>
+    	        <popup>
+    	            Popup content
+    	        </popup>
+    	    </PopupButton>
+    	    <ToggleButton>
+    	    	Toggle
+    	    </ToggleButton>
+    	</p>
+        <List id="list" itemClass="ButtonBase"/>
+        <Switch id="switch">
+        	<div>Panel one</div>
+        	<div>Panel two</div>
+        	<div>Panel three</div>
+        </Switch>
+        <HorizontalPanels id="horiziontalPanels">
+            <left>Left</left>
+            <content>Horizontal panels</content>
+            <right>Right</right>
+        </HorizontalPanels>
+        <VerticalPanels style="height: 200px;">
+        	<top>Top</top>
+        	<content>Vertical panels</content>
+        	<bottom>Bottom</bottom>
+        </VerticalPanels>
+        <BrowserDependent ifBrowser="webkit">
+            <content>You are using WebKit</content>
+            <elseContent>A browser other than WebKit</elseContent>
+        </BrowserDependent>
+    </Page>
+</prototype>
+
+<style>
+.ButtonBase {
+	border: 1px solid gray;
+}
+.ButtonBase.hovered {
+	border-color: orange;
+}
+.ToggleButton.selected {
+	background-color: #ccc;
+}
+
+#horiziontalPanels {
+    width: 100%;
+}
+</style>
+
+<script>
+TestPage.prototype.define({
+	initialize: function() {
+		this.$button.click(function() {
+			Dialog.showDialog(TestDialog);
+		});
+		this.$list.items([
+			"One",
+			"Two",
+			"Three"
+		]);
+		var self = this;
+		this.$list.find(".ButtonBase").click(function() {
+			var button = this;
+			var index = self.$list.children().index(button);
+			self.$switch.index(index);
+		});
+	}	
+});
+</script>
+
+</Control>

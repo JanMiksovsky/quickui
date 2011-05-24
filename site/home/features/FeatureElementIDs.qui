@@ -19,11 +19,11 @@ times.
 &lt;/content&gt;
 
 &lt;script&gt;
-$.extend(Counter.prototype, {
-ready: function() {
+Counter.prototype.extend({
+initialize: function() {
   // Points to above span.
-  var $count = $(this.count);
-  $(this.element).click(function() {
+  var $count = this.$count;
+  this.click(function() {
     $count.text(1 +
      parseInt($count.text()));
   });

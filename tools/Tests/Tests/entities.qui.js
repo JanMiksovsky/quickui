@@ -1,10 +1,8 @@
 //
 // Entities
 //
-Entities = Control.extend({
-	className: "Entities"
-});
-$.extend(Entities.prototype, {
+Entities = Control.subclass("Entities");
+Entities.prototype.extend({
   ready: function() {
     if (1 < 2 && 4 > 3)
     {

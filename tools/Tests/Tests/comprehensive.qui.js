@@ -1,31 +1,26 @@
 ﻿//
 // Comprehensive
 //
-Comprehensive = SampleBaseClass.extend({
-	className: "Comprehensive",
-	render: function() {
-		SampleBaseClass.prototype.render.call(this);
-		this.setClassProperties(SampleBaseClass, {
-			"content": [
+Comprehensive = SampleBaseClass.subclass("Comprehensive", function() {
+	this.properties({
+		"content": [
+			" ",
+			this.$message = Simple.create({
+				"content": " Hello, <i>world</i>! ",
+				"id": "message"
+			}),
+			" ",
+			Control("<div />").content(
 				" ",
-				this.message = Control.create(Simple, {
-					"content": " Hello, <i>world</i>! ",
-					"id": "message"
-				}),
-				" ",
-				$("<div />").items(
-					" ",
-					this.Comprehensive_content = $("<p id=\"Comprehensive_content\" />")[0],
-					" "
-				)[0],
+				this.$Comprehensive_content = Control("<p id=\"Comprehensive_content\" />"),
 				" "
-			]
-		});
-	},
-	tag: "div"
-});
-$.extend(Comprehensive.prototype, {
-  content: Control.Element("Comprehensive_content").content(),
+			),
+			" "
+		]
+	}, SampleBaseClass);
+}, "div");
+Comprehensive.prototype.extend({
+  content: Control.element("Comprehensive_content").content(),
   foo: function()
   {
       alert("Hello, world!");

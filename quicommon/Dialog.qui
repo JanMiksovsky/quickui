@@ -15,38 +15,37 @@
 </style>
 
 <script>
-$.extend(Dialog, {
-	show: function(dialogClass, properties, callbackOk, callbackCancel) {
-		var dialog = $("body")
+// Class method
+Dialog.extend({
+	showDialog: function(dialogClass, properties, callbackOk, callbackCancel) {
+		$("body")
 			.append("<div/>")
 			.find(":last")
-			.control(dialogClass)
-			.control();
-        $(dialog.element).bind({
-            ok: function() {
-                if (callbackOk)
-                {
-                    callbackOk.call(this);
-                }
-            },
-            cancel: function() {
-                if (callbackCancel)
-                {
-                    callbackCancel.call(this);
-                }
-            }
-        });
-		dialog.setProperties(properties);
-		dialog.show();
+	        .bind({
+	            ok: function() {
+	                if (callbackOk)
+	                {
+	                    callbackOk.call(this);
+	                }
+	            },
+	            cancel: function() {
+	                if (callbackCancel)
+	                {
+	                    callbackCancel.call(this);
+	                }
+	            }
+	        })
+			.control(dialogClass, properties)
+			.showOverlay();
 	}
 });
 
-$.extend(Dialog.prototype, {
+Dialog.prototype.define({
 	
-	ready: function() {
-		Dialog.superProto.ready.call(this);
+	initialize: function() {
+		Dialog.superClass.prototype.initialize.call(this);
 		var self = this;
-		$(this.element).keydown(function(event) {
+		this.keydown(function(event) {
 			if (event.keyCode == 27)
 			{
 				self.cancel();
@@ -55,22 +54,22 @@ $.extend(Dialog.prototype, {
 	},
 
 	cancel: function() {
-		this.hide();
-		$(this.element).trigger("cancel");
+		this
+			.trigger("cancel")
+			.closeOverlay();
 	},
 	
 	close: function() {
-		this.hide();
-		$(this.element).trigger("ok");
+		this
+			.trigger("ok")
+			.closeOverlay();
 	},
 	
-	position: function() {
+	positionOverlay: function() {
 		// Center dialog horizontally and vertically.
-		var left = ($(window).width() - $(this.element).outerWidth()) / 2;
-		var top = ($(window).height() - $(this.element).outerHeight()) / 2;
-		$(this.element).css({
-			left: left,
-			top: top
+		this.css({
+			left: ($(window).width() - this.outerWidth()) / 2,
+			top: ($(window).height() - this.outerHeight()) / 2
 		});
 	}
 });

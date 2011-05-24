@@ -13,10 +13,10 @@
 </style>
 
 <script>
-$.extend(SampleSpriteButtonDemo.prototype, {
-	ready: function() {
-		this.$(".SampleSpriteButton").click(function() {
-			alert("You clicked " + Control(this).content());
+SampleSpriteButtonDemo.prototype.extend({
+	initialize: function() {
+		this.find(".SampleSpriteButton").click(function() {
+			alert("You clicked \"" + $(this).control().content() + "\".");
 		});
 	}
 });

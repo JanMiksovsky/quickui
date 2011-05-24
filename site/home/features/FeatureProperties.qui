@@ -34,15 +34,15 @@ accessible as JavaScript class members.
 &lt;/content&gt;
 
 &lt;script&gt;
-$.extend(Recipe.prototype, {
+Recipe.prototype.extend({
 
-content: Control.Element(
+content: Control.element(
   "Recipe_content").content(),
-name: Control.Element(
+name: Control.element(
   "Recipe_name").content(),
-rating: Control.Property.integer(
+rating: Control.property.integer(
   function(rating) {
-    $(this.Recipe_rating).text(
+    this.$Recipe_rating.text(
       "*****".substr(0, rating));
   })
 

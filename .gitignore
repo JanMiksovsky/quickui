@@ -19,7 +19,7 @@ site/downloads/downloads.*
 site/features/features.*
 site/gallery/gallery.*
 site/home/home.*
-site/screencasts/screencasts.js
+site/screencasts/screencasts.*
 site/tutorial/section01/section01.*
 site/tutorial/section02/section02.*
 site/tutorial/section03/section03.*
@@ -34,7 +34,10 @@ site/tutorial/section11/section11.*
 site/tutorial/section12/section12.*
 site/tutorial/section13/section13.*
 site/tutorial/section14/section14.*
-tests/tests.js
+tests/integration/integration.*
+tests/common/common.*
 
 deploy/QuickUI
 mono/lib
+old
+site/lib/jquery.min.js

@@ -3,8 +3,8 @@
 <content><span id="SampleProperties_content"/></content>
 
 <script>
-$.extend(SampleProperties.prototype, {
-    content: Control.Element("SampleProperties_content").content()
+SampleProperties.prototype.define({
+    content: Control.element("SampleProperties_content").content()
 });
 </script>
 

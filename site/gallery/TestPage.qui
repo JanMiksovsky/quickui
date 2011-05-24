@@ -1,20 +1,13 @@
 <Control name="TestPage">
     
 <content>
-    <VerticalAlign>
+    <ButtonBase>
         <div>Hello</div>
-    </VerticalAlign>
+    </ButtonBase>
 </content>
 
 <style>
-{
-    height: 400px;
-}
 
-.VerticalAlign {
-    background-color: #e0e0e0;
-    height: 100%;
-}
 </style>
 
 </Control>

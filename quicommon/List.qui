@@ -5,9 +5,9 @@ Instantiates an instance of another control class for each item in a list.
 <Control name="List">
 
 <script>
-$.extend(List.prototype, {
+List.prototype.define({
     
-    itemClass: Control.Property(
+    itemClass: Control.property(
         function() { this._refresh(); },
         null,
         function(className) {
@@ -15,7 +15,7 @@ $.extend(List.prototype, {
         }
     ),
         
-    items: Control.Property(function() { this._refresh(); }),
+    items: Control.property(function() { this._refresh(); }),
     
     //
     // This mapFn should be a function that accepts one object
@@ -23,13 +23,7 @@ $.extend(List.prototype, {
     // properties map directly to property settors defined by the
     // target itemClass.
     //
-    mapFn: Control.Property(),
-    
-    // Allows items and mapFn to both be set in one step.
-    setItems: function(items, mapFn) {
-        this.mapFn(mapFn);
-        this.items(items);
-    },
+    mapFn: Control.property(null, null),
     
     _refresh: function() {
         var itemClass = this.itemClass();
@@ -37,13 +31,13 @@ $.extend(List.prototype, {
         var mapFn = this.mapFn();
         if (itemClass && items)
         {
-            var me = this;
+            var self = this;
             var controls = $.map(items, function(item, index) {
                 var properties;
                 if (mapFn)
                 {
                     // Map item to control properties with custom map function.
-                    properties = mapFn.call(me, item, index);
+                    properties = mapFn.call(self, item, index);
                 }
                 else if (typeof item == "string" || item instanceof String)
                 {
@@ -55,10 +49,10 @@ $.extend(List.prototype, {
                     // Use the item as is for the control's properties.
                     properties = item;
                 }
-                var control = Control.create(itemClass, properties);
+                var control = itemClass.create(properties);
                 return control;
             });
-            $(this.element).items(controls);
+            this.content(controls);
         }
     }
     

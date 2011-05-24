@@ -16,40 +16,31 @@
 </style>
 
 <script>
-
-$.extend(PopupButton.prototype, {
+PopupButton.prototype.define({
 	
-	content: Control.Element("PopupButton_content").content(),
-	popup: Control.Element("PopupButton_popup").content(),
+	content: Control.element("PopupButton_content").content(),
+	popup: Control.element("PopupButton_popup").content(),
 
-	ready: function()
+	initialize: function()
 	{
 		var self = this;
-		$(this.PopupButton_content).click(function() {
+		this.$PopupButton_content.click(function() {
 			self.showPopup();
 		});
-		var popupControl = Control(this.PopupButton_popup); 
-		if (popupControl)
-		{
-			popupControl.position = function() {
-				self.positionPopup();
-			};
-		}
+		this.$PopupButton_popup.positionOverlay = function() {
+			return self.positionPopup();
+		};
 	},
 	
-	showPopup: function()
-	{
-		$(this.PopupButton_popup).control().show();
-	},
-	
-	positionPopup: function()
-	{
-		var $contentElement = $(this.PopupButton_content);
-		var contentTop = $contentElement.offset().top;
-		var contentHeight = $contentElement.outerHeight(true);
-		var $popupElement = $(this.PopupButton_popup);
-		var popupHeight = $popupElement.outerHeight(true);
+    positionPopup: function()
+    {
+        var $contentElement = this.$PopupButton_content;
+        var contentTop = $contentElement.position().top;
+        var contentHeight = $contentElement.outerHeight(true);
+        var $popupElement = this.$PopupButton_popup;
+        var popupHeight = $popupElement.outerHeight(true);
 
+<<<<<<< HEAD
 		// Try showing popup below.
 		var top;
 		if (contentTop + contentHeight + popupHeight > $(document).height() &&
@@ -64,8 +55,19 @@ $.extend(PopupButton.prototype, {
 		    top = contentHeight;
 		}
 		$popupElement.css("top", top);
+=======
+        // Try showing popup below.
+        var top = contentTop + contentHeight;
+        if (top + popupHeight > $(document).height() &&
+            contentTop - popupHeight >= 0)         
+        {
+            // Show popup above.
+            top = contentTop - popupHeight;
+        }
+        $popupElement.css("top", top);
+>>>>>>> subjquery
         
-        var contentLeft = $contentElement.offset().left;
+        var contentLeft = $contentElement.position().left;
         var popupWidth = $popupElement.outerWidth(true);
         if (contentLeft + popupWidth > $(document).width())
         {
@@ -78,6 +80,13 @@ $.extend(PopupButton.prototype, {
                 $popupElement.css("left", left);
             }
         }
+        
+        return this;
+    },
+    	
+	showPopup: function()
+	{
+		this.$PopupButton_popup.showOverlay();
 	}
 	
 });

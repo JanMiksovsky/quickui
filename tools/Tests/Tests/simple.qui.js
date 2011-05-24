@@ -1,17 +1,13 @@
 ﻿//
 // Simple
 //
-Simple = Control.extend({
-	className: "Simple",
-	render: function() {
-		Control.prototype.render.call(this);
-		this.setClassProperties(Control, {
-			"content": [
-				" ",
-				this.Simple_content = $("<span id=\"Simple_content\" />")[0],
-				" "
-			]
-		});
-	}
+Simple = Control.subclass("Simple", function() {
+	this.properties({
+		"content": [
+			" ",
+			this.$Simple_content = Control("<span id=\"Simple_content\" />"),
+			" "
+		]
+	}, Control);
 });
 

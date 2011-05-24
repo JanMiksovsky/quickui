@@ -1,18 +1,18 @@
-<Control name="ToggleButtonBase">
+<Control name="ToggleButton">
 
 <prototype>
 	<ButtonBase/>
 </prototype>
 
 <script>
-$.extend(ToggleButtonBase.prototype, {
+ToggleButton.prototype.define({
 	
-	selected: Control.Element().applyClass("selected"),
+	selected: Control.element().applyClass("selected"),
 	
-	ready: function() {
-		ToggleButtonBase.superProto.ready.call(this);
+	initialize: function() {
+		ToggleButton.superclass.prototype.initialize.call(this);
 		var me = this;
-		$(this.element).click(function() {
+		this.click(function() {
             if (!me.disabled())
             {
                 me.toggle();

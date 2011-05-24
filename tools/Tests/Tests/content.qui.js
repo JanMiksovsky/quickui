@@ -1,27 +1,23 @@
 //
 // Content
 //
-Content = Control.extend({
-	className: "Content",
-	render: function() {
-		Control.prototype.render.call(this);
-		this.setClassProperties(Control, {
-			"content": [
-				" ",
-				Control.create(Simple, {
-					"content": "Hello"
-				}),
-				" ",
-				Control.create(Simple, {
-					"content": "There"
-				}),
-				" ",
-				Control.create(Simple, {
-					"content": " World "
-				}),
-				" "
-			]
-		});
-	}
+Content = Control.subclass("Content", function() {
+	this.properties({
+		"content": [
+			" ",
+			Simple.create({
+				"content": "Hello"
+			}),
+			" ",
+			Simple.create({
+				"content": "There"
+			}),
+			" ",
+			Simple.create({
+				"content": " World "
+			}),
+			" "
+		]
+	}, Control);
 });
 

@@ -12,18 +12,19 @@ The images have to be stacked vertically, and all be the same height.
 </style>
 
 <script>
-$.extend(Sprite.prototype, {
+
+Sprite.prototype.define({
 	
-	image: Control.Element().css("background-image"),
+	image: Control.element().css("background-image"),
 
 	// The height of a single cell in the strip, in pixels.
-	cellHeight: Control.Property(function(value) {
-		$(this.element).css("height", value + "px");
+	cellHeight: Control.property(function(value) {
+		this.css("height", value + "px");
 		this.shiftBackground();
 	}),
 	
 	// The cell currently being shown.
-	currentCell: Control.Property(function(value) {
+	currentCell: Control.property(function(value) {
 		this.shiftBackground();
 	}, 0),
 	
@@ -34,14 +35,14 @@ $.extend(Sprite.prototype, {
 			{
 				// Firefox 3.5.x doesn't support background-position-y,
 				// use background-position instead.
-				var backgroundPosition = $(this.element).css("background-position").split(" ");
+				var backgroundPosition = this.css("background-position").split(" ");
 				backgroundPosition[1] = y;
-				$(this.element).css("background-position", backgroundPosition.join(" "));			
+				this.css("background-position", backgroundPosition.join(" "));			
 			}
 			else
 			{
 				// Not Firefox
-				$(this.element).css("background-position-y", y);
+				this.css("background-position-y", y);
 			}
 		}
 	}

@@ -31,8 +31,8 @@ p {
 </style>
 
 <script>
-$.extend(Comprehensive.prototype, {
-  content: Control.Element("Comprehensive_content").content(),
+Comprehensive.prototype.extend({
+  content: Control.element("Comprehensive_content").content(),
   foo: function()
   {
       alert("Hello, world!");

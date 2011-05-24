@@ -22,29 +22,29 @@ Control with a content area (usually some form of text box) and an associated "G
 </style>
 
 <script>
-$.extend(TextBoxWithButton.prototype, {
+TextBoxWithButton.prototype.extend({
     
-    goButton: Control.Element("TextBoxWithButton_goButton").content(),    
-    textBox: Control.Element("TextBoxWithButton_textBox").content(),
+    goButton: Control.element("TextBoxWithButton_goButton").content(),    
+    textBox: Control.element("TextBoxWithButton_textBox").content(),
     
-    ready: function() {
-        var me = this;
-        $(this.TextBoxWithButton_textBox).bind("change keydown keyup", function(event) {
-            me._disableButtonIfContentEmpty();
+    initialize: function() {
+        var self = this;
+        this.$TextBoxWithButton_textBox.bind("change keydown keyup", function(event) {
+            self._disableButtonIfContentEmpty();
             var keyCode = event.keyCode || event.which;
-            if (!me._isContentEmpty() && keyCode == 13 /* Enter */)
+            if (!self._isContentEmpty() && keyCode == 13 /* Enter */)
             {
-                $(me.element).trigger("goButtonClick");
+                self.trigger("goButtonClick");
             }
         });
-        $(this.TextBoxWithButton_goButton).click(function() {
-            $(me.element).trigger("goButtonClick");
+        this.$TextBoxWithButton_goButton.click(function() {
+            self.trigger("goButtonClick");
         });
         this._disableButtonIfContentEmpty();
     },
     
     content: function(value) {
-        result = this.elementContent(this.TextBoxWithButton_textBox, value); 
+        result = this.$TextBoxWithButton_textBox.content(value); 
         if (value !== undefined) 
         {
             this.disableButtonIfContentEmpty();
@@ -54,7 +54,7 @@ $.extend(TextBoxWithButton.prototype, {
     
     _disableButtonIfContentEmpty: function() {
         var content = this.content();
-        var $goButton = $(this.TextBoxWithButton_goButton);
+        var $goButton = this.$TextBoxWithButton_goButton;
         if ($goButton.children().length > 0)
         {
             var buttonControl = Control($goButton.children()[0]);
@@ -63,20 +63,6 @@ $.extend(TextBoxWithButton.prototype, {
                 buttonControl.disabled(this._isContentEmpty());
             }
         }
-    },
-
-    // General purpose -- Should move this into quickui.js. Also used by EditableField.
-    elementContent: function(element, value) {
-        var $element = $(element);
-        var $firstChild = $element.children().length == 0
-                              ? $element
-                              : $($element.children()[0]);
-        var result = ($firstChild.control() != undefined)
-            ? $firstChild.control().content(value)
-            : ($firstChild[0] instanceof HTMLInputElement || $firstChild[0] instanceof HTMLTextAreaElement)
-                ? $firstChild.val(value)
-                : $firstChild.items(value);
-        return result;
     },
     
     _isContentEmpty: function() {

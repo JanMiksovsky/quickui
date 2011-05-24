@@ -33,11 +33,11 @@
 </style>
 
 <script>
-$.extend(HorizontalPanels.prototype, {
-    content: Control.Element("HorizontalPanels_content").content(),
-    fill: Control.Element().applyClass("fill"),
-    left: Control.Element("HorizontalPanels_left").content(),
-    right: Control.Element("HorizontalPanels_right").content()
+HorizontalPanels.prototype.define({
+    content: Control.element("HorizontalPanels_content").content(),
+    fill: Control.element().applyClass("fill"),
+    left: Control.element("HorizontalPanels_left").content(),
+    right: Control.element("HorizontalPanels_right").content()
 });
 </script>
 

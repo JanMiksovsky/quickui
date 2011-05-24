@@ -5,10 +5,10 @@
 </content>
 
 <script>
-$.extend(FeatureSubclassingDemo.prototype, {
-    ready: function() {
-        $(this.buttonShow).click(function() {
-            Dialog.show(SampleDialog);
+FeatureSubclassingDemo.prototype.extend({
+    initialize: function() {
+        this.$buttonShow.click(function() {
+            Dialog.showDialog(SampleDialog);
         });
     }
 });

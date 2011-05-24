@@ -69,12 +69,12 @@ pre {
 </style>
 
 <script>
-$.extend(Feature.prototype, {
-    control: Control.Element("Feature_control").content(),
-    description: Control.Element("Feature_description").content(),
-    example: Control.Element("Feature_example").content(),
-    name: Control.Element("Feature_name").content(),
-    result: Control.Element("Feature_result").content()
+Feature.prototype.extend({
+    control: Control.element("Feature_control").content(),
+    description: Control.element("Feature_description").content(),
+    example: Control.element("Feature_example").content(),
+    name: Control.element("Feature_name").content(),
+    result: Control.element("Feature_result").content()
 });
 </script>
 

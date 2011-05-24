@@ -9,9 +9,9 @@
 </style>
 
 <script>
-$.extend(Link.prototype, {
-	content: Control.Element("Link_content").content(),
-	href: Control.Element("Link_content").attr("href")
+Link.prototype.extend({
+	content: Control.element("Link_content").content(),
+	href: Control.element("Link_content").attr("href")
 });
 </script>
 

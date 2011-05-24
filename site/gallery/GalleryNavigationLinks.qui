@@ -1,7 +1,7 @@
 <Control name="GalleryNavigationLinks">
 
 <content>
-    <NavigationLink id="linkIndex" href="/gallery/default.html">Index</NavigationLink>
+    <Link id="linkIndex" href="/gallery/default.html">Index</Link>
     <List id="listClass" itemClass="GalleryLink"/>
 </content>
 
@@ -12,10 +12,10 @@
 </style>
 
 <script>
-$.extend(GalleryNavigationLinks.prototype, {
-    ready: function() {
-        Control(this.listClass).items([
-            "IfBrowser",
+GalleryNavigationLinks.prototype.extend({
+    initialize: function() {
+        this.$listClass.items([
+            "BrowserSpecific",
             "GalleryPage",
             "Gradient",
             "HintTextBox",

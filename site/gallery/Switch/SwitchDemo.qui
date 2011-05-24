@@ -25,15 +25,15 @@
 </style>
 
 <script>
-$.extend(SwitchDemo.prototype, {
-	ready: function() {
+SwitchDemo.prototype.extend({
+	initialize: function() {
 		var self = this;
-		$(this.modeEdit).click(function(event) {
-		    Control(self.switchMode).index(0);
+		this.$modeEdit.click(function(event) {
+		    self.$switchMode.activeIndex(0);
 		});
-        $(this.modeRead).click(function(event) {
-            $(self.textReadOnly).text($(self.textEditable).val());
-            Control(self.switchMode).index(1);
+        this.$modeRead.click(function(event) {
+            self.$textReadOnly.content(self.$textEditable.content());
+            self.$switchMode.activeIndex(1);
         });
 	}
 });

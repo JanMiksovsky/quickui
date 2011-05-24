@@ -2,12 +2,12 @@
 
 <Control name="GoogleAnalytics">
 <script>
-$.extend(GoogleAnalytics.prototype, {
+GoogleAnalytics.prototype.extend({
     
     // The Google Analytics profile ID
-    profileId: Control.Property(),
+    profileId: Control.property(),
     
-    ready: function() {
+    initialize: function() {
         
         // Begin Google Analytics snippet.
         var _gaq = _gaq || [];
