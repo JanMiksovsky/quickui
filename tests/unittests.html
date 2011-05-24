@@ -75,34 +75,49 @@ function runTests() {
      */
     test("Define scalar", function() {
         var MyControl = Control.subclass("MyControl");
-        MyControl.prototype.extend({
+        MyControl.prototype.define({
 			foo: "Hello"
 	    });
 	    var $c = MyControl.create();
 	    equal($c.foo, "Hello");
     });
     
-    test("Define method with extend", function() {
+    test("Define method", function() {
         
         var MyControl = Control.subclass("MyControl");
-        MyControl.prototype.extend({
-			foo: function() {
-    			this.data("_calledFoo", true);
+        MyControl.prototype.define({
+			publicMethod: function() {
+    			this._calledPublicMethod = true;
+    		},
+    		_privateMethod: function() {
+    		    this._calledPrivateMethod = true;
     		}
 	    });
         
-    	var $elements = Control("<div/>").add("<div/>");
-    	var $c = $elements.control(MyControl);
+        var $c = Control.create({
+            content: [
+                MyControl.create({ content: "Hello" }),
+                MyControl.create({ content: "world" })
+            ]
+        });
         
-        var result = $c.foo();
-        equal(result, undefined);	// No result returned
-    	equal($c.eq(0).data("_calledFoo"), true);
-    	equal($c.eq(1).data("_calledFoo"), true);
+        var $myControls = MyControl($c.find(".MyControl"));
+        
+        var result = $myControls.publicMethod();
+        equal(result, $myControls); // i.e., should return "this"
+    	equal($myControls.eq(0).control()._calledPublicMethod, true);
+    	equal($myControls.eq(1).control()._calledPublicMethod, true);
+    	
+    	// The private method (indicated with "_" prefix) should *not* get wrapped
+    	// with an interator.
+    	$myControls._privateMethod();
+    	equal($myControls.eq(0).control()._calledPrivateMethod, undefined);
+    	equal($myControls.eq(1).control()._calledPrivateMethod, undefined);
     });
-        
+            
     test("Define getter/setter by hand", function() {
     	var c = Control.subclass();
-    	c.prototype.iterators({
+    	c.prototype.define({
     		myGetterSetter: function(value) {
     			if (value === undefined)
     			{
@@ -123,7 +138,7 @@ function runTests() {
     
     test("Define getter/setter with Control.property", function() {
     	var c = Control.subclass();
-    	c.prototype.extend({
+    	c.prototype.define({
     		myProperty: Control.property()
     	});
     	var $elements = Control("<div/>").add("<div/>");
@@ -133,6 +148,32 @@ function runTests() {
     	equal($c.eq(0).control().myProperty(), "foo");
     	equal($c.eq(1).control().myProperty(), "foo");
     });
+    
+    /*
+    test("Define getter/setter with binding", function() {
+    	var MyControl = Control.subclass();
+    	MyControl.prototype.define({
+    		myProperty: "=this.content()"
+    	});
+    	var $c = MyControl.create();
+    	$c.myProperty("foo");
+    	equal($c.content(), "foo");
+    	equal($c.myProperty(), "foo");
+    });
+    */
+        
+    /*
+     * Binding tests
+     */
+     /*
+    test("Bind to element content", function() {
+        var $c = Control("<div>Hello</div>");
+        $c.foo = Control.binding("=this.content()");
+        equal($c.foo(), "Hello");
+        $c.foo("world");
+        equal($c.foo(), "world");
+    });
+    */
     
     /*
      * Control.property() tests
@@ -192,7 +233,7 @@ function runTests() {
                 content: this.$foo = $("<span id='foo'/>")
             }, Control);
         });
-        MyControl.prototype.extend({
+        MyControl.prototype.define({
         	foo: Control.element("foo").content()
         });
 
