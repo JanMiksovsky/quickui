@@ -99,36 +99,8 @@ function runTests() {
     	equal($c.eq(0).data("_calledFoo"), true);
     	equal($c.eq(1).data("_calledFoo"), true);
     });
-    
-    test("Define method with iterators()", function() {
         
-        var MyControl = Control.subclass("MyControl");
-        MyControl.prototype.iterators({
-			foo: function() {
-    			this.data("_calledFoo", true);
-    		},
-    		bar: function() {
-    		    this.data("_calledBar", true);
-    		    return "Hello";    // Force getter behavior.
-    		}
-	    });
-        
-    	var $elements = Control("<div/>").add("<div/>");
-    	var $c = $elements.control(MyControl);
-        
-        var methodResult = $c.foo();
-        equal(methodResult, $c); // i.e., should return "this"
-    	equal($c.eq(0).data("_calledFoo"), true);
-    	equal($c.eq(1).data("_calledFoo"), true);
-    	
-		// Function that returns result stops iteration.
-    	var getterResult = $c.bar();
-    	equal(getterResult, "Hello");
-    	equal($c.eq(0).data("_calledBar"), true);
-    	equal($c.eq(1).data("_calledBar"), undefined);
-    });
-            
-    test("Define getter/setter with iterators()", function() {
+    test("Define getter/setter by hand", function() {
     	var c = Control.subclass();
     	c.prototype.iterators({
     		myGetterSetter: function(value) {
