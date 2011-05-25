@@ -3,97 +3,97 @@
 <Control name="SpriteButton">
 
 <prototype>
-	<ButtonBase>
-		<Sprite id="backgroundLeft" />
-		<Sprite id="backgroundRight" />
-	    <button id="SpriteButton_content" />
-	</ButtonBase>
+    <ButtonBase>
+        <Sprite id="backgroundLeft" />
+        <Sprite id="backgroundRight" />
+        <button id="SpriteButton_content" />
+    </ButtonBase>
 </prototype>
 
 <style>
 
 {
-	display: inline-block;
-	position: relative;
+    display: inline-block;
+    position: relative;
 }
 
 .Sprite {
-	height: 100%;
-	position: absolute;
-	top: 0;
-	/* 
-	 * Each sprite covers half the background
-	 */
-	width: 50%;
-	z-index: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    /* 
+     * Each sprite covers half the background
+     */
+    width: 50%;
+    z-index: 0;
 }
 
 #backgroundLeft {
-	background-position: left 0;
-	left: 0;
+    background-position: left 0;
+    left: 0;
 }
 
 #backgroundRight {
-	background-position: right 0;
-	/*
-	 * Use left: 50% instead of right: 0, as the latter doesn't work exactly right on WebKit.
-	 */
-	left: 50%;
+    background-position: right 0;
+    /*
+     * Use left: 50% instead of right: 0, as the latter doesn't work exactly right on WebKit.
+     */
+    left: 50%;
 }
 
 button {
-	background: transparent none repeat scroll 0 0;
-	border: medium none;
-	cursor: pointer;
-	outline: none;
-	-moz-outline: none;
-	overflow: visible;
-	position: relative;
-	white-space: nowrap;
+    background: transparent none repeat scroll 0 0;
+    border: medium none;
+    cursor: pointer;
+    outline: none;
+    -moz-outline: none;
+    overflow: visible;
+    position: relative;
+    white-space: nowrap;
 }
 
 .SpriteButton.disabled button {
-	cursor: default;
+    cursor: default;
 }
 
 </style>
-	
+    
 <script>
 SpriteButton.prototype.extend({
-	
-	content: Control.element("SpriteButton_content").content(),
+    
+    content: Control.element("SpriteButton_content").content(),
 
-	initialize: function() {
-		SpriteButton.superclass.prototype.initialize.call(this);
-		var self = this;
-		this.$SpriteButton_content
-			.blur(function() { self.blur(); })
-			.focus(function() { self.focus(); });
-	},
-	
-	cellHeight: Control.element().css("height", function(value) {
-		this.$SpriteButton_content.height(value + "px");
-		this.$backgroundLeft.cellHeight(value);
-		this.$backgroundRight.cellHeight(value);
-	}),
-	
-	disabled: function(value) {
-		if (value !== undefined)
-		{
-			this.$SpriteButton_content.attr("disabled", String(value) == "true");
-		}
-		return SpriteButton.superclass.prototype.disabled.call(this, value);
-	},
-	
-	image: Control.element("backgroundLeft").controlProperty("image", function(value) {
-		this.$backgroundRight.image(value);
-	}),
-	
-	_renderButtonState: function(buttonState) {
-		this.$backgroundLeft.currentCell(buttonState);
-		this.$backgroundRight.currentCell(buttonState);
-	}
+    initialize: function() {
+        SpriteButton.superclass.prototype.initialize.call(this);
+        var self = this;
+        this.$SpriteButton_content
+            .blur(function() { self.blur(); })
+            .focus(function() { self.focus(); });
+    },
+    
+    cellHeight: Control.element().css("height", function(value) {
+        this.$SpriteButton_content.height(value + "px");
+        this.$backgroundLeft.cellHeight(value);
+        this.$backgroundRight.cellHeight(value);
+    }),
+    
+    disabled: function(value) {
+        if (value !== undefined)
+        {
+            this.$SpriteButton_content.attr("disabled", String(value) == "true");
+        }
+        return SpriteButton.superclass.prototype.disabled.call(this, value);
+    },
+    
+    image: Control.element("backgroundLeft").controlProperty("image", function(value) {
+        this.$backgroundRight.image(value);
+    }),
+    
+    _renderButtonState: function(buttonState) {
+        this.$backgroundLeft.currentCell(buttonState);
+        this.$backgroundRight.currentCell(buttonState);
+    }
 });
 </script>
-	
+
 </Control>
