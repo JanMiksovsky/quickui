@@ -19,6 +19,29 @@
 function runTests() {
     
     /*
+     * Casting
+     */
+    test("Cast: two control classes derive from same superclass", function() {
+        var A = Control.subclass("A");
+        var B = A.subclass("B");
+        var C = A.subclass("C");
+        var $a = A.create();
+        var $b = B.create();
+        var $c = C.create();
+        var $set = Control("<div/>").append($b).append($a).append($c);
+        var $cast = $set.children().cast();
+        equal($cast instanceof A, true);
+    }),
+
+    test("Cast: control and jQuery mix", function() {
+        var A = Control.subclass("A");
+        var $a = A.create();
+        var $set = Control("<div/>").append($a).append($("<div/>"));
+        var $cast = $set.children().cast();
+        equal($cast instanceof jQuery, true);
+    }),
+        
+    /*
      * Control tests
      */
     test("Create control", function() {
@@ -220,7 +243,7 @@ function runTests() {
                 content: this.$foo = $("<span id='foo'/>")
             }, Control);
         });
-        MyControl.prototype.extend({
+        MyControl.prototype.iterators({
         	foo: Control.element("foo").content()
         });
 

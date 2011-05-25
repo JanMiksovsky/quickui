@@ -40,22 +40,6 @@ PopupButton.prototype.define({
         var $popupElement = this.$PopupButton_popup;
         var popupHeight = $popupElement.outerHeight(true);
 
-<<<<<<< HEAD
-		// Try showing popup below.
-		var top;
-		if (contentTop + contentHeight + popupHeight > $(document).height() &&
-            contentTop - popupHeight >= 0)
-		{
-            // Show popup above.
-            top = -popupHeight;
-		}
-		else
-		{
-		    // Show popup below.
-		    top = contentHeight;
-		}
-		$popupElement.css("top", top);
-=======
         // Try showing popup below.
         var top = contentTop + contentHeight;
         if (top + popupHeight > $(document).height() &&
@@ -65,7 +49,6 @@ PopupButton.prototype.define({
             top = contentTop - popupHeight;
         }
         $popupElement.css("top", top);
->>>>>>> subjquery
         
         var contentLeft = $contentElement.position().left;
         var popupWidth = $popupElement.outerWidth(true);
