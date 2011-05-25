@@ -89,7 +89,7 @@ SpriteButton.prototype.extend({
 		this.$backgroundRight.image(value);
 	}),
 	
-	renderButtonState: function(buttonState) {
+	_renderButtonState: function(buttonState) {
 		this.$backgroundLeft.currentCell(buttonState);
 		this.$backgroundRight.currentCell(buttonState);
 	}
