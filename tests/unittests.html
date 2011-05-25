@@ -96,7 +96,6 @@ function runTests() {
     /*
      * Define tests
      */
-/*
     test("Define scalar", function() {
         var MyControl = Control.subclass("MyControl");
         MyControl.prototype.extend({
@@ -106,7 +105,7 @@ function runTests() {
 	    equal($c.foo, "Hello");
     });
     
-    test("Define method with extend", function() {
+    test("Define method", function() {
         
         var MyControl = Control.subclass("MyControl");
         MyControl.prototype.extend({
@@ -156,21 +155,14 @@ function runTests() {
     	var c = Control.subclass();
     	c.prototype.iterators({
     		myGetterSetter: function(value) {
-    			if (value === undefined)
-    			{
-    				return this._property;
-    			}
-    			else
-    			{
-    				this._property = value;
-    			}
+				this.data("_property", value);
     		}
     	});
     	var $elements = Control("<div/>").add("<div/>");
     	var $c = $elements.control(c);
     	$c.myGetterSetter("foo");
-    	equal($c.eq(0).control()._property, "foo");
-    	equal($c.eq(1).control()._property, "foo");
+    	equal($c.eq(0).control().data("_property"), "foo");
+    	equal($c.eq(1).control().data("_property"), "foo");
     });
     
     test("Define getter/setter with Control.property", function() {
@@ -185,12 +177,10 @@ function runTests() {
     	equal($c.eq(0).control().myProperty(), "foo");
     	equal($c.eq(1).control().myProperty(), "foo");
     });
-*/
     
     /*
      * Control.property() tests
      */
-/*
     test("property", function() {
         var $c = Control.create();
         $c.foo = Control.property();
@@ -216,12 +206,88 @@ function runTests() {
         $c.foo(0);     // Set as integer
         equal($c.foo(), 0);
     });
-*/
     
+    /*
+     * Element reference functions
+     */
+    test("Element reference manipulation by hand", function() {
+        var $c = Control.create({
+            content: "Hello <span id='name'>Ann</span>"
+        }).control();
+        $c.data("#name", $c.find("#name")[0]);
+        $c.$name = function(value) {
+            return Control(this.data("#name")).cast();
+        };
+        equal($c.$name().html(), "Ann");
+        $c.$name().html("Bob");
+        equal($c.html(), "Hello <span id=\"name\">Bob</span>");
+    });
+
+    Control.prototype.saveReference = function(name, $element) {
+        var elementFunctionName = "$" + name;
+        var elementId = "#" + name;
+        this[elementFunctionName] = function(value) {
+            return Control(this.data(elementId)).cast();
+        };
+        return $element;
+    }
+    
+    Control.prototype.element = function(elementId, $element) {
+        if ($element === undefined)
+        {
+            return Control(this.data(elementId)).cast();
+        }
+        else
+        {
+            this.data(elementId, $element);
+            return $element;
+        }
+    }
+    Control.prototype.defineElementFunctions = function(functionNames) {
+        for (var i = 0; i < functionNames.length; i++)
+        {
+            var functionName = functionNames[i];
+            var baseName = functionName.slice(1);  // Remove "$"
+            var elementId = "#" + baseName;
+            this[functionName] = Control._elementFunction(elementId);
+        }
+    }
+    
+    /*
+     * Generate a function that returns the specified element
+     * (previously saved in a control's data) for a control array.
+     */
+    Control._elementFunction = function(elementId) {
+        return function() {
+            var $result = Control();
+            this.each(function(index, element) {
+                $result = $result.add(Control(element).element(elementId));
+            });
+            return $result.cast();
+        }
+    };
+
+    test("Element reference function definition", function() {
+        var MyControl = Control.subclass("MyControl", function() {
+            this.properties({
+                content: [
+                    "Hello ",
+                    this.element("#name", $("<span id='name'>Ann</span>"))
+                ]
+            }, Control);
+        });
+        MyControl.prototype.defineElementFunctions(["$name"]);
+        var $c = MyControl.create();
+        var $name = $c.$name();
+        equal($name.html(), "Ann");
+        $c.$name().html("Bob");
+        equal($c.html(), "Hello <span id=\"name\">Bob</span>");
+    });
+
     /*
      * Control.element() tests
      */
-/*
+/*    
     test("Element: root content", function() {
         var $c = Control.create({ content: "<span>Hello</span>" });
         $c.foo = Control.element().content();
@@ -231,7 +297,7 @@ function runTests() {
         $c.foo("world");
         equal($c.html(), "world");
     });
-    
+
     test("Element: element content", function() {
         var $c = Control.create({ content: "Hello <span id='name'>Ann</span>" }).control();
         $c.foo = Control.element("name").content();
@@ -333,40 +399,7 @@ function runTests() {
     });
 */
 }
-
-Control.prototype.element = function(elementId, value) {
-	if (value === undefined)
-	{
-		return this.data(elementId);
-	}
-	else
-	{
-	    this.data(elementId, value);
-	    return value;
-	}
-}
-
-Control.prototype.defineElementFunctions = function(functionNames) {
-	for (var i = 0; i < functionNames.length; i++)
-	{
-		var functionName = functionNames[i];
-		var elementId = functionName.slice(1);	// Remove "$"
-		this[functionName] = Control._elementFunction(elementId);
-	}
-}
-
-/*
- * Generate a function that returns the specified element
- * (previously saved in a control's data) for a control array.
- */
-Control._elementFunction = function(elementId) {
-	return function() {
-		return this.map(function(index, element) {
-			return Control(element).element(elementId)[0];
-		});
-	}
-};
-    
+  
 $(function() {
     runTests();
 });
