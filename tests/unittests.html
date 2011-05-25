@@ -232,14 +232,22 @@ function runTests() {
         return $element;
     }
     
-    Control.prototype.element = function(elementId, $element) {
-        if ($element === undefined)
+    Control.prototype._namedElement = function(elementId, value) {
+        if (value === undefined)
         {
             return Control(this.data(elementId)).cast();
+            /*
+            var $result = Control();
+            this.each(function(index, element) {
+                $result = $result.add(this.data(elementId));
+            });
+            return $result.cast();
+            */
         }
         else
         {
-            this.data(elementId, $element);
+            var $element = $(value);
+            this.data(elementId, $element[0]);
             return $element;
         }
     }
@@ -247,8 +255,7 @@ function runTests() {
         for (var i = 0; i < functionNames.length; i++)
         {
             var functionName = functionNames[i];
-            var baseName = functionName.slice(1);  // Remove "$"
-            var elementId = "#" + baseName;
+            var elementId = "#" + functionName.slice(1);    // "$foo" => "#foo"
             this[functionName] = Control._elementFunction(elementId);
         }
     }
@@ -261,7 +268,7 @@ function runTests() {
         return function() {
             var $result = Control();
             this.each(function(index, element) {
-                $result = $result.add(Control(element).element(elementId));
+                $result = $result.add(Control(element)._namedElement(elementId));
             });
             return $result.cast();
         }
@@ -272,11 +279,11 @@ function runTests() {
             this.properties({
                 content: [
                     "Hello ",
-                    this.element("#name", $("<span id='name'>Ann</span>"))
+                    this._namedElement("#name", "<span id='name'>Ann</span>")
                 ]
             }, Control);
         });
-        MyControl.prototype.defineElementFunctions(["$name"]);
+        MyControl.prototype.defineElementFunctions([ "$name" ]);
         var $c = MyControl.create();
         var $name = $c.$name();
         equal($name.html(), "Ann");
