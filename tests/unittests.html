@@ -19,29 +19,6 @@
 function runTests() {
     
     /*
-     * Casting
-     */
-    test("Cast: two control classes derive from same superclass", function() {
-        var A = Control.subclass("A");
-        var B = A.subclass("B");
-        var C = A.subclass("C");
-        var $a = A.create();
-        var $b = B.create();
-        var $c = C.create();
-        var $set = Control("<div/>").append($b).append($a).append($c);
-        var $cast = $set.children().cast();
-        equal($cast instanceof A, true);
-    }),
-
-    test("Cast: control and jQuery mix", function() {
-        var A = Control.subclass("A");
-        var $a = A.create();
-        var $set = Control("<div/>").append($a).append($("<div/>"));
-        var $cast = $set.children().cast();
-        equal($cast instanceof jQuery, true);
-    }),
-        
-    /*
      * Control tests
      */
     test("Create control", function() {
@@ -60,10 +37,34 @@ function runTests() {
     	var $c = $elements.control(MyControl);
     	equal($c.control().length, 2);
     });
+    
+    /*
+     * Casting
+     */
+    test("Cast: two control classes derive from same superclass", function() {
+        var A = Control.subclass("A");
+        var B = A.subclass("B");
+        var C = A.subclass("C");
+        var $a = A.create();
+        var $b = B.create();
+        var $c = C.create();
+        var $set = Control("<div/>").append($b).append($a).append($c);
+        var $cast = $set.children().cast();
+        equal($cast instanceof A, true);
+    });
+
+    test("Cast: control and jQuery mix", function() {
+        var A = Control.subclass("A");
+        var $a = A.create();
+        var $set = Control("<div/>").append($a).append($("<div/>"));
+        var $cast = $set.children().cast();
+        equal($cast instanceof jQuery, true);
+    });
 
     /*
      * Control.content() tests
      */
+/*
     test("Content: HTML text", function() {
         var $c = Control.create();
         $c.content("Hello");
@@ -92,10 +93,12 @@ function runTests() {
         equal($c.content(), "Hello");
         equal($c.val(), "Hello");
     });
+*/
     
     /*
      * Define tests
      */
+/*
     test("Define scalar", function() {
         var MyControl = Control.subclass("MyControl");
         MyControl.prototype.extend({
@@ -184,10 +187,12 @@ function runTests() {
     	equal($c.eq(0).control().myProperty(), "foo");
     	equal($c.eq(1).control().myProperty(), "foo");
     });
+*/
     
     /*
      * Control.property() tests
      */
+/*
     test("property", function() {
         var $c = Control.create();
         $c.foo = Control.property();
@@ -213,10 +218,12 @@ function runTests() {
         $c.foo(0);     // Set as integer
         equal($c.foo(), 0);
     });
+*/
     
     /*
      * Control.element() tests
      */
+/*
     test("Element: root content", function() {
         var $c = Control.create({ content: "<span>Hello</span>" });
         $c.foo = Control.element().content();
@@ -326,29 +333,7 @@ function runTests() {
         $c.foo = Control.element().visibility();
         equal($c.foo(), false); // control isn't in DOM, so is not visible.
     });
-    
-    /*
-    test("Element reference function", function() {
-    	
-        var MyControl = Control.subclass("MyControl", function() {
-            this.properties({
-                content: this.element("foo", Control("<span id='foo'/>"))
-            }, Control);
-        });
-        MyControl.prototype.defineElementFunctions([ "$foo" ]);
-        
-        MyControl.prototype.define({
-        	foo: "=this.$foo().content()"
-        });
-        
-        var $c = MyControl.create();
-        equal($c.data("foo")[0], $c.find("#foo")[0]);
-        equal($c.$foo()[0], $c.find("#foo")[0]);
-        $c.foo("Hello");
-        equal($c.find("#foo").text(), "Hello");
-        equal($c.foo(), "Hello");
-    })
-    */
+*/
 }
 
 Control.prototype.element = function(elementId, value) {
