@@ -21,24 +21,51 @@ function runTests() {
     /*
      * Control tests
      */
-    test("Create control", function() {
+    test("Create: from scratch", function() {
+        var $c = Control.create();
+        equal($c.attr("class"), "Control");
+        equal($c.control()[0] === $c[0], true);
+    });
+
+    test("Create: on existing div", function() {
         var $element = $("<div/>");
         var $c = $element.control(Control);
         equal($c.attr("class"), "Control");
         equal($element.control()[0] === $c[0], true);
     });
     
-    test("Map elements back to original controls", function() {
+    test("Create: multiple", function() {
         var MyControl = Control.subclass("MyControl");
         MyControl.prototype.foo = function() {
             return "Hello";
         };
-    	var $elements = Control("<div/>").add("<div/>");
+    	var $elements = $().add("<div/>").add("<div/>");
     	var $c = $elements.control(MyControl);
     	equal($c.control().length, 2);
     });
     
-    test("Create control with initial content", function() {
+    test("Create: set properties on constructor", function() {
+        var Greet = createGreetClass();
+        Greet.prototype.extend({
+            name: Control.bindTo("$name", "content")
+        });
+        var $c = Greet.create({ name: "Bob" });
+        equal($c.text(), "Hello Bob");
+    });
+        
+    test("Create: set properties via .control()", function() {
+        var Greet = createGreetClass();
+        Greet.prototype.extend({
+            name: Control.bindTo("$name", "content")
+        });
+        var $element = $("<div/>");
+        $c = Greet.createAt($element);
+        equal($c.text(), "Hello Ann");
+        $element.control({ name: "Bob" });
+        equal($c.text(), "Hello Bob");
+    });
+        
+    test("Create: incorporate existing DOM content", function() {
         var MyControl = Control.subclass("MyControl", function() {
             this.properties({
                 content: [
@@ -58,6 +85,11 @@ function runTests() {
     /*
      * Casting
      */
+    test("Cast: control() on plain jQuery reference returns undefined", function() {
+        var $element = $("<div/>");
+        equal($element.control(), undefined);
+    });
+    
     test("Cast: two control classes derive from same superclass", function() {
         var A = Control.subclass("A");
         var B = A.subclass("B");
