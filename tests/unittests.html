@@ -223,51 +223,17 @@ function runTests() {
         equal($c.html(), "Hello <span id=\"name\">Bob</span>");
     });
 
-    Control.prototype._namedElement = function(elementId, value) {
-        if (value === undefined)
-        {
-            return Control(this.data(elementId)).cast();
-        }
-        else
-        {
-            var $element = $(value);
-            this.data(elementId, $element[0]);
-            return $element;
-        }
-    }
-    
-    
-    Control.prototype.defineElementFunctions = function(functionNames) {
-        for (var i = 0; i < functionNames.length; i++)
-        {
-            var functionName = functionNames[i];
-            var elementId = "#" + functionName.slice(1);    // "$foo" => "#foo"
-            
-            // Generate a function that returns the specified element(s).
-            var elementFunction = (function(elementId) {
-                return function() {
-                    var $result = Control();
-                    for (var i = 0; i < this.length; i++) {
-                        $result = $result.add(this.eq(i)._namedElement(elementId));
-                    }
-                    return $result.cast();
-                };
-            })(elementId);
-            
-            this[functionName] = elementFunction;
-        }
-    }
-
     test("Element reference function definition", function() {
+        
         var MyControl = Control.subclass("MyControl", function() {
             this.properties({
                 content: [
                     "Hello ",
-                    this._namedElement("#name", "<span id='name'>Ann</span>")
+                    this._defineElementFunction("$name", "<span id='name'>Ann</span>")
                 ]
             }, Control);
         });
-        MyControl.prototype.defineElementFunctions([ "$name" ]);
+            
         var $c = MyControl.create();
         var $name = $c.$name();
         equal($name.html(), "Ann");
