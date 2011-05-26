@@ -223,26 +223,10 @@ function runTests() {
         equal($c.html(), "Hello <span id=\"name\">Bob</span>");
     });
 
-    Control.prototype.saveReference = function(name, $element) {
-        var elementFunctionName = "$" + name;
-        var elementId = "#" + name;
-        this[elementFunctionName] = function(value) {
-            return Control(this.data(elementId)).cast();
-        };
-        return $element;
-    }
-    
     Control.prototype._namedElement = function(elementId, value) {
         if (value === undefined)
         {
             return Control(this.data(elementId)).cast();
-            /*
-            var $result = Control();
-            this.each(function(index, element) {
-                $result = $result.add(this.data(elementId));
-            });
-            return $result.cast();
-            */
         }
         else
         {
@@ -251,28 +235,29 @@ function runTests() {
             return $element;
         }
     }
+    
+    
     Control.prototype.defineElementFunctions = function(functionNames) {
         for (var i = 0; i < functionNames.length; i++)
         {
             var functionName = functionNames[i];
             var elementId = "#" + functionName.slice(1);    // "$foo" => "#foo"
-            this[functionName] = Control._elementFunction(elementId);
+            
+            // Generate a function that returns the specified element
+            // (previously saved in a control's data) for a control array.
+            var elementFunction = (function(elementId) {
+                return function() {
+                    var $result = Control();
+                    this.each(function(index, element) {
+                        $result = $result.add(Control(element)._namedElement(elementId));
+                    });
+                    return $result.cast();
+                };
+            })(elementId);
+            
+            this[functionName] = elementFunction;
         }
     }
-    
-    /*
-     * Generate a function that returns the specified element
-     * (previously saved in a control's data) for a control array.
-     */
-    Control._elementFunction = function(elementId) {
-        return function() {
-            var $result = Control();
-            this.each(function(index, element) {
-                $result = $result.add(Control(element)._namedElement(elementId));
-            });
-            return $result.cast();
-        }
-    };
 
     test("Element reference function definition", function() {
         var MyControl = Control.subclass("MyControl", function() {
