@@ -243,14 +243,13 @@ function runTests() {
             var functionName = functionNames[i];
             var elementId = "#" + functionName.slice(1);    // "$foo" => "#foo"
             
-            // Generate a function that returns the specified element
-            // (previously saved in a control's data) for a control array.
+            // Generate a function that returns the specified element(s).
             var elementFunction = (function(elementId) {
                 return function() {
                     var $result = Control();
-                    this.each(function(index, element) {
-                        $result = $result.add(Control(element)._namedElement(elementId));
-                    });
+                    for (var i = 0; i < this.length; i++) {
+                        $result = $result.add(this.eq(i)._namedElement(elementId));
+                    }
                     return $result.cast();
                 };
             })(elementId);
