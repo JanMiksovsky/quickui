@@ -38,6 +38,23 @@ function runTests() {
     	equal($c.control().length, 2);
     });
     
+    test("Create control with initial content", function() {
+        var MyControl = Control.subclass("MyControl", function() {
+            this.properties({
+                content: [
+                    "*",
+                    this._defineElementFunction("$MyControl_content", "<span id='MyControl_content'/>"),
+                    "*"
+                ]
+            }, Control);
+        });
+        MyControl.prototype.content = Control.bindTo("$MyControl_content", "content");
+        var $original = $("<div><div>Hello</div><div>world</div></div>");
+        var $children = $original.children();
+        var $c = MyControl.createAt($children);
+        equal($c.text(), "*Hello**world*");
+    });
+    
     /*
      * Casting
      */
@@ -347,7 +364,7 @@ function runTests() {
         equal($c.css("display"), "none");
         equal($c.display(), "none");
     });
-        
+     
     test("Utility: applyClass", function() {
         var $c = Control.create().toggleClass("foo");
         equal($c.applyClass("foo"), true);
