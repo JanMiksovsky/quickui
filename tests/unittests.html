@@ -232,29 +232,28 @@ function runTests() {
      * Control.bindTo() tests
      */
     test("bindTo: root content", function() {
-        var $c = Control.create({ content: "Hello" });
-        $c.foo = Control.bindTo("content");
+        
+        var Greet = createGreetClass();
+        Greet.prototype.extend({
+            foo: Control.bindTo("content")
+        });
+        
+        var $c = Greet.create();
         var result = $c.foo();
-        equal(result, "Hello");
+        equal(result[0], "Hello ");
+        equal($(result[1]).html(), "Ann");
         $c.foo("world");
         equal($c.html(), "world");
     });
 
     test("bindTo: element", function() {
         
-        var MyControl = Control.subclass("MyControl", function() {
-            this.properties({
-                content: [
-                    "Hello ",
-                    this._defineElementFunction("$name", "<span id='name'>Ann</span>")
-                ]
-            }, Control);
-        });
-        MyControl.prototype.extend({
+        var Greet = createGreetClass();
+        Greet.prototype.extend({
             name: Control.bindTo("$name")
         });
         
-        var $c = MyControl.create();
+        var $c = Greet.create();
         var $element = $c.$name();
         equal($element[0], $c.find("#name")[0]);
         equal($element.html(), "Ann");
@@ -262,39 +261,27 @@ function runTests() {
     
     test("bindTo: element content", function() {
         
-        var MyControl = Control.subclass("MyControl", function() {
-            this.properties({
-                content: [
-                    "Hello ",
-                    this._defineElementFunction("$name", "<span id='name'>Ann</span>")
-                ]
-            }, Control);
-        });
-        MyControl.prototype.extend({
+        var Greet = createGreetClass();
+        Greet.prototype.extend({
             name: Control.bindTo("$name", "content")
         });
         
-        var $c = MyControl.create();
+        var $c = Greet.create();
         var name = $c.name();
         equal(name, "Ann");
         $c.name("Bob");
         equal($c.html(), "Hello <span id=\"name\">Bob</span>");
     });
     
-/*
-    test("Element: element looping", function() {
+    test("bindTo: element content with iteration", function() {
 
-        var MyControl = Control.subclass("MyControl", function() {
-            this.properties({
-                content: this.$foo = $("<span id='foo'/>")
-            }, Control);
-        });
-        MyControl.prototype.iterators({
-        	foo: Control.element("foo").content()
+        var Greet = createGreetClass();
+        Greet.prototype.extend({
+            name: Control.bindTo("$name", "content")
         });
 
-        var $inner1 = MyControl.create({ foo: "Hello" });
-        var $inner2 = MyControl.create({ foo: "world" });
+        var $inner1 = Greet.create({ name: "Ann" });
+        var $inner2 = Greet.create({ name: "Bob" });
         var $c = Control.create({
             content: [
                 $inner1,
@@ -302,13 +289,14 @@ function runTests() {
             ]
         });
         
-        equal($c.html(), "<div class=\"MyControl Control\"><span id=\"foo\">Hello</span></div><div class=\"MyControl Control\"><span id=\"foo\">world</span></div>");
-        var $myControls = MyControl($c.find(".MyControl"));
-        equal($myControls.foo(), "Hello");
-        $myControls.foo("Hi");
-        equal($c.html(), "<div class=\"MyControl Control\"><span id=\"foo\">Hi</span></div><div class=\"MyControl Control\"><span id=\"foo\">Hi</span></div>");
+        equal($c.html(), "<div class=\"Greet Control\">Hello <span id=\"name\">Ann</span></div><div class=\"Greet Control\">Hello <span id=\"name\">Bob</span></div>");
+        var $g = Greet($c.find(".Greet"));
+        equal($g.name(), "Ann");
+        $g.name("Carol");
+        equal($c.html(), "<div class=\"Greet Control\">Hello <span id=\"name\">Carol</span></div><div class=\"Greet Control\">Hello <span id=\"name\">Carol</span></div>");
     });
 
+    /*
     test("Element: element content with setter function", function() {
         var $c = Control.create({ content: "<div>Hello <span id='name'/>" }).control();
         $c.$name = $c.find("#name")[0];
@@ -373,6 +361,18 @@ function runTests() {
         equal($c.foo(), false); // control isn't in DOM, so is not visible.
     });
 */
+}
+
+// Return a simple control class used for some tests.
+function createGreetClass() {
+    return Control.subclass("Greet", function() {
+        this.properties({
+            content: [
+                "Hello ",
+                this._defineElementFunction("$name", "<span id='name'>Ann</span>")
+            ]
+        }, Control);
+    });
 }
   
 $(function() {
