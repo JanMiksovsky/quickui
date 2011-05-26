@@ -58,7 +58,7 @@ function runTests() {
         var $a = A.create();
         var $set = Control("<div/>").append($a).append($("<div/>"));
         var $cast = $set.children().cast();
-        equal($cast instanceof jQuery, true);
+        equal($cast instanceof Control, true);
     });
 
     /*
@@ -229,28 +229,59 @@ function runTests() {
     });
 
     /*
-     * Control.element() tests
+     * Control.bindTo() tests
      */
-/*    
-    test("Element: root content", function() {
-        var $c = Control.create({ content: "<span>Hello</span>" });
-        $c.foo = Control.element().content();
+    test("bindTo: root content", function() {
+        var $c = Control.create({ content: "Hello" });
+        $c.foo = Control.bindTo("content");
         var result = $c.foo();
-        equal(result.nodeName.toLowerCase(), "span");
-        equal(result.innerHTML, "Hello");
+        equal(result, "Hello");
         $c.foo("world");
         equal($c.html(), "world");
     });
 
-    test("Element: element content", function() {
-        var $c = Control.create({ content: "Hello <span id='name'>Ann</span>" }).control();
-        $c.foo = Control.element("name").content();
-        $c.$name = $c.find("#name")[0];
-        equal($c.foo(), "Ann");
-        $c.foo("Bob");
+    test("bindTo: element", function() {
+        
+        var MyControl = Control.subclass("MyControl", function() {
+            this.properties({
+                content: [
+                    "Hello ",
+                    this._defineElementFunction("$name", "<span id='name'>Ann</span>")
+                ]
+            }, Control);
+        });
+        MyControl.prototype.extend({
+            name: Control.bindTo("$name")
+        });
+        
+        var $c = MyControl.create();
+        var $element = $c.$name();
+        equal($element[0], $c.find("#name")[0]);
+        equal($element.html(), "Ann");
+    });
+    
+    test("bindTo: element content", function() {
+        
+        var MyControl = Control.subclass("MyControl", function() {
+            this.properties({
+                content: [
+                    "Hello ",
+                    this._defineElementFunction("$name", "<span id='name'>Ann</span>")
+                ]
+            }, Control);
+        });
+        MyControl.prototype.extend({
+            name: Control.bindTo("$name", "content")
+        });
+        
+        var $c = MyControl.create();
+        var name = $c.name();
+        equal(name, "Ann");
+        $c.name("Bob");
         equal($c.html(), "Hello <span id=\"name\">Bob</span>");
     });
     
+/*
     test("Element: element looping", function() {
 
         var MyControl = Control.subclass("MyControl", function() {
