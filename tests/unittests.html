@@ -296,26 +296,25 @@ function runTests() {
         equal($c.html(), "<div class=\"Greet Control\">Hello <span id=\"name\">Carol</span></div><div class=\"Greet Control\">Hello <span id=\"name\">Carol</span></div>");
     });
 
-    /*
     test("Element: element content with setter function", function() {
-        var $c = Control.create({ content: "<div>Hello <span id='name'/>" }).control();
-        $c.$name = $c.find("#name")[0];
-        $c.foo = Control.element("name").content(function(name) {
-            this._name = name;
+        var s;
+        var Greet = createGreetClass();
+        Greet.prototype.extend({
+            name: Control.bindTo("$name", "content", function(name) {
+                if (name !== undefined)
+                {
+                    s = name;
+                }
+                return this;
+            })
         });
-        $c.foo("Ann");
-        equal($c._name, "Ann");
+        var $c = Greet.create();
+        $c.name("Ann");
+        equal($c.name(), "Ann");
+        equal(s, "Ann");
     });
     
-    test("Element: applyClass", function() {
-        var $c = Control.create().control();
-        $c.foo = Control.element().applyClass("enabled");
-        equal($c.foo(), false);
-        $c.foo(true);
-        equal($c.attr("class"), "Control enabled");
-        equal($c.foo(), true);
-    });
-        
+/*
     test("Element: attr", function() {
         var $image;
         var $c = Control.create({
@@ -326,7 +325,23 @@ function runTests() {
         $c.foo("a.png");
         equal($image.attr("src"), "a.png");
     });
-         
+*/
+        
+    test("Utility: applyClass", function() {
+        var $c = Control.create().toggleClass("foo");
+        equal($c.applyClass("foo"), true);
+        equal($c.applyClass("enabled"), false);
+        $c.applyClass("enabled", true);
+        equal($c.applyClass("foo"), true);
+        equal($c.applyClass("enabled"), true);
+    });
+    
+    test("Utility: visibility", function() {
+        var $c = Control.create();
+        equal($c.visibility(), false); // control isn't in DOM, so is not visible.
+    });
+    
+/*
     test("Element: controlProperty", function() {
         var $inner;
         var $outer = Control.create({
@@ -346,19 +361,6 @@ function runTests() {
         $c.foo = Control.element().css("line-height");
         $c.foo("20px");
         equal($c.css("line-height"), "20px");
-    });
-                   
-    test("Element: text", function() {
-        var $c = Control.create();
-        $c.foo = Control.element().text();
-        $c.foo("Hello");
-        equal($c.text(), "Hello");
-    });
-                   
-    test("Element: visibility", function() {
-        var $c = Control.create();
-        $c.foo = Control.element().visibility();
-        equal($c.foo(), false); // control isn't in DOM, so is not visible.
     });
 */
 }
