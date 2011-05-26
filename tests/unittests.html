@@ -267,12 +267,35 @@ function runTests() {
         });
         
         var $c = Greet.create();
-        var name = $c.name();
-        equal(name, "Ann");
+        equal($c.name(), "Ann");
         $c.name("Bob");
         equal($c.html(), "Hello <span id=\"name\">Bob</span>");
     });
     
+    test("bindTo: subcontrol property", function() {
+        
+        var Greet = createGreetClass();
+        Greet.prototype.extend({
+            name: Control.bindTo("$name", "content")
+        });
+        
+        var MyControl = Control.subclass("MyControl", function() {
+            this.properties({
+                content: [
+                    this._defineElementFunction("$greet", Greet.create())
+                ]
+            }, Control);
+        });
+        MyControl.prototype.extend({
+            name: Control.bindTo("$greet", "name")
+        });
+        
+        var $c = MyControl.create();
+        equal($c.name(), "Ann");
+        $c.name("Bob");
+        equal($c.html(), "<div class=\"Greet Control\">Hello <span id=\"name\">Bob</span></div>");
+    });
+        
     test("bindTo: element content with iteration", function() {
 
         var Greet = createGreetClass();
@@ -296,7 +319,7 @@ function runTests() {
         equal($c.html(), "<div class=\"Greet Control\">Hello <span id=\"name\">Carol</span></div><div class=\"Greet Control\">Hello <span id=\"name\">Carol</span></div>");
     });
 
-    test("Element: element content with setter function", function() {
+    test("bindTo: element content with setter function", function() {
         var s;
         var Greet = createGreetClass();
         Greet.prototype.extend({
@@ -314,18 +337,16 @@ function runTests() {
         equal(s, "Ann");
     });
     
-/*
-    test("Element: attr", function() {
-        var $image;
-        var $c = Control.create({
-            content: $image = $("<img/>") 
-        }).control();
-        $c.$image = $image;
-        $c.foo = Control.element("image").attr("src");
-        $c.foo("a.png");
-        equal($image.attr("src"), "a.png");
+    test("bindTo: functions with parameters", function() {
+        var MyControl = Control.subclass("MyControl");
+        MyControl.prototype.display = Control.bindTo([ "css", "display" ]);
+        var $c = MyControl.create();
+        equal($c.css("display"), "block");
+        equal($c.display(), "block");
+        $c.display("none");
+        equal($c.css("display"), "none");
+        equal($c.display(), "none");
     });
-*/
         
     test("Utility: applyClass", function() {
         var $c = Control.create().toggleClass("foo");
