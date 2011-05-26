@@ -361,29 +361,6 @@ function runTests() {
         var $c = Control.create();
         equal($c.visibility(), false); // control isn't in DOM, so is not visible.
     });
-    
-/*
-    test("Element: controlProperty", function() {
-        var $inner;
-        var $outer = Control.create({
-            content: $inner = Control.create({
-                "content": "Hello"
-            })
-        }).control();
-        $outer.$inner = $inner;
-        $outer.foo = Control.element("inner").controlProperty("content");
-        equal($outer.foo(), "Hello");
-        $outer.foo("world");
-        equal($inner.content(), "world");
-    });
-               
-    test("Element: css", function() {
-        var $c = Control.create();
-        $c.foo = Control.element().css("line-height");
-        $c.foo("20px");
-        equal($c.css("line-height"), "20px");
-    });
-*/
 }
 
 // Return a simple control class used for some tests.
