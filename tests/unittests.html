@@ -210,19 +210,6 @@ function runTests() {
     /*
      * Element reference functions
      */
-    test("Element reference manipulation by hand", function() {
-        var $c = Control.create({
-            content: "Hello <span id='name'>Ann</span>"
-        }).control();
-        $c.data("#name", $c.find("#name")[0]);
-        $c.$name = function(value) {
-            return Control(this.data("#name")).cast();
-        };
-        equal($c.$name().html(), "Ann");
-        $c.$name().html("Bob");
-        equal($c.html(), "Hello <span id=\"name\">Bob</span>");
-    });
-
     test("Element reference function definition", function() {
         
         var MyControl = Control.subclass("MyControl", function() {
