@@ -31,8 +31,8 @@
 GalleryPage.prototype.extend({
 	demo: Control.bindTo("$GalleryPage_demo", "content"),
 	notes: Control.bindTo("$GalleryPage_notes", "content"),
-	sourceFileControl: Control.element("sourceCodeControl").controlProperty("sourceFile"),
-	sourceFileExample: Control.element("sourceCodeExample").controlProperty("sourceFile"),
+	sourceFileControl: Control.bindTo("$sourceCodeControl", "sourceFile"),
+	sourceFileExample: Control.bindTo("$sourceCodeExample", "sourceFile"),
 	summary: Control.bindTo("$GalleryPage_summary", "content")
 });
 </script>

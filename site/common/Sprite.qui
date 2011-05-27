@@ -13,9 +13,9 @@ The images have to be stacked vertically, and all be the same height.
 
 <script>
 
-Sprite.prototype.define({
+Sprite.prototype.extend({
 	
-	image: Control.element().css("background-image"),
+	image: Control.bindTo("css/background-image"),
 
 	// The height of a single cell in the strip, in pixels.
 	cellHeight: Control.property(function(value) {

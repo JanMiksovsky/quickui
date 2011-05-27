@@ -71,7 +71,7 @@ SpriteButton.prototype.extend({
 			.focus(function() { self.focus(); });
 	},
 	
-	cellHeight: Control.bindTo("$css", "height", function(value) {
+	cellHeight: Control.bindTo("css/height", function(value) {
 		this.$SpriteButton_content().height(value + "px");
 		this.$backgroundLeft().cellHeight(value);
 		this.$backgroundRight().cellHeight(value);
@@ -85,7 +85,7 @@ SpriteButton.prototype.extend({
 		return SpriteButton.superclass.prototype.disabled.call(this, value);
 	},
 	
-	image: Control.element("backgroundLeft").controlProperty("image", function(value) {
+	image: Control.bindTo("$backgroundLeft", "image", function(value) {
 		this.$backgroundRight().image(value);
 	}),
 	

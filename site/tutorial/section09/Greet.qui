@@ -6,8 +6,8 @@
 
 <script>
 Greet.prototype.extend({
-	content: Control.element("Greet_content").content(),
-	punctuation: Control.element("Greet_punctuation").content()
+	content: Control.bindTo("$Greet_content", "content"),
+	punctuation: Control.bindTo("$Greet_punctuation", "content")
 });
 </script>
 

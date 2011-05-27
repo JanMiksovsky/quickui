@@ -71,7 +71,7 @@ SpriteButton.prototype.extend({
 			.focus(function() { self.focus(); });
 	},
 	
-	cellHeight: Control.bindTo("$css", "height", function(value) {
+	cellHeight: Control.bindTo("css/height", function(value) {
 		this.$SpriteButton_content().height(value + "px");
 		this.$backgroundLeft().cellHeight(value);
 		this.$backgroundRight().cellHeight(value);

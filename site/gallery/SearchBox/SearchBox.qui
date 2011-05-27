@@ -30,7 +30,7 @@ input {
 <script>
 SearchBox.prototype.extend({
     
-    hint: Control.element("searchTerms").controlProperty("hint"),
+    hint: Control.bindTo("$searchTerms", "hint"),
     query: Control.property(null, "%s"),
     
     initialize: function() {

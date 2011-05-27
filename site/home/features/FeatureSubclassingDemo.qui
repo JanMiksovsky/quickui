@@ -7,7 +7,7 @@
 <script>
 FeatureSubclassingDemo.prototype.extend({
     initialize: function() {
-        this.$buttonShow.click(function() {
+        this.$buttonShow().click(function() {
             Dialog.showDialog(SampleDialog);
         });
     }
