@@ -368,27 +368,22 @@ function runTests() {
         equal($c.html(), "<div class=\"Greet Control\">Hello <span id=\"name\">Carol</span></div><div class=\"Greet Control\">Hello <span id=\"name\">Carol</span></div>");
     });
 
-    test("bindTo: element content with setter function", function() {
-        var s;
+    test("bindTo: element content with side effect function", function() {
         var Greet = createGreetClass();
         Greet.prototype.extend({
             name: Control.bindTo("$name", "content", function(name) {
-                if (name !== undefined)
-                {
-                    s = name;
-                }
-                return this;
+                this.data("_name", name);
             })
         });
         var $c = Greet.create();
         $c.name("Ann");
         equal($c.name(), "Ann");
-        equal(s, "Ann");
+        equal($c.data("_name"), "Ann");
     });
     
     test("bindTo: functions with parameters", function() {
         var MyControl = Control.subclass("MyControl");
-        MyControl.prototype.display = Control.bindTo([ "css", "display" ]);
+        MyControl.prototype.display = Control.bindTo("css/display");
         var $c = MyControl.create();
         equal($c.css("display"), "block");
         equal($c.display(), "block");
