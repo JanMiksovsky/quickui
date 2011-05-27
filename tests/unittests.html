@@ -70,7 +70,7 @@ function runTests() {
             this.properties({
                 content: [
                     "*",
-                    this._defineElementFunction("$MyControl_content", "<span id='MyControl_content'/>"),
+                    this._define("$MyControl_content", "<span id='MyControl_content'/>"),
                     "*"
                 ]
             }, Control);
@@ -265,7 +265,7 @@ function runTests() {
             this.properties({
                 content: [
                     "Hello ",
-                    this._defineElementFunction("$name", "<span id='name'>Ann</span>")
+                    this._define("$name", "<span id='name'>Ann</span>")
                 ]
             }, Control);
         });
@@ -331,7 +331,7 @@ function runTests() {
         var MyControl = Control.subclass("MyControl", function() {
             this.properties({
                 content: [
-                    this._defineElementFunction("$greet", Greet.create())
+                    this._define("$greet", Greet.create())
                 ]
             }, Control);
         });
@@ -413,7 +413,7 @@ function createGreetClass() {
         this.properties({
             content: [
                 "Hello ",
-                this._defineElementFunction("$name", "<span id='name'>Ann</span>")
+                this._define("$name", "<span id='name'>Ann</span>")
             ]
         }, Control);
     });
