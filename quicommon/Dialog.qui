@@ -40,7 +40,7 @@ Dialog.extend({
 	}
 });
 
-Dialog.prototype.define({
+Dialog.prototype.extend({
 	
 	initialize: function() {
 		Dialog.superClass.prototype.initialize.call(this);

@@ -56,21 +56,21 @@
 </style>
 
 <script>
-TestPage.prototype.define({
+TestPage.prototype.extend({
 	initialize: function() {
-		this.$button.click(function() {
+		this.$button().click(function() {
 			Dialog.showDialog(TestDialog);
 		});
-		this.$list.items([
+		this.$list().items([
 			"One",
 			"Two",
 			"Three"
 		]);
 		var self = this;
-		this.$list.find(".ButtonBase").click(function() {
+		this.$list().find(".ButtonBase").click(function() {
 			var button = this;
-			var index = self.$list.children().index(button);
-			self.$switch.index(index);
+			var index = self.$list().children().index(button);
+			self.$switch().activeIndex(index);
 		});
 	}	
 });

@@ -17,7 +17,7 @@
 </style>
 
 <script>
-ButtonBase.prototype.define({
+ButtonBase.prototype.extend({
 	
 	isFocused: Control.property.bool(null, false),
 	isKeyPressed: Control.property.bool(null, false),
@@ -80,7 +80,7 @@ ButtonBase.prototype.define({
 		return ButtonBase.state.normal;
 	},
 
-    disabled: Control.element().applyClass("disabled", function(disabled) {
+    disabled: Control.bindTo("applyClass/disabled", function(disabled) {
 		this._renderButton();
 	}),
 	

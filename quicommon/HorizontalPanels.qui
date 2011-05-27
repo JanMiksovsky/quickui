@@ -33,11 +33,11 @@
 </style>
 
 <script>
-HorizontalPanels.prototype.define({
-    content: Control.element("HorizontalPanels_content").content(),
-    fill: Control.element().applyClass("fill"),
-    left: Control.element("HorizontalPanels_left").content(),
-    right: Control.element("HorizontalPanels_right").content()
+HorizontalPanels.prototype.extend({
+    content: Control.bindTo("$HorizontalPanels_content", "content"),
+    fill: Control.bindTo("applyClass/fill"),
+    left: Control.bindTo("$HorizontalPanels_left", "content"),
+    right: Control.bindTo("$HorizontalPanels_right", "content")
 });
 </script>
 

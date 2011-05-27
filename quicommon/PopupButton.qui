@@ -16,28 +16,28 @@
 </style>
 
 <script>
-PopupButton.prototype.define({
+PopupButton.prototype.extend({
 	
-	content: Control.element("PopupButton_content").content(),
-	popup: Control.element("PopupButton_popup").content(),
+	content: Control.bindTo("$PopupButton_content", "content"),
+	popup: Control.bindTo("$PopupButton_popup", "content"),
 
 	initialize: function()
 	{
 		var self = this;
-		this.$PopupButton_content.click(function() {
+		this.$PopupButton_content().click(function() {
 			self.showPopup();
 		});
-		this.$PopupButton_popup.positionOverlay = function() {
+		this.$PopupButton_popup().positionOverlay = function() {
 			return self.positionPopup();
 		};
 	},
 	
     positionPopup: function()
     {
-        var $contentElement = this.$PopupButton_content;
+        var $contentElement = this.$PopupButton_content();
         var contentTop = $contentElement.position().top;
         var contentHeight = $contentElement.outerHeight(true);
-        var $popupElement = this.$PopupButton_popup;
+        var $popupElement = this.$PopupButton_popup();
         var popupHeight = $popupElement.outerHeight(true);
 
         // Try showing popup below.
@@ -69,7 +69,7 @@ PopupButton.prototype.define({
     	
 	showPopup: function()
 	{
-		this.$PopupButton_popup.showOverlay();
+		this.$PopupButton_popup().showOverlay();
 	}
 	
 });

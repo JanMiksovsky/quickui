@@ -36,11 +36,11 @@
 </style>
 
 <script>
-VerticalPanels.prototype.define({
-    bottom: Control.element("VerticalPanels_bottom").content(),
-    content: Control.element("VerticalPanels_content").content(),
-    fill: Control.element().applyClass("fill"),
-    top: Control.element("VerticalPanels_top").content()
+VerticalPanels.prototype.extend({
+    bottom: Control.bindTo("$VerticalPanels_bottom", "content"),
+    content: Control.bindTo("$VerticalPanels_content", "content"),
+    fill: Control.bindTo("applyClass/fill"),
+    top: Control.bindTo("$VerticalPanels_top", "content")
 });
 </script>
 
