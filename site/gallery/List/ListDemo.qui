@@ -17,7 +17,7 @@ ListDemo.prototype.extend({
         ];
         
         // Render each member of the array as a list item.
-        this.$buttonList.items(data);
+        this.$buttonList().items(data);
     }
 });
 </script>

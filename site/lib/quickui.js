@@ -32,28 +32,9 @@
 jQuery.fn.control = function(arg1, arg2) {
     if (arg1 === undefined)
     {
-        // Return the controls bound to these element.
-		var $first = this.data("control");
-		if (this.length === 1)
-		{
-			// Simple case
-			return $first;
-		}
-		else
-		{
-			// Map array of elements to original controls
-
-			// Use type of first control as type for all of them.
-			// TODO: Deal with case where controls have differing types;
-			// select the most specific type of which they are all subclasses.
-			var $controls = $first.constructor();
-
-	        this.each(function(index, element) {
-				var $control = $(element).data("control");
-				$controls = $controls.add($control);
-			});
-			return $controls;
-		}
+        // Return the controls bound to these element(s), cast to the correct class.
+		var $cast = Control(this).cast(jQuery);
+		return ($cast instanceof Control) ? $cast : null;
     }
     else if (jQuery.isFunction(arg1))
     {
@@ -71,11 +52,7 @@ jQuery.fn.control = function(arg1, arg2) {
     {
         // Set properties on the control(s).
         var properties = arg1;
-        this.each(function(index, element) {
-            var $control = jQuery.data(element, "control");
-            $control.properties(properties);
-        });
-        return this;
+        return Control(this).cast().properties(properties);
     }
 };
 
@@ -86,7 +63,89 @@ jQuery.fn.control = function(arg1, arg2) {
  */
 var Control = jQuery.sub();
 jQuery.extend(Control, {
+	
+	/*
+	 * Given an array of functions, repeatedly invoke them as a chain.
+	 * TODO: More documentation.
+	 */
+	bindTo: function() {
+	    
+	    // Check for side effect function as last parameter.
+	    var args = arguments;
+	    var sideEffectFn;
+	    if ($.isFunction(args[args.length - 1]))
+	    {
+            // Convert arguments to a real array
+            var args = [].slice.call(arguments);
+            var sideEffectFn = args.pop();
+	    }
+	    
+	    // Identify function names and optional parameters.
+		var functionNames = [];
+		var functionParams = [];
+		for (var i = 0; i < args.length; i++)
+		{
+		    // Check for parameter.
+		    var parts = arguments[i].split("/");
+		    functionNames[i] = parts.shift();
+		    functionParams[i] = parts;
+		}
 		
+		return function binding(value) {
+		    
+			var result = this;
+			for (var i = 0; i < functionNames.length; i++)
+			{
+			    var fn = result[functionNames[i]];
+			    var params = functionParams[i];
+			    if (value !== undefined)
+			    {
+			        // Invoking as setter.
+			        params = params.concat([ value ]);
+			    }
+                if (fn === undefined) {
+                    var message = "Tried to access undefined getter/setter function \"" + functionNames[i] + "\" on control class \"" + this.className + "\".";
+                    throw message;
+                }
+				result = fn.apply(result, params);
+			}
+			
+			if (value !== undefined && sideEffectFn)
+			{
+			    sideEffectFn.call(this, value);
+			}
+			
+			return result;
+		};
+	},
+		
+
+    /*
+     * Return the names of all control classes in this class' hierarchy,
+     * in order from most specific to most general class.
+     * 
+     * Example: If a control class Foo has superclasses Bar and Control,
+     * this returns "Foo Bar Control".
+     */
+    classHierarchy: function(startingClass) {
+        var controlClass = startingClass || this;
+        if (!(controlClass && controlClass.prototype && controlClass.prototype.className))
+        {
+            return "";
+        }
+        if (!controlClass._classHierarchy)          // Already have memoized result?
+        {
+            var result = controlClass.prototype.className;
+            var superClassNames = this.classHierarchy(controlClass.superclass);
+            if (superClassNames.length > 0)
+            {
+                result += " " + superClassNames;
+            }
+            controlClass._classHierarchy = result;  // Memoize result
+        }
+        return controlClass._classHierarchy;
+    },
+    
     /*
      * Create an instance of this control class around a default element.
      * The class prototype's tag member can define a specific element tag. 
@@ -97,85 +156,85 @@ jQuery.extend(Control, {
     },
 	
 	/*
-	 * Create an instance of this control class around the given target.
+	 * Create instance(s) of this control class around the given target(s).
 	 */
     createAt: function(target, properties) {
 
 		var $target = $(target);
 		
         // Grab the existing contents of the target.
-        // TODO: Use Control($target).content()?
-        // TODO: Handle iteration.
-        var oldContents = jQuery.trim($target.html());
+        var oldContents = $target.map(function(index, element) {
+            var content = jQuery.trim($(element).html());
+            return content.length > 0 && content;
+        }).get();
         
         // Instantiate the control class.
         var $controls = this($target);
         
-        var controlFn = this;
-        $controls.each(function() {
-
-	        // Bind the element to the control.
-	        // Don't set a property on the element directly to avoid creating a circular
-	        // reference, which is hard to garbage collect.
-        	var $control = controlFn(this);
-        	$control.data("control", $control);
+        $controls
+            // Bind elements to the control class.
+        	.data("_controlClass", this)
         	
-	        // Let the control render itself into its DOM element.
-	        $control.render();
-        });
-
-        // Apply all class names in the class hierarchy as style names.
-        // This lets the element pick up styles defined by those classes.
-        $controls.addClass($controls.classHierarchy(this));
-        
-        // Set any properties requested in the call to createAt.
-        if (properties)
-		{
-			$controls.properties(properties);
-		}
+        	// Render controls as DOM elements.
+            .render()
+            
+            // Apply all class names in the class hierarchy as style names.
+            // This lets the element pick up styles defined by those classes.
+            .addClass(this.classHierarchy())
+            
+            // Set any requested properties
+            .properties(properties);
         
         // Pass in the target's old contents (if any).
-        if (oldContents != null && oldContents.length > 0)
-        {
-            $controls.content(oldContents);
+        for (var i = 0; i < $controls.length; i++) {
+            if (oldContents[i])
+            {
+                $controls.eq(i).content(oldContents[i]);
+            }
         }
-        
-        // Tell the control it's ready.
+
+        // Tell the controls they're ready.
         $controls.initialize();
 
 		return $controls;
     },
-
-	/*
-	 * Return a factory for properties associated with a DOM element, (including those
-	 * representing QuickUI controls).
-	 * 
-	 * Usage: These factories are typically invoked in defining the control
-	 * class' prototype. They are usually run when the script *loads* to create
-	 * property getter/setters of the desired type. E.g.:
-	 * 
-	 *   MyControlClass.prototype.foo = Control.Element("foo").content()
-	 * 
-	 * creates a getter/setter function called foo which, when invoked, will
-	 * get or set the content of the control DOM element with ID "foo".
-	 * 
-	 */
-	element: function(elementId) {
-	    return new Control.ElementPropertyFactory(elementId);        
-	},
 
     // Return true if the given element is a control.    
     isControl: function(element) {
         return (Control(element).control() !== undefined);
     },
     
-    // Return true if the given element is an input element (with a val).
-    isInputElement: function(element) {
-        var inputTags = ["input", "select", "textarea"];
-        var nodeName = $(element)[0].nodeName.toLowerCase();
-        return (jQuery.inArray(nodeName, inputTags) >= 0);
+    /*
+     * Generic factory for a property getter/setter.
+     */
+    property: function(sideEffectFn, defaultValue, converterFunction) {
+        var backingPropertyName = "_property" + Control.property._symbolCounter++;
+        return function(value) {
+            var result;
+            if (value === undefined)
+            {
+                // Getter
+                result = this.data(backingPropertyName);
+                return (result === undefined)
+                    ? defaultValue
+                    : result;
+            }
+            else
+            {
+                // Setter. Allow chaining.
+                return this.eachControl(function(index, $control) {
+                    result = (converterFunction !== undefined)
+                        ? converterFunction.call($control, value)
+                        : value;
+                    $control.data(backingPropertyName, result);
+                    if (sideEffectFn) {
+                        sideEffectFn.call($control, result);            
+                    }
+                })
+            }
+        };
     },
-
+    
 	// Create a subclass of this class.
 	subclass: function(className, renderFunction, tag) {
 		var superClass = this;
@@ -191,7 +250,14 @@ jQuery.extend(Control, {
 		{
 			newClass.prototype.render = function() {
 			    superClass.prototype.render.call(this);
-			    renderFunction.call(this);
+			    // Call the render function on each element separately to
+			    // ensure each control ends up with its own element references.
+			    for (var i = 0; i < this.length; i++)
+			    {
+                    renderFunction.call(this.eq(i));
+			    }
+			    //renderFunction.call(this);
+			    return this;
 			}
 	    }
 	    if (tag)
@@ -201,13 +267,76 @@ jQuery.extend(Control, {
 	    
 		newClass.subclass = superClass.subclass;
 		return newClass;
+	},
+	
+	// Return true if class1 is a subclass of class2.
+	_isSubclassOf: function(class1, class2) {
+		var superClass = class1.superclass;
+		if (superClass === undefined)
+		{
+			return false;
+		}
+		else if (superClass === class2)
+		{
+			return true;
+		}
+		else
+		{
+			return this._isSubclassOf(superClass, class2);
+		}
 	}
 });
 
 /*
  * Control instance methods.
  */
-jQuery.extend(Control.fn, {
+jQuery.extend(Control.prototype, {
+            
+    /*
+     * Get/set whether the indicated class(es) are applied to the elements.
+     * This effectively combines $.hasClass() and $.toggleClass() into a single
+     * getter/setter.
+     */
+    applyClass: function(classes, value) {
+        return (value === undefined)
+            ? this.hasClass(classes)
+            : this.toggleClass(classes, value);
+    },
+    	
+	/*
+	 * Return the array of elements cast to their closest JavaScript class ancestor.
+	 * E.g., a jQuery $(".foo") selector might pick up instances of control classes
+	 * A, B, and C. If B and C are subclasses of A, this will return an instance of
+	 * class A. So Control(".foo").cast() does the same thing as A(".foo"), but without
+	 * having to know the type of the elements in advance.
+	 * 
+	 * The highest ancestor class this will return is the current class, even for plain
+	 * jQuery objects, in order to allow Control methods (like content()) to be applied to
+	 * the result.
+	 */
+	cast: function(defaultClass) {
+		defaultClass = defaultClass || this.constructor;
+		var $set = $();
+		var setClass;
+		this.each(function(index, element) {
+			var $element = $(element);
+			var elementClass = $element.data("_controlClass") || defaultClass;
+			if (setClass === undefined)
+			{
+				setClass = elementClass;
+			}
+			else if (elementClass === setClass || Control._isSubclassOf(elementClass, setClass))
+			{
+				// Already have most common class.
+			}
+			else if (Control._isSubclassOf(setClass, elementClass))
+			{
+				setClass = elementClass;
+			}
+			$set = $set.add($element);
+		});
+		return setClass($set);
+	},
     
     /*
      * The set of classes on the control's element.
@@ -227,30 +356,6 @@ jQuery.extend(Control.fn, {
             this.toggleClass(classList, true);
         }
         return this.attr("class");
-    },
-
-    /*
-     * Return a control's complete class hierarchy as a string.
-     * If a control has a class Foo and superclasses Bar and Control,
-     * this returns "Foo Bar Control".
-     */
-    classHierarchy: function(startingClass) {
-		var controlClass = startingClass || this.constructor;
-        if (!(controlClass && controlClass.prototype && controlClass.prototype.className))
-        {
-            return "";
-        }
-        if (!controlClass._classHierarchy)			// Already have memoized result?
-        {
-            var result = controlClass.prototype.className;
-            var superClassNames = this.classHierarchy(controlClass.superclass);
-            if (superClassNames.length > 0)
-            {
-                result += " " + superClassNames;
-            }
-            controlClass._classHierarchy = result;  // Memoize result
-        }
-        return controlClass._classHierarchy;
     },
 
     className: "Control",
@@ -284,18 +389,16 @@ jQuery.extend(Control.fn, {
         if (value === undefined)
         {
             // Getting contents. Just process first element.
-            var element = this[0];
-            if (Control.isInputElement(element))
+            var $element = this.eq(0);
+            if ($element.isInputElement())
             {
                 // Return input element value.
-                return $(element).val();
+                return $element.val();
             }
             else
             {
                 // Return HTML contents in a canonical form.
-                // TODO: When invoked on a collection of controls,
-                // this should only return the contents of the first.
-                var contents = this.contents(value);
+                var contents = $element.contents(value);
                 var result = jQuery.map(contents, function(item) {
                     return (item.nodeType == 3)
                         ? item.nodeValue // Return text as simple string
@@ -318,8 +421,8 @@ jQuery.extend(Control.fn, {
                     : [ value ];            // singleton parameter
 
             this.each(function(index, element) {
-                var $element = $(element);
-                if (Control.isInputElement(element))
+                var $element = Control(element);
+                if ($element.isInputElement())
                 {
                     // Set input element value.
                     $element.val(value);
@@ -337,14 +440,20 @@ jQuery.extend(Control.fn, {
 	},
 	
 	/*
-	 * Execute a function against an array of controls.
-	 * Like jQuery.each(), but performs implicit control dereferencing.
+	 * Execute a function once for each control in the array.
+	 * Inside the function, "this" refers to the single control.
 	 */
 	eachControl: function(fn) {
-	    return this.each(function(index, element) {
-	        var $control = Control(element).control();
-	        return fn.call($control, index, $control);
-	    });
+	    for (var i = 0; i < this.length; i++)
+	    {
+	        var $control = this.eq(i);
+	        var result = fn.call($control, i, $control);
+	        if (result === false)
+	        {
+	            break;
+	        }
+	    }
+	    return this;
 	},
 
     id: function(id) {
@@ -358,6 +467,13 @@ jQuery.extend(Control.fn, {
      */    
     initialize: function() {},
 	
+    // Return true if the (first) element is an input element (with a val).
+    isInputElement: function() {
+        var inputTags = ["input", "select", "textarea"];
+        var nodeName = this[0].nodeName.toLowerCase();
+        return (jQuery.inArray(nodeName, inputTags) >= 0);
+    },
+
 	/*
 	 * Define control methods as iterators over a jQuery array.
 	 * This is similar to jQuery.extend(), but functions defined in this way
@@ -369,11 +485,42 @@ jQuery.extend(Control.fn, {
 			var value = members[member];
 			this[member] = this._createIterator(value);
 		}
-	},	
+	},
+	
     /*
      * Base Control class has no visualization of its own.
      */    
-    render: function() {},
+    render: function() {
+        return this;
+    },
+
+    /*
+     * Get/set the given property on mulitple elements at once. If called
+     * as a getter, an array of the current property values is returned.
+     * If called as a setter, the property of each element will be set to
+     * the corresponding member of the values array.
+     */
+    multiProperty: function(propertyName, values) {
+        var propertyFn = this[propertyName];
+        if (values === undefined)
+        {
+            // Getter
+            var results = [];
+            for (var i = 0; i < this.length; i++) {
+                results[i] = propertyFn.call(this.eq(i));
+            }
+            return results;
+        }
+        else
+        {
+            // Setter
+            for (var i = 0; i < this.length; i++)
+            {
+                propertyFn.call(this.eq(i), values[i]);
+            }
+            return this;
+        }
+    },
 	
 	/*
 	 * Invoke the indicated setter functions on the control to
@@ -398,6 +545,7 @@ jQuery.extend(Control.fn, {
 	        var value = properties[propertyName];
 	        prototype[propertyName].call(this, value);
 	    }
+	    return this;
 	},
     
     /*
@@ -415,6 +563,17 @@ jQuery.extend(Control.fn, {
      * Control classes can override this: <Control name="Foo" tag="span">
      */
     tag: "div",
+    
+    /*
+     * Toggle the element's visibility.
+     * Like $.toggle(), but if no value is supplied, the current visibility is returned
+     * (rather than toggling the element's visibility).
+     */
+    visibility: function(value) {
+        return (value === undefined)
+            ? this.is(":visible")
+            : this.toggle(value);
+    },
 	
 	/*
 	 * Convert a function into an interator that loops over the elements of
@@ -441,43 +600,44 @@ jQuery.extend(Control.fn, {
 				: this // Method or setter;
 		};
 	},
+    
+    /*
+     * Return a jQuery element for the given content (either HTML or a DOM element)
+     * that will be part of a control. At the same time, define a function on the
+     * control class that can be used later to get that element back.
+     * 
+     * This is an internal routine invoked by a control class' generated
+     * code whenever the control is rendered. The function defined herein is only
+     * created the first time this routine is called.
+     */
+    _define: function(functionName, content) {
+        
+        var $element = $(content);
+        
+        // Store the element reference as data on the control.
+        this.data(functionName, $element[0]);
+        
+        if (this[functionName] === undefined)
+        {
+            // Define a control class function to get back to the element(s) later.
+            this.constructor.prototype[functionName] = (function(key) {
+                return function() {
+                    // Map a collection of control instances to the given element
+                    // defined for each instance.
+                    var $result = Control();
+                    for (var i = 0; i < this.length; i++) {
+                        var element = this.eq(i).data(key);
+                        $result = $result.add(element);
+                    }
+                    return $result.cast();
+                };
+            })(functionName);
+        }
+        
+        return $element;
+    }
+
 });
-
-/*
- * Property factories for common types of properties in QuickUI classes.
- * These are functions that return setter/getter functions.
- */
-
-/*
- * Generic factory for a property getter/setter.
- */
-Control.property = function(setterFunction, defaultValue, converterFunction) {
-    var backingPropertyName = "_property" + Control.property._symbolCounter++;
-    return function(value) {
-        var result;
-        if (value === undefined)
-        {
-            // Getter
-            result = this.control().data(backingPropertyName);
-            return (result === undefined)
-            	? defaultValue
-            	: result;
-        }
-        else
-        {
-            // Setter. Allow chaining.
-            return this.eachControl(function(index, $control) {
-                result = (converterFunction !== undefined)
-                    ? converterFunction.call($control, value)
-                    : value;
-                $control.data(backingPropertyName, result);
-                if (setterFunction) {
-                    setterFunction.call($control, result);            
-                }
-            })
-        }
-    };
-};
 
 /*
  * More factories for getter/setters of various types.
@@ -518,172 +678,7 @@ jQuery.extend(Control.property, {
         );
     },
 
+    // Used to generate symbols to back new properties.
     _symbolCounter: 0
 
-});
-
-/*
- * Factory for properties associated with a DOM element (including those
- * representing QuickUI controls).
- */
-Control.ElementPropertyFactory = function(elementId) {
-    this.elementId = elementId;
-};
-jQuery.extend(Control.ElementPropertyFactory, {
-    /*
-     * Obtain the indicated element of the single control instance.
-     * If no element is indicated, the control's top-level element is returned.
-     */
-    $getElement: function($control, elementId) {
-        
-        // Recover the original control instance. 
-        var $original = Control($control).control();
-        
-        if (elementId === undefined)
-        {
-            return $original;
-        }
-        
-        var propertyName = "$" + elementId;
-        if ($original[propertyName] === undefined)
-        {
-            throw "Can't find element with ID \"" + elementId + "\"";
-        }
-        var $element = $original[propertyName];
-        return ($element instanceof Control)
-        	? $element
-        	: Control($element);
-    }
-});
-
-/*
- * Factories for various types of properties on elements.
- */
-jQuery.extend(Control.ElementPropertyFactory.prototype, {
-    
-    /*
-     * Low-level getter/setter generator that handles looping
-     * and setter function invocation.
-     * 
-     * This wraps a more specific calc function that does the real work.
-     * The calc function should take a Control (jQuery) reference and a
-     * value and return a result. If the value is undefined, the function
-     * should get a single result; if the value is defined, the function
-     * should set that result.
-     * 
-     * If the value is being set, the calc function will be applied to
-     * every element in the Control reference. Additionally, after each
-     * application, the result of the calc function will be passed to the
-     * separate setter function.  
-     */
-    _elementProperty: function(calcFunction, setterFunction) {
-        var elementId = this.elementId;    // "this" = property factory
-        return function elementProperty(value) {
-            // Here, "this" = a QuickUI control instance
-            var $element = Control.ElementPropertyFactory.$getElement(this, elementId);
-            if (value === undefined)
-            {
-                // Getter
-                var result = calcFunction($element, value);
-                return result;
-            }
-            else
-            {
-                // Setter
-                var result = calcFunction($element, value);
-                if (setterFunction != null)
-                {
-                    // Invoke custom setter function.
-                    setterFunction.call(this, value);
-                }
-            }
-        };
-    },
-            
-    /*
-     * Toggle a CSS class on and off the element.
-     * Like $.toggleClass(), but if no value is supplied, the current CSS class state
-     * (has / has not) is returned rather than toggling that state.
-     */
-    applyClass: function(className, setterFunction) {
-        return this._elementProperty(
-            function($element, value) {
-                return (value === undefined)
-                    ? $element.hasClass(className)
-                    : $element.toggleClass(className, value);
-            },
-            setterFunction);
-    },
-    
-    /*
-     * An attribute of the element. Works like $.attr().
-     */
-    attr: function(attributeName, setterFunction) {
-        return this._elementProperty(
-            function($element, value) {
-                return $element.attr(attributeName, value);
-            },
-            setterFunction);
-    },
-
-    /* 
-     * Get/set the element's "content"; see jQuery.fn.control.content().
-     */
-    content: function(setterFunction) {
-        return this._elementProperty(
-            function($element, value) {
-                return $element.content(value);
-            },
-            setterFunction);
-    },
-            
-    /*
-     * A property of the control represented by the element.
-     * The property needs to be defined as a getter/setter.
-     */
-    controlProperty: function(propertyName, setterFunction) {
-        return this._elementProperty(
-            function($element, value) {
-                var $control = $element.control();
-                return $control[propertyName].call($control, value);
-            },
-            setterFunction);
-    },
-    
-    /*
-     * A specific CSS property of the element. Works like $.css().
-     */
-    css: function(attributeName, setterFunction) {
-        return this._elementProperty(
-            function($element, value) {
-                return $element.css(attributeName, value);
-            },
-            setterFunction);
-    },
-    
-    /*
-     * The text (only) of the element. Like $.text().
-     */
-    text: function(setterFunction) {
-        return this._elementProperty(
-            function($element, value) {
-                return $element.text(value);
-            },
-            setterFunction);
-    },
-    
-    /*
-     * Toggle the element's visibility.
-     * Like $.toggle(), but if no value is supplied, the current visibility is returned
-     * (rather than toggling the element's visibility).
-     */
-    visibility: function(setterFunction) {
-        return this._elementProperty(
-            function($element, value) {
-                return (value === undefined)
-                    ? $element.is(":visible")
-                    : $element.toggle(value);
-            },
-            setterFunction);
-    }
 });

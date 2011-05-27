@@ -61,37 +61,37 @@ button {
 <script>
 SpriteButton.prototype.extend({
 	
-	content: Control.element("SpriteButton_content").content(),
+	content: Control.bindTo("$SpriteButton_content", "content"),
 
 	initialize: function() {
 		SpriteButton.superclass.prototype.initialize.call(this);
 		var self = this;
-		this.$SpriteButton_content
+		this.$SpriteButton_content()
 			.blur(function() { self.blur(); })
 			.focus(function() { self.focus(); });
 	},
 	
-	cellHeight: Control.element().css("height", function(value) {
-		this.$SpriteButton_content.height(value + "px");
-		this.$backgroundLeft.cellHeight(value);
-		this.$backgroundRight.cellHeight(value);
+	cellHeight: Control.bindTo("$css", "height", function(value) {
+		this.$SpriteButton_content().height(value + "px");
+		this.$backgroundLeft().cellHeight(value);
+		this.$backgroundRight().cellHeight(value);
 	}),
 	
 	disabled: function(value) {
 		if (value !== undefined)
 		{
-			this.$SpriteButton_content.attr("disabled", String(value) == "true");
+			this.$SpriteButton_content().attr("disabled", String(value) == "true");
 		}
 		return SpriteButton.superclass.prototype.disabled.call(this, value);
 	},
 	
 	image: Control.element("backgroundLeft").controlProperty("image", function(value) {
-		this.$backgroundRight.image(value);
+		this.$backgroundRight().image(value);
 	}),
 	
 	renderButtonState: function(buttonState) {
-		this.$backgroundLeft.currentCell(buttonState);
-		this.$backgroundRight.currentCell(buttonState);
+		this.$backgroundLeft().currentCell(buttonState);
+		this.$backgroundRight().currentCell(buttonState);
 	}
 });
 </script>

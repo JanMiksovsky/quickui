@@ -30,7 +30,7 @@ a#link {
 <script>
 SourceCode.prototype.extend({
 	
-	content: Control.element("SourceCode_content").content(),
+	content: Control.bindTo("$SourceCode_content", "content"),
 	
 	fileName: function(path) {
 		var pathNames = path.split("/");
@@ -44,10 +44,10 @@ SourceCode.prototype.extend({
 		// Load the file.
 		$.get(value, function(data) {
 			// Using $.text() escapes the HTML/XML.
-			self.$SourceCode_content.text(self._tabsToSpaces(data));
+			self.$SourceCode_content().text(self._tabsToSpaces(data));
 		});
-		this.$link.attr("href", value);
-		this.$linkText.html(this.fileName(value));
+		this.$link().attr("href", value);
+		this.$linkText().html(this.fileName(value));
 	}),
 	
 	_tabsToSpaces: function(s) {

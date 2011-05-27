@@ -16,7 +16,7 @@ You’ve clicked this <span id="count">0</span> times.
 Counter.prototype.extend({
     initialize: function() {
         // Points to above span.
-        var $count = this.$count;
+        var $count = this.$count();
         this.click(function() {
             $count.text(1 +
              parseInt($count.text()));

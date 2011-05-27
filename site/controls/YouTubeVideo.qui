@@ -15,7 +15,7 @@
 YouTubeVideo.prototype.extend({
     videoId: Control.property(function(videoId) {
         var url = "http://www.youtube.com/embed/" + videoId;
-        this.$iframe.attr("src", url);
+        this.$iframe().attr("src", url);
     })
 });
 </script>

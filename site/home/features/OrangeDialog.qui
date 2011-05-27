@@ -33,9 +33,9 @@ h1 {
 
 <script>
 OrangeDialog.prototype.extend({
-    buttons: Control.element("OrangeDialog_buttons").content(),
-    content: Control.element("OrangeDialog_content").content(),
-    title: Control.element("OrangeDialog_title").content()
+    buttons: Control.bindTo("$OrangeDialog_buttons", "content"),
+    content: Control.bindTo("$OrangeDialog_content", "content"),
+    title: Control.bindTo("$OrangeDialog_title", "content")
 });
 </script>
 

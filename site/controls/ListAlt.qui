@@ -9,7 +9,7 @@
 <script>
 ListAlt.prototype.extend({
 
-	expansion: Control.element("ListAlt_expansion").content(),
+	expansion: Control.bindTo("$ListAlt_expansion", "content"),
 
 	initialize: function() {
 		this.expand();
@@ -29,7 +29,7 @@ ListAlt.prototype.extend({
 		var template = this.content();
 		if (template != null)
 		{
-			this.$ListAlt_expansion.empty();
+			this.$ListAlt_expansion().empty();
 			var data = this.data();
 			if (data != null)
 			{

@@ -10,8 +10,8 @@
 
 <script>
 Link.prototype.extend({
-	content: Control.element("Link_content").content(),
-	href: Control.element("Link_content").attr("href")
+	content: Control.bindTo("$Link_content", "content"),
+	href: Control.bindTo("$Link_content", "attr/href")
 });
 </script>
 

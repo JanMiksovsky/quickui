@@ -5,26 +5,26 @@ BrowserDependent = Control.subclass("BrowserDependent", function() {
 	this.properties({
 		"content": [
 			" ",
-			this.$BrowserDependent_content = Control("<span id=\"BrowserDependent_content\" />"),
+			this._define("$BrowserDependent_content", Control("<span id=\"BrowserDependent_content\" />")),
 			" ",
-			this.$BrowserDependent_elseContent = Control("<span id=\"BrowserDependent_elseContent\" />"),
+			this._define("$BrowserDependent_elseContent", Control("<span id=\"BrowserDependent_elseContent\" />")),
 			" "
 		]
 	}, Control);
 });
-BrowserDependent.prototype.define({
+BrowserDependent.prototype.extend({
     
 	ifBrowser: Control.property(),
-	content: Control.element("BrowserDependent_content").content(),
-	elseContent: Control.element("BrowserDependent_elseContent").content(),
+	content: Control.bindTo("$BrowserDependent_content", "content"),
+	elseContent: Control.bindTo("$BrowserDependent_elseContent", "content"),
 	ifSupport: Control.property(),
 	
 	initialize: function() {
 		var usingSpecifiedBrowser = (this.ifBrowser() === undefined) || !!$.browser[this.ifBrowser()];
 		var browserSupportsProperty = (this.ifSupport() === undefined) || !!$.support[this.ifSupport()];
 		var allConditionsSatisfied = usingSpecifiedBrowser && browserSupportsProperty;
-		this.$BrowserDependent_content.toggle(allConditionsSatisfied);
-		this.$BrowserDependent_elseContent.toggle(!allConditionsSatisfied);
+		this.$BrowserDependent_content().toggle(allConditionsSatisfied);
+		this.$BrowserDependent_elseContent().toggle(!allConditionsSatisfied);
 	}
 });
 
@@ -32,7 +32,7 @@ BrowserDependent.prototype.define({
 // ButtonBase
 //
 ButtonBase = Control.subclass("ButtonBase");
-ButtonBase.prototype.define({
+ButtonBase.prototype.extend({
 	
 	isFocused: Control.property.bool(null, false),
 	isKeyPressed: Control.property.bool(null, false),
@@ -95,7 +95,7 @@ ButtonBase.prototype.define({
 		return ButtonBase.state.normal;
 	},
 
-    disabled: Control.element().applyClass("disabled", function(disabled) {
+    disabled: Control.bindTo("applyClass/disabled", function(disabled) {
 		this._renderButton();
 	}),
 	
@@ -177,27 +177,27 @@ HorizontalPanels = Control.subclass("HorizontalPanels", function() {
 	this.properties({
 		"content": [
 			" ",
-			this.$HorizontalPanels_left = Control("<div id=\"HorizontalPanels_left\" class=\"minimumWidth\" />"),
+			this._define("$HorizontalPanels_left", Control("<div id=\"HorizontalPanels_left\" class=\"minimumWidth\" />")),
 			" ",
-			this.$HorizontalPanels_content = Control("<div id=\"HorizontalPanels_content\" />"),
+			this._define("$HorizontalPanels_content", Control("<div id=\"HorizontalPanels_content\" />")),
 			" ",
-			this.$HorizontalPanels_right = Control("<div id=\"HorizontalPanels_right\" class=\"minimumWidth\" />"),
+			this._define("$HorizontalPanels_right", Control("<div id=\"HorizontalPanels_right\" class=\"minimumWidth\" />")),
 			" "
 		]
 	}, Control);
 });
-HorizontalPanels.prototype.define({
-    content: Control.element("HorizontalPanels_content").content(),
-    fill: Control.element().applyClass("fill"),
-    left: Control.element("HorizontalPanels_left").content(),
-    right: Control.element("HorizontalPanels_right").content()
+HorizontalPanels.prototype.extend({
+    content: Control.bindTo("$HorizontalPanels_content", "content"),
+    fill: Control.bindTo("applyClass/fill"),
+    left: Control.bindTo("$HorizontalPanels_left", "content"),
+    right: Control.bindTo("$HorizontalPanels_right", "content")
 });
 
 //
 // List
 //
 List = Control.subclass("List");
-List.prototype.define({
+List.prototype.extend({
     
     itemClass: Control.property(
         function() { this._refresh(); },
@@ -254,9 +254,9 @@ List.prototype.define({
 // Overlay
 //
 Overlay = Control.subclass("Overlay");
-Overlay.prototype.define({
+Overlay.prototype.extend({
 
-	$blanket: Control.property(),
+	blanket: Control.property(),
 	blanketColor: Control.property(),
 	blanketOpacity: Control.property(),
 	dismissOnInsideClick: Control.property.bool(),
@@ -274,7 +274,7 @@ Overlay.prototype.define({
 	},
 	
 	closeOverlay: function() {
-	    this
+	    return this
 	        .hideOverlay()
 	        .remove();
 	},
@@ -284,13 +284,15 @@ Overlay.prototype.define({
         this
 			.hide()
 			.css("z-index", null); // No need to define Z-order any longer.
-		if (this.$blanket() != null)
+		if (this.blanket() != null)
 		{
-			this.$blanket().remove();
-			this.$blanket(null);
+			this.blanket().remove();
+			this.blanket(null);
 		}
 		
         this.trigger("overlayClosed");  // TODO: Rename to overlayHidden? Move trigger to closeOverlay?
+        
+        return this;
 	},
     
     // Subclasses should override this to position themselves.
@@ -300,17 +302,18 @@ Overlay.prototype.define({
     	
 	showOverlay: function()
 	{
-		if (this.$blanket() == null)
+		if (this.blanket() == null)
 		{
-			this.$blanket(this._createBlanket());
+			this.blanket(this._createBlanket());
 		}
 		
 		/* Show control and blanket at the top of the Z-order. */
 		var maximumZIndex = this._maximumZIndex();
-		this.$blanket()
+		this.blanket()
 			.css("z-index", maximumZIndex + 1)
 			.show();
-		this
+			
+		return this
 			.css("z-index", maximumZIndex + 2)
 			.show()
 			.positionOverlay()
@@ -377,10 +380,10 @@ Page = Control.subclass("Page");
 /*
  * General page utility functions.
  */
-Page.prototype.define({
+Page.prototype.extend({
 	
 	// If true, have the page fill its container.
-	fill: Control.element().applyClass("fill"),
+	fill: Control.bindTo("applyClass/fill"),
 
     urlParameters: function() {
         return Page.urlParameters();
@@ -484,18 +487,18 @@ Page.extend({
 /*
  * General utility functions made available to all controls.
  */
-Control.prototype.define({
+Control.prototype.extend({
 	
 	/*
 	 * Look up the page hosting a control.
 	 */
-	page: Control.iterator(function() {
+	page: function() {
         // Get the containing DOM element subclassing Page that contains the element
         var pages = this.closest(".Page");
         
         // From the DOM element, get the associated QuickUI control.
         return (pages.length > 0) ? pages.control() : null;
-	})
+	}
     
 });
 
@@ -515,37 +518,37 @@ PopupButton = Control.subclass("PopupButton", function() {
 	this.properties({
 		"content": [
 			" ",
-			this.$PopupButton_content = Control("<div id=\"PopupButton_content\" />"),
+			this._define("$PopupButton_content", Control("<div id=\"PopupButton_content\" />")),
 			" ",
-			this.$PopupButton_popup = Popup.create({
+			this._define("$PopupButton_popup", Popup.create({
 				"id": "PopupButton_popup"
-			}),
+			})),
 			" "
 		]
 	}, Control);
 });
-PopupButton.prototype.define({
+PopupButton.prototype.extend({
 	
-	content: Control.element("PopupButton_content").content(),
-	popup: Control.element("PopupButton_popup").content(),
+	content: Control.bindTo("$PopupButton_content", "content"),
+	popup: Control.bindTo("$PopupButton_popup", "content"),
 
 	initialize: function()
 	{
 		var self = this;
-		this.$PopupButton_content.click(function() {
+		this.$PopupButton_content().click(function() {
 			self.showPopup();
 		});
-		this.$PopupButton_popup.positionOverlay = function() {
+		this.$PopupButton_popup().positionOverlay = function() {
 			return self.positionPopup();
 		};
 	},
 	
     positionPopup: function()
     {
-        var $contentElement = this.$PopupButton_content;
+        var $contentElement = this.$PopupButton_content();
         var contentTop = $contentElement.position().top;
         var contentHeight = $contentElement.outerHeight(true);
-        var $popupElement = this.$PopupButton_popup;
+        var $popupElement = this.$PopupButton_popup();
         var popupHeight = $popupElement.outerHeight(true);
 
         // Try showing popup below.
@@ -560,12 +563,16 @@ PopupButton.prototype.define({
         
         var contentLeft = $contentElement.position().left;
         var popupWidth = $popupElement.outerWidth(true);
-        var left = $(document).width() - popupWidth;
-        if (contentLeft + popupWidth > $(document).width() &&
-            left > 0)
+        if (contentLeft + popupWidth > $(document).width())
         {
-            // Move popup left
-            $popupElement.css("left", left);
+            // Popup will go off right edge of viewport
+            var left = $(document).width() - contentLeft - popupWidth;
+            left -= 20; // HACK to adjust for scroll bar on right; should really test for that.
+            if (contentLeft + left >= 0)
+            {
+                // Move popup left
+                $popupElement.css("left", left);
+            }
         }
         
         return this;
@@ -573,7 +580,7 @@ PopupButton.prototype.define({
     	
 	showPopup: function()
 	{
-		this.$PopupButton_popup.showOverlay();
+		this.$PopupButton_popup().showOverlay();
 	}
 	
 });
@@ -582,9 +589,9 @@ PopupButton.prototype.define({
 // Sprite
 //
 Sprite = Control.subclass("Sprite");
-Sprite.prototype.define({
+Sprite.prototype.extend({
 	
-	image: Control.element().css("background-image"),
+	image: Control.bindTo("css/background-image"),
 
 	// The height of a single cell in the strip, in pixels.
 	cellHeight: Control.property(function(value) {
@@ -621,13 +628,13 @@ Sprite.prototype.define({
 // Switch
 //
 Switch = Control.subclass("Switch");
-Switch.prototype.define({
+Switch.prototype.extend({
 	
 	initialize: function() {
 	    if (this.children().not(".hidden").length > 1)
 	    {
             // Show first child by default. 
-            this.index(0);
+            this.activeIndex(0);
 	    }
 	},
     
@@ -651,7 +658,8 @@ Switch.prototype.define({
     },
     
     // The index of the currently visible child.
-    index: function(index) {
+    activeIndex: function(index)
+    {
         if (index === undefined)
         {
             return this.children().index(this.activeChild());
@@ -672,17 +680,17 @@ ToggleButton = ButtonBase.subclass("ToggleButton", function() {
 
 	}, ButtonBase);
 });
-ToggleButton.prototype.define({
+ToggleButton.prototype.extend({
 	
-	selected: Control.element().applyClass("selected"),
+	selected: Control.bindTo("applyClass/selected"),
 	
 	initialize: function() {
 		ToggleButton.superclass.prototype.initialize.call(this);
-		var me = this;
+		var self = this;
 		this.click(function() {
-            if (!me.disabled())
+            if (!self.disabled())
             {
-                me.toggle();
+                self.toggle();
             }
 		});
 	},
@@ -704,28 +712,28 @@ VerticalPanels = Control.subclass("VerticalPanels", function() {
 	this.properties({
 		"content": [
 			" ",
-			this.$rowTop = Control("<div id=\"rowTop\" class=\"minimumHeight\" />").content(
+			this._define("$rowTop", Control("<div id=\"rowTop\" class=\"minimumHeight\" />").content(
 				" ",
-				this.$VerticalPanels_top = Control("<div id=\"VerticalPanels_top\" />"),
+				this._define("$VerticalPanels_top", Control("<div id=\"VerticalPanels_top\" />")),
 				" "
-			),
+			)),
 			" ",
-			this.$VerticalPanels_content = Control("<div id=\"VerticalPanels_content\" />"),
+			this._define("$VerticalPanels_content", Control("<div id=\"VerticalPanels_content\" />")),
 			" ",
-			this.$rowBottom = Control("<div id=\"rowBottom\" class=\"minimumHeight\" />").content(
+			this._define("$rowBottom", Control("<div id=\"rowBottom\" class=\"minimumHeight\" />").content(
 				" ",
-				this.$VerticalPanels_bottom = Control("<div id=\"VerticalPanels_bottom\" />"),
+				this._define("$VerticalPanels_bottom", Control("<div id=\"VerticalPanels_bottom\" />")),
 				" "
-			),
+			)),
 			" "
 		]
 	}, Control);
 });
-VerticalPanels.prototype.define({
-    bottom: Control.element("VerticalPanels_bottom").content(),
-    content: Control.element("VerticalPanels_content").content(),
-    fill: Control.element().applyClass("fill"),
-    top: Control.element("VerticalPanels_top").content()
+VerticalPanels.prototype.extend({
+    bottom: Control.bindTo("$VerticalPanels_bottom", "content"),
+    content: Control.bindTo("$VerticalPanels_content", "content"),
+    fill: Control.bindTo("applyClass/fill"),
+    top: Control.bindTo("$VerticalPanels_top", "content")
 });
 
 //
@@ -761,7 +769,7 @@ Dialog.extend({
 	}
 });
 
-Dialog.prototype.define({
+Dialog.prototype.extend({
 	
 	initialize: function() {
 		Dialog.superClass.prototype.initialize.call(this);
@@ -775,20 +783,20 @@ Dialog.prototype.define({
 	},
 
 	cancel: function() {
-		this
+		return this
 			.trigger("cancel")
 			.closeOverlay();
 	},
 	
 	close: function() {
-		this
+		return this
 			.trigger("ok")
 			.closeOverlay();
 	},
 	
 	positionOverlay: function() {
 		// Center dialog horizontally and vertically.
-		this.css({
+		return this.css({
 			left: ($(window).width() - this.outerWidth()) / 2,
 			top: ($(window).height() - this.outerHeight()) / 2
 		});
