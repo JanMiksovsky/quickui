@@ -31,7 +31,7 @@ Overlay.prototype.extend({
 	},
 	
 	closeOverlay: function() {
-	    this
+	    return this
 	        .hideOverlay()
 	        .remove();
 	},
@@ -48,6 +48,8 @@ Overlay.prototype.extend({
 		}
 		
         this.trigger("overlayClosed");  // TODO: Rename to overlayHidden? Move trigger to closeOverlay?
+        
+        return this;
 	},
     
     // Subclasses should override this to position themselves.
@@ -67,7 +69,8 @@ Overlay.prototype.extend({
 		this.blanket()
 			.css("z-index", maximumZIndex + 1)
 			.show();
-		this
+			
+		return this
 			.css("z-index", maximumZIndex + 2)
 			.show()
 			.positionOverlay()

@@ -54,20 +54,20 @@ Dialog.prototype.extend({
 	},
 
 	cancel: function() {
-		this
+		return this
 			.trigger("cancel")
 			.closeOverlay();
 	},
 	
 	close: function() {
-		this
+		return this
 			.trigger("ok")
 			.closeOverlay();
 	},
 	
 	positionOverlay: function() {
 		// Center dialog horizontally and vertically.
-		this.css({
+		return this.css({
 			left: ($(window).width() - this.outerWidth()) / 2,
 			top: ($(window).height() - this.outerHeight()) / 2
 		});
