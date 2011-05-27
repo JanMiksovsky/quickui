@@ -5,14 +5,14 @@ Comprehensive = SampleBaseClass.subclass("Comprehensive", function() {
 	this.properties({
 		"content": [
 			" ",
-			this.$message = Simple.create({
+			this._define("$message", Simple.create({
 				"content": " Hello, <i>world</i>! ",
 				"id": "message"
-			}),
+			})),
 			" ",
 			Control("<div />").content(
 				" ",
-				this.$Comprehensive_content = Control("<p id=\"Comprehensive_content\" />"),
+				this._define("$Comprehensive_content", Control("<p id=\"Comprehensive_content\" />")),
 				" "
 			),
 			" "

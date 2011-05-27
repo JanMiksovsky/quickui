@@ -28,10 +28,10 @@ namespace Tests
             Assert.IsInstanceOf<MarkupHtmlElement>(items[1]);
             Assert.AreEqual(
                 "[\n" +
-                "\tthis.$bar = Bar.create({\n" +
+                "\tthis._define(\"$bar\", Bar.create({\n" +
                 "\t\t\"content\": \"Control content\",\n" +
                 "\t\t\"id\": \"bar\"\n" +
-                "\t}),\n" +
+                "\t})),\n" +
                 "\t\"<p>paragraph</p>\"\n" +
                 "]",
                 node.JavaScript());
