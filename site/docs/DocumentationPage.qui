@@ -1,11 +1,62 @@
 <Control name="DocumentationPage">
 <prototype>
 <SitePage area="Docs" title="QuickUI Framework Documentation">
-    
+
+This page provides a summary of the most important functions in quickui.js, the QuickUI
+framework runtime.
+
+<h1>jQuery plugin</h1>
 <p>
-Hello
+The QuickUI plugin is used to create and manipulate QuickUI controls
+via a regular jQuery instance.
 </p>
-    
+
+<h2>$(element).control()</h2>
+<p>
+Returns the element(s) cast to the class which was instantiated to create the elements.
+If the elements are an array of controls of differing classes, the result will be
+of their closest common ancestor class. If the elements are not controls, null
+is returned.  
+</p>
+
+<h2>$(element).control({ properties })</h2>
+<p>
+Sets the indicated properties of the control at this element.
+</p>
+
+<h2>$(element).control( class )</h2>
+<p>
+Creates a new instance of the indicated class around the element(s).
+Any existing element content will be passed to the control's content() property.
+</p>
+
+<h2>$(element).control( class, { properties })</h2>
+<p>
+Creates new control instance(s) and sets their content property.
+</p>
+ 
+<h1>Control class members</h1>
+<h2>Control.bindTo( functionName1, functionName2, ..., functionNameN, sideEffect )</h2>
+<h2>Control.create( properties )</h2>
+<h2>Control.createAt( element, properties )</h2>
+<h2>Control.isControl( element )</h2>
+<h2>Control.property( sideEffectFn, defaultValue, converterFunction )</h2>
+<h2>Control.property.bool( setterFunction, defaultValue )</h2>
+<h2>Control.property.date( setterFunction, defaultValue )</h2>
+<h2>Control.property.integer( setterFunction, defaultValue )</h2>
+
+<h1>Control.prototype members</h1>
+These functions are available on all control <i>instances</i>.
+<h2>Control.prototype.applyClass( classes, value )</h2>
+<h2>Control.prototype.cast()</h2>
+<h2>Control.prototype.content( value )</h2>
+<h2>Control.prototype.eachControl( fn )</h2>
+<h2>Control.prototype.initialize</h2>
+<h2>Control.prototype.iterators ( members )</h2>
+<h2>Control.prototype.multiProperty( propertyName, values )</h2>
+<h2>Control.prototype.properties( properties )</h2>
+<h2>Control.prototype.visibility( value )</h2>
+
 </SitePage>
 </prototype>
 </Control>
