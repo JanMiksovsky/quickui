@@ -1,0 +1,11 @@
+<Control name="DocumentationPage">
+<prototype>
+<SitePage area="Docs" title="QuickUI Framework Documentation">
+    
+<p>
+Hello
+</p>
+    
+</SitePage>
+</prototype>
+</Control>
