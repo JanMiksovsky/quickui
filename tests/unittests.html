@@ -385,7 +385,7 @@ function runTests() {
         var MyControl = Control.subclass("MyControl");
         MyControl.prototype.display = Control.bindTo("css/display");
         var $c = MyControl.create();
-        equal($c.css("display"), "block");
+        $c.css("display", "block");
         equal($c.display(), "block");
         $c.display("none");
         equal($c.css("display"), "none");
