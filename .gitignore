@@ -15,6 +15,7 @@ quicommon/quicommon.*
 site/blog/blog.*
 site/controls/controls.*
 site/demos/MaxSquareDemo/MaxSquareDemo.*
+site/docs/docs.*
 site/downloads/downloads.*
 site/features/features.*
 site/gallery/gallery.*
