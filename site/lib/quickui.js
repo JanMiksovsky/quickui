@@ -160,16 +160,14 @@ jQuery.extend(Control, {
 	 */
     createAt: function(target, properties) {
 
-		var $target = $(target);
+        // Instantiate the control class.
+        var $controls = this(target);
 		
-        // Grab the existing contents of the target.
-        var oldContents = $target.map(function(index, element) {
+        // Grab the existing contents of the target elements.
+        var oldContents = $controls.map(function(index, element) {
             var content = jQuery.trim($(element).html());
             return content.length > 0 && content;
         }).get();
-        
-        // Instantiate the control class.
-        var $controls = this($target);
         
         $controls
             // Bind elements to the control class.
@@ -182,19 +180,14 @@ jQuery.extend(Control, {
             // Render controls as DOM elements.
             .render()
             
-            // Set any requested properties
-            .properties(properties);
-        
-        // Pass in the target's old contents (if any).
-        for (var i = 0; i < $controls.length; i++) {
-            if (oldContents[i])
-            {
-                $controls.eq(i).content(oldContents[i]);
-            }
-        }
+            // Set any requested properties.
+            .properties(properties)
 
-        // Tell the controls they're ready.
-        $controls.initialize();
+            // Pass in the target's old contents (if any).            
+            .multiProperty("content", oldContents)
+        
+            // Tell the controls they're ready.
+            .initialize();
 
 		return $controls;
     },
@@ -499,7 +492,8 @@ jQuery.extend(Control.prototype, {
      * Get/set the given property on mulitple elements at once. If called
      * as a getter, an array of the current property values is returned.
      * If called as a setter, the property of each element will be set to
-     * the corresponding member of the values array.
+     * the corresponding defined member of the values array. (Array values
+     * which are undefined will not be set.)
      */
     multiProperty: function(propertyName, values) {
         var propertyFn = this[propertyName];
@@ -517,7 +511,10 @@ jQuery.extend(Control.prototype, {
             // Setter
             for (var i = 0; i < this.length; i++)
             {
-                propertyFn.call(this.eq(i), values[i]);
+                if (!!values[i])
+                {
+                    propertyFn.call(this.eq(i), values[i]);
+                }
             }
             return this;
         }
