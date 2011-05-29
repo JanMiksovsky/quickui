@@ -33,19 +33,19 @@ jQuery.fn.control = function(arg1, arg2) {
     if (arg1 === undefined)
     {
         // Return the controls bound to these element(s), cast to the correct class.
-		var $cast = Control(this).cast(jQuery);
-		return ($cast instanceof Control) ? $cast : null;
+        var $cast = Control(this).cast(jQuery);
+        return ($cast instanceof Control) ? $cast : null;
     }
     else if (jQuery.isFunction(arg1))
     {
         // Create a new control around the element(s).
         var controlClass = arg1;
         var properties = arg2;
-    	var $controls = this.each(function(index, element) {
-	        controlClass.createAt(element, properties);
-    	});
-    	
-    	// Return the control array as an instance of the desired class.
+        var $controls = this.each(function(index, element) {
+            controlClass.createAt(element, properties);
+        });
+        
+        // Return the control array as an instance of the desired class.
         return controlClass($controls);
     }
     else
@@ -63,84 +63,84 @@ jQuery.fn.control = function(arg1, arg2) {
  */
 var Control = jQuery.sub();
 jQuery.extend(Control, {
-	
-	/*
-	 * Given an array of functions, repeatedly invoke them as a chain.
-	 * 
-	 * This function allows the compact definition of getter/setter functions
-	 * for Control classes that are delegated to aspects of the control or
-	 * elements within its DOM.
-	 * 
-	 * For example:
-	 * 
-	 *     MyControl.prototype.foo = Control.bindTo("$foo", "content");
-	 * 
-	 * will create a function foo() on all MyControl instances that sets or gets
-	 * the content of the elements returned by the element function $foo(),
-	 * which in turn likely means any element with id "#foo" inside the control.
-	 * 
-	 * The parameters to bindTo are the names of functions that are invoked in
-	 * turn to produce the result. The last parameter may be an optional side
-	 * effect function that will be invoked whenever the binding function is
-	 * invoked as a setter.
-	 * 
-	 * The function names passed as parameters may also define an optional
-	 * string-valued parameter that will be passed in. So bindTo("css/display")
-	 * creates a curried setter/getter function equivalent to css("display", value).
-	 */
-	bindTo: function() {
-	    
-	    // Check for a side effect function as last parameter.
-	    var args = arguments;
-	    var sideEffectFn;
-	    if ($.isFunction(args[args.length - 1]))
-	    {
+    
+    /*
+     * Given an array of functions, repeatedly invoke them as a chain.
+     * 
+     * This function allows the compact definition of getter/setter functions
+     * for Control classes that are delegated to aspects of the control or
+     * elements within its DOM.
+     * 
+     * For example:
+     * 
+     *     MyControl.prototype.foo = Control.bindTo("$foo", "content");
+     * 
+     * will create a function foo() on all MyControl instances that sets or gets
+     * the content of the elements returned by the element function $foo(),
+     * which in turn likely means any element with id "#foo" inside the control.
+     * 
+     * The parameters to bindTo are the names of functions that are invoked in
+     * turn to produce the result. The last parameter may be an optional side
+     * effect function that will be invoked whenever the binding function is
+     * invoked as a setter.
+     * 
+     * The function names passed as parameters may also define an optional
+     * string-valued parameter that will be passed in. So bindTo("css/display")
+     * creates a curried setter/getter function equivalent to css("display", value).
+     */
+    bindTo: function() {
+        
+        // Check for a side effect function as last parameter.
+        var args = arguments;
+        var sideEffectFn;
+        if ($.isFunction(args[args.length - 1]))
+        {
             // Convert arguments to a real array in order to grab last param.
             var args = [].slice.call(arguments);
             var sideEffectFn = args.pop();
-	    }
-	    
-	    // Identify function names and optional parameters.
-		var functionNames = [];
-		var functionParams = [];
-		for (var i = 0; i < args.length; i++)
-		{
-		    // Check for optional parameter.
-		    var parts = arguments[i].split("/");
-		    functionNames[i] = parts.shift();
-		    functionParams[i] = parts;
-		}
-		
-		// Return the generated binding function.
-		return function binding(value) {
-		    
-			var result = this;
-			for (var i = 0; i < functionNames.length; i++)
-			{
-			    var fn = result[functionNames[i]];
-			    var params = functionParams[i];
-			    if (value !== undefined)
-			    {
-			        // Invoking as setter.
-			        params = params.concat([ value ]);
-			    }
+        }
+        
+        // Identify function names and optional parameters.
+        var functionNames = [];
+        var functionParams = [];
+        for (var i = 0; i < args.length; i++)
+        {
+            // Check for optional parameter.
+            var parts = arguments[i].split("/");
+            functionNames[i] = parts.shift();
+            functionParams[i] = parts;
+        }
+        
+        // Return the generated binding function.
+        return function binding(value) {
+            
+            var result = this;
+            for (var i = 0; i < functionNames.length; i++)
+            {
+                var fn = result[functionNames[i]];
+                var params = functionParams[i];
+                if (value !== undefined)
+                {
+                    // Invoking as setter.
+                    params = params.concat([ value ]);
+                }
                 if (fn === undefined) {
                     var message = "Tried to access undefined getter/setter function \"" + functionNames[i] + "\" on control class \"" + this.className + "\".";
                     throw message;
                 }
-				result = fn.apply(result, params);
-			}
-			
-			if (value !== undefined && sideEffectFn)
-			{
-			    // Binding function invoked as setter, so carry out side effect.
-			    sideEffectFn.call(this, value);
-			}
-			
-			return result;
-		};
-	},
-		
+                result = fn.apply(result, params);
+            }
+            
+            if (value !== undefined && sideEffectFn)
+            {
+                // Binding function invoked as setter, so carry out side effect.
+                sideEffectFn.call(this, value);
+            }
+            
+            return result;
+        };
+    },
+        
 
     /*
      * Return the names of all control classes in this class' hierarchy,
@@ -173,17 +173,17 @@ jQuery.extend(Control, {
      * The class prototype's tag member can define a specific element tag. 
      */
     create: function(properties) {
-    	return this.createAt("<" + this.prototype.tag + "/>", properties);
+        return this.createAt("<" + this.prototype.tag + "/>", properties);
     },
-	
-	/*
-	 * Create instance(s) of this control class around the given target(s).
-	 */
+    
+    /*
+     * Create instance(s) of this control class around the given target(s).
+     */
     createAt: function(target, properties) {
 
         // Instantiate the control class.
         var $controls = this(target);
-		
+        
         // Grab the existing contents of the target elements.
         var oldContents = $controls.map(function(index, element) {
             var content = jQuery.trim($(element).html());
@@ -192,7 +192,7 @@ jQuery.extend(Control, {
         
         $controls
             // Bind elements to the control class.
-        	.data("_controlClass", this)
+            .data("_controlClass", this)
             
             // Apply all class names in the class hierarchy as style names.
             // This lets the element pick up styles defined by those classes.
@@ -210,7 +210,7 @@ jQuery.extend(Control, {
             // Tell the controls they're ready.
             .initialize();
 
-		return $controls;
+        return $controls;
     },
 
     // Return true if the given element is a control.    
@@ -249,55 +249,55 @@ jQuery.extend(Control, {
         };
     },
     
-	// Create a subclass of this class.
-	subclass: function(className, renderFunction, tag) {
-		var superClass = this;
-		var newClass = superClass.sub();
-		
-		// jQuery.sub uses $.extend to copy properties from super to subclass;
-		// need to blow away class properties that shouldn't have been copied.
-		delete newClass._classHierarchy;
-		delete newClass._initializeQueue;
-		
-		newClass.prototype.className = className;
-		if (renderFunction)
-		{
-			newClass.prototype.render = function() {
-			    superClass.prototype.render.call(this);
-			    // Call the render function on each element separately to
-			    // ensure each control ends up with its own element references.
-			    for (var i = 0; i < this.length; i++)
-			    {
+    // Create a subclass of this class.
+    subclass: function(className, renderFunction, tag) {
+        var superClass = this;
+        var newClass = superClass.sub();
+        
+        // jQuery.sub uses $.extend to copy properties from super to subclass;
+        // need to blow away class properties that shouldn't have been copied.
+        delete newClass._classHierarchy;
+        delete newClass._initializeQueue;
+        
+        newClass.prototype.className = className;
+        if (renderFunction)
+        {
+            newClass.prototype.render = function() {
+                superClass.prototype.render.call(this);
+                // Call the render function on each element separately to
+                // ensure each control ends up with its own element references.
+                for (var i = 0; i < this.length; i++)
+                {
                     renderFunction.call(this.eq(i));
-			    }
-			    return this;
-			}
-	    }
-	    if (tag)
-	    {
-	    	newClass.prototype.tag = tag;
-	    }
-	    
-		newClass.subclass = superClass.subclass;
-		return newClass;
-	},
-	
-	// Return true if class1 is a subclass of class2.
-	_isSubclassOf: function(class1, class2) {
-		var superClass = class1.superclass;
-		if (superClass === undefined)
-		{
-			return false;
-		}
-		else if (superClass === class2)
-		{
-			return true;
-		}
-		else
-		{
-			return this._isSubclassOf(superClass, class2);
-		}
-	}
+                }
+                return this;
+            }
+        }
+        if (tag)
+        {
+            newClass.prototype.tag = tag;
+        }
+        
+        newClass.subclass = superClass.subclass;
+        return newClass;
+    },
+    
+    // Return true if class1 is a subclass of class2.
+    _isSubclassOf: function(class1, class2) {
+        var superClass = class1.superclass;
+        if (superClass === undefined)
+        {
+            return false;
+        }
+        else if (superClass === class2)
+        {
+            return true;
+        }
+        else
+        {
+            return this._isSubclassOf(superClass, class2);
+        }
+    }
 });
 
 /*
@@ -315,42 +315,42 @@ jQuery.extend(Control.prototype, {
             ? this.hasClass(classes)
             : this.toggleClass(classes, value);
     },
-    	
-	/*
-	 * Return the array of elements cast to their closest JavaScript class ancestor.
-	 * E.g., a jQuery $(".foo") selector might pick up instances of control classes
-	 * A, B, and C. If B and C are subclasses of A, this will return an instance of
-	 * class A. So Control(".foo").cast() does the same thing as A(".foo"), but without
-	 * having to know the type of the elements in advance.
-	 * 
-	 * The highest ancestor class this will return is the current class, even for plain
-	 * jQuery objects, in order to allow Control methods (like content()) to be applied to
-	 * the result.
-	 */
-	cast: function(defaultClass) {
-		defaultClass = defaultClass || this.constructor;
-		var $set = $();
-		var setClass;
-		this.each(function(index, element) {
-			var $element = $(element);
-			var elementClass = $element.data("_controlClass") || defaultClass;
-			if (setClass === undefined)
-			{
-				setClass = elementClass;
-			}
-			else if (elementClass === setClass || Control._isSubclassOf(elementClass, setClass))
-			{
-				// Already have most common class.
-			}
-			else if (Control._isSubclassOf(setClass, elementClass))
-			{
-				setClass = elementClass;
-			}
-			$set = $set.add($element);
-		});
-		setClass = setClass || defaultClass;  // In case "this" had no elements.
-		return setClass($set);
-	},
+        
+    /*
+     * Return the array of elements cast to their closest JavaScript class ancestor.
+     * E.g., a jQuery $(".foo") selector might pick up instances of control classes
+     * A, B, and C. If B and C are subclasses of A, this will return an instance of
+     * class A. So Control(".foo").cast() does the same thing as A(".foo"), but without
+     * having to know the type of the elements in advance.
+     * 
+     * The highest ancestor class this will return is the current class, even for plain
+     * jQuery objects, in order to allow Control methods (like content()) to be applied to
+     * the result.
+     */
+    cast: function(defaultClass) {
+        defaultClass = defaultClass || this.constructor;
+        var $set = $();
+        var setClass;
+        this.each(function(index, element) {
+            var $element = $(element);
+            var elementClass = $element.data("_controlClass") || defaultClass;
+            if (setClass === undefined)
+            {
+                setClass = elementClass;
+            }
+            else if (elementClass === setClass || Control._isSubclassOf(elementClass, setClass))
+            {
+                // Already have most common class.
+            }
+            else if (Control._isSubclassOf(setClass, elementClass))
+            {
+                setClass = elementClass;
+            }
+            $set = $set.add($element);
+        });
+        setClass = setClass || defaultClass;  // In case "this" had no elements.
+        return setClass($set);
+    },
     
     /*
      * The set of classes on the control's element.
@@ -371,7 +371,7 @@ jQuery.extend(Control.prototype, {
     },
 
     className: "Control",
-	
+    
     /*
      * Get/set the content of an HTML element.
      * 
@@ -397,7 +397,7 @@ jQuery.extend(Control.prototype, {
      * This is used as the default implementation of a control's content
      * property. Controls can override this behavior.
      */
-	content: function(value) {
+    content: function(value) {
         if (value === undefined)
         {
             // Getting contents. Just process first element.
@@ -448,24 +448,24 @@ jQuery.extend(Control.prototype, {
                 }
             });
         }
-	},
-	
-	/*
-	 * Execute a function once for each control in the array.
-	 * Inside the function, "this" refers to the single control.
-	 */
-	eachControl: function(fn) {
-	    for (var i = 0; i < this.length; i++)
-	    {
-	        var $control = this.eq(i);
-	        var result = fn.call($control, i, $control);
-	        if (result === false)
-	        {
-	            break;
-	        }
-	    }
-	    return this;
-	},
+    },
+    
+    /*
+     * Execute a function once for each control in the array.
+     * Inside the function, "this" refers to the single control.
+     */
+    eachControl: function(fn) {
+        for (var i = 0; i < this.length; i++)
+        {
+            var $control = this.eq(i);
+            var result = fn.call($control, i, $control);
+            if (result === false)
+            {
+                break;
+            }
+        }
+        return this;
+    },
 
     // Allow controls have an element ID specified on them in markup.
     id: function(id) {
@@ -478,7 +478,7 @@ jQuery.extend(Control.prototype, {
      * (e.g., wiring up events).
      */    
     initialize: function() {},
-	
+    
     /*
      * Return true if the (first) element is an input element (with a val).
      * Note that buttons are not considered input elements, because typically
@@ -491,19 +491,19 @@ jQuery.extend(Control.prototype, {
         return (jQuery.inArray(nodeName, inputTags) >= 0);
     },
 
-	/*
-	 * Define control methods as iterators over a jQuery array.
-	 * This is similar to jQuery.extend(), but functions defined in this way
-	 * will be automatically wrapped such that they: a) implicitly iterate over
-	 * "this", and b) implicitly dereference controls.
-	 */
-	iterators: function(members) {
-		for (member in members) {
-			var value = members[member];
-			this[member] = this._createIterator(value);
-		}
-	},
-	
+    /*
+     * Define control methods as iterators over a jQuery array.
+     * This is similar to jQuery.extend(), but functions defined in this way
+     * will be automatically wrapped such that they: a) implicitly iterate over
+     * "this", and b) implicitly dereference controls.
+     */
+    iterators: function(members) {
+        for (member in members) {
+            var value = members[member];
+            this[member] = this._createIterator(value);
+        }
+    },
+    
     /*
      * Base Control class has no visualization of its own.
      */    
@@ -542,32 +542,32 @@ jQuery.extend(Control.prototype, {
             return this;
         }
     },
-	
-	/*
-	 * Invoke the indicated setter functions on the control to
-	 * set control properties. E.g.,
-	 * 
-	 *    $c.properties({ foo: "Hello", bar: 123 });
-	 * 
-	 * is shorthand for $c.foo("Hello").bar(123).
-	 * 
-	 * The setAsClass parameter allows setting properties defined by
-	 * the given superclass.
-	 */
-	properties: function(properties, setAsClass) {
-		var classFn = setAsClass || this.constructor;
-		var prototype = classFn.prototype;
-	    for (var propertyName in properties)
-	    {
+    
+    /*
+     * Invoke the indicated setter functions on the control to
+     * set control properties. E.g.,
+     * 
+     *    $c.properties({ foo: "Hello", bar: 123 });
+     * 
+     * is shorthand for $c.foo("Hello").bar(123).
+     * 
+     * The setAsClass parameter allows setting properties defined by
+     * the given superclass.
+     */
+    properties: function(properties, setAsClass) {
+        var classFn = setAsClass || this.constructor;
+        var prototype = classFn.prototype;
+        for (var propertyName in properties)
+        {
             if (prototype[propertyName] === undefined) {
                 var message = "Tried to access undefined getter/setter function for property \"" + propertyName + "\" on control class \"" + this.className + "\".";
                 throw message;
             }
-	        var value = properties[propertyName];
-	        prototype[propertyName].call(this, value);
-	    }
-	    return this;
-	},
+            var value = properties[propertyName];
+            prototype[propertyName].call(this, value);
+        }
+        return this;
+    },
     
     /*
      * Sets/gets the style of matching elements.
@@ -595,32 +595,32 @@ jQuery.extend(Control.prototype, {
             ? this.is(":visible")
             : this.toggle(value);
     },
-	
-	/*
-	 * Convert a function into an interator that loops over the elements of
-	 * a jQuery array. If the inner function returns a defined value, then
-	 * the function is assumed to be a property getter, and that result is
-	 * return immediately. Otherwise, "this" is returned to permit chaining.
-	 * 
-	 * Used by Control.define().
-	 */
-	_createIterator: function(fn) {
-		return function() {
-			var args = arguments;
-			var iteratorResult;
-			this.eachControl(function(index, $control) {
-				var result = fn.apply($control, args);
-				if (result !== undefined)
-				{
-					iteratorResult = result;
-					return false;
-				}
-			});
-			return (iteratorResult !== undefined)
-				? iteratorResult // Getter
-				: this // Method or setter;
-		};
-	},
+    
+    /*
+     * Convert a function into an interator that loops over the elements of
+     * a jQuery array. If the inner function returns a defined value, then
+     * the function is assumed to be a property getter, and that result is
+     * return immediately. Otherwise, "this" is returned to permit chaining.
+     * 
+     * Used by Control.define().
+     */
+    _createIterator: function(fn) {
+        return function() {
+            var args = arguments;
+            var iteratorResult;
+            this.eachControl(function(index, $control) {
+                var result = fn.apply($control, args);
+                if (result !== undefined)
+                {
+                    iteratorResult = result;
+                    return false;
+                }
+            });
+            return (iteratorResult !== undefined)
+                ? iteratorResult // Getter
+                : this // Method or setter;
+        };
+    },
     
     /*
      * Return a jQuery element for the given content (either HTML or a DOM element)
