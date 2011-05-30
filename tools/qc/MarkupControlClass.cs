@@ -157,13 +157,14 @@ namespace qc
             return (Content == null && Prototype == null)
                 ? String.Empty
                 : Template.Format(
-                    "{Tabs}function() {\n" +
+                    "{Tabs}function render{ClassName}() {\n" +
                         "{Tabs}\tthis.properties({\n" +
                             "{BaseClassProperties}" +
                         "{Tabs}\t}, {BaseClassName});\n" +
                     "{Tabs}}",
                     new {
                         Tabs = Tabs(indentLevel),
+                        ClassName = Name,
                         BaseClassName = BaseClassName,
                         BaseClassProperties = EmitBaseClassProperties(indentLevel + 2)
                     });

@@ -1,7 +1,7 @@
 ﻿//
 // Simple
 //
-Simple = Control.subclass("Simple", function() {
+Simple = Control.subclass("Simple", function renderSimple() {
 	this.properties({
 		"content": [
 			" ",

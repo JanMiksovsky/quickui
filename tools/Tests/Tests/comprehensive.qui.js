@@ -1,7 +1,7 @@
 ﻿//
 // Comprehensive
 //
-Comprehensive = SampleBaseClass.subclass("Comprehensive", function() {
+Comprehensive = SampleBaseClass.subclass("Comprehensive", function renderComprehensive() {
 	this.properties({
 		"content": [
 			" ",

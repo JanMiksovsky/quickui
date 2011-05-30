@@ -1,7 +1,7 @@
 //
 // Content
 //
-Content = Control.subclass("Content", function() {
+Content = Control.subclass("Content", function renderContent() {
 	this.properties({
 		"content": [
 			" ",
