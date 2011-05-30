@@ -200,12 +200,12 @@ jQuery.extend(Control, {
             
             // Render controls as DOM elements.
             .render()
-            
-            // Set any requested properties.
-            .properties(properties)
 
             // Pass in the target's old contents (if any).            
             .multiProperty("content", oldContents)
+            
+            // Set any requested properties.
+            .properties(properties)
         
             // Tell the controls they're ready.
             .initialize();
@@ -666,9 +666,9 @@ jQuery.extend(Control.prototype, {
 jQuery.extend(Control.property, {
     
     // A boolean property.
-    bool: function(setterFunction, defaultValue) {
+    bool: function(sideEffectFn, defaultValue) {
         return Control.property(
-            setterFunction,
+            sideEffectFn,
             defaultValue,
             function convertToBool(value) {
                 // Convert either string or bool to bool.
@@ -678,9 +678,9 @@ jQuery.extend(Control.property, {
     },
     
     // A date-valued property. Accepts a JavaScript date or parseable date string.
-    date: function(setterFunction, defaultValue) {
+    date: function(sideEffectFn, defaultValue) {
         return Control.property(
-            setterFunction,
+            sideEffectFn,
             defaultValue,
             function convertToDate(value) {
                 return value instanceof Date
@@ -691,9 +691,9 @@ jQuery.extend(Control.property, {
     },
         
     // An integer property.
-    integer: function(setterFunction, defaultValue) {
+    integer: function(sideEffectFn, defaultValue) {
         return Control.property(
-            setterFunction,
+            sideEffectFn,
             defaultValue,
             parseInt
         );
