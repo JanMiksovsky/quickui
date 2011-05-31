@@ -41,18 +41,17 @@ jQuery.fn.control = function(arg1, arg2) {
         // Create a new control around the element(s).
         var controlClass = arg1;
         var properties = arg2;
-        var $controls = this.each(function(index, element) {
-            controlClass.createAt(element, properties);
-        });
+		for (var i = 0, length = this.length; i < length; i++) {
+            controlClass.createAt(this.eq(i), properties);
+        }
         
         // Return the control array as an instance of the desired class.
-        return controlClass($controls);
+        return controlClass(this);
     }
     else
     {
         // Set properties on the control(s).
-        var properties = arg1;
-        return Control(this).cast().properties(properties);
+        return Control(this).cast().properties(arg1);
     }
 };
 
@@ -96,14 +95,14 @@ jQuery.extend(Control, {
         if ($.isFunction(args[args.length - 1]))
         {
             // Convert arguments to a real array in order to grab last param.
-            var args = [].slice.call(arguments);
-            var sideEffectFn = args.pop();
+            args = [].slice.call(arguments);
+            sideEffectFn = args.pop();
         }
         
         // Identify function names and optional parameters.
         var functionNames = [];
         var functionParams = [];
-        for (var i = 0; i < args.length; i++)
+        for (var i = 0, length = args.length; i < length; i++)
         {
             // Check for optional parameter.
             var parts = arguments[i].split("/");
@@ -115,7 +114,7 @@ jQuery.extend(Control, {
         return function binding(value) {
             
             var result = this;
-            for (var i = 0; i < functionNames.length; i++)
+            for (var i = 0, length = functionNames.length; i < length; i++)
             {
                 var fn = result[functionNames[i]];
                 var params = functionParams[i];
@@ -244,7 +243,7 @@ jQuery.extend(Control, {
                     if (sideEffectFn) {
                         sideEffectFn.call($control, result);            
                     }
-                })
+                });
             }
         };
     },
@@ -266,12 +265,12 @@ jQuery.extend(Control, {
                 superClass.prototype.render.call(this);
                 // Call the render function on each element separately to
                 // ensure each control ends up with its own element references.
-                for (var i = 0; i < this.length; i++)
+                for (var i = 0, length = this.length; i < length; i++)
                 {
                     renderFunction.call(this.eq(i));
                 }
                 return this;
-            }
+            };
         }
         if (tag)
         {
@@ -334,15 +333,8 @@ jQuery.extend(Control.prototype, {
         this.each(function(index, element) {
             var $element = $(element);
             var elementClass = $element.data("_controlClass") || defaultClass;
-            if (setClass === undefined)
-            {
-                setClass = elementClass;
-            }
-            else if (elementClass === setClass || Control._isSubclassOf(elementClass, setClass))
-            {
-                // Already have most common class.
-            }
-            else if (Control._isSubclassOf(setClass, elementClass))
+            if (setClass === undefined ||
+				(!Control._isSubclassOf(elementClass, setClass) && Control._isSubclassOf(setClass, elementClass)))
             {
                 setClass = elementClass;
             }
@@ -412,11 +404,11 @@ jQuery.extend(Control.prototype, {
                 // Return HTML contents in a canonical form.
                 var contents = $element.contents(value);
                 var result = jQuery.map(contents, function(item) {
-                    return (item.nodeType == 3)
+                    return (item.nodeType === 3)
                         ? item.nodeValue // Return text as simple string
                         : item;
                 });
-                return (result != null && result.length == 1)
+                return (result !== null && result.length === 1)
                     ? result[0] // Return the single content element.
                     : result;
             }
@@ -455,7 +447,7 @@ jQuery.extend(Control.prototype, {
      * Inside the function, "this" refers to the single control.
      */
     eachControl: function(fn) {
-        for (var i = 0; i < this.length; i++)
+        for (var i = 0, length = this.length; i < length; i++)
         {
             var $control = this.eq(i);
             var result = fn.call($control, i, $control);
@@ -498,7 +490,7 @@ jQuery.extend(Control.prototype, {
      * "this", and b) implicitly dereference controls.
      */
     iterators: function(members) {
-        for (member in members) {
+        for (var member in members) {
             var value = members[member];
             this[member] = this._createIterator(value);
         }
@@ -524,7 +516,7 @@ jQuery.extend(Control.prototype, {
         {
             // Getter
             var results = [];
-            for (var i = 0; i < this.length; i++) {
+            for (var i = 0, length = this.length; i < length; i++) {
                 results[i] = propertyFn.call(this.eq(i));
             }
             return results;
@@ -532,7 +524,7 @@ jQuery.extend(Control.prototype, {
         else
         {
             // Setter
-            for (var i = 0; i < this.length; i++)
+            for (var i = 0, length = this.length; i < length; i++)
             {
                 if (!!values[i])
                 {
@@ -618,7 +610,7 @@ jQuery.extend(Control.prototype, {
             });
             return (iteratorResult !== undefined)
                 ? iteratorResult // Getter
-                : this // Method or setter;
+                : this; // Method or setter
         };
     },
     
@@ -646,7 +638,7 @@ jQuery.extend(Control.prototype, {
                     // Map a collection of control instances to the given element
                     // defined for each instance.
                     var $result = Control();
-                    for (var i = 0; i < this.length; i++) {
+                    for (var i = 0, length = this.length; i < length; i++) {
                         var element = this.eq(i).data(key);
                         $result = $result.add(element);
                     }
