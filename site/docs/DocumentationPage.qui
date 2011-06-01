@@ -158,16 +158,62 @@ Like Control.property(), but parses its value as an integer.
 </p>
 
 <h1>Control.prototype members</h1>
+<p>
 These functions are available on all control <i>instances</i>.
-<h2>Control.prototype.applyClass( classes, value )</h2>
+</p>
+
+<h2>Control.prototype.applyClass( classes [, value] )</h2>
+<p>
+Gets or sets whether the given class(es) are applied to the controls. This
+combines the functions of $.hasClass (when called as a getter) and $.toggleClass
+(when called as a setter).  
+</p>
+
 <h2>Control.prototype.cast()</h2>
-<h2>Control.prototype.content( value )</h2>
+<p>
+Given a jQuery array of elements of potentially differing control classes,
+this returns the array cast to the most specific class which all the elements
+have in common. This is typically done prior to invoking a function, to ensure
+that the same implementation of the function is invoked on all the elements. 
+</p>
+
+<h2>Control.prototype.content( [value] )</h2>
+<p>
+Gets or sets the content of the elements. This is a helper function that performs
+two main tasks.
+</p>
+<p>
+First, it provides a single entry point to manipulate the content
+of a regular HTML element (via $.html) or an input element like a text box (via $.val).
+This makes it easier to change control elements from standard HTML input elements to
+QuickUI controls in their own right (or change them back) without having to rewrite
+much code.
+</p>
+<p>
+Second, this function normalizes the content to a canonical form. For example, if the
+content of an element is set to a string value, then when it is read back, it will
+be returned as a single string. (In comparison, reading text nodes via $.content
+will return an array.)  
+</p>
+<p>
+The JavaScript generated for a control's markup makes use of the content() function
+to render a control. In particular, if a QuickUI control tag contains HTML
+or subcontrols, those elements will be passed into the content() function to render
+the control. Control classes often override content() to identify where their primary
+content should go.
+</p>
+
 <h2>Control.prototype.eachControl( fn )</h2>
+
 <h2>Control.prototype.initialize</h2>
+
 <h2>Control.prototype.iterators ( members )</h2>
+
 <h2>Control.prototype.multiProperty( propertyName, values )</h2>
+
 <h2>Control.prototype.properties( properties )</h2>
-<h2>Control.prototype.visibility( value )</h2>
+
+<h2>Control.prototype.visibility( [value] )</h2>
 
 </SitePage>
 </prototype>
