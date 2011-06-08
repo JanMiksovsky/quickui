@@ -1,0 +1,11 @@
+<!-- A control that can be used as a tab in a TabSet. -->
+    
+<Control name="Tab">
+
+<script>
+Tab.prototype.extend({
+    name: Control.property()
+});
+</script>
+
+</Control>

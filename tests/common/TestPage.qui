@@ -22,6 +22,11 @@
         	<div>Panel two</div>
         	<div>Panel three</div>
         </Switch>
+        <TabSet tabButtonClass="ButtonBase">
+            <Tab name="Tab A">Aardvark</Tab>
+            <Tab name="Tab B">Bandicoot</Tab>
+            <Tab name="Tab C">Chickadee</Tab>
+        </TabSet>
         <HorizontalPanels id="horiziontalPanels">
             <left>Left</left>
             <content>Horizontal panels</content>

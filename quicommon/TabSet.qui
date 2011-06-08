@@ -1,0 +1,94 @@
+<!--
+A set of tabbed pages.
+
+Each child of the content will be treated as a page. If the child has a function
+called name(), that will be used as the name on the tab.
+-->
+
+<Control name="TabSet">
+
+<content>
+    <List id="buttons"/>
+    <div id="TabSet_content"/>
+</content>
+
+<script>
+TabSet.prototype.extend({
+
+    content: Control.bindTo("$TabSet_content", "content", function() { this._refresh(); }),
+    selectTabOnClick: Control.property(null, true),
+    buttons: Control.bindTo("$buttons", "children"),
+    tabButtonClass: Control.bindTo("$buttons", "itemClass", function() { this._refresh(); }),
+    tabs: Control.bindTo("$TabSet_content", "children"),
+
+    selectedTab: function(tab) {
+        if (tab === undefined)
+        {
+            return this.tabs().eq(this.selectedTabIndex);
+        }
+        else
+        {
+            var tabIndex = this.tabs().index(tab);
+            this.selectedTabIndex(tabIndex);
+        }
+    },
+
+    selectedTabIndex: Control.property(function(index) {
+        
+        this.buttons()
+            .removeClass("selected")    // Deselect all tab buttons.
+            .eq(index)
+            .addClass("selected");      // Select the indicated button.
+        
+        this.tabs()
+            .hide()                     // Hide all tabs
+            .eq(index)
+            .show();                    // Show the selected tab.
+        
+        this.trigger("onTabSelected", [ index, this.tabs()[index] ]);
+    }),
+    
+    _refresh: function() {
+        
+        if (this.tabButtonClass() === undefined)
+        {
+            return;
+        }
+        
+        // Show the names for each tab as a button.
+        this.$buttons().items(this._tabNames());
+
+        // By default, clicks on a tab select the tab.
+        // TODO: If buttons are moved elsewhere, unbind click event.
+        var self = this;
+        this.buttons().click(function() {
+            if (self.selectTabOnClick())
+            {
+                var buttonIndex = self.buttons().index(this);
+                if (buttonIndex >= 0)
+                {
+                    self.selectedTabIndex(buttonIndex);
+                }
+            }
+        });
+        
+        if (this.tabs().length > 0 && this.selectedTabIndex() === undefined) {
+            // Select first tab by default.
+            this.selectedTabIndex(0);
+        }
+    },
+    
+    _tabNames: function() {
+        return this.tabs()
+            .map(function(index, element) {
+                var $control = $(element).control();
+                return ($control && $.isFunction($control.name))
+                    ? $control.name()
+                    : "";
+            })
+            .get();
+    }
+});
+</script>
+
+</Control>
