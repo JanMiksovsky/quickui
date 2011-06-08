@@ -12,13 +12,6 @@ called name(), that will be used as the name on the tab.
     <div id="TabSet_content"/>
 </content>
 
-<style>
-#TabSet_content, #TabSet_content > * {
-    height: 100%;
-    width: 100%;
-}
-</style>
-
 <script>
 TabSet.prototype.extend({
 
