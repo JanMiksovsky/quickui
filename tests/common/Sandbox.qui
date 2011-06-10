@@ -1,19 +1,27 @@
 <Control name="Sandbox">
     
 <prototype>
-    <Page title="QuickUI Sandbox">
-        Hello
+    <Page title="QuickUI Sandbox" fill="true">
+        <VerticalPanels fill="true">
+            
+            <top>Outer toolbar</top>
+            
+            <HorizontalPanels fill="true">
+                <left>Left pane</left>
+                
+                <VerticalPanels fill="true">
+                    <top>Inner toolbar</top>
+                    <LoremIpsum paragraphs="5"/>
+                    <bottom>Inner footer</bottom>
+                </VerticalPanels>
+            
+                <right>Right pane</right>
+            </HorizontalPanels>
+                
+            <bottom>Outer footer</bottom>
+            
+        </VerticalPanels>
     </Page>
 </prototype>
-
-<style>
-</style>
-
-<script>
-Sandbox.prototype.extend({
-	initialize: function() {
-	}	
-});
-</script>
 
 </Control>

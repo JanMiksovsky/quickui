@@ -1,32 +1,24 @@
 <Control name="VerticalPanels">
 
 <content>
-    <div id="rowTop" class="minimumHeight">
-        <div id="VerticalPanels_top" />
-    </div>
+    <div id="VerticalPanels_top" />
     <div id="VerticalPanels_content" />
-    <div id="rowBottom" class="minimumHeight">
-        <div id="VerticalPanels_bottom" />
-    </div>
+    <div id="VerticalPanels_bottom" />
 </content>
 
 <style>
-{
-    display: table;
+#VerticalPanels_content {
+    position: relative; /* So inner controls can be absolutely positioned within */
 }
 
 .VerticalPanels.fill {
     height: 100%;
-    position: absolute; /* Suppress normal table size-to-content */
+    overflow-y: hidden;
+    position: absolute;
     width: 100%;
 }
-
-> * {
-    display: table-row;
-}
-
-.minimumHeight {
-    height: 1px;    /* 0 would make element disappear. */
+.VerticalPanels.fill #VerticalPanels_content {
+    overflow-y: auto;
 }
 
 /* Supports nesting of HorizontalPanels or VerticalPanels with fill="true" */
@@ -37,10 +29,33 @@
 
 <script>
 VerticalPanels.prototype.extend({
+    
     bottom: Control.bindTo("$VerticalPanels_bottom", "content"),
     content: Control.bindTo("$VerticalPanels_content", "content"),
     fill: Control.bindTo("applyClass/fill"),
-    top: Control.bindTo("$VerticalPanels_top", "content")
+    top: Control.bindTo("$VerticalPanels_top", "content"),
+	
+	initialize: function() {
+        
+        var self = this;
+        
+        // Ensure an initial resize happens after this instance is inserted into the DOM.
+        $(document).bind("DOMNodeInserted", function() {
+            self._layout();
+        });
+        
+        // Recalc size whenever the window size changes.
+        $(window).resize(function() {
+            self._layout();
+        });
+	},
+	
+	_layout: function() {
+	    var panelHeight = this.$VerticalPanels_top().outerHeight() + this.$VerticalPanels_bottom().outerHeight();
+	    var availableHeight = this.height() - panelHeight;
+	    this.$VerticalPanels_content().height(availableHeight);
+	}
+    
 });
 </script>
 
