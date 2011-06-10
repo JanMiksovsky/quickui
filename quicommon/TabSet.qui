@@ -8,9 +8,19 @@ called name(), that will be used as the name on the tab.
 <Control name="TabSet">
 
 <content>
-    <List id="buttons"/>
-    <div id="TabSet_content"/>
+    <VerticalPanels fill="true">
+        <top>
+            <List id="buttons"/>
+        </top>
+        <div id="TabSet_content"/>
+    </VerticalPanels>
 </content>
+
+<style>
+{
+    position: relative;
+}
+</style>
 
 <script>
 TabSet.prototype.extend({

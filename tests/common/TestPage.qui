@@ -54,10 +54,6 @@
 .ToggleButton.selected {
 	background-color: #ccc;
 }
-
-#horiziontalPanels {
-    width: 100%;
-}
 </style>
 
 <script>

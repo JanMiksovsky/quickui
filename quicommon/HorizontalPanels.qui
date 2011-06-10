@@ -12,6 +12,7 @@
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
     -webkit-box-sizing: border-box;
+    position: relative;
     /*
     Setting width when not in fill mode prevents resize logic from
     cylcing endlessly and shouldn't otherwise affect anything.

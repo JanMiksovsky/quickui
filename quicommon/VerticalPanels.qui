@@ -17,6 +17,7 @@
     cylcing endlessly and shouldn't otherwise affect anything.
     */
     height: 100%;
+    position: relative;
 }
 > * {
     box-sizing: border-box;
@@ -49,9 +50,12 @@ VerticalPanels.prototype.extend({
         var self = this;
         
         // Ensure an initial resize happens after this instance is inserted into the DOM.
-        $(document).bind("DOMNodeInserted", function() {
+        var initialLayoutHandler = function() {
+            console.log("initial layout");
             self._layout();
-        });
+            $(document).unbind("DOMNodeInserted", initialLayoutHandler);
+        };
+        $(document).bind("DOMNodeInserted", initialLayoutHandler);
         
         // Recalc size whenever the window size changes.
         $(window).resize(function() {
