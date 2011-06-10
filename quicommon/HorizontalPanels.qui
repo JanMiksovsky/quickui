@@ -8,6 +8,10 @@
 
 <style>
 {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     /*
     Setting width when not in fill mode prevents resize logic from
     cylcing endlessly and shouldn't otherwise affect anything.
@@ -16,6 +20,10 @@
 }
 
 .HorizontalPanels > * {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     bottom: 0;
     position: absolute;
     top: 0;
@@ -31,11 +39,6 @@
 .HorizontalPanels.fill {
     height: 100%;
     position: absolute;
-}
-
-/* Supports nesting of HorizontalPanels or VerticalPanels with fill="true" */
-#HorizontalPanels_content > * {
-	position: inherit;
 }
 </style>
 

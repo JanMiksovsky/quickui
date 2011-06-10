@@ -2,7 +2,7 @@
     
 <prototype>
     <Page title="QuickUI Sandbox" fill="true">
-        <VerticalPanels fill="true">
+        <VerticalPanels id="outer" fill="true">
             
             <top>Outer toolbar</top>
             
@@ -23,5 +23,12 @@
         </VerticalPanels>
     </Page>
 </prototype>
+
+<style>
+#outer {
+    padding: 10px;
+}
+</style>
+
 
 </Control>

@@ -8,14 +8,21 @@
 
 <style>
 {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     /*
     Setting height when not in fill mode prevents resize logic from
     cylcing endlessly and shouldn't otherwise affect anything.
     */
     height: 100%;
 }
-
-#VerticalPanels_content {
+> * {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
     position: relative; /* So inner controls can be absolutely positioned within */
 }
 
@@ -26,11 +33,6 @@
 }
 .VerticalPanels.fill #VerticalPanels_content {
     overflow-y: auto;
-}
-
-/* Supports nesting of HorizontalPanels or VerticalPanels with fill="true" */
-#VerticalPanels_content > * {
-	position: inherit;
 }
 </style>
 
