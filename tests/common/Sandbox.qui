@@ -1,0 +1,19 @@
+<Control name="Sandbox">
+    
+<prototype>
+    <Page title="QuickUI Sandbox">
+        Hello
+    </Page>
+</prototype>
+
+<style>
+</style>
+
+<script>
+Sandbox.prototype.extend({
+	initialize: function() {
+	}	
+});
+</script>
+
+</Control>
