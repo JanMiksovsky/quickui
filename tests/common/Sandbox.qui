@@ -6,10 +6,10 @@
             
             <top>Outer toolbar</top>
             
-            <HorizontalPanels fill="true">
+            <HorizontalPanels id="horizontal" fill="true">
                 <left>Left pane</left>
                 
-                <VerticalPanels fill="true">
+                <VerticalPanels id="inner" fill="true">
                     <top>Inner toolbar</top>
                     <LoremIpsum paragraphs="5"/>
                     <bottom>Inner footer</bottom>

@@ -50,10 +50,14 @@ VerticalPanels.prototype.extend({
         var self = this;
         
         // Ensure an initial resize happens after this instance is inserted into the DOM.
-        var initialLayoutHandler = function() {
-            console.log("initial layout");
-            self._layout();
-            $(document).unbind("DOMNodeInserted", initialLayoutHandler);
+        var initialLayoutHandler = function(event) {
+            console.log("initial layout: " + self.attr("id") + " " + event.target.nodeName + " " + $(event.target).attr("id") + " " + $(event.target).attr("class"));
+            if (event.target === self[0])
+            {
+                console.log("Found!");
+                self._layout();
+                //$(document).unbind("DOMNodeInserted", initialLayoutHandler);
+            }
         };
         $(document).bind("DOMNodeInserted", initialLayoutHandler);
         

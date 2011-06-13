@@ -57,6 +57,7 @@ HorizontalPanels.prototype.extend({
         
         // Ensure an initial resize happens after this instance is inserted into the DOM.
         $(document).bind("DOMNodeInserted", function() {
+            console.log("initial layout: " + self.attr("id"));
             self._layout();
         });
         
