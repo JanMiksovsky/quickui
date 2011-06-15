@@ -13,8 +13,8 @@ browser in use supports a given property defined by $.support.
 <script>
 BrowserSpecific.prototype.extend({
 
-	content: Control.element("BrowserSpecific_content").content(),
-	elseContent: Control.element("BrowserSpecific_elseContent").content(),
+	content: Control.bindTo("$BrowserSpecific_content", "content"),
+	elseContent: Control.bindTo("$BrowserSpecific_elseContent", "content"),
 	ifBrowser: Control.property(),
 	ifSupport: Control.property(),
 	
@@ -22,8 +22,8 @@ BrowserSpecific.prototype.extend({
 		var usingSpecifiedBrowser = (this.ifBrowser() === undefined) || !!$.browser[this.ifBrowser()];
 		var browserSupportsProperty = (this.ifSupport() === undefined) || !!$.support[this.ifSupport()];
 		var allConditionsSatisfied = usingSpecifiedBrowser && browserSupportsProperty;
-		this.$BrowserSpecific_content.toggle(allConditionsSatisfied);
-		this.$BrowserSpecific_elseContent.toggle(!allConditionsSatisfied);
+		this.$BrowserSpecific_content().toggle(allConditionsSatisfied);
+		this.$BrowserSpecific_elseContent().toggle(!allConditionsSatisfied);
 	}
 });
 </script>

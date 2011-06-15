@@ -116,19 +116,19 @@
 SitePage.prototype.extend({
 	
 	area: Control.property(),
-	content: Control.element("SitePage_content").content(),
-	navigationLinks: Control.element("SitePage_navigationLinks").content(),
-	sidebar: Control.element("SitePage_sidebar").content(),
+	content: Control.bindTo("$SitePage_content", "content"),
+	navigationLinks: Control.bindTo("$SitePage_navigationLinks", "content"),
+	sidebar: Control.bindTo("$SitePage_sidebar", "content"),
 	
 	initialize: function() {
-		this.$navigationBar.highlightCurrentArea();
-		this.$SitePage_navigationLinks.highlightCurrentPage();
+		this.$navigationBar().highlightCurrentArea();
+		this.$SitePage_navigationLinks().highlightCurrentPage();
 	},
 	
 	title: function(value) {
 		if (value !== undefined)
 		{
-			this.$SitePage_title.html(value);
+			this.$SitePage_title().html(value);
 			return SitePage.superclass.prototype.title.call(this, value + " - QuickUI");
 		}
 		else

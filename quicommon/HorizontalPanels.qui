@@ -1,43 +1,80 @@
 <Control name="HorizontalPanels">
 
 <content>
-    <div id="HorizontalPanels_left" class="minimumWidth" />
+    <div id="HorizontalPanels_left" />
     <div id="HorizontalPanels_content"/>
-    <div id="HorizontalPanels_right" class="minimumWidth" />
+    <div id="HorizontalPanels_right" />
 </content>
 
 <style>
 {
-    display: table;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    position: relative;
+    /*
+    Setting width when not in fill mode prevents resize logic from
+    cylcing endlessly and shouldn't otherwise affect anything.
+    */
+    width: 100%;
+}
+
+.HorizontalPanels > * {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    bottom: 0;
+    position: absolute;
+    top: 0;
+}
+
+#HorizontalPanels_left {
+    left: 0;
+}
+#HorizontalPanels_right {
+    right: 0;
 }
 
 .HorizontalPanels.fill {
     height: 100%;
-    position: absolute; /* Suppress normal table size-to-content */
-    width: 100%;
-}
-
-> * {
-    display: table-cell;
-    vertical-align: top;
-}
-
-.minimumWidth {
-    width: 1px;
-}
-
-/* Supports nesting of HorizontalPanels or VerticalPanels with fill="true" */
-#HorizontalPanels_content > * {
-	position: inherit;
+    position: absolute;
 }
 </style>
 
 <script>
-HorizontalPanels.prototype.define({
-    content: Control.element("HorizontalPanels_content").content(),
-    fill: Control.element().applyClass("fill"),
-    left: Control.element("HorizontalPanels_left").content(),
-    right: Control.element("HorizontalPanels_right").content()
+HorizontalPanels.prototype.extend({
+    
+    content: Control.bindTo("$HorizontalPanels_content", "content"),
+    fill: Control.bindTo("applyClass/fill"),
+    left: Control.bindTo("$HorizontalPanels_left", "content"),
+    right: Control.bindTo("$HorizontalPanels_right", "content"),
+	
+	initialize: function() {
+        
+        var self = this;
+        
+        // Ensure an initial resize happens after this instance is inserted into the DOM.
+        $(document).bind("DOMNodeInserted", function() {
+            console.log("initial layout: " + self.attr("id"));
+            self._layout();
+        });
+        
+        // Recalc size whenever the window size changes.
+        $(window).resize(function() {
+            self._layout();
+        });
+	},
+	
+	_layout: function() {
+	    var panelLeftWidth = this.$HorizontalPanels_left().outerWidth();
+	    var panelRightWidth = this.$HorizontalPanels_right().outerWidth();
+	    this.$HorizontalPanels_content().css({
+	        left: panelLeftWidth,
+	        right: panelRightWidth
+	    });
+	}
 });
 </script>
 

@@ -1,6 +1,6 @@
 <Control name="ListAbout">
 <prototype>
-	<GalleryPage title="List" sourceFileExample="List/ListDemo.qui" sourceFileControl="List/List.qui">
+	<GalleryPage title="List" sourceFileExample="List/ListDemo.qui" sourceFileControl="../common/List.qui">
 		<summary>
 			Renders each element of a JavaScript array as a QuickUI control.
 		</summary>

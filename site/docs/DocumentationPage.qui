@@ -1,0 +1,220 @@
+<Control name="DocumentationPage">
+<prototype>
+<SitePage area="Docs" title="QuickUI Framework Documentation">
+
+This page provides a summary of the most important functions in quickui.js, the QuickUI
+framework runtime.
+
+<h1>jQuery plugin</h1>
+<p>
+The QuickUI plugin is used to create and manipulate QuickUI controls
+via a regular jQuery instance.
+</p>
+
+<h2>$(element).control()</h2>
+<p>
+Returns the element(s) cast to the class which was instantiated to create the elements.
+If the elements are an array of controls of differing classes, the result will be
+of their closest common ancestor class. If the elements are not controls, null
+is returned.  
+</p>
+
+<h2>$(element).control({ properties })</h2>
+<p>
+Sets the indicated properties of the control at this element.
+</p>
+
+<h2>$(element).control( class )</h2>
+<p>
+Creates a new instance of the indicated class around the element(s).
+Any existing element content will be passed to the control's content() property.
+</p>
+<pre>
+// Create instances of the MyControl class on some existing divs. 
+$("div").control(MyControl);
+</pre>
+The above is equivalent to calling MyControl.createAt($("div")).
+
+<h2>$(element).control( class, { properties })</h2>
+<p>
+Creates new control instance(s) and sets their content property.
+</p>
+ 
+<h1>Control class members</h1>
+<p>
+The Control class itself provides access to helper functions for instantiating controls
+and creating new control classes. Since Control is is a subclass of jQuery, all jQuery
+members are available on Control as well. All of the functions below return "this",
+and are therefore chainable.
+</p>
+
+<h2>Control.bindTo( functionName1, functionName2, ..., functionNameN [, sideEffect] )</h2>
+<p>
+Given an array of functions, repeatedly invoke them as a chain.
+</p>
+<p>
+This function allows the compact definition of property getter/setter functions
+that are delegated to aspects of the control or elements within its DOM.
+This is typically done when defining a control class members by extending its
+prototype. For example, suppose a control class contains an element with id="#foo",
+and the developer wishes to expose the contents of that element via a corresponding
+getter/setter function called foo().
+</p>
+<pre>
+MyControl.prototype.extend({
+    foo: Control.bindTo("$foo", "content")
+});
+</pre>
+<p>
+The above example creates a function foo() on all MyControl instances that sets or gets
+the content of the elements returned by the element function $foo(). The latter
+is an automatically created element function that returns the element(s) with
+id="#foo" within the control's DOM.
+</p>
+<p>
+The parameters to bindTo are the names of functions that are invoked in
+turn to produce the result. The last parameter may be an optional side
+effect function that will be invoked whenever the binding function is
+invoked as a setter.
+</p>
+<p>
+The function names passed as parameters may also define an optional
+string-valued parameter that will be passed in. So bindTo("css/display")
+creates a curried setter/getter function equivalent to css("display", value).
+</p>
+
+<h2>Control.create( [properties] )</h2>
+<p>
+Returns a single instance of the given control class. The instance is detached
+from the DOM and must be added, e.g., via $.append(), to be visible to the user.
+Optional properties passed in as a parameter will be set on the control before
+it is returned. 
+</p>
+<pre>
+// Create an instance of the MyControl class, and set its content.
+var $c = MyControl.create( { content: "Hello" });
+</pre>
+
+<h2>Control.createAt( $elements [, properties] )</h2>
+Create instances of the control class on the existing elements in the jQuery
+object passed in. Any existing content of those elements will be first extracted,
+then later passed back to the new controls by invoking their content() property.
+This effectively lets the control class wrap the existing elements. Finally,
+if the optional properties parameter is supplied, the indicated properties are
+set on the control instances.
+
+<h2>Control.isControl( $elements )</h2>
+<p>
+Returns true if the indicated elements represent instantiated controls, or false
+if they are plain DOM elements.    
+</p>
+
+<h2>Control.property( [sideEffectFn] [, defaultValue] )</h2>
+<p>
+Generates a getter/setter function that can be used to store arbitrary data on a
+control instance. This is shorthand for storing data via $.data(), but eliminates
+the need to actually name the underlying data member.
+</p>
+<pre>
+Greet.prototype.extend({
+    // Define a "name" property.
+    name: Control.property()
+});
+
+var $greet = Greet.create();
+$greet.name("Ann");
+var s = $greet.name();  // Returns "Ann"
+</pre>
+<p>
+Optional parameters allow the specification of a side effect function, which takes a
+single argument and will be invoked whenever the property is set. A default value
+for the property can also be supplied. 
+</p>
+
+<h2>Control.property.bool( [sideEffectFn] [, defaultValue] )</h2>
+<p>
+Like Control.property(), but attemps to parse its value as a boolean.
+This is useful for defining boolean-valued properties that can be set in QuickUI
+markup (which only supports setting properties as strings). 
+</p>
+<pre>
+// In MyControl.qui
+MyControl.prototype.extend({
+    selected: Control.property.bool()
+});
+
+// In a separate .qui file
+&lt;MyControl selected="true"/&gt;
+</pre>
+
+<h2>Control.property.date( [sideEffectFn] [, defaultValue] )</h2>
+<p>
+Like Control.property(), but parses its value as a date.    
+</p>
+
+<h2>Control.property.integer( [sideEffectFn] [, defaultValue] )</h2>
+<p>
+Like Control.property(), but parses its value as an integer.    
+</p>
+
+<h1>Control.prototype members</h1>
+<p>
+These functions are available on all control <i>instances</i>.
+</p>
+
+<h2>Control.prototype.applyClass( classes [, value] )</h2>
+<p>
+Gets or sets whether the given class(es) are applied to the controls. This
+combines the functions of $.hasClass (when called as a getter) and $.toggleClass
+(when called as a setter).  
+</p>
+
+<h2>Control.prototype.cast()</h2>
+<p>
+Given a jQuery array of elements of potentially differing control classes,
+this returns the array cast to the most specific class which all the elements
+have in common. This is typically done prior to invoking a function, to ensure
+that the same implementation of the function is invoked on all the elements. 
+</p>
+
+<h2>Control.prototype.content( [value] )</h2>
+<p>
+Gets or sets the content of the elements. This is a helper function that performs
+two main tasks.
+</p>
+<p>
+First, it provides a single entry point to manipulate the content
+of a regular HTML element (via $.html) or an input element like a text box (via $.val).
+This makes it easier to change control elements from standard HTML input elements to
+QuickUI controls in their own right (or change them back) without having to rewrite
+much code.
+</p>
+<p>
+Second, this function normalizes the content to a canonical form. For example, if the
+content of an element is set to a string value, then when it is read back, it will
+be returned as a single string. (In comparison, reading text nodes via $.content
+will return an array.)  
+</p>
+<p>
+The JavaScript generated for a control's markup makes use of the content() function
+to render a control. In particular, if a QuickUI control tag contains HTML
+or subcontrols, those elements will be passed into the content() function to render
+the control. Control classes often override content() to identify where their primary
+content should go.
+</p>
+
+<h2>Control.prototype.eachControl( fn )</h2>
+
+<h2>Control.prototype.initialize</h2>
+
+<h2>Control.prototype.iterators ( members )</h2>
+
+<h2>Control.prototype.multiProperty( propertyName, values )</h2>
+
+<h2>Control.prototype.properties( properties )</h2>
+
+<h2>Control.prototype.visibility( [value] )</h2>
+
+</SitePage>
+</prototype>
+</Control>

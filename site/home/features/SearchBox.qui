@@ -10,10 +10,10 @@ SearchBox.prototype.extend({
     
     initialize: function() {
         var self = this;
-        this.$buttonSearch.click(function() {
+        this.$buttonSearch().click(function() {
             self._navigate();
         });
-        this.$terms.bind("change keydown keyup", function(event) {
+        this.$terms().bind("change keydown keyup", function(event) {
             var content = self.content();
             var isContentEmpty = !(content && content.length > 0);
             var keyCode = event.keyCode || event.which;
@@ -25,7 +25,7 @@ SearchBox.prototype.extend({
     },
     
     _navigate: function() {
-        var terms = this.$terms.content();
+        var terms = this.$terms().content();
         var query = "http://www.google.com/search?q=%s";
         window.location.href = query.replace("%s", terms);
     }

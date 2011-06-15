@@ -22,7 +22,7 @@ Navigator.prototype.extend({
 	// Highlight the link for the page we're on.
 	highlightCurrentPage: function() {
 		var pageHref = window.location.href;
-		this.find(".Link").eachControl(function() {
+		this.find(".Link").cast().eachControl(function() {
 			var linkHref = this.href();
 			var pageHrefRight = pageHref.substring(pageHref.length - linkHref.length)
 			this.toggleClass("highlight", pageHrefRight === linkHref);

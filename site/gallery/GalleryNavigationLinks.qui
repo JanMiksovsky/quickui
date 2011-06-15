@@ -14,7 +14,7 @@
 <script>
 GalleryNavigationLinks.prototype.extend({
     initialize: function() {
-        this.$listClass.items([
+        this.$listClass().items([
             "BrowserSpecific",
             "GalleryPage",
             "Gradient",

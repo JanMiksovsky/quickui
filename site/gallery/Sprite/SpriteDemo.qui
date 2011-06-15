@@ -21,10 +21,10 @@
 SpriteDemo.prototype.extend({
 	initialize: function() {
 		var self = this;
-		this.$image.click(function(event) {
+		this.$image().click(function(event) {
 			var mouseY = event.pageY - $(this).offset().top;
-			var cellIndex = Math.floor(mouseY / self.$sprite.cellHeight());
-			self.$sprite.currentCell(cellIndex);
+			var cellIndex = Math.floor(mouseY / self.$sprite().cellHeight());
+			self.$sprite().currentCell(cellIndex);
 		});
 	}
 });

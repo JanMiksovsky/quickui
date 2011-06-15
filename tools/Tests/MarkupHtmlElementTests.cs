@@ -27,7 +27,7 @@ namespace Tests
             MarkupHtmlElement node = new MarkupHtmlElement(element);
             Assert.AreEqual("foo", node.Id);
             Assert.AreEqual("<div id=\"foo\">Hi</div>", node.Html);
-            Assert.AreEqual("this.$foo = Control(\"<div id=\\\"foo\\\">Hi</div>\")", node.JavaScript());
+            Assert.AreEqual("this._define(\"$foo\", Control(\"<div id=\\\"foo\\\">Hi</div>\"))", node.JavaScript());
         }
 
         [Test]

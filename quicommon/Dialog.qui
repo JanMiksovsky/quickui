@@ -40,7 +40,7 @@ Dialog.extend({
 	}
 });
 
-Dialog.prototype.define({
+Dialog.prototype.extend({
 	
 	initialize: function() {
 		Dialog.superClass.prototype.initialize.call(this);
@@ -54,20 +54,20 @@ Dialog.prototype.define({
 	},
 
 	cancel: function() {
-		this
+		return this
 			.trigger("cancel")
 			.closeOverlay();
 	},
 	
 	close: function() {
-		this
+		return this
 			.trigger("ok")
 			.closeOverlay();
 	},
 	
 	positionOverlay: function() {
 		// Center dialog horizontally and vertically.
-		this.css({
+		return this.css({
 			left: ($(window).width() - this.outerWidth()) / 2,
 			top: ($(window).height() - this.outerHeight()) / 2
 		});

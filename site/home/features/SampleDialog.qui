@@ -16,9 +16,9 @@
 <script>
 SampleDialog.prototype.extend({
     initialize: function() {
-        var me = this;
-        this.$OrangeDialog_buttons.click(function() {
-            me.close();
+        var self = this;
+        this.$OrangeDialog_buttons().click(function() {
+            self.close();
         })
     }
 });

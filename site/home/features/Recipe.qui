@@ -10,10 +10,10 @@
 
 <script>
 Recipe.prototype.extend({
-    content: Control.element("Recipe_content").content(),
-    name: Control.element("Recipe_name").content(),
+    content: Control.bindTo("$Recipe_content", "content"),
+    name: Control.bindTo("$Recipe_name", "content"),
     rating: Control.property.integer(function(rating) {
-        this.$Recipe_rating.text("*****".substr(0, rating));
+        this.$Recipe_rating().text("*****".substr(0, rating));
     })
 })
 </script>

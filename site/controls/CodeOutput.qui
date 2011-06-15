@@ -31,7 +31,7 @@ h1 {
 
 <script>
 CodeOutput.prototype.extend({
-	content: Control.element("CodeOutput_content").content()
+	content: Control.bindTo("$CodeOutput_content", "content")
 })
 </script>
 

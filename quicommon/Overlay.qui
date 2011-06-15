@@ -11,9 +11,9 @@
 </style>
 
 <script>
-Overlay.prototype.define({
+Overlay.prototype.extend({
 
-	$blanket: Control.property(),
+	blanket: Control.property(),
 	blanketColor: Control.property(),
 	blanketOpacity: Control.property(),
 	dismissOnInsideClick: Control.property.bool(),
@@ -31,7 +31,7 @@ Overlay.prototype.define({
 	},
 	
 	closeOverlay: function() {
-	    this
+	    return this
 	        .hideOverlay()
 	        .remove();
 	},
@@ -41,13 +41,15 @@ Overlay.prototype.define({
         this
 			.hide()
 			.css("z-index", null); // No need to define Z-order any longer.
-		if (this.$blanket() != null)
+		if (this.blanket() != null)
 		{
-			this.$blanket().remove();
-			this.$blanket(null);
+			this.blanket().remove();
+			this.blanket(null);
 		}
 		
         this.trigger("overlayClosed");  // TODO: Rename to overlayHidden? Move trigger to closeOverlay?
+        
+        return this;
 	},
     
     // Subclasses should override this to position themselves.
@@ -57,17 +59,18 @@ Overlay.prototype.define({
     	
 	showOverlay: function()
 	{
-		if (this.$blanket() == null)
+		if (this.blanket() == null)
 		{
-			this.$blanket(this._createBlanket());
+			this.blanket(this._createBlanket());
 		}
 		
 		/* Show control and blanket at the top of the Z-order. */
 		var maximumZIndex = this._maximumZIndex();
-		this.$blanket()
+		this.blanket()
 			.css("z-index", maximumZIndex + 1)
 			.show();
-		this
+			
+		return this
 			.css("z-index", maximumZIndex + 2)
 			.show()
 			.positionOverlay()

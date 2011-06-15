@@ -50,14 +50,14 @@ namespace qc
         /// </summary>
         public override string JavaScript(int indentLevel)
         {
-            return Template.Format(
-                "{VariableDeclaration}{ClassName}.create({ControlConstructorArguments})",
-                new
-                {
-                    VariableDeclaration = EmitVariableDeclaration(),
-                    ClassName = ClassName,
-                    ControlConstructorArguments = EmitControlConstructorArguments(indentLevel)
-                });
+            return EmitVariableDeclaration(
+                Template.Format(
+                    "{ClassName}.create({ControlConstructorArguments})",
+                    new
+                    {
+                        ClassName = ClassName,
+                        ControlConstructorArguments = EmitControlConstructorArguments(indentLevel)
+                    }));
         }
 
         /// <summary>

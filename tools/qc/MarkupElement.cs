@@ -62,11 +62,17 @@ namespace qc
         /// left-hand side of a variable declaration on the control class
         /// that will use that ID. If there is no ID, return Empty.
         /// </summary>
-        protected string EmitVariableDeclaration()
+        protected string EmitVariableDeclaration(string value)
         {
             return (Id == null)
-                ? String.Empty
-                : String.Format("this.${0} = ", Id);
+                ? value
+                : Template.Format(
+                    "this._define(\"${Id}\", {Value})",
+                    new
+                    {
+                        Id = Id,
+                        Value = value
+                    });
         }
     }
 }

@@ -5,17 +5,17 @@
 </prototype>
 
 <script>
-ToggleButton.prototype.define({
+ToggleButton.prototype.extend({
 	
-	selected: Control.element().applyClass("selected"),
+	selected: Control.bindTo("applyClass/selected"),
 	
 	initialize: function() {
 		ToggleButton.superclass.prototype.initialize.call(this);
-		var me = this;
+		var self = this;
 		this.click(function() {
-            if (!me.disabled())
+            if (!self.disabled())
             {
-                me.toggle();
+                self.toggle();
             }
 		});
 	},

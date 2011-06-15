@@ -1,13 +1,14 @@
 <Control name="TestPage">
     
 <content>
-    <ButtonBase>
-        <div>Hello</div>
-    </ButtonBase>
+    <div id="test">Test</div>
+    <SampleSpriteButton>Hello</SampleSpriteButton>
 </content>
 
 <style>
-
+#test {
+    background-position: 100% 0;
+}
 </style>
 
 </Control>

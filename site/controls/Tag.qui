@@ -11,7 +11,7 @@
 
 <script>
 Tag.prototype.extend({
-	content: Control.element("Tag_content").content()
+	content: Control.bindTo("$Tag_content", "content")
 });
 </script>
 

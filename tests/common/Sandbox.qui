@@ -1,0 +1,34 @@
+<Control name="Sandbox">
+    
+<prototype>
+    <Page title="QuickUI Sandbox" fill="true">
+        <VerticalPanels id="outer" fill="true">
+            
+            <top>Outer toolbar</top>
+            
+            <HorizontalPanels id="horizontal" fill="true">
+                <left>Left pane</left>
+                
+                <VerticalPanels id="inner" fill="true">
+                    <top>Inner toolbar</top>
+                    <LoremIpsum paragraphs="5"/>
+                    <bottom>Inner footer</bottom>
+                </VerticalPanels>
+            
+                <right>Right pane</right>
+            </HorizontalPanels>
+                
+            <bottom>Outer footer</bottom>
+            
+        </VerticalPanels>
+    </Page>
+</prototype>
+
+<style>
+#outer {
+    padding: 10px;
+}
+</style>
+
+
+</Control>

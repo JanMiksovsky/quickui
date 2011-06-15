@@ -10,10 +10,10 @@
 </prototype>
 
 <script>
-TestDialog.prototype.define({
+TestDialog.prototype.extend({
 	initialize: function() {
 		var self = this;
-		this.$buttonOk.click(function() {
+		this.$buttonOk().click(function() {
 			self.close();
 		});
 	}	

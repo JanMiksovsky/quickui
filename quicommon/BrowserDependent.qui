@@ -11,19 +11,19 @@ browser in use supports a given property defined by $.support.
 </content>
 
 <script>
-BrowserDependent.prototype.define({
+BrowserDependent.prototype.extend({
     
 	ifBrowser: Control.property(),
-	content: Control.element("BrowserDependent_content").content(),
-	elseContent: Control.element("BrowserDependent_elseContent").content(),
+	content: Control.bindTo("$BrowserDependent_content", "content"),
+	elseContent: Control.bindTo("$BrowserDependent_elseContent", "content"),
 	ifSupport: Control.property(),
 	
 	initialize: function() {
 		var usingSpecifiedBrowser = (this.ifBrowser() === undefined) || !!$.browser[this.ifBrowser()];
 		var browserSupportsProperty = (this.ifSupport() === undefined) || !!$.support[this.ifSupport()];
 		var allConditionsSatisfied = usingSpecifiedBrowser && browserSupportsProperty;
-		this.$BrowserDependent_content.toggle(allConditionsSatisfied);
-		this.$BrowserDependent_elseContent.toggle(!allConditionsSatisfied);
+		this.$BrowserDependent_content().toggle(allConditionsSatisfied);
+		this.$BrowserDependent_elseContent().toggle(!allConditionsSatisfied);
 	}
 });
 </script>
