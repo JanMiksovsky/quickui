@@ -19,8 +19,10 @@
 #HintTextBox_hint {
 	bottom: 0;
     color: gray;
+    height: 1.25em;
+    margin: auto 0;
     position: absolute;
-    padding: 2px 6px;
+    padding: 0 6px;
     overflow: hidden;
 	top: 0;
 	width: 100%;
@@ -31,34 +33,35 @@
 <script>
 HintTextBox.prototype.extend({
 	
+    content: Control.bindTo("$HintTextBox_textBox", "content"),
 	hint: Control.bindTo("$HintTextBox_hint", "content"),
-	content: Control.bindTo("$HintTextBox_textBox", "content"),
 	
 	initialize: function() {
-		var me = this;
+		var self = this;
         this.bind({
-            "click": function() { me._hideHint(); },
+            "click": function() { self._hideHint(); },
             "focus": function() {
-                if (!me._isTextBoxFocused)
+                if (!self._isTextBoxFocused())
                 {
-                    $(me.HintTextBox_textBox).focus();
+                    self.$HintTextBox_textBox().focus();
                 }
             }
         });
 		this.$HintTextBox_textBox().bind({
             "blur": function() {
-                me._isTextBoxFocused = false;
-                me._showHintIfEmpty();
+                self
+                    ._isTextBoxFocused(false)
+                    ._showHintIfEmpty();
             },
-            "keydown keyup": function() { me._showHintIfEmpty(); },
-            "focus": function() { me._isTextBoxFocused = true; }
+            "keydown keyup": function() { self._showHintIfEmpty(); },
+            "focus": function() { self._isTextBoxFocused(true); }
         });
         this.$HintTextBox_hint().click(function() {
-            me._hideHint();
+            self._hideHint();
         });
 	},
     
-    _isTextBoxFocused: false,
+    _isTextBoxFocused: Control.property(null, false),
     
     _hideHint: function() {
         this.$HintTextBox_hint().hide(); 
