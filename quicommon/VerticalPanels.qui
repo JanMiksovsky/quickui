@@ -48,10 +48,11 @@ VerticalPanels.prototype.extend({
     top: Control.bindTo("$VerticalPanels_top", "content"),
     
     layout: function() {
-        this._message("layout");
+        //this._log("layout");
         var panelHeight = this.$VerticalPanels_top().outerHeight() + this.$VerticalPanels_bottom().outerHeight();
         var availableHeight = this.height() - panelHeight;
         this.$VerticalPanels_content().height(availableHeight);
+        return this;
     }
 });
 </script>

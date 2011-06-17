@@ -10,79 +10,148 @@ Layout.prototype.extend({
     },
     
     // Base implementation does nothing.
-    layout: function() {},
-    
-    _message: function(s) {
-        console.log(this.className + "#" + this.attr("id") + " " + s);
+    layout: function() {
+        return this;
     }
+    
+    /* For debugging
+    _log: function(s) {
+        console.log(this.className + "#" + this.attr("id") + " " + s);
+        return this;
+    }
+    */
     
 });
 
 // Class methods.
 Layout.extend({
     
-    _controls: null,
-    _initialized: false,
-    _pending: null,
-    
+    /*
+     * Re-layout any controls in the DOM.
+     */
     recalc: function() {
-        console.log("recalc");
-        for (var i = Layout._controls.length - 1; i >= 0; i--)
+        //console.log("recalc");
+        // Call the layout() method of any control whose size has changed.
+        for (var i = 0, length = this._controlsToLayout.length; i < length; i++)
         {
-            var control = Layout._controls[i];
-            //if ($control.parents().length > 0)
-            if ($.contains(document.body, control))
+            var $control = Control(this._controlsToLayout[i]).control();
+            var previousSize = $control.data("_size"); 
+            var size = {
+                height: $control.height(),
+                width: $control.width()
+            };
+            if (previousSize === undefined ||
+                size.height != previousSize.height ||
+                size.width != previousSize.width)
             {
-                var $control = Control(control).control();
-                $control.layout();
+                $control
+                    .data("_size", size)
+                    .layout();
             }
         }
     },
     
+    /*
+     * Start tracking the indicated controls for layout purposes.
+     * We won't actually lay them out until they're added to the DOM.
+     */
     track: function($controls) {
-        Layout._initialize();
-        Layout._controls = Layout._controls.concat($controls.get());
+        //$controls._log("tracking");
+        this._initialize();
+        this._controlsNotYetInDOM = $controls.get().concat(this._controlsNotYetInDOM);
+        this._addControlsInDocument();
+    },
+
+    /* TODO: Allow a control to be stop being tracked for layout purposes.
+    untrack: function($controls) {
+        ...
         this.recalc();
     },
-    
-    untrack: function(control) {
-        //this.recalc();
+    */
+   
+    /*
+     * If any pending controls are now in the DOM, add them to the list of
+     * controls to layout.
+     */
+    _addControlsInDocument: function() {
+        var needsRecalc = false;
+        var i = 0;
+        while (i < this._controlsNotYetInDOM.length)
+        {
+            var control = this._controlsNotYetInDOM[i];
+            if ($.contains(document.body, control))
+            {
+                this._controlsToLayout.push(control);
+                //Control(control).control()._log("added to layout list");
+                this._controlsNotYetInDOM.splice(i, 1);   // Remove control
+                needsRecalc = true;
+            }
+            else
+            {
+                i++;
+            }
+        }
+        if (needsRecalc)
+        {
+            this.recalc();
+        }
+        this._listenForDOMNodeInserted();
     },
     
     // An element has been added to the document; see if it needs layout. 
     _documentNodeInserted: function(event) {
-        console.log("_documentNodeInserted");
+        //console.log("_documentNodeInserted");
         var control = event.target;
-        if (Layout._controls.indexOf(control) >= 0)
+        if (Layout._controlsNotYetInDOM.indexOf(control) >= 0)
         {
-            var $control = Control(control).control();
-            $control._message("inserted");
-            Layout.recalc();
+            //Control(control).control()._log("inserted into DOM");
+            Layout._addControlsInDocument();
         }
-        //$(document).unbind("DOMNodeInserted", initialLayoutHandler);
     },
     
-    // Initialize layout engine overall (not a specific instance).
+    /*
+     * Initialize layout engine overall (not a specific instance).
+     */
     _initialize: function() {
         
-        if (Layout._initialized)
+        if (this._initialized)
         {
             // Already did this.
             return;
         }
         
-        Layout._pending = [];   // Controls waiting for initial layout
-        Layout._controls = [];  // Controls being tracked for layout
+        // The following control arrays are maintained in order such that
+        // DOM parents come before their children. 
+        this._controlsNotYetInDOM = [];
+        this._controlsToLayout = [];
         
-        // Ensure an initial resize happens after an element is inserted into the DOM.
-        $(document).bind("DOMNodeInserted", Layout._documentNodeInserted);
+        this._listeningForDOMNodeInserted = false;
        
         // Recalc layout whenever the window size changes.
         $(window).resize(function() {
             Layout.recalc();
         });
         
-        Layout._initialized = true;        
+        this._initialized = true;
+    },
+    
+    /*
+     * If we we're tracking any controls that haven't been added to the DOM,
+     * then listen for DOMNodeInserted events.
+     */
+    _listenForDOMNodeInserted: function() {
+        if (!this._listeningForDOMNodeInserted && this._controlsNotYetInDOM.length > 0)
+        {
+            //console.log("start listening for DOMNodeInserted");
+            $(document).bind("DOMNodeInserted", this._documentNodeInserted);
+            this._listeningForDOMNodeInserted = true;
+        }
+        else if (this._listeningForDOMNodeInserted && this._controlsNotYetInDOM.length == 0)
+        {
+            //console.log("stop listening for DOMNodeInserted");
+            $(document).unbind("DOMNodeInserted", this._documentNodeInserted);
+            this._listeningForDOMNodeInserted = false;
+        }
     }
         
 });
