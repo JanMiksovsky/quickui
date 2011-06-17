@@ -99,15 +99,12 @@ Layout.extend({
         this._listenForDOMNodeInserted();
     },
     
-    // An element has been added to the document; see if it needs layout. 
+    /*
+     * An element has been added to the document;
+     */ 
     _documentNodeInserted: function(event) {
         //console.log("_documentNodeInserted");
-        var control = event.target;
-        if (Layout._controlsNotYetInDOM.indexOf(control) >= 0)
-        {
-            //Control(control).control()._log("inserted into DOM");
-            Layout._addControlsInDocument();
-        }
+        Layout._addControlsInDocument();
     },
     
     /*

@@ -2,29 +2,36 @@
     
 <prototype>
     <Page title="QuickUI Sandbox" fill="true">
-        <VerticalPanels id="outer" fill="true">
+        <div id="frame">
+            <VerticalPanels id="outer" fill="true">
+        
+                <top>Outer toolbar</top>
+        
+                <HorizontalPanels id="horizontal" fill="true">
+                    <left>Left pane</left>
             
-            <top>Outer toolbar</top>
+                    <VerticalPanels id="inner" fill="true">
+                        <top>Inner toolbar</top>
+                        <LoremIpsum paragraphs="5"/>
+                        <bottom>Inner footer</bottom>
+                    </VerticalPanels>
+        
+                    <right>Right pane</right>
+                </HorizontalPanels>
             
-            <HorizontalPanels id="horizontal" fill="true">
-                <left>Left pane</left>
-                
-                <VerticalPanels id="inner" fill="true">
-                    <top>Inner toolbar</top>
-                    <LoremIpsum paragraphs="5"/>
-                    <bottom>Inner footer</bottom>
-                </VerticalPanels>
-            
-                <right>Right pane</right>
-            </HorizontalPanels>
-                
-            <bottom>Outer footer</bottom>
-            
-        </VerticalPanels>
+                <bottom>Outer footer</bottom>
+        
+            </VerticalPanels>
+        </div>
     </Page>
 </prototype>
 
 <style>
+#frame {
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
 #outer {
     padding: 10px;
 }
