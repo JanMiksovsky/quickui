@@ -1,10 +1,12 @@
 <Control name="VerticalPanels">
 
-<content>
-    <div id="VerticalPanels_top" />
-    <div id="VerticalPanels_content" />
-    <div id="VerticalPanels_bottom" />
-</content>
+<prototype>
+    <Layout>
+        <div id="VerticalPanels_top" />
+        <div id="VerticalPanels_content" />
+        <div id="VerticalPanels_bottom" />
+    </Layout>
+</prototype>
 
 <style>
 {
@@ -44,35 +46,13 @@ VerticalPanels.prototype.extend({
     content: Control.bindTo("$VerticalPanels_content", "content"),
     fill: Control.bindTo("applyClass/fill"),
     top: Control.bindTo("$VerticalPanels_top", "content"),
-	
-	initialize: function() {
-        
-        var self = this;
-        
-        // Ensure an initial resize happens after this instance is inserted into the DOM.
-        var initialLayoutHandler = function(event) {
-            console.log("initial layout: " + self.attr("id") + " " + event.target.nodeName + " " + $(event.target).attr("id") + " " + $(event.target).attr("class"));
-            if (event.target === self[0])
-            {
-                console.log("Found!");
-                self._layout();
-                //$(document).unbind("DOMNodeInserted", initialLayoutHandler);
-            }
-        };
-        $(document).bind("DOMNodeInserted", initialLayoutHandler);
-        
-        // Recalc size whenever the window size changes.
-        $(window).resize(function() {
-            self._layout();
-        });
-	},
-	
-	_layout: function() {
-	    var panelHeight = this.$VerticalPanels_top().outerHeight() + this.$VerticalPanels_bottom().outerHeight();
-	    var availableHeight = this.height() - panelHeight;
-	    this.$VerticalPanels_content().height(availableHeight);
-	}
     
+    layout: function() {
+        console.log("VerticalPanels.layout");
+        var panelHeight = this.$VerticalPanels_top().outerHeight() + this.$VerticalPanels_bottom().outerHeight();
+        var availableHeight = this.height() - panelHeight;
+        this.$VerticalPanels_content().height(availableHeight);
+    }
 });
 </script>
 

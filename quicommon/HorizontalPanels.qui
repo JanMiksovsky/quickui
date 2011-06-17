@@ -1,10 +1,12 @@
 <Control name="HorizontalPanels">
 
-<content>
-    <div id="HorizontalPanels_left" />
-    <div id="HorizontalPanels_content"/>
-    <div id="HorizontalPanels_right" />
-</content>
+<prototype>
+    <Layout>
+        <div id="HorizontalPanels_left" />
+        <div id="HorizontalPanels_content"/>
+        <div id="HorizontalPanels_right" />
+    </Layout>
+</prototype>
 
 <style>
 {
@@ -51,23 +53,8 @@ HorizontalPanels.prototype.extend({
     left: Control.bindTo("$HorizontalPanels_left", "content"),
     right: Control.bindTo("$HorizontalPanels_right", "content"),
 	
-	initialize: function() {
-        
-        var self = this;
-        
-        // Ensure an initial resize happens after this instance is inserted into the DOM.
-        $(document).bind("DOMNodeInserted", function() {
-            console.log("initial layout: " + self.attr("id"));
-            self._layout();
-        });
-        
-        // Recalc size whenever the window size changes.
-        $(window).resize(function() {
-            self._layout();
-        });
-	},
-	
-	_layout: function() {
+	layout: function() {
+        console.log("HorizontalPanels.layout");
 	    var panelLeftWidth = this.$HorizontalPanels_left().outerWidth();
 	    var panelRightWidth = this.$HorizontalPanels_right().outerWidth();
 	    this.$HorizontalPanels_content().css({

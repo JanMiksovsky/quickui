@@ -1,0 +1,89 @@
+<!-- Base class for controls that want to do custom layout work when resized. -->
+
+<Control name="Layout">
+
+<script>
+Layout.prototype.extend({
+    
+    initialize: function() {
+        Layout.track(this);
+    },
+    
+    // Base implementation does nothing.
+    layout: function() {}
+    
+});
+
+// Class methods.
+Layout.extend({
+    
+    _controls: null,
+    _initialized: false,
+    
+    recalc: function() {
+        console.log("recalc");
+        for (var i = Layout._controls.length - 1; i >= 0; i--)
+        {
+            var $control = Control(Layout._controls[i]).control();
+            if ($control.parents().length > 0)
+            {
+                $control.layout();
+            }
+        }
+    },
+    
+    track: function($controls) {
+        
+        Layout._initialize();
+
+        /*        
+        $controls.eachControl(function(index, $control) {
+            Layout._controls.unshift($control[0]);
+        });
+        */
+        Layout._controls = $controls.get().concat(Layout._controls);
+        
+        this.recalc();
+    },
+    
+    untrack: function(control) {
+        //this.recalc();
+    },
+    
+    // Initialize layout engine overall (not a specific instance).
+    _initialize: function() {
+        
+        if (Layout._initialized)
+        {
+            // Already did this.
+            return;
+        }
+        
+        // Create an empty list of controls to track.
+        Layout._controls = [];
+        
+        // Ensure an initial resize happens after an element is inserted into the DOM.
+        var initialLayoutHandler = function(event) {
+            console.log("DOMNodeInserted");
+            var control = event.target;
+            if (Layout._controls.indexOf(control) >= 0)
+            {
+                console.log("Found");
+                Layout.recalc();
+            }
+            //$(document).unbind("DOMNodeInserted", initialLayoutHandler);
+        };
+        $(document).bind("DOMNodeInserted", initialLayoutHandler);
+       
+        // Recalc layout whenever the window size changes.
+        $(window).resize(function() {
+            Layout.recalc();
+        });
+        
+        Layout._initialized = true;        
+    }
+    
+});
+</script>
+
+</Control>
