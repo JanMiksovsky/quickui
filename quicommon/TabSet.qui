@@ -20,6 +20,10 @@ called name(), that will be used as the name on the tab.
 {
     position: relative;
 }
+
+#buttons {
+    white-space: nowrap; /* So tabs don't wrap. */
+}
 </style>
 
 <script>
