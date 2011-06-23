@@ -381,6 +381,19 @@ function runTests() {
         equal($c.data("_name"), "Ann");
     });
     
+    test("bindTo: chaining", function() {
+        var Greet = createGreetClass();
+        Greet.prototype.extend({
+            foo: Control.bindTo("content"),
+            bar: Control.bindTo("prop/display")
+        });
+        var $c = Greet.create();
+        var result = $c.foo("Hello").bar("inline");
+        equal($c.content(), "Hello");
+        equal($c.prop("display"), "inline");
+        equal(result, $c);
+    });
+    
     test("bindTo: functions with parameters", function() {
         var MyControl = Control.subclass("MyControl");
         MyControl.prototype.display = Control.bindTo("css/display");
