@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js"></script>
+<script type="text/javascript" src="../lib/quickui.js"></script>
+
+<script>
+/*
+ * The following is a typical bootstrap sequence for a QuickUI app.
+ *
+ * The standard jQuery ready function is invoked once the page's scripts, etc.,
+ * have finished loading. The example instantiates a control at the level
+ * of the page body. It could just as easily have instantiated the
+ * control at any given element within the body. Controls also can be instantiated
+ * at any point after the page is ready, e.g., in response to user actions.
+ *
+ * The actual work here is done by $.control(), the single top-level jQuery
+ * plug-in defined by QuickUI. (All other framework methods are reached via a
+ * jQuery subclass called Control.) The $.control() method has several forms.
+ * Here it takes the name of a control class (Sample), and creates an instance
+ * of that class around each control in the jQuery selector (here, body).
+ */
+$(function() {
+    $("body").control(Control).content("Hello, world.");
+});
+</script>
+
+</head>
+<body/>
+</html>
