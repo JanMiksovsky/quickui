@@ -8,8 +8,7 @@
 <style>
 {
     display: table;
-    font-family: "Lucida Grande", Tahoma, Verdana, Arial, sans-serif;
-    font-size: 11px;
+    font-size: 14px;
 }
 
 #UserTile_picture {
@@ -22,7 +21,6 @@
 #UserTile_name {
     color: #3B5998;
     display: table-cell;
-    font-weight: bold;
     vertical-align: top;
 }
 </style>

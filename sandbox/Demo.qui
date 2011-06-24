@@ -30,17 +30,35 @@ script elements.
     <!-- Plain HTML; tag must be lowercase -->
     <h1>QuickUI Sandbox</h1>
     
+    <!--
+    Instantiate a couple of QuickUI controls, passing in properties by setting
+    attributes. Each attribute will be passed to a corresponding getter/setter
+    function defined by the UserTile class. E.g., name="Ann" will pass "Ann"
+    to UserTile.prototype.name() on that control instance.
+    -->
     <UserTile name="Ann Williams" picture="resources/usertile1.png"/>
     <UserTile name="Daniel Garcia" picture="resources/usertile2.png"/>
+    
+    <!--
+    Instantiate a QuickUI control, this time passing in properties using
+    compound property syntax.
+    -->
     <UserTile>
-        <name>Stacy Nakamura</name>
+        <!-- Compound property tags (here, name) must be lowercase. -->
+        <name>
+            <!--
+            The advantage of compound property syntax is that arbitrary markup
+            (including additional QuickUI controls) can be passed as a value.
+            -->
+            <b>Stacy Nakamura</b>
+        </name>
         <picture>resources/usertile3.png</picture>
     </UserTile>
 
 </content>
 
 <!--
-These styles will apply to any elements contained by this control.
+The rules in the style tag apply to any elements contained by this control.
 Since this control represents the top-level page, this styles here will
 apply to the whole page.
 -->
