@@ -1,0 +1,37 @@
+<Control name="UserTile">
+
+<content>
+    <img id="UserTile_picture" />
+    <div id="UserTile_name" />
+</content>
+
+<style>
+{
+    display: table;
+    font-family: "Lucida Grande", Tahoma, Verdana, Arial, sans-serif;
+    font-size: 11px;
+}
+
+#UserTile_picture {
+    display: table-cell;
+    height: 50px;
+    padding-right: 8px;
+    width: 50px;
+}
+
+#UserTile_name {
+    color: #3B5998;
+    display: table-cell;
+    font-weight: bold;
+    vertical-align: top;
+}
+</style>
+
+<script>
+UserTile.prototype.extend({
+    name: Control.bindTo("$UserTile_name", "content"),
+    picture: Control.bindTo("$UserTile_picture", "prop/src")
+});
+</script>
+
+</Control>

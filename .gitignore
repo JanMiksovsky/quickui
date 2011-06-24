@@ -12,6 +12,7 @@ Release
 
 build
 quicommon/quicommon.*
+sandbox/sandbox.*
 site/blog/blog.*
 site/controls/controls.*
 site/demos/MaxSquareDemo/MaxSquareDemo.*

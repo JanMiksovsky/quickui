@@ -1,32 +1,76 @@
+<!--
+This page is a typical top-level HTML page for a QuickUI app. Not much actually
+goes on here except for loading the require scripts and styles sheets, and
+bootstrapping the creation of a top-level control.
+-->
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
+<!--
+The following stylesheet represents the combined output of the styling for
+all controls in this project (i.e., this folder and any subfolders). This
+file is created by the qb build tool after all controls have been compiled
+to their intermediate outputs in the /build folder. This file is simply
+the concatenation of /build/*.css.
+
+The file name is inferred from the name of the top-level folder. Since
+this folder is called sandbox, this file is named sandbox.css.
+-->
+<link rel="stylesheet" type="text/css" href="sandbox.css" />
+
+<!-- QuickUI depends upon jQuery. -->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.js"></script>
+
+<!-- The QuickUI framework runtime. It creates and manipulates controls. -->
 <script type="text/javascript" src="../lib/quickui.js"></script>
 
+<!--
+This script file is the combined output of the generates JavaScript for all
+controls in the project. It's essentially the .js analogue of the combined .css
+stylesheet above. The generated JavaScript for each control (which you find
+in the /build folder) will each have two parts. The first part will be the
+result of compiling the control's markup down to JavaScript calls, which
+ultimately boil down to jQuery manipulations of the DOM. The second part will
+the contents of any script tag within the control markup.
+-->
+<script type="text/javascript" src="sandbox.js"></script>
+
+<!--
+The following is a typical bootstrap sequence for a QuickUI app.
+-->
 <script>
 /*
- * The following is a typical bootstrap sequence for a QuickUI app.
- *
  * The standard jQuery ready function is invoked once the page's scripts, etc.,
  * have finished loading. The example instantiates a control at the level
  * of the page body. It could just as easily have instantiated the
  * control at any given element within the body. Controls also can be instantiated
  * at any point after the page is ready, e.g., in response to user actions.
- *
- * The actual work here is done by $.control(), the single top-level jQuery
- * plug-in defined by QuickUI. (All other framework methods are reached via a
- * jQuery subclass called Control.) The $.control() method has several forms.
- * Here it takes the name of a control class (Sample), and creates an instance
- * of that class around each control in the jQuery selector (here, body).
  */
 $(function() {
-    $("body").control(Control).content("Hello, world.");
+    
+    /*
+     * The actual work here is done by $.control(), the single top-level jQuery
+     * plug-in defined by QuickUI. (All other framework methods are reached via a
+     * jQuery subclass called Control.) The $.control() method has several forms.
+     * Here it takes the name of a control class (Sample), and creates an instance
+     * of that class around each control in the jQuery selector (here, body).
+     */
+    $("body").control(Demo);
+    
 });
 </script>
 
 </head>
+
+<!--
+In a pure QuickUI app, the body doesn't have any static content; the whole page
+will be assembled at runtime by controls. But QuickUI controls can coexist on
+pages built in other means: static HTML, traditional JavaScript, jQuery,
+jQuery UI, etc.
+-->
 <body/>
+
 </html>

@@ -1,0 +1,54 @@
+<!--
+This is the QuicKUI markup file for a top-level page. There's nothing special
+about a top-level page control — this control could just as easily be hosted inside
+another control — but that's how we'll use it here.
+
+This file is compiled by invoking the qb (QuickUI build) tool on the top-level
+folder for this project. This file is called Demo.qui, so compilation will generate
+the intermediate outputs /build/Demo.js and /build/Demo.css. Those files will get
+combined with other .js and .css output to form the project's top level generated
+files, sandbox.js and sandbox.css.
+-->
+
+<!--
+All control class definitions are enclosed by a "Control" tag that names the class.
+Case is significant in QuickUI markup, so Control has to be capitalized. Since this
+file will generate a JavaScript class, which by convention are also capitalized,
+the control class name Demo is capitalized.
+-->
+<Control name="Demo">
+
+<!--
+The content tag (must be lowercase) defines the initial markup for a control.
+When this control class is instantiated, the following elements will be added to
+the DOM. This elements can be a mixture of regular HTML and additional QuickUI
+controls. By convention, the content element is placed first, above style and
+script elements.
+-->
+<content>
+    
+    <!-- Plain HTML; tag must be lowercase -->
+    <h1>QuickUI Sandbox</h1>
+    
+    <UserTile name="Ann Williams" picture="resources/usertile1.png"/>
+    <UserTile name="Daniel Garcia" picture="resources/usertile2.png"/>
+    <UserTile>
+        <name>Stacy Nakamura</name>
+        <picture>resources/usertile3.png</picture>
+    </UserTile>
+
+</content>
+
+<!--
+These styles will apply to any elements contained by this control.
+Since this control represents the top-level page, this styles here will
+apply to the whole page.
+-->
+<style>
+{   /* No explicit rule selector; will apply to a control's top-level element. */
+    font-family: Helvetica, Arial, sans serif;
+    font-size: 16px;
+}
+</style>
+
+</Control>
