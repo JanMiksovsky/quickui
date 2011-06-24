@@ -20,6 +20,7 @@
 
 #UserTile_name {
     color: #3B5998;
+    cursor: pointer;
     display: table-cell;
     vertical-align: top;
 }
@@ -27,8 +28,16 @@
 
 <script>
 UserTile.prototype.extend({
+    
     name: Control.bindTo("$UserTile_name", "content"),
-    picture: Control.bindTo("$UserTile_picture", "prop/src")
+    picture: Control.bindTo("$UserTile_picture", "prop/src"),
+    
+    initialize: function() {
+        var self = this;
+        this.$UserTile_name().click(function() {
+            alert("Hi, " + self.name() + "!");
+        });
+    }
 });
 </script>
 
