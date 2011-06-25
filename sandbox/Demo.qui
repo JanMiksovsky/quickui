@@ -65,6 +65,9 @@ script elements.
         </content>
         
     </UserTile>
+    
+    <!-- Instantiate a subclass of UserTile called FacebookUserTile. -->
+    <FacebookUserTile userId="miksovsky" />
 
 </content>
 
@@ -86,6 +89,9 @@ apply to the whole page.
      * tiles is really up to the host, it doesn't make sense to bake this
      * kind of detail into the UserTile itself, but leave it for the host to
      * define.
+     * 
+     * Note that, because FacebookUserTile derives from UserTile, instances of
+     * FacebookUserTile will also pick up this styling.
      */
     margin-bottom: 0.5em;
 }

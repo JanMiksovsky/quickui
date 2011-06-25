@@ -24,21 +24,23 @@ programmatic interface as defined in the script tag; see below.
     </div>
 </content>
 
-<!-- Styles for the markup above -->
+<!--
+Styles for the markup above. Keeping CSS and markup adjacent makes it much easier
+to see which styles apply to which elements, and why.
+-->
 <style>
 {   /* Applies to the top-level element for the control */
-    display: table;
     font-size: 14px;
 }
 > * {
     /* Applies to all top-level children */
-    display: table-cell;
+    display: inline-block;
     vertical-align: middle;
 }
 
 #UserTile_picture {
     height: 50px;
-    padding-right: 8px;
+    padding-right: 4px;
     width: 50px;
 }
 
@@ -95,7 +97,12 @@ UserTile.prototype.extend({
      * in quickui.js for more details.
      * 
      * The result of all this will be that UserTile will have a function called name()
-     * that sets and gets the contents of the div element with id="UserTile_name". 
+     * that sets and gets the contents of the div element with id="UserTile_name".
+     * The key thing is that this reference is guaranteed to pull out the right
+     * element, even if another element with the same id exists on the page.
+     * The QuickUI framework manages this by storing a persistent reference to any
+     * element with an ID at the moment that element is created. The element function
+     * $UserTile_name() is the way to access that persistent reference. 
      */
      name: Control.bindTo("$UserTile_name", "content"),
     
@@ -120,9 +127,18 @@ UserTile.prototype.extend({
     initialize: function() {
         /* Wire up a click event handler for the user name. */
         var self = this;
+        /* See above for a discussion of $UserTile_name(). */
         this.$UserTile_name().click(function() {
-            alert("Hi, " + self.name() + "!");
+            self._nameClicked();
         });
+    },
+    
+    /*
+     * Default behavior for clicking on a name. We break this out into its
+     * own method so that subclasses can override the default behavior.
+     */
+    _nameClicked: function() {
+        alert("Hi, " + this.name() + "!");
     }
 });
 </script>
