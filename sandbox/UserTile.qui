@@ -18,18 +18,25 @@ programmatic interface as defined in the script tag; see below.
     and figure out which control put it there.
     -->
     <img id="UserTile_picture" />
-    <div id="UserTile_name" />
+    <div>
+        <a id="UserTile_name" href="javascript:" />
+        <div id="UserTile_content" />        
+    </div>
 </content>
 
 <!-- Styles for the markup above -->
 <style>
-{   /* Applies to the top-level element for the control. */
+{   /* Applies to the top-level element for the control */
     display: table;
     font-size: 14px;
 }
+> * {
+    /* Applies to all top-level children */
+    display: table-cell;
+    vertical-align: middle;
+}
 
 #UserTile_picture {
-    display: table-cell;
     height: 50px;
     padding-right: 8px;
     width: 50px;
@@ -37,9 +44,11 @@ programmatic interface as defined in the script tag; see below.
 
 #UserTile_name {
     color: #3B5998;
-    cursor: pointer;
-    display: table-cell;
-    vertical-align: top;
+    font-weight: bold;
+    text-decoration: none;
+}
+#UserTile_name:hover {
+    text-decoration: underline;
 }
 </style>
 
@@ -50,6 +59,16 @@ programmatic interface as defined in the script tag; see below.
  * jQuery object.
  */
 UserTile.prototype.extend({
+    
+    /*
+     * Define a general-purpose content property. It's up to each control to
+     * define up to one "slot" that represents the control's main content.
+     * In this case, the UserTile content property is delegated to one of its
+     * sub-elements, the div with id="UserTile_content".
+     * 
+     * See the discussion for name(), below, for details of how bindTo works.
+     */
+    content: Control.bindTo("$UserTile_content", "content"),
     
     /*
      * The following defines a function called name() that gets/sets the
@@ -78,7 +97,7 @@ UserTile.prototype.extend({
      * The result of all this will be that UserTile will have a function called name()
      * that sets and gets the contents of the div element with id="UserTile_name". 
      */
-    name: Control.bindTo("$UserTile_name", "content"),
+     name: Control.bindTo("$UserTile_name", "content"),
     
     /*
      * The following line creates a picture() function is similar to the name()
