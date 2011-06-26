@@ -57,6 +57,13 @@ sample Greet control to (arguably) improve legibility:
 
 <SourceCode sourceFile="Greet.qui" />
 
+<p>
+In this light, the <Tag>content</Tag> of a control in a Quick markup file is
+analogous to the <Tag>body</Tag> of an HTML file. Whereas HTML places the
+<Tag>body</Tag> at the end, by convention Quick markup places <Tag>content</Tag>
+first, as its almost always the first thing one wants to read to understand what
+a control does and how it will look at run-time.
+</p>
 
 <Link href="/tutorial/section10/default.html">Next ></Link>
 

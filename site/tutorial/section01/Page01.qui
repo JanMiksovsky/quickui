@@ -130,7 +130,7 @@ $
 
 <p>
 	The <Tag>script</Tag> tag above uses the jQuery function $() to run code when the document
-	is loaded. That code invokes a QuickUI jQuery extension called $.control(), which
+	is loaded. That code invokes a QuickUI jQuery plugin called $.control(), which
 	takes care of the details of creating an instance of our new Greet control.
 	Here it will turn the page's <Tag>body</Tag> into an instance of Greet.
 </p>

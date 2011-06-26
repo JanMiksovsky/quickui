@@ -20,19 +20,35 @@ to false, the control will ignore clicks:
 <SourceCode sourceFile="Greet.qui" />
 
 <p>
-The enabled property is defined by calling the helper function Control.element().applyClass,
+The enabled property is defined by calling the helper function applyClass(),
 which returns a function that adds or removes a CSS class from a named element.
-The resulting Greet.enabled() function can be called with no parameters to obtain a boolean
-that indicates whether the CSS class is currently applied. Alternatively, a boolean
-parameter can be supplied to add the indicated CSS style (if the parameter is true)
-or remove the style (if the parameter is false).
+This function is identical to $.toggleClass() when invoked as a setter (i.e.,
+it sets the indicated class), and to $.hasClass() when invoked as a getter (it
+indicates whether or not the element has the indicated class). Here we use
+some syntax supported by the bindTo() function to pass a parameter to applyClass:
+the name of the class we want to get or set.
 </p>
 
 <p>
-Here we apply some basic formatting so that a disabled Greet control will not show the
-pointer cursor over the main content element. With this in place, our Sample control
-can now enable or disable a Greet control through markup. We can leave the first two
-<Tag>Greet</Tag> tags alone, but apply the disabled property to the third:
+The resulting Greet.enabled() function can be called with no parameters to obtain a boolean
+that indicates whether the CSS class "enabled" is currently applied.
+Alternatively, a boolean parameter can be supplied to add the indicated CSS style
+(if the parameter is true) or remove the style (if the parameter is false).
+We use the <Tag>style</Tag> tag to define the desired appearance of an enabled
+Greet instance to include a pointer control when the mouse is over the main content element.
+</p>
+
+<p>
+It's very common for a control to have a function like Greet.enabled() above which
+delegates an aspect of its appearance to a CSS class. Significantly, hosts of this
+control can remain unaware of the use of CSS, and confine their attention to the
+boolean semantics of the enabled() property.
+</p>
+
+<p>
+With this in place, our Sample control can now enable or disable a Greet control
+through markup. We can leave the first two <Tag>Greet</Tag> tags alone,
+but apply the disabled property to the third:
 </p>
 
 <SourceCode sourceFile="Sample.qui" />

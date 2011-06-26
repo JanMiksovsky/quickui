@@ -18,37 +18,61 @@ content: function(value) {
 
 <p>
 To facilitate construction of such functions, the QuickUI run-time library includes
-a helper class called Element that serves as a factory for functions like the one above.
+a helper class called bindTo that serves as a factory for functions like the one above.
 So we can replace the above property definition with this one:
 </p>
 
 <pre>
-content: Control.element("Greet_content").content()
+content: Control.bindTo("$Greet_content", "html")
 </pre>
 
 <p>
-Here, the Element() reference indicates that we want to create a function bound to
-the element called “Greet_content”. Furthermore, we want
-a function that will set or get the content of that element. Note: the above code does not
-immediately return the content of Greet_content; it returns a 
-<i>function</i> that can be used later to obtain the content of Greet_content. So the
-above code is effectively a late-bound reference to the element we want.
+The function bindTo() itself returns a function that will apply the indicated
+parameters as a jQuery-style chain. When invoked as a setter, i.e., with a defined
+argument, the function will pass that argument to the function indicated by the final
+parameter. In the above example, that would be $.html(). As a result, the two function
+definitions above are equivalent.
 </p>
 
 <p>
-Using property factories reduces the amount of code required to define control properties,
+Using bindTo reduces the amount of code required to define control properties,
 and correspondingly reduces the chances for bugs. It also allows someone else reading the
-code to clearly see the intent of the property declaration. QuickUI defines several other
-property factories for defining common types of control properties. Significantly, this
-feature of QuickUI is defined in the run-time library, <i>not</i> in the
-Quick markup language, to afford the developer more flexibility.
+code to clearly see the intent of the property declaration. In the example above,
+the developer wishes to expose the HTML content an element called with id="Greet_content"
+via a getter/setter function called content().
+</p>
+
+<h2>Using the content() function</h2>
+
+<p>
+The use of the $.html() function above can be replaced with a more flexible function
+defined in QuickUI called content(). The $.html() function can only deal with strings,
+but content() function can work with real DOM elements or jQuery objects.
+In that regard, it's similar the jQuery $.contents() function (with a plural "s"),
+only content() can also be called as a setter while $.contents() is read-only.
+</p>
+
+<p>
+So it will generally be more useful to define our content function with content()
+as the last part of the binding:    
+</p>
+
+<pre>
+content: Control.bindTo("$Greet_content", "content")
+</pre>
+
+<p>
+This definition uses the word "content" several times. What it says is, "The content
+of a Greet control can be saved in, or read from, the content of the element called
+with id='Greet_content'." In other words, the Greet control is <i>delegating</i>
+its content to one of the elements it contains.
 </p>
 
 <h2>Defining multiple “slots” with additional properties</h2>
 
 <p>
-Let’s adapt our Greet control to use the Control.element() property factory above.
-And since it’s so easy to define new control properties, let’s extend our Greet control
+Let’s adapt our Greet control to use the Control.bindTo() property factory above.
+Since it’s so easy to define new control properties, let’s extend our Greet control
 with an additional property to control the type of punctuation used at the end of the
 greeting:
 </p>

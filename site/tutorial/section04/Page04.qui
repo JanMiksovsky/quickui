@@ -41,6 +41,8 @@ standard HTML “id” attribute. We can replace the static text “world” use
 but the above arrangement is more convenient for some modifications we’ll make later.)
 </p>
 	
+<h2>Element functions</h2>
+
 <p>
 At compile time, the qc compiler traverses the Quick markup looking for HTML tags or QuickUI class
 tags with “id” attributes. Any IDs found in this way will be compiled into JavaScript properties
@@ -56,49 +58,62 @@ The key expression is
 
 <![CDATA[
 <pre>
-this.Greet_content = $("&lt;span id=\"Greet_content\" /&gt;")[0]
+this._define("$Greet_content", Control("&lt;span id=\"Greet_content\" /&gt;"))
 </pre>
 ]]>
 
 <p>
-This refers to the same literal name “Greet_content” twice, but in completely different
-worlds. The right hand side of the expression takes place in the DOM world; the left hand
-side in the JavaScript world. The Quick markup created an implicit association between
-those two worlds by specifiying an ID on a markup element.
+This line is doing three distinct things:
+</p>
+
+<ol>
+    
+<li>
+First, the bit on the right creates
+a <Tag>span</Tag> element via a standard jQuery call. It doesn't look like it,
+but since the Control class is a subclass of jQuery, the Control(...) call
+is really just like a normal $("&lt;span/&gt;") element creation.
+</li>
+
+<li>
+The second piece of work here is to save a reference to that just-created element
+behind the scenes, as part of the control's $.data(). This reference ensures that
+the control can always quickly retrieve the specific <Tag>span</Tag> that belongs to it.
+This is both safer and faster than trying to search again for that element. (When one
+control contains another control, the possibility arises for an ID collision.)
+</li>
+
+<li>
+Finally, the third act here is to define a new function on the Greet prototype
+called $Greet_content(). This is called an <i>element function</i> that
+returns the saved reference to the <Tag>span</Tag>.  An element function is essentially
+a mapping function that maps a control, or array of controls, to the desired
+sub-elements in the control's DOM. E.g., if we are holding a jQuery array of three
+Greet instances, then called $Greet_content() on that array will return an array
+with references to the three corresponding spans inside those controls.
+</li>
+
+</ol>
+
+<p>
+The QuickUI compiler and framework allow you to use DOM IDs to easily bridge the
+two different namespaces of DOM elements and JavaScript functions. If you create
+an element with id="foo", you'll end up with a function called $foo() that lets
+you quickly and safely retrieve that element. 
 </p>
 
 <p>
-There’s no semantic value to the identifier name Greet_content — we could have called it
+It is still possible to obtain a reference to the <Tag>span</Tag>, for
+example with jQuery functions like find("#Greet_content"), and there are some cases where that can
+still be useful. The primary disadvantage of such a run-time search is that the
+search isn’t guaranteed to find the right element on the right control instance.
+</p>
+
+<p>
+There’s no semantic value to the identifier "Greet_content" — we could have called it
 anything — but including the class name in the identifier simplifies debugging. If we need
 to examine the DOM at run time, it’ll be clear what role the <Tag>span</Tag> is playing
 and which class put that element there.
-</p>
-
-<h2>Using element references</h2>
-
-<p>
-The above property assignment to this.Greet_content is made at the moment the relevant <Tag>span</Tag>
-is created. This guarantees that each instance of the Greet control will hold a reference to the
-proper <Tag>span</Tag> element defined within its own DOM, and not to any other span.
-</p>
-
-<p>
-When the render() method executes, properties defined in Quick markup are set on the corresponding
-JavaScript objects. So if the JavaScript variable “g” holds a reference to a Greet control,
-then g.Greet_content will hold a reference to the HTMLSpanElement which is the <Tag>span</Tag> above.
-This is the direct HTML DOM element. If we wish to manipulate that element with jQuery, we can wrap it
-in a call to the jQuery function: $(g.Greet_content).
-</p>
-<p>
-Once the control has saved references to the DOM elements it cares about, we can largely dispense with
-hunting through the DOM later. It is still possible to obtain a reference to the <Tag>span</Tag>, for
-example with jQuery functions like find("#Greet_content"), and there are some cases where that can
-still be useful. The primary disadvantage of such a run-time search is that the
-search isn’t guaranteed to find the right element we’re looking for. If there are multiple
-instances of the same control type on the same page, we might accidentally obtain a
-reference to the wrong <Tag>span</Tag>. The problem can also arise if another control
-class happens to define a property with the same name. It’s much safer to access elements through
-references that were saved at the moment the elements were created.
 </p>
 
 <Link href="/tutorial/section05/default.html">Next ></Link>

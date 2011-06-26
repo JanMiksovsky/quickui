@@ -69,21 +69,21 @@ we'll see the JavaScript which the qc compiler has generated:
 </p>
 <SourceCode sourceFile="build/Greet.js" />
 <p>
-	This code defines a class using a typical JavaScript prototype-based
-	inheritance scheme. The above JavaScript creates a new class called Greet
-	that inherits from a class called Control, the base class from which all
-	QuickUI controls eventually derive. The Greet class defines two new members:
-	a className variable that affords run-time access to the name of the class, and a
-	render() method which is invoked whenever someone creates an instance
-	of a Greet control.
+	This code defines Greet as a subclass of a class called Control, the base class from
+	which all QuickUI controls eventually derive. Control itself is a subclass of
+	the standard jQuery object. This means Greet inherits all the normal jQuery
+	operations, as well as some additional methods for working with controls.
+	Later on, we'll see how we can define class-specific methods and properties 
+	for the Greet class which will only be available to Greet instances.
 </p>
 <p>
-	The render() method is the compiled version of the original Quick markup above.
-	Here it simply states that the control’s content should be a static HTML string. 
-	As we’ll see, the contents of a control can become considerably more complex.
-	The key point is that the Quick markup is getting compiled down to JavaScript code.
-	Although it’s not visible in the code above, the generated code ultimately invokes
-	jQuery methods to populate the page DOM with the desired elements.
+    The function renderGreet() above is a compiled version of the original Quick
+    markup above. Here it simply states that the control’s content should be a
+    static HTML string. As we’ll see, the contents of a control can become
+    considerably more complex. The key point is that the Quick markup is getting
+    compiled down to JavaScript code. Although it’s not visible in the code above,
+    the generated code ultimately invokes jQuery methods to populate the page DOM
+    with the desired elements.
 </p>
 
 <p>
@@ -94,9 +94,9 @@ $("body").control(Greet);
 </pre>
 
 This code creates a jQuery object pointing to a particular DOM element (here, the page
-<Tag>body</Tag>), and then calls the QuickUI jQuery extension control().
+<Tag>body</Tag>), and then calls the QuickUI jQuery plugin $.control().
 In this case, the extension instantiates the indicated Greet class,
-and invokes the method Greet.render() in the generated Greet.js file above.
+and invokes the method renderGreet() in the generated Greet.js file above.
 This produces the desired output, now with italics:
 </p>
 

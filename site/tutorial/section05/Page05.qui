@@ -53,15 +53,22 @@ language and many alternative routes are possible. Some notes on the particular 
 </p>
 <ul>
 	<li>
-		Here the code calls the jQuery $.extend() utility function
-		to add a property to the Greet class by modifying the class’ prototype. It’s equivalent to defining a function
-		called Greet.prototype.content, but as we add more properties, the $.extend() approach is more compact.
+		Here the code calls extend() utility function inherited from jQuery
+		(remember, Greet ultimately inherits from jQuery)
+		to add a property to the Greet class by modifying the class’ prototype.
+		As we add more properties, the extend() approach is very compact.
 	</li>
 	<li>
 		Also following jQuery convention, QuickUI control classes generally define properties as setter/getter functions.
 		These are functions that accept a single value. If the value is undefined (missing), the function call behaves as
 		a getter, and returns the current value of the property. If the function call includes a value, the function sets
 		the property to that value.
+	</li>
+	<li>
+	    To support jQuery-style chaining, the setter function should return "this".
+	    In this case, $.html() already returns "this" when called as a setter (and the HTML
+	    contents when called as a getter) so no addition processing is necessary to
+	    support chaining. 
 	</li>
 	<li>
 		In this particular property example, we’re defining a property called “content” that will form the significant
@@ -91,28 +98,6 @@ property “foo”, and most of the above would still hold true. It turns out, a
 in a minute, that the property called “content” has a specific meaning to the qc compiler
 that is useful in setting control content.
 </p>
-
-<!--
-<h2>Setting a property through JavaScript</h2>
-
-<h2>Setting a property through a control attribute</h2>
-<p>
-Now that we’ve defined a new property called Greet.content, the property can be set
-through QuickUI markup. The simplest way to do this is by setting an attribute on the
-control instance. Here’s our Sample control again, which holds three instances of Greet.
-We can now give each instance different content:
-</p>
-
-<SourceCode sourceFile="Sample.qui" />
-
-<p>
-This outputs:
-</p>
-
-<CodeOutput>
-	<Sample/>
-</CodeOutput>
--->
 
 <Link href="/tutorial/section06/default.html">Next ></Link>
 

@@ -5,7 +5,7 @@
 <script>
 Greet.prototype.extend({
 	content: function(value) {
-		return this.$Greet_content.html(value);
+		return this.$Greet_content().html(value);
 	}
 });
 </script>

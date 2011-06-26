@@ -20,12 +20,14 @@ of existing controls, or by subclassing an existing control to make it more spec
 The page you are reading here, and remainder of this site, is built entirely using QuickUI.
 </p>
 <p>
+QuickUI builds upon the <Link href="http://jquery.com">jQuery</Link> web development
+library, and gives jQuery developers an fully object-oriented and extensible control framework.
+</p>
+<p>
 QuickUI includes tools that compile your markup into regular JavaScript and CSS files.
-These tools run on Windows and OS/X. The generated JavaScript
-makes use of the <Link href="http://jquery.com">jQuery</Link> library to
-build the web user interface on demand. QuickUI also includes a run-time library.
+These tools run on Windows and OS/X. QuickUI also includes a run-time library.
 Overall QuickUI is targetted at and tested against the mainstream browsers:
-Apple Safari, Google Chrome, Internet Explorer 8.x, and Mozilla Firefox.
+Apple Safari, Google Chrome, Internet Explorer 8/9, and Mozilla Firefox.
 </p>
 <p>
 The following are brief examples of some aspects of QuickUI. Each demo shows
