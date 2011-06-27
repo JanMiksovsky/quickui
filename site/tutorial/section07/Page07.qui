@@ -1,13 +1,14 @@
 <Control name="Page07">
 <prototype>
-<TutorialPage title="Compact property definition using property factories">
+<TutorialPage title="Compact property definition using property bindings">
 
-<h2>Declaring a property using a property factory</h2>
+<h2>Declaring a property using a binding</h2>
 <p>
 Defining a control property like Greet.content is so common, the QuickUI framework
 includes some JavaScript helper classes to more concisely define common types of properties.
 The Greet.content property in this example is a very common type of property:
-a control property backed by the contents of a specific HTML element within the control’s DOM.
+a control property backed by, or <i>bound to</i>, the contents of a specific
+HTML element within the control’s DOM.
 </p>
 
 <pre>
@@ -101,6 +102,19 @@ templates for chunks of content that vary only in certain places, templates for 
 etc.
 </p>
 
+<h2>Chaining property calls</h2>
+
+<p>
+Property functions defined using bindTo return "this", and therefore support jQuery-style
+chaining.
+</p>
+
+<pre>
+$(".Greet")                 // Get all Greet elements on the page.
+    .control()              // Cast them to their original Greet class.
+    .content("Angela")      // Set the content of all of them.
+    .punctuation("!");      // Set the punctunation of all of them.
+</pre>
 
 <Link href="/tutorial/section08/default.html">Next ></Link>
 

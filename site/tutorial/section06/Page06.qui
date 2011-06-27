@@ -37,8 +37,8 @@ If we have a reference to a control, we can simply call the property function
 and pass in the new desired value for the property:
 
 <pre>
-var g = $("body").control(Greet);   // Instantiate the control
-g.content("Dan");                   // Set a property
+var g = $("body").control(Greet);   // Instantiate the control.
+g.content("Dan");                   // Set a property.
 </pre>
 
 <p>
@@ -57,8 +57,42 @@ property function with no arguments:
 </p>
 
 <pre>
-var g = $("body").control();        // Retrieve a reference to the control
-var name = g.content();             // Get the control's current content
+var g = $("body").control();        // Retrieve a reference to the control.
+var name = g.content();             // Get the control's current content.
+</pre>
+
+<h2>Casting</h2>
+
+<p>
+The first line above calls the control() function as a getter. This returns
+the current jQuery selection <i>cast to the correct class</i>. When a QuickUI
+control is first instantiated, the framework saves data on the control's top-level
+element which records the control's class. A normal jQuery selector like $("body")
+returns an instance of the jQuery class. By applying the control() plug-in, the
+result is cast back to the control's original class. That class is a subclass of
+jQuery, so all the normal jQuery operations can be applied to it — as well as
+any custom properties like the content() property we've defined here.
+</p>
+
+<pre>
+var s = $("body");          // s is instance of jQuery
+var g = s.control();        // g is instance of Greet
+</pre>
+
+<h2>Setting properties on an array of controls</h2>
+
+<p>
+Since jQuery objects are arrays that may have more than one member, QuickUI
+properties and methods are generally designed to work across an array of controls.
+This means that we can use jQuery to find a collection of controls, cast them
+to the correct control class, then perform bulk operations on them. For example,
+we can set the content() property of all of them in one property call:
+</p>
+
+<pre>
+$(".Greet")                 // Get all Greet elements on the page.
+    .control()              // Cast them to their original Greet class.
+    .content("Angela");     // Set the content of all of them at once.
 </pre>
 
 <Link href="/tutorial/section07/default.html">Next ></Link>
