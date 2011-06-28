@@ -405,6 +405,25 @@ function runTests() {
         equal($c.display(), "none");
     });
      
+    test("Utility: eachControl", function() {
+        
+        // Create two instances of different classes.
+        var Foo = Control.subclass("Foo");
+        Foo.prototype.content = function() { return "foo"; };
+        var $foo = Foo.create();
+        var Bar = Control.subclass("Bar");
+        Bar.prototype.content = function() { return "bar"; };
+        var $bar = Bar.create();
+        
+        var $c = Control().add($foo).add($bar);
+        var results = [];
+        // eachControl should invoke the specific content functions.
+        $c.eachControl(function(index, $control) {
+            results.push($control.content());
+        });
+        equal(results, [ "foo", "bar" ]);
+    });
+     
     test("Utility: applyClass", function() {
         var $c = Control.create().toggleClass("foo");
         equal($c.applyClass("foo"), true);
