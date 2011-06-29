@@ -404,6 +404,10 @@ function runTests() {
         equal($c.css("display"), "none");
         equal($c.display(), "none");
     });
+    
+    /*
+     * Utilities
+     */
      
     test("Utility: eachControl", function() {
         
@@ -421,7 +425,7 @@ function runTests() {
         $c.eachControl(function(index, $control) {
             results.push($control.content());
         });
-        equal(results, [ "foo", "bar" ]);
+        deepEqual(results, [ "foo", "bar" ]);
     });
      
     test("Utility: applyClass", function() {
