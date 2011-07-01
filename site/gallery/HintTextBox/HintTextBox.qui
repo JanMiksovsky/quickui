@@ -33,7 +33,9 @@
 <script>
 HintTextBox.prototype.extend({
 	
-    content: Control.bindTo("$HintTextBox_textBox", "content"),
+    content: Control.bindTo("$HintTextBox_textBox", "content", function() {
+        this._showHintIfEmpty();
+    }),
 	hint: Control.bindTo("$HintTextBox_hint", "content"),
 	
 	initialize: function() {
