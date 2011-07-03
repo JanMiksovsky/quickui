@@ -1,7 +1,7 @@
 <Control name="SitePage">
 
 <prototype>
-	<Page fill="true">
+	<Page>
 	
 	    <GoogleAnalytics profileId="UA-11520232-1" />
 	    
@@ -29,14 +29,9 @@
 </prototype>
 
 <style>
-
 {
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    height: 100%;
-    overflow-y: scroll;
+    margin: 0;
+    width: 100%;
 }
 
 #tableMain {
@@ -109,7 +104,6 @@
 .CodeOutput {
 	margin: 5px 0 10px 0;
 }
-
 </style>
 
 <script>
