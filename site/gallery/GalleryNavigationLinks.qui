@@ -16,6 +16,7 @@ GalleryNavigationLinks.prototype.extend({
     initialize: function() {
         this.$listClass().items([
             "BrowserSpecific",
+            "ButtonBase",
             "GalleryPage",
             "Gradient",
             "HintTextBox",

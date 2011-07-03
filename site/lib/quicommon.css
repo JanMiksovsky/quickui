@@ -12,32 +12,6 @@
 	cursor: default;
 }
 
-/*** HorizontalPanels ***/
-
-.HorizontalPanels {
-    display: table;
-}
-
-.HorizontalPanels.fill {
-    height: 100%;
-    position: absolute; /* Suppress normal table size-to-content */
-    width: 100%;
-}
-
-.HorizontalPanels > * {
-    display: table-cell;
-    vertical-align: top;
-}
-
-.HorizontalPanels .minimumWidth {
-    width: 1px;
-}
-
-/* Supports nesting of HorizontalPanels or VerticalPanels with fill="true" */
-.HorizontalPanels #HorizontalPanels_content > * {
-	position: inherit;
-}
-
 /*** Overlay ***/
 
 .Overlay {
@@ -76,6 +50,16 @@
 	display: none !important;
 }
 
+/*** TabSet ***/
+
+.TabSet {
+    position: relative;
+}
+
+.TabSet #buttons {
+    white-space: nowrap; /* So tabs don't wrap. */
+}
+
 /*** VerticalAlign ***/
 
 .VerticalAlign {
@@ -91,26 +75,32 @@
 /*** VerticalPanels ***/
 
 .VerticalPanels {
-    display: table;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    /*
+    Setting height when not in fill mode prevents resize logic from
+    cylcing endlessly and shouldn't otherwise affect anything.
+    */
+    height: 100%;
+    position: relative;
+}
+.VerticalPanels > * {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    position: relative; /* So inner controls can be absolutely positioned within */
 }
 
 .VerticalPanels.fill {
-    height: 100%;
-    position: absolute; /* Suppress normal table size-to-content */
+    overflow-y: hidden;
+    position: absolute;
     width: 100%;
 }
-
-.VerticalPanels > * {
-    display: table-row;
-}
-
-.VerticalPanels .minimumHeight {
-    height: 1px;    /* 0 would make element disappear. */
-}
-
-/* Supports nesting of HorizontalPanels or VerticalPanels with fill="true" */
-.VerticalPanels #VerticalPanels_content > * {
-	position: inherit;
+.VerticalPanels.fill #VerticalPanels_content {
+    overflow-y: auto;
 }
 
 /*** Dialog ***/
@@ -119,5 +109,42 @@
 	background-color: white;
 	border: 1px solid black;
 	position: fixed;
+}
+
+/*** HorizontalPanels ***/
+
+.HorizontalPanels {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    position: relative;
+    /*
+    Setting width when not in fill mode prevents resize logic from
+    cylcing endlessly and shouldn't otherwise affect anything.
+    */
+    width: 100%;
+}
+
+.HorizontalPanels > * {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    bottom: 0;
+    position: absolute;
+    top: 0;
+}
+
+.HorizontalPanels #HorizontalPanels_left {
+    left: 0;
+}
+.HorizontalPanels #HorizontalPanels_right {
+    right: 0;
+}
+
+.HorizontalPanels.fill {
+    height: 100%;
+    position: absolute;
 }
 

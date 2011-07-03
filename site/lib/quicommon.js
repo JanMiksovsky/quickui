@@ -1,7 +1,7 @@
 //
 // BrowserDependent
 //
-BrowserDependent = Control.subclass("BrowserDependent", function() {
+BrowserDependent = Control.subclass("BrowserDependent", function renderBrowserDependent() {
 	this.properties({
 		"content": [
 			" ",
@@ -25,6 +25,36 @@ BrowserDependent.prototype.extend({
 		var allConditionsSatisfied = usingSpecifiedBrowser && browserSupportsProperty;
 		this.$BrowserDependent_content().toggle(allConditionsSatisfied);
 		this.$BrowserDependent_elseContent().toggle(!allConditionsSatisfied);
+	}
+});
+
+//
+// BrowserSpecific
+//
+BrowserSpecific = Control.subclass("BrowserSpecific", function renderBrowserSpecific() {
+	this.properties({
+		"content": [
+			" ",
+			this._define("$BrowserSpecific_content", Control("<span id=\"BrowserSpecific_content\" />")),
+			" ",
+			this._define("$BrowserSpecific_elseContent", Control("<span id=\"BrowserSpecific_elseContent\" />")),
+			" "
+		]
+	}, Control);
+});
+BrowserSpecific.prototype.extend({
+
+	content: Control.bindTo("$BrowserSpecific_content", "content"),
+	elseContent: Control.bindTo("$BrowserSpecific_elseContent", "content"),
+	ifBrowser: Control.property(),
+	ifSupport: Control.property(),
+	
+	initialize: function() {
+		var usingSpecifiedBrowser = (this.ifBrowser() === undefined) || !!$.browser[this.ifBrowser()];
+		var browserSupportsProperty = (this.ifSupport() === undefined) || !!$.support[this.ifSupport()];
+		var allConditionsSatisfied = usingSpecifiedBrowser && browserSupportsProperty;
+		this.$BrowserSpecific_content().toggle(allConditionsSatisfied);
+		this.$BrowserSpecific_elseContent().toggle(!allConditionsSatisfied);
 	}
 });
 
@@ -171,26 +201,158 @@ $.extend(ButtonBase, {
 });
 
 //
-// HorizontalPanels
+// Layout
 //
-HorizontalPanels = Control.subclass("HorizontalPanels", function() {
-	this.properties({
-		"content": [
-			" ",
-			this._define("$HorizontalPanels_left", Control("<div id=\"HorizontalPanels_left\" class=\"minimumWidth\" />")),
-			" ",
-			this._define("$HorizontalPanels_content", Control("<div id=\"HorizontalPanels_content\" />")),
-			" ",
-			this._define("$HorizontalPanels_right", Control("<div id=\"HorizontalPanels_right\" class=\"minimumWidth\" />")),
-			" "
-		]
-	}, Control);
+Layout = Control.subclass("Layout");
+Layout.prototype.extend({
+    
+    initialize: function() {
+        Layout.track(this);
+    },
+    
+    // Base implementation does nothing.
+    layout: function() {
+        return this;
+    }
+    
+    /* For debugging
+    _log: function(s) {
+        console.log(this.className + "#" + this.attr("id") + " " + s);
+        return this;
+    }
+    */
+    
 });
-HorizontalPanels.prototype.extend({
-    content: Control.bindTo("$HorizontalPanels_content", "content"),
-    fill: Control.bindTo("applyClass/fill"),
-    left: Control.bindTo("$HorizontalPanels_left", "content"),
-    right: Control.bindTo("$HorizontalPanels_right", "content")
+
+// Class methods.
+// TODO: Factor DOMNodeInserted listening into Control, where it can be used by other classes.
+Layout.extend({
+    
+    /*
+     * Re-layout any controls in the DOM.
+     */
+    recalc: function() {
+        //console.log("recalc");
+        // Call the layout() method of any control whose size has changed.
+        for (var i = 0, length = this._controlsToLayout.length; i < length; i++)
+        {
+            var $control = Control(this._controlsToLayout[i]).control();
+            var previousSize = $control.data("_size"); 
+            var size = {
+                height: $control.height(),
+                width: $control.width()
+            };
+            if (previousSize === undefined ||
+                size.height != previousSize.height ||
+                size.width != previousSize.width)
+            {
+                $control
+                    .data("_size", size)
+                    .layout();
+            }
+        }
+    },
+    
+    /*
+     * Start tracking the indicated controls for layout purposes.
+     * We won't actually lay them out until they're added to the DOM.
+     */
+    track: function($controls) {
+        //$controls._log("tracking");
+        this._initialize();
+        this._controlsNotYetInDOM = $controls.get().concat(this._controlsNotYetInDOM);
+        this._addControlsInDocument();
+    },
+
+    /* TODO: Allow a control to be stop being tracked for layout purposes.
+    untrack: function($controls) {
+        ...
+        this.recalc();
+    },
+    */
+   
+    /*
+     * If any pending controls are now in the DOM, add them to the list of
+     * controls to layout.
+     */
+    _addControlsInDocument: function() {
+        var needsRecalc = false;
+        var i = 0;
+        while (i < this._controlsNotYetInDOM.length)
+        {
+            var control = this._controlsNotYetInDOM[i];
+            if ($.contains(document.body, control))
+            {
+                this._controlsToLayout.push(control);
+                //Control(control).control()._log("added to layout list");
+                this._controlsNotYetInDOM.splice(i, 1);   // Remove control
+                needsRecalc = true;
+            }
+            else
+            {
+                i++;
+            }
+        }
+        if (needsRecalc)
+        {
+            this.recalc();
+        }
+        this._listenForDOMNodeInserted();
+    },
+    
+    /*
+     * An element has been added to the document;
+     */ 
+    _documentNodeInserted: function(event) {
+        //console.log("_documentNodeInserted");
+        Layout._addControlsInDocument();
+    },
+    
+    /*
+     * Initialize layout engine overall (not a specific instance).
+     */
+    _initialize: function() {
+        
+        if (this._initialized)
+        {
+            // Already did this.
+            return;
+        }
+        
+        // The following control arrays are maintained in order such that
+        // DOM parents come before their children. 
+        this._controlsNotYetInDOM = [];
+        this._controlsToLayout = [];
+        
+        this._listeningForDOMNodeInserted = false;
+       
+        // Recalc layout whenever the window size changes.
+        $(window).resize(function() {
+            Layout.recalc();
+        });
+        
+        this._initialized = true;
+    },
+    
+    /*
+     * If we we're tracking any controls that haven't been added to the DOM,
+     * then listen for DOMNodeInserted events.
+     */
+    _listenForDOMNodeInserted: function() {
+        if (!this._listeningForDOMNodeInserted && this._controlsNotYetInDOM.length > 0)
+        {
+            //console.log("start listening for DOMNodeInserted");
+            $(document).bind("DOMNodeInserted", this._documentNodeInserted);
+            this._listeningForDOMNodeInserted = true;
+        }
+        else if (this._listeningForDOMNodeInserted && this._controlsNotYetInDOM.length == 0)
+        {
+            //console.log("stop listening for DOMNodeInserted");
+            $(document).unbind("DOMNodeInserted", this._documentNodeInserted);
+            this._listeningForDOMNodeInserted = false;
+        }
+    }
+        
 });
 
 //
@@ -505,7 +667,7 @@ Control.prototype.extend({
 //
 // Popup
 //
-Popup = Overlay.subclass("Popup", function() {
+Popup = Overlay.subclass("Popup", function renderPopup() {
 	this.properties({
 		"dismissOnInsideClick": "true"
 	}, Overlay);
@@ -514,7 +676,7 @@ Popup = Overlay.subclass("Popup", function() {
 //
 // PopupButton
 //
-PopupButton = Control.subclass("PopupButton", function() {
+PopupButton = Control.subclass("PopupButton", function renderPopupButton() {
 	this.properties({
 		"content": [
 			" ",
@@ -675,9 +837,121 @@ Switch.prototype.extend({
 });
 
 //
+// Tab
+//
+Tab = Control.subclass("Tab");
+Tab.prototype.extend({
+    name: Control.property()
+});
+
+//
+// TabSet
+//
+TabSet = Control.subclass("TabSet", function renderTabSet() {
+	this.properties({
+		"content": [
+			" ",
+			VerticalPanels.create({
+				"content": [
+					" ",
+					" ",
+					this._define("$TabSet_content", Control("<div id=\"TabSet_content\" />")),
+					" "
+				],
+				"fill": "true",
+				"top": [
+					" ",
+					this._define("$buttons", List.create({
+						"id": "buttons"
+					})),
+					" "
+				]
+			}),
+			" "
+		]
+	}, Control);
+});
+TabSet.prototype.extend({
+
+    content: Control.bindTo("$TabSet_content", "content", function() { this._refresh(); }),
+    selectTabOnClick: Control.property(null, true),
+    buttons: Control.bindTo("$buttons", "children"),
+    tabButtonClass: Control.bindTo("$buttons", "itemClass", function() { this._refresh(); }),
+    tabs: Control.bindTo("$TabSet_content", "children"),
+
+    selectedTab: function(tab) {
+        if (tab === undefined)
+        {
+            return this.tabs().eq(this.selectedTabIndex);
+        }
+        else
+        {
+            var tabIndex = this.tabs().index(tab);
+            this.selectedTabIndex(tabIndex);
+        }
+    },
+
+    selectedTabIndex: Control.property(function(index) {
+        
+        this.buttons()
+            .removeClass("selected")    // Deselect all tab buttons.
+            .eq(index)
+            .addClass("selected");      // Select the indicated button.
+        
+        this.tabs()
+            .hide()                     // Hide all tabs
+            .eq(index)
+            .show();                    // Show the selected tab.
+        
+        this.trigger("onTabSelected", [ index, this.tabs()[index] ]);
+    }),
+    
+    _refresh: function() {
+        
+        if (this.tabButtonClass() === undefined)
+        {
+            return;
+        }
+        
+        // Show the names for each tab as a button.
+        this.$buttons().items(this._tabNames());
+
+        // By default, clicks on a tab select the tab.
+        // TODO: If buttons are moved elsewhere, unbind click event.
+        var self = this;
+        this.buttons().click(function() {
+            if (self.selectTabOnClick())
+            {
+                var buttonIndex = self.buttons().index(this);
+                if (buttonIndex >= 0)
+                {
+                    self.selectedTabIndex(buttonIndex);
+                }
+            }
+        });
+        
+        if (this.tabs().length > 0 && this.selectedTabIndex() === undefined) {
+            // Select first tab by default.
+            this.selectedTabIndex(0);
+        }
+    },
+    
+    _tabNames: function() {
+        return this.tabs()
+            .map(function(index, element) {
+                var $control = $(element).control();
+                return ($control && $.isFunction($control.name))
+                    ? $control.name()
+                    : "";
+            })
+            .get();
+    }
+});
+
+//
 // ToggleButton
 //
-ToggleButton = ButtonBase.subclass("ToggleButton", function() {
+ToggleButton = ButtonBase.subclass("ToggleButton", function renderToggleButton() {
 	this.properties({
 
 	}, ButtonBase);
@@ -710,38 +984,39 @@ VerticalAlign = Control.subclass("VerticalAlign");
 //
 // VerticalPanels
 //
-VerticalPanels = Control.subclass("VerticalPanels", function() {
+VerticalPanels = Layout.subclass("VerticalPanels", function renderVerticalPanels() {
 	this.properties({
 		"content": [
 			" ",
-			this._define("$rowTop", Control("<div id=\"rowTop\" class=\"minimumHeight\" />").content(
-				" ",
-				this._define("$VerticalPanels_top", Control("<div id=\"VerticalPanels_top\" />")),
-				" "
-			)),
+			this._define("$VerticalPanels_top", Control("<div id=\"VerticalPanels_top\" />")),
 			" ",
 			this._define("$VerticalPanels_content", Control("<div id=\"VerticalPanels_content\" />")),
 			" ",
-			this._define("$rowBottom", Control("<div id=\"rowBottom\" class=\"minimumHeight\" />").content(
-				" ",
-				this._define("$VerticalPanels_bottom", Control("<div id=\"VerticalPanels_bottom\" />")),
-				" "
-			)),
+			this._define("$VerticalPanels_bottom", Control("<div id=\"VerticalPanels_bottom\" />")),
 			" "
 		]
-	}, Control);
+	}, Layout);
 });
 VerticalPanels.prototype.extend({
+    
     bottom: Control.bindTo("$VerticalPanels_bottom", "content"),
     content: Control.bindTo("$VerticalPanels_content", "content"),
     fill: Control.bindTo("applyClass/fill"),
-    top: Control.bindTo("$VerticalPanels_top", "content")
+    top: Control.bindTo("$VerticalPanels_top", "content"),
+    
+    layout: function() {
+        //this._log("layout");
+        var panelHeight = this.$VerticalPanels_top().outerHeight() + this.$VerticalPanels_bottom().outerHeight();
+        var availableHeight = this.height() - panelHeight;
+        this.$VerticalPanels_content().height(availableHeight);
+        return this;
+    }
 });
 
 //
 // Dialog
 //
-Dialog = Overlay.subclass("Dialog", function() {
+Dialog = Overlay.subclass("Dialog", function renderDialog() {
 	this.properties({
 		"dismissOnOutsideClick": "false"
 	}, Overlay);
@@ -802,6 +1077,41 @@ Dialog.prototype.extend({
 			left: ($(window).width() - this.outerWidth()) / 2,
 			top: ($(window).height() - this.outerHeight()) / 2
 		});
+	}
+});
+
+//
+// HorizontalPanels
+//
+HorizontalPanels = Layout.subclass("HorizontalPanels", function renderHorizontalPanels() {
+	this.properties({
+		"content": [
+			" ",
+			this._define("$HorizontalPanels_left", Control("<div id=\"HorizontalPanels_left\" />")),
+			" ",
+			this._define("$HorizontalPanels_content", Control("<div id=\"HorizontalPanels_content\" />")),
+			" ",
+			this._define("$HorizontalPanels_right", Control("<div id=\"HorizontalPanels_right\" />")),
+			" "
+		]
+	}, Layout);
+});
+HorizontalPanels.prototype.extend({
+    
+    content: Control.bindTo("$HorizontalPanels_content", "content"),
+    fill: Control.bindTo("applyClass/fill"),
+    left: Control.bindTo("$HorizontalPanels_left", "content"),
+    right: Control.bindTo("$HorizontalPanels_right", "content"),
+	
+	layout: function() {
+        //this._log("layout");
+	    var panelLeftWidth = this.$HorizontalPanels_left().outerWidth();
+	    var panelRightWidth = this.$HorizontalPanels_right().outerWidth();
+	    this.$HorizontalPanels_content().css({
+	        left: panelLeftWidth,
+	        right: panelRightWidth
+	    });
+        return this;
 	}
 });
 

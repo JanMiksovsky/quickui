@@ -431,7 +431,8 @@ jQuery.extend(Control.prototype, {
                     ? value                 // single array parameter
                     : [ value ];            // singleton parameter
 
-            return this.eachControl(function(index, $element) {
+            return this.each(function(index, element) {
+                var $element = Control(element);
                 if ($element.isInputElement())
                 {
                     // Set input element value.
@@ -456,7 +457,7 @@ jQuery.extend(Control.prototype, {
     eachControl: function(fn) {
         for (var i = 0, length = this.length; i < length; i++)
         {
-            var $control = this.eq(i);
+            var $control = this.eq(i).control();
             var result = fn.call($control, i, $control);
             if (result === false)
             {
