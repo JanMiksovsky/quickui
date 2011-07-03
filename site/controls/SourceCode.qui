@@ -39,16 +39,32 @@ SourceCode.prototype.extend({
 			: pathNames[pathNames.length - 1];
 	},
 	
+	source: function(source) {
+	    if (source === undefined)
+	    {
+	        return this.$SourceCode_content().text();
+	    }
+	    else
+	    {
+            var formatted = this._normalizeLineEndings(this._tabsToSpaces(source));
+            // Using $.text() escapes the HTML/XML.
+            this.$SourceCode_content().text(formatted);
+	    }
+	},
+	
 	sourceFile: Control.property(function(value) {
 		var self = this;
 		// Load the file.
 		$.get(value, function(data) {
-			// Using $.text() escapes the HTML/XML.
-			self.$SourceCode_content().text(self._tabsToSpaces(data));
+		    self.source(data);
 		});
 		this.$link().attr("href", value);
 		this.$linkText().html(this.fileName(value));
 	}),
+	
+	_normalizeLineEndings: function(s) {
+	    return s.replace(/\r\n/g, "\n");
+	},
 	
 	_tabsToSpaces: function(s) {
 		return s.replace(/\t/g, "    ");
