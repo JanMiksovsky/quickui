@@ -37,10 +37,10 @@
         	<content>Vertical panels</content>
         	<bottom>Bottom</bottom>
         </VerticalPanels>
-        <BrowserDependent ifBrowser="webkit">
+        <BrowserSpecific ifBrowser="webkit">
             <content>You are using WebKit</content>
             <elseContent>A browser other than WebKit</elseContent>
-        </BrowserDependent>
+        </BrowserSpecific>
     </Page>
 </prototype>
 
