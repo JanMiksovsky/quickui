@@ -8,31 +8,40 @@
 </sidebar>
 
 <p>
-QuickUI (Quick User Interface) is a framework that simplifies the design, construction,
-and maintenance of web-based user interfaces. The easiest way to describe QuickUI is
-that <i>it lets you write HTML as if you could create your own tags</i>.
+QuickUI (Quick User Interface) is a framework that simplifies the design, development, and maintenance of web-based user interfaces.
 </p>
-<p> 
-In QuickUI, the tags you create are called controls. You define controls with declarative
-markup that can include HTML (including other QuickUI controls), CSS styling,
-and JavaScript scripting. You can easily create new controls by bundling together a group
-of existing controls, or by subclassing an existing control to make it more special-purpose.
-The page you are reading here, and remainder of this site, is built entirely using QuickUI.
-</p>
-<p>
-QuickUI builds upon the <Link href="http://jquery.com">jQuery</Link> web development
-library, and gives jQuery developers an fully object-oriented and extensible control framework.
-</p>
-<p>
-QuickUI includes tools that compile your markup into regular JavaScript and CSS files.
-These tools run on Windows and OS/X. QuickUI also includes a run-time library.
-Overall QuickUI is targetted at and tested against the mainstream browsers:
-Apple Safari, Google Chrome, Internet Explorer 8/9, and Mozilla Firefox.
-</p>
-<p>
-The following are brief examples of some aspects of QuickUI. Each demo shows
-the live output of a QuickUI control running on this page.
-</p>
+
+<ul>
+    <li>
+        Create UI in a markup language that’s HTML + extensions for creating
+        your own tags. This markup is easy to write, read, share, and maintain.
+    </li>
+    <li>
+        The tags you create, called controls, cleanly define a portion of a
+        page that can be reused. Controls are modular, composable, and subclassable.
+    </li>
+    <li>
+        QuickUI works with the web’s native technologies instead of trying to
+        obscure or replace them.
+    </li>
+    <li>
+        Write markup in your favorite IDE, then compile it using the QuickUI
+        tools (on OS/X or Windows) into highly legible and debuggable JavaScript classes.
+    </li>
+    <li>
+        QuickUI builds upon <Link href="http://jquery.com">jQuery</Link>,
+        adding a fully object-oriented and extensible control framework. Use
+        all the goodness of object-oriented design to create well-factored UI code.
+    </li>
+    <li>
+        Create top-level pages in QuickUI, or include QuickUI controls in pages
+        built with other tools.
+    </li>
+    <li>
+        Works with Apple Safari, Google Chrome, Internet Explorer (8/9), and
+        Mozilla Firefox. 
+    </li>
+</ul>
 
 <FeatureHtmlMacros/>
 <FeatureMarkupAndCSS/>
@@ -42,53 +51,6 @@ the live output of a QuickUI control running on this page.
 <FeatureSubclassing/>
 <FeatureScoping/>
 <FeatureBrowserIsolation/>
-
-<h2 class="section">Why use QuickUI?</h2>
-
-<p>
-QuickUI:
-</p>
-
-<ul>
-    <li>
-        Allows you to create UI in a markup language that is easy to read,
-        is easy to work with, and can concisely express your design intention.
-        This speeds up UI development, and makes UI code more maintainable.
-    </li>
-    <li>
-        Works with the web’s native technologies, it doesn’t replace them.
-        QuickUI is true to HTML, CSS, and JavaScript. Familiar conventions are used
-        whenever possible. QuickUI is only meant to address the web’s painful lack
-        of an extensible control framework.
-    </li>
-    <li>
-        Allows designers and developers to share design artifacts. QuickUI can bridge
-        the gap between pure visual design tools and native web coding frameworks.
-        The markup language can be easily learned by HTML-savvy designers, and is
-        still powerful and flexible enough to appeal to developers.
-    </li>
-    <li>
-        Encourages well-factored UI code. Controls are as modular as possible,
-        easily composable, and easily subclassable. All the goodness of object-oriented
-        design can be applied to your UI code.
-    </li>
-    <li>
-        Produces predictable compiled code. The QuickUI tools do a minimum of
-        compilation magic. The compiler’s output is legible, understandable,
-        readily debuggable JavaScript classes. The generated code takes care of 
-        populating the control’s run-time DOM — code that is often tedious to write
-        and hard to read. The behavior of these controls can
-        be programmed in JavaScript and jQuery.
-    </li>
-    <li>
-        Creates controls that can be used as top-level pages on their own,
-        or easily included in web pages built with other technologies
-        (jQuery UI, etc.).
-    </li>
-    <li>
-        Is fun to work in!
-    </li>
-</ul>
 
 <h2 class="section">Next steps</h2>
 
