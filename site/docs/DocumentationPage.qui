@@ -164,10 +164,36 @@ These functions are available on all control <i>instances</i>.
 
 <h2>Control.prototype.applyClass( classes [, value] )</h2>
 <p>
-Gets or sets whether the given class(es) are applied to the controls. This
+Gets or sets whether the given CSS class(es) are applied to the controls. This
 combines the functions of $.hasClass (when called as a getter) and $.toggleClass
-(when called as a setter).  
+(when called as a setter). This applyClass() function is useful in the context
+of a bindTo() binding, allowing the control to expose a boolean getter/setter
+the governs the application of a given CSS class.
 </p>
+
+<pre>
+&lt;Control name="MyControl"&gt;
+
+&lt;content&gt;
+    ...
+&lt;/content&gt;
+
+&lt;style&gt;
+.disabled {
+    color: gray;
+}
+&lt;/style&gt;
+
+&lt;script&gt;
+MyControl.prototype.extend({
+    // Expose a boolean disabled() property that causes the "disabled"
+    // CSS class to be applied or removed.
+    disabled: Control.bindTo("applyClass/disabled")
+});
+&lt;/script&gt;
+
+&lt;/Control&gt;
+</pre>
 
 <h2>Control.prototype.cast()</h2>
 <p>
@@ -300,8 +326,35 @@ $(".Foo")           // Find all Foo instances
 </pre>
 
 <h2>Control.prototype.properties( properties )</h2>
+<p>
+Sets the given properties on the control(s).
+</p>
+
+<pre>
+var userTile = UserTile.create();
+userTile.properties({
+    name: "Rachel Garcia",
+    picture: "picture1.png"
+});
+</pre>
+
+<p>
+Note that the $.control() plugin also allows the creation of a new control and
+the setting of properties in a single step, so the above could also be written:
+</p>
+
+<pre>
+var userTile = $().control(UserTile, {
+    name: "Rachel Garcia",
+    picture: "picture1.png"
+});
+</pre>
 
 <h2>Control.prototype.visibility( [value] )</h2>
+<p>
+Gets or sets whether the given control(s) are visible. This combines the functions
+of $.is(":visible") when called as a getter, and $.toggle() when called as a setter.
+</p>
 
 </SitePage>
 </prototype>
