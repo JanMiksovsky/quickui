@@ -204,12 +204,100 @@ content should go.
 </p>
 
 <h2>Control.prototype.eachControl( fn )</h2>
+<p>
+This is similar to $.each(), and loops over the array of elements in a jQuery object,
+invoking a callback function for each element. Unlike $.each(), the callback function
+is supplied with the current element cast to the control's specific class (if the element
+is a control) or null (if the element is not a control). The array can contain controls
+of differing classes, in which case any methods applied to the control could end up
+invoking different implementations according to each control's class.
+</p>
+
+<pre>
+var foo = Foo.create();         // instance of a control class
+var bar = Bar.create();         // instance of a different class
+var $c = $().add(foo).add(bar); // put them into a single array
+$c.eachControl(function(index, $control) {
+    $control.content("Hello");  // invokes Foo.content() or Bar.content() as appropriate.
+});
+</pre>
 
 <h2>Control.prototype.initialize</h2>
+<p>
+This initialize() method is invoked when a new control is instantiated, and is typically
+used for wiring up event handlers, perform any initial calculations, etc.
+</p>
+<ul>
+    <li>
+        The initialize() call is made immediately after the control is instantiated.
+    </li>
+    <li>
+        The initialize() method of any children is invoked <i>before</i> the
+        initialize() method is invoked on the parent.
+    </li>
+    <li>
+        If the control was created from scratch (i.e., not by wrapping an element
+        already in the DOM), the initialize() call will happen before the control
+        is in the DOM. Among other things, the control will not yet have a defined
+        height and width. If it's necessary for the control to perform work once
+        its in the DOM, it can either rely on a higher-level parent to tell it
+        when this has happened, or it can listen for an event like DOMNodeInserted.
+    </li>
+</ul>
 
 <h2>Control.prototype.iterators ( members )</h2>
+<p>
+Controls are subclasses of the jQuery class, so its generally expected that a
+control's methods should be able to copy with being applied to an array of 
+controls (not just a single control). The iterators() helper function is
+similar to $.extend, but wraps simple functions (which expect just a single
+control) to create iterators that work across an array.
+</p>
+
+<pre>
+MyControl.prototype.iterators({
+    log: function() {
+        console.log(this);
+    }
+});
+</pre>
+
+<p>
+This is equivalent to:
+</p>
+
+<pre>
+MyControl.prototype.extend({
+    log: function() {
+        return this.eachControl(function(index, $control) {
+            console.log($control);
+        });
+    }
+});
+</pre>
+
+<p>
+If the wrapped function returns a defined value (i.e., not "undefined"),
+then the function is assumed to be a property getter, and that result is
+return immediately. Otherwise, "this" is returned to permit chaining.
+</p>
 
 <h2>Control.prototype.multiProperty( propertyName, values )</h2>
+<p>
+Gets or sets the given property on multiple elements at once. If called
+as a getter, an array of the property's current values is returned.
+If called as a setter, that property of each element will be set to
+the corresponding defined member of the values array. (Array values
+which are undefined will not be set.)
+</p>
+
+<pre>
+// Set the content property of the first three Foo instances on the page
+// to the strings "One", "Two", and "Three", respectively.
+$(".Foo")           // Find all Foo instances
+    .control()      // Cast the result to class Foo
+    .multiProperty("content", [ "One", "Two", "Three" ]);
+</pre>
 
 <h2>Control.prototype.properties( properties )</h2>
 
