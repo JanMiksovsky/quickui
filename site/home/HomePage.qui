@@ -43,6 +43,12 @@ QuickUI (Quick User Interface) is a framework that simplifies the design, develo
     </li>
 </ul>
 
+<p>
+The page you are reading now (and this entire site) is built using QuickUI.
+The following brief demos of various QuickUI aspects each show the live output
+of a QuickUI control running on this page.
+</p>
+
 <FeatureHtmlMacros/>
 <FeatureMarkupAndCSS/>
 <FeatureComposition/>
