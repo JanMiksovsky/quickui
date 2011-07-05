@@ -21,12 +21,14 @@ QuickUI (Quick User Interface) is a framework that simplifies the design, develo
         page that can be reused. Controls are modular, composable, and subclassable.
     </li>
     <li>
-        QuickUI works with the web’s native technologies instead of trying to
-        obscure or replace them.
-    </li>
-    <li>
         Write markup in your favorite IDE, then compile it using the QuickUI
         tools (on OS/X or Windows) into highly legible and debuggable JavaScript classes.
+    </li>
+    <li>
+        Define a programmatic interface for your controls that lets them be
+        manipulated without exposing irrelevant implementation details. This
+        avoids fragile code dependencies that impair reusability and
+        maintainability.
     </li>
     <li>
         QuickUI builds upon <Link href="http://jquery.com">jQuery</Link>,
