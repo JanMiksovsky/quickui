@@ -21,10 +21,6 @@
 	<ol>
 		<li>Create a new folder called “demo” for your QuickUI project.</li>
 		<li>
-			Copy the jQuery library jquery.js into the demo folder.
-			(You can obtain this from <Link href="http://jquery.com/">jquery.com</Link>.)
-		</li>
-		<li>
 			Copy the core QuickUI library quickui.js into the demo folder.
 			(You can find quickui.js in the folder where you installed QuickUI,
 			inside the /lib subfolder).
@@ -123,9 +119,9 @@ $
 
 <p>
 	This demo.html file references three required JavaScript files: the jQuery library
-	used by the QuickUI framework, the core QuickUI library qui.js, and the generated
+	which the QuickUI framework depends upon, the core QuickUI library quickui.js, and the generated
 	demo.js file we generated above. As a preemptive measure, demo.html also includes a
-	reference to the stylesheet in Greet.css, although this file is empty for now.
+	reference to the stylesheet demo.css, although that file is empty for now.
 </p>
 
 <p>

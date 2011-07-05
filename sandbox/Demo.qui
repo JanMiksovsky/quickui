@@ -67,7 +67,7 @@ script elements.
     </UserTile>
     
     <!-- Instantiate a subclass of UserTile called FacebookUserTile. -->
-    <FacebookUserTile userId="miksovsky" />
+    <FacebookUserTile userId="553421540" />
 
 </content>
 
