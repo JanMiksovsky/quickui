@@ -1,60 +1,38 @@
 //
-// BrowserDependent
-//
-BrowserDependent = Control.subclass("BrowserDependent", function renderBrowserDependent() {
-	this.properties({
-		"content": [
-			" ",
-			this._define("$BrowserDependent_content", Control("<span id=\"BrowserDependent_content\" />")),
-			" ",
-			this._define("$BrowserDependent_elseContent", Control("<span id=\"BrowserDependent_elseContent\" />")),
-			" "
-		]
-	}, Control);
-});
-BrowserDependent.prototype.extend({
-    
-	ifBrowser: Control.property(),
-	content: Control.bindTo("$BrowserDependent_content", "content"),
-	elseContent: Control.bindTo("$BrowserDependent_elseContent", "content"),
-	ifSupport: Control.property(),
-	
-	initialize: function() {
-		var usingSpecifiedBrowser = (this.ifBrowser() === undefined) || !!$.browser[this.ifBrowser()];
-		var browserSupportsProperty = (this.ifSupport() === undefined) || !!$.support[this.ifSupport()];
-		var allConditionsSatisfied = usingSpecifiedBrowser && browserSupportsProperty;
-		this.$BrowserDependent_content().toggle(allConditionsSatisfied);
-		this.$BrowserDependent_elseContent().toggle(!allConditionsSatisfied);
-	}
-});
-
-//
 // BrowserSpecific
 //
-BrowserSpecific = Control.subclass("BrowserSpecific", function renderBrowserSpecific() {
-	this.properties({
-		"content": [
-			" ",
-			this._define("$BrowserSpecific_content", Control("<span id=\"BrowserSpecific_content\" />")),
-			" ",
-			this._define("$BrowserSpecific_elseContent", Control("<span id=\"BrowserSpecific_elseContent\" />")),
-			" "
-		]
-	}, Control);
-});
+BrowserSpecific = Control.subclass("BrowserSpecific");
 BrowserSpecific.prototype.extend({
 
-	content: Control.bindTo("$BrowserSpecific_content", "content"),
-	elseContent: Control.bindTo("$BrowserSpecific_elseContent", "content"),
-	ifBrowser: Control.property(),
-	ifSupport: Control.property(),
+    "default": Control.property(),
+    "mozilla": Control.property(),
+    "msie": Control.property(),
+    "opera": Control.property(),
+    "webkit": Control.property(),
 	
 	initialize: function() {
-		var usingSpecifiedBrowser = (this.ifBrowser() === undefined) || !!$.browser[this.ifBrowser()];
-		var browserSupportsProperty = (this.ifSupport() === undefined) || !!$.support[this.ifSupport()];
-		var allConditionsSatisfied = usingSpecifiedBrowser && browserSupportsProperty;
-		this.$BrowserSpecific_content().toggle(allConditionsSatisfied);
-		this.$BrowserSpecific_elseContent().toggle(!allConditionsSatisfied);
+	    var content;
+	    if ($.browser.mozilla)
+	    {
+	        content = this.mozilla();
+	    }
+	    else if ($.browser.msie)
+	    {
+	        content = this.msie();
+	    }
+	    if ($.browser.opera)
+	    {
+	        content = this.opera();
+	    }
+	    if ($.browser.webkit)
+	    {
+	        content = this.webkit();
+	    }
+	    if (content === undefined)
+	    {
+	        content = this["default"]();
+	    }
+	    this.content(content);
 	}
 });
 

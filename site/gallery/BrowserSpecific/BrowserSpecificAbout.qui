@@ -3,9 +3,7 @@
 	<GalleryPage title="BrowserSpecific" sourceFileExample="BrowserSpecific/BrowserSpecificDemo.qui" sourceFileControl="../common/BrowserSpecific.qui">
 		<summary>
 			Conditionally shows contents if the given browser is in use (defined by 
-			<Link href="http://docs.jquery.com/Utilities/jQuery.browser">jQuery.browser</Link>),
-			and/or if the browser in use supports a given compatibility property (defined by
-			<Link href="http://docs.jquery.com/Utilities/jQuery.support">jQuery.support</Link>).
+			<Link href="http://docs.jquery.com/Utilities/jQuery.browser">jQuery.browser</Link>).
 		</summary>
 		<demo>
 			<BrowserSpecificDemo/>

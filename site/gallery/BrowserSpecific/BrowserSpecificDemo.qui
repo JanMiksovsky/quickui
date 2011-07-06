@@ -1,7 +1,8 @@
 <Control name="BrowserSpecificDemo">
-	You are using:
-	<BrowserSpecific ifBrowser="msie" style="display: inline">
-		<content>Internet Explorer</content>
-		<elseContent>a browser other than Internet Explorer</elseContent>
-	</BrowserSpecific>
+    <BrowserSpecific style="display: inline">
+        <webkit>You are using WebKit.</webkit>
+        <msie>You are using Internet Explorer.</msie>
+        <mozilla>You are using Firefox.</mozilla>
+        <default>You are using some unknown browser.</default>
+    </BrowserSpecific>
 </Control>

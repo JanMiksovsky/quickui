@@ -37,9 +37,11 @@
         	<content>Vertical panels</content>
         	<bottom>Bottom</bottom>
         </VerticalPanels>
-        <BrowserSpecific ifBrowser="webkit">
-            <content>You are using WebKit</content>
-            <elseContent>A browser other than WebKit</elseContent>
+        <BrowserSpecific>
+            <webkit>You are using WebKit</webkit>
+            <msie>You are using Internet Explorer</msie>
+            <mozilla>You are using Firefox</mozilla>
+            <default>You are using some unknown browser.</default>
         </BrowserSpecific>
     </Page>
 </prototype>
