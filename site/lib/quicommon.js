@@ -339,14 +339,7 @@ Layout.extend({
 List = Control.subclass("List");
 List.prototype.extend({
     
-    itemClass: Control.property(
-        function() { this._refresh(); },
-        null,
-        function(className) {
-            return eval(className);
-        }
-    ),
-        
+    itemClass: Control.property["class"](),
     items: Control.property(function() { this._refresh(); }),
     
     //
@@ -548,10 +541,10 @@ Page.extend({
     /*
      * Load the given class as the page's top-level class.
      * 
-     * If element is supplied, that element is used to instantiate the control;
+     * If a target element is supplied, that element is used to instantiate the control;
      * otherwise the entire body is given over to the control. 
      */
-    loadClass: function(pageClass, element, properties) {
+    loadClass: function(pageClass, target, properties) {
     
         var pageClassFn;
         if ($.isFunction(pageClass))
@@ -571,13 +564,8 @@ Page.extend({
             pageClassFn = eval(pageClass);
         }
         
-        var $element = element ? $(element) : $("body");
-        
-        var $page = $element
-            .empty()                // Remove elements
-            .attr("class", "")      // Remove classes
-            .control(pageClassFn, properties);
-        
+        var $target = Control(target || "body");
+        var $page = $target.subsume(pageClassFn, properties);
         return $page;
     },
 
