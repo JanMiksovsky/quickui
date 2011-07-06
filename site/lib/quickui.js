@@ -588,7 +588,7 @@ jQuery.extend(Control.prototype, {
     subsume: function(newClass, properties) {
         return this
             .empty()                // Remove elements
-            .attr("class", "")      // Remove classes
+            .removeClass()
             .control(newClass, properties);
     },
     
