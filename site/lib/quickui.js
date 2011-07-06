@@ -512,9 +512,9 @@ jQuery.extend(Control.prototype, {
     },
 
     /*
-     * Get/set the given property on mulitple elements at once. If called
-     * as a getter, an array of the current property values is returned.
-     * If called as a setter, the property of each element will be set to
+     * Get/set the given property on multiple elements at once. If called
+     * as a getter, an array of the property's current values is returned.
+     * If called as a setter, that property of each element will be set to
      * the corresponding defined member of the values array. (Array values
      * which are undefined will not be set.)
      */
@@ -532,7 +532,7 @@ jQuery.extend(Control.prototype, {
         else
         {
             // Setter
-            for (var i = 0, length = this.length; i < length; i++)
+            for (var i = 0, length1 = this.length, length2 = values.length; i < length1 && i < length2; i++)
             {
                 if (!!values[i])
                 {
@@ -601,8 +601,6 @@ jQuery.extend(Control.prototype, {
      * a jQuery array. If the inner function returns a defined value, then
      * the function is assumed to be a property getter, and that result is
      * return immediately. Otherwise, "this" is returned to permit chaining.
-     * 
-     * Used by Control.define().
      */
     _createIterator: function(fn) {
         return function() {
@@ -673,6 +671,27 @@ jQuery.extend(Control.property, {
             function convertToBool(value) {
                 // Convert either string or bool to bool.
                 return String(value) === "true";
+            }
+        );
+    },
+
+    /*
+     * A class-valued property.
+     * This accepts either a function (the class) or a class name as a string.
+     */
+    "class": function(sideEffectFn) {
+        return Control.property(
+            sideEffectFn,
+            Control,
+            function convertToClass(value) {
+                return $.isFunction(value)
+                    ? pageClass
+                    // Convert a string to a function. For security reasons,
+                    // only do the conversion if the string is a single, legal
+                    // JavaScript function name.
+                    : /^[$A-Za-z_][$0-9A-Za-z_]*$/.test(value)
+                        ? eval(value)
+                        : null;
             }
         );
     },

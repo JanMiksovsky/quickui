@@ -17,7 +17,12 @@ ListDemo.prototype.extend({
         ];
         
         // Render each member of the array as a list item.
-        this.$buttonList().items(data);
+        this.$buttonList()
+            .items(data)
+            .click(function(event) {
+                var button = $(event.target).closest(".SampleSpriteButton").control();
+                alert(button.content());
+            });
     }
 });
 </script>

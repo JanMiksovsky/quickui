@@ -7,14 +7,7 @@ Instantiates an instance of another control class for each item in a list.
 <script>
 List.prototype.extend({
     
-    itemClass: Control.property(
-        function() { this._refresh(); },
-        null,
-        function(className) {
-            return eval(className);
-        }
-    ),
-        
+    itemClass: Control.property["class"](),
     items: Control.property(function() { this._refresh(); }),
     
     //
