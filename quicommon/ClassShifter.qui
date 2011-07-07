@@ -1,0 +1,33 @@
+<!--
+A control that can be replaced ONCE with an instance of another class at run-time.
+This is a convenient way to have a control offer a slot whose class can be specified by a host.
+-->
+<Control name="ClassShifter">
+
+<script>
+ClassShifter.prototype.extend({
+    /*
+     * The class we want to shift this to.
+     */
+    controlClass: Control.property["class"](function() {
+        /*
+         * We do some class manipulations to ensure the class attribute ends
+         * up the way we want. E.g., right now the class hierarchy looks like
+         *      class="ClassShifter Control"
+         * If we're switching to a class like ButtonBase, we want the hierarchy
+         * to end up like
+         *      class="ButtonBase ClassShifter Control"
+         * We want to keep ClassShifter as a vestige to aid debugging.
+         */
+        var existingClasses = this.prop("class");
+        var classFn = this.controlClass();
+        this
+            .removeClass()
+            .control(classFn)
+            .removeClass("Control") // Will be reapplied by following line
+            .addClass(existingClasses);
+    })
+});
+</script>
+
+</Control>

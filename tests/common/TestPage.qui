@@ -43,6 +43,7 @@
             <mozilla>You are using Firefox</mozilla>
             <default>You are using some unknown browser.</default>
         </BrowserSpecific>
+        <ClassShifter controlClass="ButtonBase">ClassShifter that's now a button</ClassShifter>
     </Page>
 </prototype>
 
