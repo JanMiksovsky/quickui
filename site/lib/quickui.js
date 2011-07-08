@@ -607,44 +607,31 @@ jQuery.extend(Control.prototype, {
      * If we're switching to class Bar, the hierarchy will end up like
      *      class="Bar Foo Control"
      */
-    transmute: function(newClass, properties, preserveContent, preserveClasses) {
+    transmute: function(newClass, preserveContent, preserveClasses) {
         
         var classFn = Control._convertToClass(newClass);
+        
         preserveContent = (preserveContent === undefined) ? true : preserveContent;
         preserveClasses = (preserveClasses === undefined) ? false : preserveClasses;
         
-        var oldContents;
-        if (preserveContent)
-        {
-            oldContents = this.multiProperty("content");
-        }
-        else
-        {
-            this.empty();
-        }
+        var oldContents = preserveContent ? this.multiProperty("content") : null;
+        this.empty();
         
-        var existingClasses;
-        if (preserveClasses)
-        {
-            existingClasses = this.prop("class");
-        }
-        else
-        {
-            this.removeClass();
-        }
+        var oldClasses = preserveClasses ? this.prop("class") : null;
+        this.removeClass();
         
-        this.control(classFn, properties);
+        this.control(classFn);
 
-        if (preserveContent)
+        if (oldContents)
         {
             this.multiProperty("content", oldContents);
         }
-        if (preserveClasses)
+        if (oldClasses)
         {
             this
                 .removeClass("Control")
-                .addClass(existingClasses)
-                .addClass("Control");
+                .addClass(oldClasses)
+                .addClass("Control");       // Ensures Control ends up rightmost
         }
 
         return this;

@@ -350,6 +350,18 @@ var userTile = $().control(UserTile, {
 });
 </pre>
 
+<h2>Control.prototype.transmute( controlClass, preserveContent, preserveClasses )</h2>
+<p>
+Converts the control(s) to the indicated class. If preserveContent is true (the default),
+the existing contents of the control will be extracted and then set again on the control
+via the new class' content() property.
+</p>
+<p>
+If preserveClasses is true (the default is false), then the existing classes on the
+old control will be preserved on the element's "class" attribute. This can be useful to
+leave a trace of the transmutation for debugging purposes.
+</p>
+
 <h2>Control.prototype.visibility( [value] )</h2>
 <p>
 Gets or sets whether the given control(s) are visible. This combines the functions
