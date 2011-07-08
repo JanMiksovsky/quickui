@@ -547,7 +547,7 @@ Page.extend({
     loadClass: function(pageClass, target, properties) {
         var $target = Control(target || "body");
         return $target
-                    .transmute(pageClass, false)
+                    .transmute(pageClass)
                     .properties(properties);
     },
 

@@ -611,9 +611,6 @@ jQuery.extend(Control.prototype, {
         
         var classFn = Control._convertToClass(newClass);
         
-        preserveContent = (preserveContent === undefined) ? true : preserveContent;
-        preserveClasses = (preserveClasses === undefined) ? false : preserveClasses;
-        
         var oldContents = preserveContent ? this.multiProperty("content") : null;
         this.empty();
         

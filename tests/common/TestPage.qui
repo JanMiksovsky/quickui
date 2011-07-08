@@ -43,7 +43,7 @@
             <mozilla>You are using Firefox</mozilla>
             <default>You are using some unknown browser.</default>
         </BrowserSpecific>
-        <Control id="shifter" transmute="ButtonBase">Plain control that's now a button</Control>
+        <Control id="shifter">Plain control that's now a button</Control>
     </Page>
 </prototype>
 
@@ -76,6 +76,7 @@ TestPage.prototype.extend({
 			var index = self.$list().children().index(button);
 			self.$switch().activeIndex(index);
 		});
+		this.$shifter().transmute(ButtonBase, true);
 	}	
 });
 </script>
