@@ -207,7 +207,7 @@ jQuery.extend(Control, {
             // Render controls as DOM elements.
             .render()
 
-            // Pass in the target's old contents (if any).            
+            // Pass in the target's old contents (if any).
             .multiProperty("content", oldContents)
             
             // Set any requested properties.
@@ -286,6 +286,21 @@ jQuery.extend(Control, {
         
         newClass.subclass = superClass.subclass;
         return newClass;
+    },
+    
+    /*
+     * Converts a string class name into the indicated class. Alternatively,
+     * if this is given a class function, it returnst that function as is.
+     */
+    _convertToClass: function(value) {
+        return $.isFunction(value)
+            ? value
+            // Convert a string to a function. For security reasons,
+            // only do the conversion if the string is a single, legal
+            // JavaScript function name.
+            : /^[$A-Za-z_][$0-9A-Za-z_]*$/.test(value)
+                ? eval(value)
+                : null;
     },
     
     // Return true if class1 is a subclass of class2.
@@ -559,11 +574,11 @@ jQuery.extend(Control.prototype, {
         var prototype = classFn.prototype;
         for (var propertyName in props)
         {
-            if (props[propertyName] === undefined) {
+            var value = props[propertyName];
+            if (prototype[propertyName] === undefined) {
                 var message = "Tried to access undefined getter/setter function for property \"" + propertyName + "\" on control class \"" + this.className + "\".";
                 throw message;
             }
-            var value = props[propertyName];
             prototype[propertyName].call(this, value);
         }
         return this;
@@ -584,12 +599,55 @@ jQuery.extend(Control.prototype, {
      * Unlike a normal Control.create() call, existing control contents are
      * *not* preserved. Event handlers, however, remain attached;
      * use a separate call to $.unbind() to remove them if desired.
-     */    
-    subsume: function(newClass, properties) {
-        return this
-            .empty()                // Remove elements
-            .removeClass()
-            .control(newClass, properties);
+     *
+     * If preserveClasses is true, the existing class hierarchy will be left
+     * on the "class" attribute, although the class "Control" will remain the
+     * rightmost class. Suppose the class hierarchy looks like
+     *      class="Foo Control"
+     * If we're switching to class Bar, the hierarchy will end up like
+     *      class="Bar Foo Control"
+     */
+    transmute: function(newClass, properties, preserveContent, preserveClasses) {
+        
+        var classFn = Control._convertToClass(newClass);
+        preserveContent = (preserveContent === undefined) ? true : preserveContent;
+        preserveClasses = (preserveClasses === undefined) ? false : preserveClasses;
+        
+        var oldContents;
+        if (preserveContent)
+        {
+            oldContents = this.multiProperty("content");
+        }
+        else
+        {
+            this.empty();
+        }
+        
+        var existingClasses;
+        if (preserveClasses)
+        {
+            existingClasses = this.prop("class");
+        }
+        else
+        {
+            this.removeClass();
+        }
+        
+        this.control(classFn, properties);
+
+        if (preserveContent)
+        {
+            this.multiProperty("content", oldContents);
+        }
+        if (preserveClasses)
+        {
+            this
+                .removeClass("Control")
+                .addClass(existingClasses)
+                .addClass("Control");
+        }
+
+        return this;
     },
     
     /*
@@ -696,16 +754,7 @@ jQuery.extend(Control.property, {
         return Control.property(
             sideEffectFn,
             undefined,
-            function convertToClass(value) {
-                return $.isFunction(value)
-                    ? pageClass
-                    // Convert a string to a function. For security reasons,
-                    // only do the conversion if the string is a single, legal
-                    // JavaScript function name.
-                    : /^[$A-Za-z_][$0-9A-Za-z_]*$/.test(value)
-                        ? eval(value)
-                        : null;
-            }
+            Control._convertToClass
         );
     },
     

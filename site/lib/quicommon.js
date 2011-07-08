@@ -545,28 +545,8 @@ Page.extend({
      * otherwise the entire body is given over to the control. 
      */
     loadClass: function(pageClass, target, properties) {
-    
-        var pageClassFn;
-        if ($.isFunction(pageClass))
-        {
-            pageClassFn = pageClass;
-        }
-        else
-        {
-            // Convert a string to a function.
-            // Only do the conversion if the string is a single, legal
-            // JavaScript function name.
-            var regexFunctionName = /^[$A-Za-z_][$0-9A-Za-z_]*$/;
-            if (!regexFunctionName.test(pageClass))
-            {
-            	return null;
-            }
-            pageClassFn = eval(pageClass);
-        }
-        
         var $target = Control(target || "body");
-        var $page = $target.subsume(pageClassFn, properties);
-        return $page;
+        return $target.transmute(pageClass, properties, false);
     },
 
     /*
