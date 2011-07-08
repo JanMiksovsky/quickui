@@ -10,14 +10,8 @@ ClassShifter.prototype.extend({
      * The class we want to shift this to.
      */
      
-    controlClass: Control.property["class"](function() {
-        var existingClasses = this.prop("class");
-        var classFn = this.controlClass();
-        this
-            .removeClass()
-            .control(classFn)
-            .removeClass("Control") // Will be reapplied by following line
-            .addClass(existingClasses);
+    controlClass: Control.property["class"](function(controlClass) {
+        this.transmute(controlClass);
     })
 });
 </script>
