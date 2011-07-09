@@ -197,8 +197,8 @@ jQuery.extend(Control, {
         }).get();
         
         $controls
-            // Bind elements to the control class.
-            .data("_controlClass", this)
+            // Save a reference to the controls' class.
+            .data(Control._controlClassData, this)
             
             // Apply all class names in the class hierarchy as style names.
             // This lets the element pick up styles defined by those classes.
@@ -215,8 +215,14 @@ jQuery.extend(Control, {
         
             // Tell the controls they're ready.
             .initialize();
-
-        return $controls;
+        
+        // It's possible (but unlikely) that a control transmuted itself
+        // during its initialize() call, so get the class back and return
+        // controls as an instance of that class.
+        var classFn = $controls._controlClass();
+        return $controls instanceof classFn
+                    ? $controls
+                    : classFn($controls);
     },
 
     // Return true if the given element is a control.    
@@ -289,6 +295,11 @@ jQuery.extend(Control, {
     },
     
     /*
+     * The name of the data element used to store a reference to an element's control class.
+     */
+    _controlClassData: "_controlClass",
+    
+    /*
      * Converts a string class name into the indicated class. Alternatively,
      * if this is given a class function, it returnst that function as is.
      */
@@ -354,7 +365,7 @@ jQuery.extend(Control.prototype, {
         var setClass;
         this.each(function(index, element) {
             var $element = $(element);
-            var elementClass = $element.data("_controlClass") || defaultClass;
+            var elementClass = $element.data(Control._controlClassData) || defaultClass;
             if (setClass === undefined ||
 				(!Control._isSubclassOf(elementClass, setClass) && Control._isSubclassOf(setClass, elementClass)))
             {
@@ -617,21 +628,28 @@ jQuery.extend(Control.prototype, {
         var oldClasses = preserveClasses ? this.prop("class") : null;
         this.removeClass();
         
-        var newControl = this.control(classFn);
+        var $controls = this.control(classFn);
+        
+        // Control may have transmuted itself during initialization, so
+        // cast if necessary.
+        var newClassFn = $controls._controlClass();
+        $controls = $controls instanceof newClassFn
+                    ? $controls
+                    : newClassFn($controls);
 
         if (oldContents)
         {
-            newControl.multiProperty("content", oldContents);
+            $controls.multiProperty("content", oldContents);
         }
         if (oldClasses)
         {
-            newControl
+            $controls
                 .removeClass("Control")
                 .addClass(oldClasses)
                 .addClass("Control");       // Ensures Control ends up rightmost
         }
-
-        return newControl;
+        
+        return $controls;
     },
     
     /*
@@ -649,6 +667,13 @@ jQuery.extend(Control.prototype, {
         return (value === undefined)
             ? this.is(":visible")
             : this.toggle(value);
+    },
+    
+    /*
+     * Get/set the reference for the class for these control(s).
+     */
+    _controlClass: function(classFn) {
+        return this.data(Control._controlClassData, classFn);
     },
     
     /*
