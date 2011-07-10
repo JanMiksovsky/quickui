@@ -179,6 +179,65 @@ $.extend(ButtonBase, {
 });
 
 //
+// DeviceSpecific
+//
+DeviceSpecific = Control.subclass("DeviceSpecific");
+// Class members
+DeviceSpecific.extend({
+    isMobile: function() {
+        var userAgent = navigator.userAgent;
+        return (userAgent.indexOf("Mobile") >= 0 && userAgent.indexOf("iPad") < 0); 
+    }    
+});
+
+DeviceSpecific.prototype.extend({
+
+    "defaultClass": Control.property["class"](),
+    "mobileClass": Control.property["class"](),
+    "default": Control.property(),
+    "mobile": Control.property(),
+    
+    initialize: function() {
+
+        var deviceClass;
+        var deviceClasses;
+        var deviceContent;
+        
+        // Apply device-specific class, if defined.
+        if (DeviceSpecific.isMobile())
+        {
+            deviceClass = this.mobileClass();
+            deviceClasses = "mobile";
+            deviceContent = this.mobile();
+        }
+        if (deviceClass === undefined)
+        {
+            deviceClass = this.defaultClass();
+        }
+        if (deviceClass)
+        {
+            this.transmute(deviceClass, false, true);
+        }
+        
+        // Apply device-specific content, if defined.
+        if (deviceContent === undefined)
+        {
+            deviceContent = this["default"]();
+        }
+        if (deviceContent)
+        {
+            this.content(deviceContent);
+        }
+        
+        // Apply device-specific CSS classes, if defined.
+        if (deviceClasses)
+        {
+            this.addClass(deviceClasses);
+        }
+    }
+});
+
+//
 // Layout
 //
 Layout = Control.subclass("Layout");

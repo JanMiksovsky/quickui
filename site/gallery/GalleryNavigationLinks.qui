@@ -17,6 +17,7 @@ GalleryNavigationLinks.prototype.extend({
         this.$listClass().items([
             "BrowserSpecific",
             "ButtonBase",
+            "DeviceSpecific",
             "GalleryPage",
             "Gradient",
             "HintTextBox",

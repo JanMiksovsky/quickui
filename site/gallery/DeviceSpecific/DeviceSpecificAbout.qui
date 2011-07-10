@@ -1,0 +1,17 @@
+<Control name="DeviceSpecificAbout">
+<prototype>
+	<GalleryPage title="DeviceSpecific" sourceFileExample="DeviceSpecific/DeviceSpecificDemo.qui" sourceFileControl="../common/DeviceSpecific.qui">
+		<summary>
+			Conditionally loads different content, control class, or styles
+			depending on the type of device.
+		</summary>
+		<demo>
+			<DeviceSpecificDemo/>
+		</demo>
+		<notes>
+		    This class can form one part of a strategy for building a web site with
+		    a full version and a mobile-optimized version.
+		</notes>
+	</GalleryPage>
+</prototype>
+</Control>

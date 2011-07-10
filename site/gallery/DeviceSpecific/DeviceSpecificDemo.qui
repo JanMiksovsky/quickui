@@ -1,0 +1,6 @@
+<Control name="DeviceSpecificDemo">
+    <DeviceSpecific mobileClass="ButtonBase" defaultClass="SampleSpriteButton">
+        <mobile>You are mobile</mobile>
+        <default>You are not mobile</default>
+    </DeviceSpecific>
+</Control>

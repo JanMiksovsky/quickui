@@ -29,6 +29,13 @@
                 <div>Base class for buttons which handles tracking of button states.</div>
             </div>
             <div>
+                <GalleryLink>DeviceSpecific</GalleryLink>
+                <div>
+                    Conditionally loads different content, control class, or styles
+                    depending on the type of device.
+                </div>
+            </div>
+            <div>
                 <GalleryLink>GalleryPage</GalleryLink>
                 <div>The template for all pages in this gallery.</div>
             </div>
