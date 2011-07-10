@@ -202,8 +202,8 @@ DeviceSpecific.prototype.extend({
         var deviceClass;
         var deviceClasses;
         var deviceContent;
-        
-        // Apply device-specific class, if defined.
+
+        // Determine which content, class, and styles to apply.        
         if (DeviceSpecific.isMobile())
         {
             deviceClass = this.mobileClass();
@@ -214,25 +214,27 @@ DeviceSpecific.prototype.extend({
         {
             deviceClass = this.defaultClass();
         }
-        if (deviceClass)
-        {
-            this.transmute(deviceClass, false, true);
-        }
-        
-        // Apply device-specific content, if defined.
         if (deviceContent === undefined)
         {
             deviceContent = this["default"]();
         }
+        
+        // Transmute, if requested. After this, we need to take care to 
+        // reference the control with the new class; "this" will be the old class. 
+        var $control = deviceClass
+            ? this.transmute(deviceClass, false, true)
+            : this;
+        
+        // Apply device-specific content, if defined.
         if (deviceContent)
         {
-            this.content(deviceContent);
+            $control.content(deviceContent);
         }
         
         // Apply device-specific CSS classes, if defined.
         if (deviceClasses)
         {
-            this.addClass(deviceClasses);
+            $control.addClass(deviceClasses);
         }
     }
 });

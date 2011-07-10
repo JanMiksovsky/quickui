@@ -1,5 +1,6 @@
 <Control name="DeviceSpecificDemo">
-    <DeviceSpecific mobileClass="ButtonBase" defaultClass="SampleSpriteButton">
+    <!-- Show a plain link on mobile, and a button on the full (non-mobile) site. -->
+    <DeviceSpecific mobileClass="Link" defaultClass="SampleSpriteButton">
         <mobile>You are mobile</mobile>
         <default>You are not mobile</default>
     </DeviceSpecific>
