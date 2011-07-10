@@ -15,6 +15,8 @@ QuickUI (Quick User Interface) is a framework that simplifies the design, develo
     <li>
         Create UI in a markup language that’s HTML + extensions for creating
         your own tags. This markup is easy to write, read, share, and maintain.
+        As with HTML, a single file keeps the related CSS, DOM elements, and
+        JavaScript behavior together. 
     </li>
     <li>
         The tags you create, called controls, cleanly define a portion of a

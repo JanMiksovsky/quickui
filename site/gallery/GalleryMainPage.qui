@@ -2,36 +2,110 @@
 
 <prototype>
 	<SitePage title="Gallery" area="Gallery">
+
 		<navigationLinks>
 			<GalleryNavigationLinks/>
 		</navigationLinks>
+
 		<p>
 		This gallery shows live examples and the full source for a handful of
 		simple QuickUI controls, representing a small range of what’s possible
 		in QuickUI. While many UI frameworks come with a library of controls,
-        the intent here is <i>not</i> to present such a library. Focus here
+        the intent here is not (yet) to present a comprehensive library. Focus
         rather on the general range of expression. 
         Since a key goal of QuickUI is to produce easily readable
 		code, as you look at each control, ask yourself: <i>Is it easy to
 		understand the usage of the control by looking at the source code
 		for the demo?</i>
 		</p>
-		<p>
-		Some of these controls are subclasses of controls defined elsewhere.
-		The source code for all referenced classes is available in the
-		<Link href="https://github.com/JanMiksovsky/quickui">QuickUI source code</Link>.
-		</p>
-		<p>
-		Select a control from the pane on the left.
-		</p>
-		<!--
-		<p>
-		Because a QuickUI control is completely self-contained in a single .qui file,
-		controls like these can be quickly added to a QuickUI control by just
-		saving the .qui source file for the control into your project.
-		</p>
-		-->
+		
+		<div id="table">
+		    <div>
+		        <GalleryLink>BrowserSpecific</GalleryLink>
+		        <div>Conditionally shows contents for specific browsers.</div>
+		    </div>
+            <div>
+                <GalleryLink>ButtonBase</GalleryLink>
+                <div>Base class for buttons which handles tracking of button states.</div>
+            </div>
+            <div>
+                <GalleryLink>GalleryPage</GalleryLink>
+                <div>The template for all pages in this gallery.</div>
+            </div>
+            <div>
+                <GalleryLink>Gradient</GalleryLink>
+                <div>A browser-agnostic gradient representation.</div>
+            </div>
+            <div>
+                <GalleryLink>HintTextBox</GalleryLink>
+                <div>A text box that displays a hint (instructions) when the text box is empty.</div>
+            </div>
+            <div>
+                <GalleryLink>List</GalleryLink>
+                <div>
+                    An abstract control that represents each element of a JavaScript
+                    array as a QuickUI control.
+                </div>
+            </div>
+            <div>
+                <GalleryLink>SampleSpriteButton</GalleryLink>
+                <div>An example of creating a sprite button through subclassing.</div>
+            </div>
+            <div>
+                <GalleryLink>SearchBox</GalleryLink>
+                <div>A typical web search box.</div>
+            </div>
+            <div>
+                <GalleryLink>Sprite</GalleryLink>
+                <div>A basic CSS sprite.</div>
+            </div>
+            <div>
+                <GalleryLink>SpriteButton</GalleryLink>
+                <div>A button that uses a sprite for its background.</div>
+            </div>
+            <div>
+                <GalleryLink>Switch</GalleryLink>
+                <div>
+                    Something like a JavaScript switch statement, this shows exactly
+                    one child at any given time (e.g., to reflect an UI mode).
+                </div>
+            </div>
+            <div>
+                <GalleryLink>Tag</GalleryLink>
+                <div>A simple HTML macro that includes both content and styling.</div>
+            </div>
+            <div>
+                <GalleryLink>TextBoxWithButton</GalleryLink>
+                <div>
+                    A control with a text box and an associated button, where clicking
+                    the button does something with the text box's content.
+                </div>
+            </div>
+		</div>
+
+        <p>
+        Some of these controls are subclasses of controls defined elsewhere.
+        The source code for all referenced classes is available in the
+        <Link href="https://github.com/JanMiksovsky/quickui">QuickUI source code</Link>.
+        </p>
+
 	</SitePage>
 </prototype>
+
+<style>
+#table {
+    display: table;
+}
+#table > * {
+    display: table-row;
+}
+#table > * > * {
+    display: table-cell;
+    padding-bottom: .5em;
+}
+#table > * > *:not(:last-child) {
+    padding-right: 1em;
+}
+</style>
 
 </Control>
