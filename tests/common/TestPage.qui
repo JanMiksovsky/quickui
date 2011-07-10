@@ -44,6 +44,10 @@
             <default>You are using some unknown browser.</default>
         </BrowserSpecific>
         <Control id="shifter">Plain control that's now a button</Control>
+        <DeviceSpecific>
+            <mobile>You're on a mobile device.</mobile>
+            <default>You are not on a mobile device.</default>
+        </DeviceSpecific>
     </Page>
 </prototype>
 
