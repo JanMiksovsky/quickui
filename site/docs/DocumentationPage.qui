@@ -344,7 +344,7 @@ the setting of properties in a single step, so the above could also be written:
 </p>
 
 <pre>
-var userTile = $().control(UserTile, {
+var userTile = $("&lt;div/&gt;").control(UserTile, {
     name: "Rachel Garcia",
     picture: "picture1.png"
 });
