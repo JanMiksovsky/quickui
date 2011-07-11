@@ -1,0 +1,120 @@
+<!-- General base class for pages. -->
+
+<Control name="Page">
+
+<style>
+.Page.fill {
+    height: 100%;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	width: 100%;
+}
+</style>
+
+<script>
+
+/*
+ * General page utility functions.
+ */
+Page.prototype.extend({
+	
+	// If true, have the page fill its container.
+	fill: Control.bindTo("applyClass/fill"),
+
+    urlParameters: function() {
+        return Page.urlParameters();
+    },
+    	
+	// Gets or sets the title of the page.
+	title: function(value) {
+		if (value !== undefined)
+		{
+			document.title = value;
+		}
+		return document.title;
+	}
+
+});
+
+/*
+ * Class members.
+ */
+Page.extend({
+    
+    /*
+     * Load the given class as the page's top-level class.
+     * 
+     * If a target element is supplied, that element is used to instantiate the control;
+     * otherwise the entire body is given over to the control. 
+     */
+    loadClass: function(pageClass, target, properties) {
+        var $target = Control(target || "body");
+        return $target
+                    .transmute(pageClass)
+                    .properties(properties);
+    },
+
+    /*
+     * Start actively tracking changes in a page specified on the URL.
+     * For a URL like www.example.com/index.html#page=Foo, load class Foo.
+     * If the page then navigates to www.example.com/index.html#page=Bar, this
+     * will load class Bar in situ, without forcing the browser to reload the page. 
+     */
+    trackClassFromUrl: function(defaultPageClass, element) {
+        
+        // Watch for changes in the URL after the hash.
+        $(window).hashchange(function() {
+            var pageClassName = Page.urlParameters().page;
+            var pageClass = pageClassName || defaultPageClass;
+            Page.loadClass(pageClass, element);
+        })
+            
+        // Trigger a page class load now.
+        $(window).hashchange();
+    },
+    
+    /*
+     * Return the URL parameters (after "&" and/or "#") as a JavaScript object.
+     * E.g., if the URL looks like http://www.example.com/index.html?foo=hello&bar=world
+     * then this returns the object
+     *
+     *    { foo: "hello", bar: "world" }
+     *
+     */
+    urlParameters: function() {
+        var regex = /[?#&](\w+)=([^?#&]*)/g;
+        var results = {};
+        var match = regex.exec( window.location.href );
+        while (match != null)
+        {
+            var parameterName = match[1];
+            var parameterValue = match[2];
+            results[parameterName] = parameterValue;
+            match = regex.exec( window.location.href );
+        }
+        return results;
+    }    
+    
+});
+
+/*
+ * General utility functions made available to all controls.
+ */
+Control.prototype.extend({
+	
+	/*
+	 * Look up the page hosting a control.
+	 */
+	page: function() {
+        // Get the containing DOM element subclassing Page that contains the element
+        var pages = this.closest(".Page");
+        
+        // From the DOM element, get the associated QuickUI control.
+        return (pages.length > 0) ? pages.control() : null;
+	}
+    
+});
+</script>
+
+</Control>

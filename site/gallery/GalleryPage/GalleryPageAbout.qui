@@ -21,9 +21,9 @@
 			control. For the control properties that point to source code,
 			the GalleryPage control delegates responsibility for showing the
 			source code to the separate SourceCode control. GalleryPage is a
-			subclass of another control called SitePage, which adds the
-			site’s standard top and left navigation. The title property
-			referenced in the Example is inherited from SitePage.
+			subclass of another control called SitePage (which adds the
+			site’s standard top and left navigation) and ultimately from
+			the <GalleryLink>Page</GalleryLink> base class.
 		</notes>
 	</GalleryPage>
 </prototype>

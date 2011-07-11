@@ -23,6 +23,7 @@ GalleryNavigationLinks.prototype.extend({
             "HintTextBox",
             "HorizontalPanels",
             "List",
+            "Page",
             "SampleSpriteButton",
             "SearchBox",
             "Sprite",

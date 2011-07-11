@@ -14,7 +14,8 @@
         the intent here is not (yet) to present a comprehensive library. Focus
         rather on the general range of expression: abstract controls, layout
         controls, controls that abstract away browser inconsistencies, controls
-        that aggregate other controls, etc.
+        that aggregate other controls, controls meant to be used as base classes
+        for other controls, etc.
         </p>
         <p>
         Since a key goal of QuickUI is to produce easily readable
@@ -62,6 +63,12 @@
                 <div>
                     An abstract control that represents each element of a JavaScript
                     array as a QuickUI control.
+                </div>
+            </div>
+            <div>
+                <GalleryLink>Page</GalleryLink>
+                <div>
+                    Base class for creating top-level pages.
                 </div>
             </div>
             <div>
