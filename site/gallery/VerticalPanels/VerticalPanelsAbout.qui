@@ -1,0 +1,27 @@
+<Control name="VerticalPanelsAbout">
+<prototype>
+	<GalleryPage title="VerticalPanels" sourceFileExample="VerticalPanels/VerticalPanelsDemo.qui" sourceFileControl="../common/VerticalPanels.qui">
+		<summary>
+            Layout for a main content area with panels on the top and/or bottom
+            <i>of an unknown size</i> (i.e., which size to their content), and
+            where the main content area should take the remaining space.
+		</summary>
+		<demo>
+			<VerticalPanelsDemo/>
+		</demo>
+		<notes>
+		    <p>
+            There are many strategies for laying out top/bottom panels, but these
+            all have various constraints, e.g., requiring that the top/bottom panels
+            have a known, fixed height.
+		    </p>
+		    <p>
+		    The VerticalPanels control is similar to the vertical uses of
+		    the XAML (Silverlight) DockPanel control. The layout engine which
+		    VerticalPanels relies on uses JavaScript to recalculate the height
+		    of the panels when the control is resized. 
+		    </p>
+		</notes>
+	</GalleryPage>
+</prototype>
+</Control>

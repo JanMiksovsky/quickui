@@ -12,11 +12,15 @@
 		simple QuickUI controls, representing a small range of what’s possible
 		in QuickUI. While many UI frameworks come with a library of controls,
         the intent here is not (yet) to present a comprehensive library. Focus
-        rather on the general range of expression. 
+        rather on the general range of expression: abstract controls, layout
+        controls, controls that abstract away browser inconsistencies, controls
+        that aggregate other controls, etc.
+        </p>
+        <p>
         Since a key goal of QuickUI is to produce easily readable
-		code, as you look at each control, ask yourself: <i>Is it easy to
+		code, as you look at each control, ask yourself: Is it easy to
 		understand the usage of the control by looking at the source code
-		for the demo?</i>
+		for the demo?
 		</p>
 		
 		<div id="table">
@@ -46,6 +50,12 @@
             <div>
                 <GalleryLink>HintTextBox</GalleryLink>
                 <div>A text box that displays a hint (instructions) when the text box is empty.</div>
+            </div>
+            <div>
+                <GalleryLink>HorizontalPanels</GalleryLink>
+                <div>
+                    A layout control that arranges left and/or right side panels.
+                </div>
             </div>
             <div>
                 <GalleryLink>List</GalleryLink>
@@ -86,6 +96,12 @@
                 <div>
                     A control with a text box and an associated button, where clicking
                     the button does something with the text box's content.
+                </div>
+            </div>
+            <div>
+                <GalleryLink>VerticalPanels</GalleryLink>
+                <div>
+                    A layout control that arranges top and/or bottom panels.
                 </div>
             </div>
 		</div>

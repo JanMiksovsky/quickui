@@ -21,6 +21,7 @@ GalleryNavigationLinks.prototype.extend({
             "GalleryPage",
             "Gradient",
             "HintTextBox",
+            "HorizontalPanels",
             "List",
             "SampleSpriteButton",
             "SearchBox",
@@ -28,7 +29,8 @@ GalleryNavigationLinks.prototype.extend({
             "SpriteButton",
             "Switch",
             "Tag",
-            "TextBoxWithButton"
+            "TextBoxWithButton",
+            "VerticalPanels"
         ]);
     }
 });
