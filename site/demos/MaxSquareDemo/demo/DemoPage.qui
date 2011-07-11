@@ -23,9 +23,9 @@
 </style>
 
 <script>
-$.extend(DemoPage.prototype, {
+DemoPage.prototype.extend({
     
-    ready: function() {
+    initialize: function() {
         var apiKey = "c3685bc8d8cefcc1d25949e4c528cbb0";
         var method = "flickr.interestingness.getList";
         var self = this;
@@ -36,7 +36,7 @@ $.extend(DemoPage.prototype, {
                     href: self.getFlickrImageHref(flickrPhoto)
                 };
             })
-            Control(self.photoCanvas).photos(photos);
+            self.$photoCanvas().photos(photos);
         });
     },
     

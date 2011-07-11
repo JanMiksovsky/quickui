@@ -1,7 +1,7 @@
 <Control name="Photo">
 
 <content>
-    <img id="Photo_src"/>
+    <img id="photo"/>
 </content>
 
 <style>
@@ -9,7 +9,7 @@
     position: relative;
 }
 
-#Photo_src {
+#photo {
     -moz-box-shadow: 5px 5px 10px #b0b0b0;
     -webkit-box-shadow: 5px 5px 10px #b0b0b0;
     box-shadow: 5px 5px 10px #b0b0b0;
@@ -25,28 +25,14 @@
 </style>
 
 <script>
-$.extend(Photo.prototype, {
-    href: Control.Property(),
-    src: Control.Element("Photo_src").attr("src"),
-    ready: function() {
+Photo.prototype.extend({
+    href: Control.property(),
+    src: Control.bindTo("$photo", "attr/src"),
+    initialize: function() {
         var self = this;
-        $(this.Photo_src).click(function() {
+        this.$photo().click(function() {
             window.location.href = self.href();
         });
-        /*
-        var $img = $(this.Photo_src);
-        $img.load(function() {
-            var image = $img[0];
-            var aspect = image.naturalWidth / image.naturalHeight;
-            var narrow = (aspect < 1);
-            var width = narrow ? "auto" : "100%";
-            var height = narrow ? "100%" : "auto";
-            $img.css({
-                width: width,
-                height: height
-            });
-        });
-        */
     }
 });
 </script>
