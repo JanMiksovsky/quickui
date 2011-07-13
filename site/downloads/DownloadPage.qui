@@ -20,9 +20,12 @@ build the QuickUI tools yourself from the
 	<li>
 	Download <Link href="http://www.mono-project.com">Mono</Link>.
     The QuickUI tools themselves are written in .NET,
-    and the Mono binaries allow QuickUI to run fine on OS/X. (Beyond that,
-    you can use the QuickUI tools with complete disregard for their .NET existence.
-    Coding for Quick controls is done in plain JavaScript.)
+    and the Mono binaries allow QuickUI to run fine on OS/X.
+    (Yes, .NET. Just chill, it'll be fine.
+    You can use the QuickUI tools with complete disregard for their .NET heritage;
+    all actual coding for QuickUI controls is done in plain JavaScript.
+    For those with an alergic reaction to .NET, a Python port is being explored.
+    Help would be welcomed with that.)
     </li>
 	<li>Download <Link href="/downloads/QuickUI.zip">QuickUI.zip</Link> and expand it.</li>
     <li>Copy the expanded contents to a location, e.g., /Developer/Applications/QuickUI.</li>
@@ -42,10 +45,29 @@ but you’ll pick up syntax highlighting, auto-completion, etc., for CSS rules a
 embedded in the Quick markup.)
 </p>
 
+<p>
+QuickUI development is <b>much</b> better if you can arrange for your IDE
+to easily, or automatically, invoke the qb build tool when saving QuickUI source files.
+</p>
+
+<h2>TextMate</h2>
+
+<ol>
+    <li>Download the <Link href="textmate/QuickUI.zip">QuickUI bundle</Link>.</li>
+    <li>
+        Make sure your TextMate preferences include the qb/bin folder on your path.
+        (Set under Preferences / Advanced / Shell Variables.)
+    </li>
+    <li>
+        With any QuickUI source file open, you can then hit Command-B to build the project.
+        (This implicitly saves the file, so this can be done instead of Command-S to save.)
+    </li>
+</ol>
+
 <h2>Aptana Studio</h2>
 
-You can configure <Link href="http://www.aptana.com/studio">Aptana Studio</Link> to 
-automatically build a QuickUI project by invoking the qb tool.
+You can configure <Link href="http://www.aptana.com/studio">Aptana Studio</Link>
+on OS/X or Windows to automatically build a QuickUI project whenever a project file is saved.
 
 <ol>
 	<li>Create or open a project in Aptana Studio.</li>
