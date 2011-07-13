@@ -41,19 +41,6 @@ Page.prototype.extend({
  * Class members.
  */
 Page.extend({
-    
-    /*
-     * Load the given class as the page's top-level class.
-     * 
-     * If a target element is supplied, that element is used to instantiate the control;
-     * otherwise the entire body is given over to the control. 
-     */
-    loadClass: function(pageClass, target, properties) {
-        var $target = Control(target || "body");
-        return $target
-                    .transmute(pageClass)
-                    .properties(properties);
-    },
 
     /*
      * Start actively tracking changes in a page specified on the URL.
@@ -61,13 +48,12 @@ Page.extend({
      * If the page then navigates to www.example.com/index.html#page=Bar, this
      * will load class Bar in situ, without forcing the browser to reload the page. 
      */
-    trackClassFromUrl: function(defaultPageClass, element) {
+    trackClassFromUrl: function(defaultPageClass, $element) {
         
         // Watch for changes in the URL after the hash.
         $(window).hashchange(function() {
-            var pageClassName = Page.urlParameters().page;
-            var pageClass = pageClassName || defaultPageClass;
-            Page.loadClass(pageClass, element);
+            var pageClass = Page.urlParameters().page || defaultPageClass;
+            Control($element).transmute(pageClass);
         })
             
         // Trigger a page class load now.
