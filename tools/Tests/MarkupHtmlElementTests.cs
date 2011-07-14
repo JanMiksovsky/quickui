@@ -51,6 +51,16 @@ namespace Tests
         }
 
         [Test]
+        public void HtmlContainsCrLf()
+        {
+            XElement element = new XElement("p",
+                new XText("This\\r\\nis\\ra\\ntest.")
+            );
+            MarkupHtmlElement node = new MarkupHtmlElement(element);
+            Assert.AreEqual("<p>This\\nis\\ra\\ntest.</p>", node.Html);
+        }
+
+        [Test]
         public void HtmlContainsHtml()
         {
             XElement element = new XElement("div",
