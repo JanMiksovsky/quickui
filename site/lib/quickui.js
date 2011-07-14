@@ -625,7 +625,6 @@ jQuery.extend(Control.prototype, {
         
         var classFn = Control._convertToClass(newClass);
         
-        var oldId = this.prop("id");
         var oldContents = preserveContent ? this.multiProperty("content") : null;
         var oldClasses = preserveClasses ? this.prop("class") : null;
         
@@ -637,10 +636,6 @@ jQuery.extend(Control.prototype, {
 
         var $controls = this.control(classFn);
         
-        if (oldId)
-        {
-            $controls.prop("id", oldId);
-        }
         if (oldContents)
         {
             $controls.multiProperty("content", oldContents);
