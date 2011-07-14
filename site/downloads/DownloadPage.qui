@@ -24,7 +24,7 @@ build the QuickUI tools yourself from the
     (Yes, .NET. Just chill, it'll be fine.
     You can use the QuickUI tools with complete disregard for their .NET heritage;
     all actual coding for QuickUI controls is done in plain JavaScript.
-    For those with an alergic reaction to .NET, a Python port is being explored.
+    For those with an allergic reaction to .NET, a Python port is being explored.
     Help would be welcomed with that.)
     </li>
 	<li>Download <Link href="/downloads/QuickUI.zip">QuickUI.zip</Link> and expand it.</li>
