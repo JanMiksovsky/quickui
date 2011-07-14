@@ -51,16 +51,6 @@ namespace Tests
         }
 
         [Test]
-        public void HtmlContainsCrLf()
-        {
-            XElement element = new XElement("p",
-                new XText("This\\r\\nis\\ra\\ntest.")
-            );
-            MarkupHtmlElement node = new MarkupHtmlElement(element);
-            Assert.AreEqual("<p>This\\nis\\ra\\ntest.</p>", node.Html);
-        }
-
-        [Test]
         public void HtmlContainsHtml()
         {
             XElement element = new XElement("div",
@@ -128,6 +118,16 @@ namespace Tests
             Assert.IsInstanceOf<MarkupControlInstance>(childNode);
             MarkupControlInstance control = (MarkupControlInstance)childNode;
             Assert.AreEqual("Foo", control.ClassName);
+        }
+
+        [Test]
+        public void NormalizeLineEndings()
+        {
+            XElement element = new XElement("p",
+                new XText("This\r\nis\ra\ntest.")
+            );
+            MarkupHtmlElement node = new MarkupHtmlElement(element);
+            Assert.AreEqual("\"<p>This\\nis\\na\\ntest.</p>\"", node.JavaScript());
         }
     }
 }

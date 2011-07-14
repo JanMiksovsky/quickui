@@ -71,6 +71,7 @@ namespace qc
 
         /// <summary>
         /// Return an escaped version of the string that will be acceptable to JavaScript.
+        /// Also, normalize CrLf line endings (Windows) to Cr line endings(Mac).
         /// </summary>
         /// <remarks>
         /// Adapted from "Enquote" found at json.org by Are Bjolseth.
@@ -81,8 +82,15 @@ namespace qc
 
             stringBuilder.Append('"');
 
+            bool previousCharIsReturn = false;
             foreach (char c in s)
             {
+                if (previousCharIsReturn && c != '\n')
+                {
+                    stringBuilder.Append("\\r");
+                }
+                previousCharIsReturn = false;
+
                 switch (c)
                 {
                     case '\\':
@@ -95,20 +103,21 @@ namespace qc
                         stringBuilder.Append("\\b");
                         break;
 
-                    case '\t':
-                        stringBuilder.Append("\\t");
+                    case '\f':
+                        stringBuilder.Append("\\f");
                         break;
 
                     case '\n':
                         stringBuilder.Append("\\n");
                         break;
 
-                    case '\f':
-                        stringBuilder.Append("\\f");
+                    case '\r':
+                        // Wait to see next character.
+                        previousCharIsReturn = true;
                         break;
 
-                    case '\r':
-                        stringBuilder.Append("\\r");
+                    case '\t':
+                        stringBuilder.Append("\\t");
                         break;
 
                     default:
@@ -125,6 +134,10 @@ namespace qc
                         break;
 
                 }
+            }
+            if (previousCharIsReturn)
+            {
+                stringBuilder.Append("\\r");
             }
 
             stringBuilder.Append('"');
