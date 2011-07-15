@@ -41,6 +41,10 @@
                 </div>
             </div>
             <div>
+                <GalleryLink>Fader</GalleryLink>
+                <div>Fades out content on the right or bottom instead of clipping it.</div>
+            </div>
+            <div>
                 <GalleryLink>GalleryPage</GalleryLink>
                 <div>The template for all pages in this gallery.</div>
             </div>

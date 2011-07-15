@@ -1,0 +1,13 @@
+<Control name="FaderDemo">
+    <Fader style="max-width: 175px;">
+        The glass is neither half-full nor half-empty:
+        it's twice as big as it needs to be.
+    </Fader>
+    <Fader style="max-width: 350px;">
+        The glass is neither half-full nor half-empty:
+        it's twice as big as it needs to be.</Fader>
+    <Fader>
+        The glass is neither half-full nor half-empty:
+        it's twice as big as it needs to be.
+    </Fader>
+</Control>

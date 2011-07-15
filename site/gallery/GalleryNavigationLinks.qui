@@ -18,6 +18,7 @@ GalleryNavigationLinks.prototype.extend({
             "BrowserSpecific",
             "ButtonBase",
             "DeviceSpecific",
+            "Fader",
             "GalleryPage",
             "Gradient",
             "HintTextBox",

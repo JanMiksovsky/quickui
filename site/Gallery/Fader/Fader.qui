@@ -1,0 +1,85 @@
+<!--
+Fades its content to the background color on the right/bottom edge if the
+content is too long. Must set explicitly set the control's background-color
+if the color is not white. 
+-->
+
+<Control name="Fader">
+
+<content>
+    <div id="Fader_content"/>
+    <Gradient id="gradient" direction="horizontal" />
+</content>
+
+<style>
+{
+    background-color: #ffffff;
+    overflow: hidden;
+    position: relative;
+    white-space: nowrap;
+}
+
+#gradient {
+    position: absolute;
+    height: 100%;
+    right: 0;
+    top: 0;
+    width: 1em;
+}
+
+.Fader.vertical #gradient {
+    right: auto;
+    bottom: 0;
+    height: 1em;
+    top: auto;
+    width: 100%;
+}
+</style>
+
+<script>
+Fader.prototype.extend({
+    
+    content: Control.bindTo("$Fader_content", "content"),
+    
+    initialize: function() {
+        this._recalc();
+    },
+    
+    direction: Control.property(function(direction) {
+        var horizontal = (direction == "horizontal");
+        this.toggleClass("vertical", !horizontal);
+        this._recalc();
+        this.$gradient().direction(direction);
+    }),
+    
+    _recalc: function() {
+        var backgroundColor = this.css("background-color");
+        var backgroundHex = (backgroundColor.substr(0, 3).toLowerCase() == "rgb")
+                                ? this._rgbStringToHexColor(backgroundColor)
+                                : backgroundColor;
+        var gradient = this.$gradient();
+        var start = $.browser.msie
+                        ? "#00" + backgroundHex.substring(1)  // alpha first for IE
+                        : backgroundHex + "00"; 
+        gradient.start(start);
+        gradient.end(backgroundHex);
+    },
+    
+    _rgbStringToHexColor: function(rgbString) {
+        rgb = rgbString.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+        return "#" + this._hexByte(rgb[1]) + this._hexByte(rgb[2]) + this._hexByte(rgb[3]);
+    },
+
+    _hexByte: function(n) {
+        var s = (new Number(n & 0xFF)).toString(16);
+        if (s.length == 1)
+        {
+            s = "0" + s;
+        }
+        return s;
+    }
+    
+});
+</script>
+
+</Control>

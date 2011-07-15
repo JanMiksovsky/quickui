@@ -1,0 +1,13 @@
+<Control name="FaderAbout">
+<prototype>
+	<GalleryPage title="Fader" sourceFileExample="Fader/FaderDemo.qui" sourceFileControl="Fader/Fader.qui">
+		<summary>
+			Fades out content on the right or bottom instead of clipping it
+			by using an alpha-blended <GalleryLink>Gradient</GalleryLink>.
+		</summary>
+		<demo>
+			<FaderDemo/>
+		</demo>
+	</GalleryPage>
+</prototype>
+</Control>
