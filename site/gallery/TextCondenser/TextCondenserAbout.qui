@@ -1,0 +1,15 @@
+<Control name="TextCondenserAbout">
+<prototype>
+	<GalleryPage title="TextCondenser" sourceFileExample="TextCondenser/TextCondenserDemo.qui" sourceFileControl="TextCondenser/TextCondenser.qui">
+		<summary>
+			Switches to a condensed font when necessary to squeeze in more text.
+			By using a condensed font from the same font family as the normal text,
+			users generally won't even notice the font change, but will nevertheless
+			benefit from seeing the additional characters.
+		</summary>
+		<demo>
+			<TextCondenserDemo/>
+		</demo>
+	</GalleryPage>
+</prototype>
+</Control>

@@ -110,6 +110,12 @@
                 </div>
             </div>
             <div>
+                <GalleryLink>TextCondenser</GalleryLink>
+                <div>
+                    Switches to a condensed font when necessary to squeeze in more text.
+                </div>
+            </div>
+            <div>
                 <GalleryLink>VerticalPanels</GalleryLink>
                 <div>
                     A layout control that arranges top and/or bottom panels.

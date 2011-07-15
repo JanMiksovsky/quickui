@@ -1,0 +1,32 @@
+<!-- Open Sans and Open Sans Condensed fonts from Google Web Fonts. -->
+ 
+<Control name="TextCondenserDemo">
+
+<content>
+    <TextCondenser>Austria</TextCondenser>
+    <TextCondenser>Bosnia and Herzegovina</TextCondenser>
+    <TextCondenser>Dominican Republic</TextCondenser>
+    <TextCondenser>Germany</TextCondenser>
+    <TextCondenser>Saint Vincent and the Grenadines</TextCondenser>
+    <TextCondenser>Trinidad and Tobago</TextCondenser>
+    <TextCondenser>United Republic of Tanzania</TextCondenser>
+    <TextCondenser>Viet Nam</TextCondenser>
+</content>
+
+<style>
+{
+    background-color: #faf3ed;
+    font-family: "Open Sans", sans-serif;
+    max-width: 150px;
+}
+</style>
+
+<script>
+TextCondenserDemo.prototype.extend({
+    initialize: function() {
+        this.find(".TextCondenser").control().condensedFontFamily("Open Sans Condensed");
+    }
+});  
+</script>
+
+</Control>

@@ -32,6 +32,7 @@ GalleryNavigationLinks.prototype.extend({
             "Switch",
             "Tag",
             "TextBoxWithButton",
+            "TextCondenser",
             "VerticalPanels"
         ]);
     }
