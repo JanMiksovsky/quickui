@@ -49,8 +49,10 @@ TextCondenser.prototype.extend({
     }),
     
     layout: function() {
-        var tooWide = this.$normal().width() > this.width();
-        this.applyClass("condensed", tooWide);
+        return this.eachControl(function(index, $control) {
+            var tooWide = this.$normal().width() > this.width();
+            this.applyClass("condensed", tooWide);
+        });
     }
 });
 </script>
