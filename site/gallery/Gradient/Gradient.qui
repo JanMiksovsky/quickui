@@ -1,15 +1,20 @@
+<!--
+Gradient. Supports the different browser-specific syntax.
+Alpha values are possible, but all colors must be specified as RGBA hex values.
+-->
+
 <Control name="Gradient">
 
 <script>
 Gradient.prototype.extend({
     
-    initialize: function() {
-        this._redraw();
-    },
-    
     end: Control.property(function() { this._redraw(); }),
     direction: Control.property(function() { this._redraw(); }, "vertical"),
     start: Control.property(function() { this._redraw(); }),
+    
+    initialize: function() {
+        this._redraw();
+    },
     
     _redraw: function() {
         var direction = this.direction();
@@ -17,7 +22,7 @@ Gradient.prototype.extend({
         var end = this.end();
         if (direction && start && end)
         {
-            var horizontal = (direction == "horizontal");
+            var horizontal = (direction === "horizontal");
             var startColorString = this._hexColorToRgbString(start);
             var endColorString = this._hexColorToRgbString(end);
             var property;
@@ -38,7 +43,7 @@ Gradient.prototype.extend({
             {
                 property = "filter";
                 var gradientType = horizontal ? 1 : 0;
-                value = "progid:DXImageTransform.Microsoft.gradient(gradientType=" + gradientType + ", startColorStr=" + start + ", endColorStr=" + end + ")"; 
+                value = "progid:DXImageTransform.Microsoft.gradient(gradientType=" + gradientType + ", startColorStr=" + startColorString + ", endColorStr=" + endColorString + ")"; 
             }
 
             this.css(property, value);
@@ -47,6 +52,7 @@ Gradient.prototype.extend({
     
     /* Convert a hex color like #00ff00 to "rgb(0, 255, 0)" */
     _hexColorToRgbString: function(hex) {
+        
         if (hex.substr(0, 1) == "#")
         {
             // Remove "#"
@@ -54,22 +60,41 @@ Gradient.prototype.extend({
         }
         var hasAlpha = (hex.length == 8);
         var color = parseInt(hex, 16);
-        var colorStringType = hasAlpha ? "rgba" : "rgb";
+        var a;
         
-        var alphaString = "";
-        if (hasAlpha)
+        var rgbString;
+        if ($.browser.msie)
         {
-            // Alpha
-            a = color & 0xFF;
-            alphaString = "," + a;
-            color = color >> 8;
+            // Internet Explorer
+            rgbString = hex;
+            if (hasAlpha)
+            {
+                // Move alpha to front, from RGBA to ARGB.
+                a = rgbString.slice(6);
+                rgbString = a + rgbString.substr(0, 6);
+            }
+            rgbString = "#" + rgbString; 
+        }
+        else
+        {
+            // WebKit, Mozilla
+            var colorStringType = hasAlpha ? "rgba" : "rgb";
+            var alphaString = "";
+            if (hasAlpha)
+            {
+                // Convert alpha from hex to decimal.
+                a = (color & 0xFF) / 255;
+                alphaString = "," + a;
+                color = color >> 8;
+            }
+            
+            var r = (color >> 16) & 0xFF;
+            var g = (color >> 8)  & 0xFF;
+            var b = color         & 0xFF;
+            
+            rgbString = colorStringType + "(" + r + "," + g + "," + b + alphaString + ")";
         }
         
-        var r = (color >> 16) & 0xFF;
-        var g = (color >> 8)  & 0xFF;
-        var b = color         & 0xFF;
-        
-        var rgbString = colorStringType + "(" + r + "," + g + "," + b + alphaString + ")";
         return rgbString;
     }
     

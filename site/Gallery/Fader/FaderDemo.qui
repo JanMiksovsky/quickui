@@ -17,9 +17,21 @@
 
 <style>
 .Fader {
-    background-color: #faf3ed;
+    background-color: gray; /* #faf3ed; */
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1.5em;
     margin: .5em 0;
     padding: 2px;
 }
 </style>
+
+<script>
+FaderDemo.prototype.extend({
+    initialize: function() {
+        // HACK
+        this.find(".Fader").control()._redraw();
+    }
+});  
+</script>
+
 </Control>

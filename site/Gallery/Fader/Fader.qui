@@ -42,27 +42,28 @@ Fader.prototype.extend({
     content: Control.bindTo("$Fader_content", "content"),
     
     initialize: function() {
-        this._recalc();
+        this._redraw();
     },
     
     direction: Control.property(function(direction) {
-        var horizontal = (direction == "horizontal");
-        this.toggleClass("vertical", !horizontal);
-        this._recalc();
-        this.$gradient().direction(direction);
+        this
+            .toggleClass("vertical", direction !== "horizontal")
+            ._redraw()
+            .$gradient()
+                .direction(direction);
     }),
     
-    _recalc: function() {
-        var backgroundColor = this.css("background-color");
-        var backgroundHex = (backgroundColor.substr(0, 3).toLowerCase() == "rgb")
-                                ? this._rgbStringToHexColor(backgroundColor)
-                                : backgroundColor;
-        var gradient = this.$gradient();
-        var start = $.browser.msie
-                        ? "#00" + backgroundHex.substring(1)  // alpha first for IE
-                        : backgroundHex + "00"; 
-        gradient.start(start);
-        gradient.end(backgroundHex);
+    _redraw: function() {
+        var self = this;
+        return this.eachControl(function(index, $control) {
+            var backgroundColor = $control.css("background-color");
+            var backgroundHex = (backgroundColor.substr(0, 3).toLowerCase() == "rgb")
+                                    ? self._rgbStringToHexColor(backgroundColor)
+                                    : backgroundColor;
+            $control.$gradient()
+                .start(backgroundHex + "00")
+                .end(backgroundHex);
+        });
     },
     
     _rgbStringToHexColor: function(rgbString) {
