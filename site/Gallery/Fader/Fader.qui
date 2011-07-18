@@ -37,73 +37,8 @@ if the color is not white.
 </style>
 
 <script>
-Control.extend({
-
-    _elementInsertionCallbacks: [],
-    _listeningForElementInsertion: false,
-    
-    /*
-     * An element has been added to the body; see if it's a control that's
-     * waiting to be notified of that via Control.prototype.insertedIntoDocument().
-     */ 
-    _documentNodeInserted: function(event) {
-        console.log("_documentNodeInserted");
-        var i = 0;
-        while (i < Control._elementInsertionCallbacks.length)
-        {
-            var element = Control._elementInsertionCallbacks[i].element;
-            if ($.contains(document.body, element))
-            {
-                // Invoke element's callback.
-                var $control = Control(element).control();
-                console.log($control.className + "#" + $control.attr("id") + " calling back");
-                Control._elementInsertionCallbacks[i].callback.call($control);
-                Control._elementInsertionCallbacks.splice(i, 1);   // Remove control
-            }
-            else
-            {
-                i++;
-            }
-        }
-        
-        if (Control._elementInsertionCallbacks.length == 0)
-        {
-            // No more elements to wait for; stop listening for insertions.
-            console.log("stop listening for DOMNodeInserted");
-            $("body").unbind("DOMNodeInserted", Control._documentNodeInserted);
-            Control._listeningForElementInsertion = false;
-        }
-    }
-    
-});
-
 Control.prototype.extend({
     
-    /*
-     * The control wants to have a callback invoked when the control
-     * has been inserted into the document body. 
-     */
-    insertedIntoDocument: function(callback) {
-        
-        // Add elements to the list we're waiting to see inserted.
-        var $callbacks = $.map(this, function(element, index) {
-            return {
-                element: element,
-                callback: callback
-            };
-        });
-        Control._elementInsertionCallbacks = $callbacks.concat(Control._elementInsertionCallbacks);
-
-        if (!Control._listeningForElementInsertion)
-        {
-            // Start listening for insertions of elements into the document body.
-            console.log("start listening for DOMNodeInserted");
-            // We use DOMNodeInserted on the body instead of DocumentNodeInserted;
-            // as of 7/2011, the former has better browser coverage.
-            $("body").bind("DOMNodeInserted", Control._documentNodeInserted);
-            Control._listeningForElementInsertion = true;
-        }
-    }
 });
 
 Fader.prototype.extend({
@@ -112,9 +47,7 @@ Fader.prototype.extend({
     
     initialize: function() {
         var self = this;
-        console.log("Asking for element insertion");
         this.insertedIntoDocument(function() {
-            console.log(self.attr("id") + " insertedIntoDocument");
             self.redraw();
         });
     },

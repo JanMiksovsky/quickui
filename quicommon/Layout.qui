@@ -24,7 +24,8 @@ Layout.prototype.extend({
 });
 
 // Class methods.
-// TODO: Factor DOMNodeInserted listening into Control, where it can be used by other classes.
+// TODO: Most of this has been factored into the new insertedIntoDocument() event,
+// so rewrite this to use that.
 Layout.extend({
     
     /*

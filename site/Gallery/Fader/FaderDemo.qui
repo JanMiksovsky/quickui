@@ -1,15 +1,15 @@
 <Control name="FaderDemo">
     
 <content>
-    <Fader id="fader1" style="max-width: 175px;">
+    <Fader style="max-width: 175px;">
         The glass is neither half-full nor half-empty:
         it's twice as big as it needs to be.
     </Fader>
-    <Fader id="fader2" style="max-width: 350px;">
+    <Fader style="max-width: 350px;">
         The glass is neither half-full nor half-empty:
         it's twice as big as it needs to be.
     </Fader>
-    <Fader id="fader3">
+    <Fader> <!-- No max width -->
         The glass is neither half-full nor half-empty:
         it's twice as big as it needs to be.
     </Fader>
@@ -17,7 +17,7 @@
 
 <style>
 .Fader {
-    background-color: gray; /* #faf3ed; */
+    background-color: #eee;
     font-family: Helvetica, Arial, sans-serif;
     font-size: 1.5em;
     margin: .5em 0;
