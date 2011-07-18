@@ -21,6 +21,12 @@
 		    VerticalPanels relies on uses JavaScript to recalculate the height
 		    of the panels when the control is resized. 
 		    </p>
+		    <p>
+		    Note: A known bug currently prevents this control type from working
+		    correctly here when navigating between pages in the Gallery.
+		    Hitting Refresh works around the issue, but the underlying issue has
+		    yet to be fixed in the layout engine used by this control. 
+		    </p>
 		</notes>
 	</GalleryPage>
 </prototype>
