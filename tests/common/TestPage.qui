@@ -32,7 +32,7 @@
             <content>Horizontal panels</content>
             <right>Right</right>
         </HorizontalPanels>
-        <VerticalPanels style="height: 200px;">
+        <VerticalPanels id="verticalPanels" style="height: 200px;">
         	<top>Top</top>
         	<content>Vertical panels</content>
         	<bottom>Bottom</bottom>

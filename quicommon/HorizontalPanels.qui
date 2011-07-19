@@ -54,7 +54,7 @@ HorizontalPanels.prototype.extend({
     right: Control.bindTo("$HorizontalPanels_right", "content"),
 	
 	layout: function() {
-        //this._log("layout");
+        this._log("layout");
 	    var panelLeftWidth = this.$HorizontalPanels_left().outerWidth();
 	    var panelRightWidth = this.$HorizontalPanels_right().outerWidth();
 	    this.$HorizontalPanels_content().css({
