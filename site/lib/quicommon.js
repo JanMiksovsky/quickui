@@ -264,7 +264,8 @@ Layout.prototype.extend({
 });
 
 // Class methods.
-// TODO: Factor DOMNodeInserted listening into Control, where it can be used by other classes.
+// TODO: Most of this has been factored into the new insertedIntoDocument() event,
+// so rewrite this to use that.
 Layout.extend({
     
     /*
@@ -273,21 +274,32 @@ Layout.extend({
     recalc: function() {
         //console.log("recalc");
         // Call the layout() method of any control whose size has changed.
-        for (var i = 0, length = this._controlsToLayout.length; i < length; i++)
+        var i = 0;
+        while (i < this._controlsToLayout.length)
         {
             var $control = Control(this._controlsToLayout[i]).control();
-            var previousSize = $control.data("_size"); 
-            var size = {
-                height: $control.height(),
-                width: $control.width()
-            };
-            if (previousSize === undefined ||
-                size.height != previousSize.height ||
-                size.width != previousSize.width)
+            if ($control)
             {
-                $control
-                    .data("_size", size)
-                    .layout();
+                var previousSize = $control.data("_size");
+                var size = {
+                    height: $control.height(),
+                    width: $control.width()
+                };
+                if (previousSize === undefined ||
+                    size.height != previousSize.height ||
+                    size.width != previousSize.width)
+                {
+                    $control
+                        .data("_size", size)
+                        .layout();
+                }
+                i++;
+            }
+            else
+            {
+                // Control unavailable, likely no longer in DOM;
+                // remove it from our list of controls to track.
+                this._controlsToLayout.splice(i, 1);
             }
         }
     },
@@ -299,8 +311,10 @@ Layout.extend({
     track: function($controls) {
         //$controls._log("tracking");
         this._initialize();
-        this._controlsNotYetInDOM = $controls.get().concat(this._controlsNotYetInDOM);
-        this._addControlsInDocument();
+        $controls.insertedIntoDocument(function() {
+            this.layout();
+            Layout._controlsToLayout = Layout._controlsToLayout.concat(this);
+        });
     },
 
     /* TODO: Allow a control to be stop being tracked for layout purposes.
@@ -309,43 +323,6 @@ Layout.extend({
         this.recalc();
     },
     */
-   
-    /*
-     * If any pending controls are now in the DOM, add them to the list of
-     * controls to layout.
-     */
-    _addControlsInDocument: function() {
-        var needsRecalc = false;
-        var i = 0;
-        while (i < this._controlsNotYetInDOM.length)
-        {
-            var control = this._controlsNotYetInDOM[i];
-            if ($.contains(document.body, control))
-            {
-                this._controlsToLayout.push(control);
-                //Control(control).control()._log("added to layout list");
-                this._controlsNotYetInDOM.splice(i, 1);   // Remove control
-                needsRecalc = true;
-            }
-            else
-            {
-                i++;
-            }
-        }
-        if (needsRecalc)
-        {
-            this.recalc();
-        }
-        this._listenForDOMNodeInserted();
-    },
-    
-    /*
-     * An element has been added to the document;
-     */ 
-    _documentNodeInserted: function(event) {
-        //console.log("_documentNodeInserted");
-        Layout._addControlsInDocument();
-    },
     
     /*
      * Initialize layout engine overall (not a specific instance).
@@ -358,38 +335,16 @@ Layout.extend({
             return;
         }
         
-        // The following control arrays are maintained in order such that
+        // The following control array is maintained in order such that
         // DOM parents come before their children. 
-        this._controlsNotYetInDOM = [];
         this._controlsToLayout = [];
         
-        this._listeningForDOMNodeInserted = false;
-       
         // Recalc layout whenever the window size changes.
         $(window).resize(function() {
             Layout.recalc();
         });
         
         this._initialized = true;
-    },
-    
-    /*
-     * If we we're tracking any controls that haven't been added to the DOM,
-     * then listen for DOMNodeInserted events.
-     */
-    _listenForDOMNodeInserted: function() {
-        if (!this._listeningForDOMNodeInserted && this._controlsNotYetInDOM.length > 0)
-        {
-            //console.log("start listening for DOMNodeInserted");
-            $(document).bind("DOMNodeInserted", this._documentNodeInserted);
-            this._listeningForDOMNodeInserted = true;
-        }
-        else if (this._listeningForDOMNodeInserted && this._controlsNotYetInDOM.length == 0)
-        {
-            //console.log("stop listening for DOMNodeInserted");
-            $(document).unbind("DOMNodeInserted", this._documentNodeInserted);
-            this._listeningForDOMNodeInserted = false;
-        }
     }
         
 });
@@ -598,19 +553,6 @@ Page.prototype.extend({
  * Class members.
  */
 Page.extend({
-    
-    /*
-     * Load the given class as the page's top-level class.
-     * 
-     * If a target element is supplied, that element is used to instantiate the control;
-     * otherwise the entire body is given over to the control. 
-     */
-    loadClass: function(pageClass, target, properties) {
-        var $target = Control(target || "body");
-        return $target
-                    .transmute(pageClass)
-                    .properties(properties);
-    },
 
     /*
      * Start actively tracking changes in a page specified on the URL.
@@ -618,13 +560,14 @@ Page.extend({
      * If the page then navigates to www.example.com/index.html#page=Bar, this
      * will load class Bar in situ, without forcing the browser to reload the page. 
      */
-    trackClassFromUrl: function(defaultPageClass, element) {
+    trackClassFromUrl: function(defaultPageClass, target) {
+        
+        var $control = Control(target || "body");
         
         // Watch for changes in the URL after the hash.
         $(window).hashchange(function() {
-            var pageClassName = Page.urlParameters().page;
-            var pageClass = pageClassName || defaultPageClass;
-            Page.loadClass(pageClass, element);
+            var pageClass = Page.urlParameters().page || defaultPageClass;
+            $control.transmute(pageClass);
         })
             
         // Trigger a page class load now.
