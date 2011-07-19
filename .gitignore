@@ -42,4 +42,3 @@ tests/common/common.*
 deploy/QuickUI
 mono/lib
 old
-site/lib/jquery.min.js
