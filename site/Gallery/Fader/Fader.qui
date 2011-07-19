@@ -24,13 +24,13 @@ if the color is not white.
     height: 100%;
     right: 0;
     top: 0;
-    width: 1em;
+    width: 1.5em;
 }
 
 .Fader.vertical #gradient {
     right: auto;
     bottom: 0;
-    height: 1em;
+    height: 1.5em;
     top: auto;
     width: 100%;
 }

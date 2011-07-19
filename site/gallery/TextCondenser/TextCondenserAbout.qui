@@ -5,7 +5,9 @@
 			Switches to a condensed font when necessary to squeeze in more text.
 			By using a condensed font from the same font family as the normal text,
 			users generally won't even notice the font change, but will nevertheless
-			benefit from seeing the additional characters.
+			benefit from seeing the additional characters. The demo below also
+			makes use of a <GalleryLink>Fader</GalleryLink> to fade out text, which
+			even after being condensed, is too long to fit.
 		</summary>
 		<demo>
 			<TextCondenserDemo/>
