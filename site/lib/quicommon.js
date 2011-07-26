@@ -826,7 +826,7 @@ TabSet = Control.subclass("TabSet", function renderTabSet() {
 TabSet.prototype.extend({
 
     content: Control.bindTo("$TabSet_content", "content", function() { this._refresh(); }),
-    selectTabOnClick: Control.property(null, true),
+    selectTabOnClick: Control.property.bool(null, true),
     buttons: Control.bindTo("$buttons", "children"),
     tabButtonClass: Control.bindTo("$buttons", "itemClass", function() { this._refresh(); }),
     tabs: Control.bindTo("$TabSet_content", "children"),
@@ -872,13 +872,14 @@ TabSet.prototype.extend({
         // TODO: If buttons are moved elsewhere, unbind click event.
         var self = this;
         this.buttons().click(function() {
-            if (self.selectTabOnClick())
+            var buttonIndex = self.buttons().index(this);
+            if (buttonIndex >= 0)
             {
-                var buttonIndex = self.buttons().index(this);
-                if (buttonIndex >= 0)
+                if (self.selectTabOnClick())
                 {
                     self.selectedTabIndex(buttonIndex);
                 }
+                self.trigger("onTabClicked", [ buttonIndex, self.tabs()[buttonIndex] ]);
             }
         });
         
