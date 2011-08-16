@@ -18,10 +18,18 @@ List.prototype.extend({
     //
     mapFn: Control.property(null, null),
     
+    //
+    // The name of a control property (i.e., a member of the class specified by
+    // itemClass) to which an item should be passed. This is a simpler way to
+    // create a mapping than creating a specialized mapFn.
+    //
+    mapItemToProperty: Control.property(),
+    
     _refresh: function() {
         var itemClass = this.itemClass();
         var items = this.items();
         var mapFn = this.mapFn();
+        var mapItemToProperty = this.mapItemToProperty();
         if (itemClass && items)
         {
             var self = this;
@@ -31,6 +39,11 @@ List.prototype.extend({
                 {
                     // Map item to control properties with custom map function.
                     properties = mapFn.call(self, item, index);
+                }
+                else if (mapItemToProperty)
+                {
+                    properties = {};
+                    properties[mapItemToProperty] = item;
                 }
                 else if (typeof item == "string" || item instanceof String)
                 {
