@@ -42,3 +42,4 @@ tests/common/common.*
 deploy/QuickUI
 mono/lib
 old
+TestResult.xml
