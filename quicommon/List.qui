@@ -11,43 +11,40 @@ List.prototype.extend({
     items: Control.property(function() { this._refresh(); }),
     
     //
-    // This mapFn should be a function that accepts one object
-    // (typically a data object) and returns a new object whose
-    // properties map directly to property settors defined by the
-    // target itemClass.
+    // Used to map an incoming list item to property setters on the control
+    // class indicated by itemClass. This can either be a simple string,
+    // in which case it will be taken as the name of a control class property,
+    // or a mapping function that takes an item (and, optionally an index) and
+    // returns a property dictionary.
     //
-    mapFn: Control.property(null, null),
-    
-    //
-    // The name of a control property (i.e., a member of the class specified by
-    // itemClass) to which an item should be passed. This is a simpler way to
-    // create a mapping than creating a specialized mapFn.
-    //
-    mapItemToProperty: Control.property(),
+    mapItemTo: Control.property(null, null),
     
     _refresh: function() {
         var itemClass = this.itemClass();
         var items = this.items();
-        var mapFn = this.mapFn();
-        var mapItemToProperty = this.mapItemToProperty();
         if (itemClass && items)
         {
+            var mapItemTo = this.mapItemTo();
             var self = this;
             var controls = $.map(items, function(item, index) {
                 var properties;
-                if (mapFn)
+                if (mapItemTo)
                 {
-                    // Map item to control properties with custom map function.
-                    properties = mapFn.call(self, item, index);
-                }
-                else if (mapItemToProperty)
-                {
-                    properties = {};
-                    properties[mapItemToProperty] = item;
+                    if ($.isFunction(mapItemTo))
+                    {
+                        // mapItemTo specifies a mapping function.
+                        properties = mapItemTo.call(self, item, index);
+                    }
+                    else
+                    {
+                        // mapItemTo specifies a property name.
+                        properties = {};
+                        properties[mapItemTo] = item;
+                    }
                 }
                 else if (typeof item == "string" || item instanceof String)
                 {
-                    // Simple string; use as content property.
+                    // Simple string; map to content property.
                     properties = { content: item };
                 }
                 else
