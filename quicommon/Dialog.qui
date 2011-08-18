@@ -43,7 +43,7 @@ Dialog.extend({
 Dialog.prototype.extend({
 	
 	initialize: function() {
-		Dialog.superClass.prototype.initialize.call(this);
+		Dialog.superclass.prototype.initialize.call(this);
 		var self = this;
 		this.keydown(function(event) {
 			if (event.keyCode == 27)
