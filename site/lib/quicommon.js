@@ -359,30 +359,40 @@ List.prototype.extend({
     items: Control.property(function() { this._refresh(); }),
     
     //
-    // This mapFn should be a function that accepts one object
-    // (typically a data object) and returns a new object whose
-    // properties map directly to property settors defined by the
-    // target itemClass.
+    // Used to map an incoming list item to property setters on the control
+    // class indicated by itemClass. This can either be a simple string,
+    // in which case it will be taken as the name of a control class property,
+    // or a mapping function that takes an item (and, optionally an index) and
+    // returns a property dictionary.
     //
-    mapFn: Control.property(null, null),
+    mapItemTo: Control.property(null, null),
     
     _refresh: function() {
         var itemClass = this.itemClass();
         var items = this.items();
-        var mapFn = this.mapFn();
         if (itemClass && items)
         {
+            var mapItemTo = this.mapItemTo();
             var self = this;
             var controls = $.map(items, function(item, index) {
                 var properties;
-                if (mapFn)
+                if (mapItemTo)
                 {
-                    // Map item to control properties with custom map function.
-                    properties = mapFn.call(self, item, index);
+                    if ($.isFunction(mapItemTo))
+                    {
+                        // mapItemTo specifies a mapping function.
+                        properties = mapItemTo.call(self, item, index);
+                    }
+                    else
+                    {
+                        // mapItemTo specifies a property name.
+                        properties = {};
+                        properties[mapItemTo] = item;
+                    }
                 }
                 else if (typeof item == "string" || item instanceof String)
                 {
-                    // Simple string; use as content property.
+                    // Simple string; map to content property.
                     properties = { content: item };
                 }
                 else
@@ -408,29 +418,37 @@ Overlay.prototype.extend({
 	blanket: Control.property(),
 	blanketColor: Control.property(),
 	blanketOpacity: Control.property(),
+	dismissOnEscapeKey: Control.property.bool(null, true),
 	dismissOnInsideClick: Control.property.bool(),
 	dismissOnOutsideClick: Control.property.bool(null, true),
 	
 	initialize: function()
 	{
 		var self = this;
-		this.click(function() {
-			if (self.dismissOnInsideClick())
-			{
-				self.hideOverlay();
-			}
-		});
+        this.click(function() {
+            if (self.dismissOnInsideClick())
+            {
+                self.hideOverlay();
+            }
+        });
 	},
 	
-	closeOverlay: function() {
-	    return this
-	        .hideOverlay()
-	        .remove();
-	},
-	
+    cancel: function() {
+        return this
+            .trigger("cancel")
+            .hideOverlay();
+    },
+    
+    close: function() {
+        return this
+            .trigger("close")
+            .hideOverlay();
+    },
+    
 	hideOverlay: function()
 	{
         this
+            ._bindKeydownHandler(false)
 			.hide()
 			.css("z-index", null); // No need to define Z-order any longer.
 		if (this.blanket() != null)
@@ -438,8 +456,6 @@ Overlay.prototype.extend({
 			this.blanket().remove();
 			this.blanket(null);
 		}
-		
-        this.trigger("overlayClosed");  // TODO: Rename to overlayHidden? Move trigger to closeOverlay?
         
         return this;
 	},
@@ -463,11 +479,37 @@ Overlay.prototype.extend({
 			.show();
 			
 		return this
+            ._bindKeydownHandler(true)
 			.css("z-index", maximumZIndex + 2)
 			.show()
 			.positionOverlay()
-			.trigger("overlayOpened");
+			.trigger("open");
 	},
+    
+    _bindKeydownHandler: function(handleKeydown) {
+        var handler;
+        if (handleKeydown)
+        {
+            var self = this;
+            handler = function(event) {
+                if (self.dismissOnEscapeKey() && event.keyCode === 27 /* Escape */)
+                {
+                    self.cancel();
+                }
+            }
+            this.data("_keydownHandler", handler);
+            $(document).bind("keydown", handler);
+        }
+        else
+        {
+            handler = this.data("_keydownHandler");
+            if (handler)
+            {
+                $(document).unbind("keydown", handler);
+            }
+        }
+        return this;
+    },
 
 	_createBlanket: function() {
 	    
@@ -505,7 +547,7 @@ Overlay.prototype.extend({
         
 		return $blanket;
 	},
-		
+    		
 	/* Return the maximum Z-index in use by the page and its top-level controls. */
 	_maximumZIndex: function()
 	{
@@ -981,7 +1023,7 @@ Dialog.extend({
 			.append("<div/>")
 			.find(":last")
 	        .bind({
-	            ok: function() {
+	            close: function() {
 	                if (callbackOk)
 	                {
 	                    callbackOk.call(this);
@@ -1000,29 +1042,16 @@ Dialog.extend({
 });
 
 Dialog.prototype.extend({
-	
-	initialize: function() {
-		Dialog.superClass.prototype.initialize.call(this);
-		var self = this;
-		this.keydown(function(event) {
-			if (event.keyCode == 27)
-			{
-				self.cancel();
-			}
-		});
-	},
-
-	cancel: function() {
-		return this
-			.trigger("cancel")
-			.closeOverlay();
-	},
-	
-	close: function() {
-		return this
-			.trigger("ok")
-			.closeOverlay();
-	},
+    
+    cancel: function() {
+        Dialog.superclass.prototype.cancel.call(this);
+        this.remove();
+    },
+    
+    close: function() {
+        Dialog.superclass.prototype.close.call(this);
+        this.remove();
+    },
 	
 	positionOverlay: function() {
 		// Center dialog horizontally and vertically.
@@ -1031,6 +1060,7 @@ Dialog.prototype.extend({
 			top: ($(window).height() - this.outerHeight()) / 2
 		});
 	}
+
 });
 
 //

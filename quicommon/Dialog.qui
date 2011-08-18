@@ -22,7 +22,7 @@ Dialog.extend({
 			.append("<div/>")
 			.find(":last")
 	        .bind({
-	            ok: function() {
+	            close: function() {
 	                if (callbackOk)
 	                {
 	                    callbackOk.call(this);
@@ -41,29 +41,16 @@ Dialog.extend({
 });
 
 Dialog.prototype.extend({
-	
-	initialize: function() {
-		Dialog.superclass.prototype.initialize.call(this);
-		var self = this;
-		this.keydown(function(event) {
-			if (event.keyCode == 27)
-			{
-				self.cancel();
-			}
-		});
-	},
-
-	cancel: function() {
-		return this
-			.trigger("cancel")
-			.closeOverlay();
-	},
-	
-	close: function() {
-		return this
-			.trigger("ok")
-			.closeOverlay();
-	},
+    
+    cancel: function() {
+        Dialog.superclass.prototype.cancel.call(this);
+        this.remove();
+    },
+    
+    close: function() {
+        Dialog.superclass.prototype.close.call(this);
+        this.remove();
+    },
 	
 	positionOverlay: function() {
 		// Center dialog horizontally and vertically.
@@ -72,6 +59,7 @@ Dialog.prototype.extend({
 			top: ($(window).height() - this.outerHeight()) / 2
 		});
 	}
+
 });
 </script>
 

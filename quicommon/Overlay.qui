@@ -16,29 +16,37 @@ Overlay.prototype.extend({
 	blanket: Control.property(),
 	blanketColor: Control.property(),
 	blanketOpacity: Control.property(),
+	dismissOnEscapeKey: Control.property.bool(null, true),
 	dismissOnInsideClick: Control.property.bool(),
 	dismissOnOutsideClick: Control.property.bool(null, true),
 	
 	initialize: function()
 	{
 		var self = this;
-		this.click(function() {
-			if (self.dismissOnInsideClick())
-			{
-				self.hideOverlay();
-			}
-		});
+        this.click(function() {
+            if (self.dismissOnInsideClick())
+            {
+                self.hideOverlay();
+            }
+        });
 	},
 	
-	closeOverlay: function() {
-	    return this
-	        .hideOverlay()
-	        .remove();
-	},
-	
+    cancel: function() {
+        return this
+            .trigger("cancel")
+            .hideOverlay();
+    },
+    
+    close: function() {
+        return this
+            .trigger("close")
+            .hideOverlay();
+    },
+    
 	hideOverlay: function()
 	{
         this
+            ._bindKeydownHandler(false)
 			.hide()
 			.css("z-index", null); // No need to define Z-order any longer.
 		if (this.blanket() != null)
@@ -46,8 +54,6 @@ Overlay.prototype.extend({
 			this.blanket().remove();
 			this.blanket(null);
 		}
-		
-        this.trigger("overlayClosed");  // TODO: Rename to overlayHidden? Move trigger to closeOverlay?
         
         return this;
 	},
@@ -71,11 +77,37 @@ Overlay.prototype.extend({
 			.show();
 			
 		return this
+            ._bindKeydownHandler(true)
 			.css("z-index", maximumZIndex + 2)
 			.show()
 			.positionOverlay()
-			.trigger("overlayOpened");
+			.trigger("open");
 	},
+    
+    _bindKeydownHandler: function(handleKeydown) {
+        var handler;
+        if (handleKeydown)
+        {
+            var self = this;
+            handler = function(event) {
+                if (self.dismissOnEscapeKey() && event.keyCode === 27 /* Escape */)
+                {
+                    self.cancel();
+                }
+            }
+            this.data("_keydownHandler", handler);
+            $(document).bind("keydown", handler);
+        }
+        else
+        {
+            handler = this.data("_keydownHandler");
+            if (handler)
+            {
+                $(document).unbind("keydown", handler);
+            }
+        }
+        return this;
+    },
 
 	_createBlanket: function() {
 	    
@@ -113,7 +145,7 @@ Overlay.prototype.extend({
         
 		return $blanket;
 	},
-		
+    		
 	/* Return the maximum Z-index in use by the page and its top-level controls. */
 	_maximumZIndex: function()
 	{
