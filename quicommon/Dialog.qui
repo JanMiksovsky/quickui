@@ -25,13 +25,13 @@ Dialog.extend({
 	            close: function() {
 	                if (callbackOk)
 	                {
-	                    callbackOk.call(this);
+	                    callbackOk.call($(this).control());
 	                }
 	            },
 	            cancel: function() {
 	                if (callbackCancel)
 	                {
-	                    callbackCancel.call(this);
+	                    callbackCancel.call($(this).control());
 	                }
 	            }
 	        })
