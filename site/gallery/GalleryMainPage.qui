@@ -25,6 +25,10 @@
 		</p>
 		
 		<div id="table">
+            <div>
+                <GalleryLink>AutoSizeTextBox</GalleryLink>
+                <div>A text area that expands to contain its text.</div>
+            </div>
 		    <div>
 		        <GalleryLink>BrowserSpecific</GalleryLink>
 		        <div>Conditionally shows contents for specific browsers.</div>
@@ -68,6 +72,10 @@
                     An abstract control that represents each element of a JavaScript
                     array as a QuickUI control.
                 </div>
+            </div>
+            <div>
+                <GalleryLink>MultiLineText</GalleryLink>
+                <div>Displays text that may have line breaks and/or HTML entities.</div>
             </div>
             <div>
                 <GalleryLink>Page</GalleryLink>

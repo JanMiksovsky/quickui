@@ -7,6 +7,10 @@
 		<demo>
 			<AutoSizeTextBoxDemo/>
 		</demo>
+		<notes>
+            This control uses <GalleryLink>MultiLineText</GalleryLink> to map
+            JavaScript line breaks to HTML line breaks, and vice versa.
+		</notes>
 	</GalleryPage>
 </prototype>
 </Control>

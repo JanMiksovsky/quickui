@@ -7,6 +7,10 @@
 		<demo>
 			<MultiLineTextDemo/>
 		</demo>
+		<notes>
+		    This control is used by <GalleryLink>AutoSizeTextBox</GalleryLink>
+		    to handle line breaks.
+		</notes>
 	</GalleryPage>
 </prototype>
 </Control>

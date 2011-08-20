@@ -1,3 +1,17 @@
 <Control name="MultiLineTextDemo">
-    <MultiLineText/>
+
+<content>
+    <MultiLineText id="text"/>
+</content>
+
+<script>
+MultiLineTextDemo.prototype.extend({
+    initialize: function() {
+        this.$text().content(
+            "This text\nhas JavaScript line breaks\nthat have been mapped\nto HTML line breaks."
+        );
+    }
+});
+</script>
+
 </Control>
