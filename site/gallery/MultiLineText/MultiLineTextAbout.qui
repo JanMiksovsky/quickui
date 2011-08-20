@@ -1,0 +1,12 @@
+<Control name="MultiLineTextAbout">
+<prototype>
+	<GalleryPage title="MultiLineText" sourceFileExample="MultiLineText/MultiLineTextDemo.qui" sourceFileControl="MultiLineText/MultiLineText.qui">
+		<summary>
+            Displays text that may have line breaks and/or HTML entities.
+		</summary>
+		<demo>
+			<MultiLineTextDemo/>
+		</demo>
+	</GalleryPage>
+</prototype>
+</Control>

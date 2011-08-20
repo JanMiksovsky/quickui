@@ -1,0 +1,89 @@
+<!--
+A text box that makes itself big enough to show its content.
+This works by copying the text to a hidden div whose height can be measured.
+-->
+
+<Control name="AutoSizeTextBox">
+
+<content>
+    <textarea id="textBox"/>
+    <MultiLineText id="textCopy"/>
+</content>
+
+<style>
+{
+    position: relative;
+}
+
+#textBox {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+#textCopy {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    visibility: hidden;
+    width: 100%;
+}
+</style>
+
+<script>
+AutoSizeTextBox.prototype.extend({
+    
+    minHeight: Control.bindTo("css/min-height"),
+    
+    initialize: function() {
+        var self = this;
+        this.$textBox().bind("change keydown keyup", function() {
+            self.autoSize();
+        });
+    
+        // For the following, we need to wait until the control's in the DOM.    
+        this.insertedIntoDocument(function() {
+            // Apply control's font to the textarea.
+            var $textBox = self.$textBox();
+            $textBox.css({
+                "font-family": self.css("font-family"),
+                "font-size": self.css("font-size"),
+                "font-style": self.css("font-style"),
+                "font-weight": self.css("font-weight")
+            });
+            // Mirror the textarea's padding on the text copy.
+            // Also add an extra line on the bottom so user sees they have more room.
+            // For this we use an estimate, as line-height can return useless "normal" value.
+            var paddingBottom = parseInt($textBox.css("padding-bottom"));
+            var lineHeight = Math.floor(parseInt($textBox.css("font-size")) * 1.5);
+            self.$textCopy().css({
+                "padding-bottom": (paddingBottom + lineHeight) + "px",  
+                "padding-left": $textBox.css("padding-left"),
+                "padding-right": $textBox.css("padding-right"),
+                "padding-top": $textBox.css("padding-top")
+            });
+        });
+    },
+
+    // Resize the text box to exactly contain its content.
+    autoSize: function() {        
+        // Copy text box contents; browser will calculate correct height of copy,
+        // which will make overall control taller, which will make text box taller.
+        this.$textCopy().content(this.$textBox().content());
+    },
+    
+    content: Control.bindTo("$textBox", "content", function() {
+        this.autoSize();
+    })
+    
+});
+</script>
+
+</Control>

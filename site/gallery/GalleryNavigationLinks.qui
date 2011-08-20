@@ -15,6 +15,7 @@
 GalleryNavigationLinks.prototype.extend({
     initialize: function() {
         this.$listClass().items([
+            "AutoSizeTextBox",
             "BrowserSpecific",
             "ButtonBase",
             "DeviceSpecific",

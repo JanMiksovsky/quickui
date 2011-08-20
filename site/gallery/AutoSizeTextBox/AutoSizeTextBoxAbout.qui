@@ -1,0 +1,12 @@
+<Control name="AutoSizeTextBoxAbout">
+<prototype>
+	<GalleryPage title="AutoSizeTextBox" sourceFileExample="AutoSizeTextBox/AutoSizeTextBoxDemo.qui" sourceFileControl="AutoSizeTextBox/AutoSizeTextBox.qui">
+		<summary>
+            A text area that expands to contain its text.
+		</summary>
+		<demo>
+			<AutoSizeTextBoxDemo/>
+		</demo>
+	</GalleryPage>
+</prototype>
+</Control>
