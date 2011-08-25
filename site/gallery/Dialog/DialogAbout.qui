@@ -1,0 +1,31 @@
+<Control name="DialogAbout">
+<prototype>
+	<GalleryPage title="Dialog" sourceFileExample="AutoSizeTextBox/AutoSizeTextBoxDemo.qui">
+		<summary>
+            A modal dialog; must be dismissed before the user can interact with the UI behind it.
+		</summary>
+		<demo>
+			<AutoSizeTextBoxDemo/>
+		</demo>
+		<notes>
+		    <div id="foo"/>
+		</notes>
+	</GalleryPage>
+</prototype>
+<script>
+function foo(data) {
+    debugger;
+}
+DialogAbout.prototype.extend({
+    initialize: function() {
+        //var path = "https://raw.github.com/JanMiksovsky/quickui/master/quicommon/Dialog.qui";
+        //var path = "https://api.github.com/users/JanMiksovsky/repos";
+        var path = "https://api.github.com/repos/JanMiksovsky/quickui/git/blobs/eeeebd047895e0842e2a8c3d909adbd88c85305f";
+        var url = path + "?callback=?";
+        $.getJSON(url, function(data) {
+            debugger;
+        });
+    } 
+})
+</script>
+</Control>
