@@ -10,10 +10,10 @@ ListDemo.prototype.extend({
         
         // Sample array.
         var data = [
-            { content: "One" },
-            { content: "Two" },
-            { content: "Three", disabled: true },
-            { content: "Four" }
+            "One",
+            "Two",
+            "Three",
+            "Four"
         ];
         
         // Render each member of the array as a list item.
