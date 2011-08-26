@@ -1,17 +1,20 @@
-<Control name="Link">
-
-<content><a id="Link_content" /></content>
+<Control name="Link" tag="a">
 
 <style>
 {
-	display: inline;
+    cursor: pointer;
 }
 </style>
 
 <script>
 Link.prototype.extend({
-	content: Control.bindTo("$Link_content", "content"),
-	href: Control.bindTo("$Link_content", "attr/href")
+	href: Control.bindTo("prop/href"),
+	initialize: function() {
+	    if (this.href() == "")
+	    {
+            this.href("javascript:");
+	    }
+	}
 });
 </script>
 

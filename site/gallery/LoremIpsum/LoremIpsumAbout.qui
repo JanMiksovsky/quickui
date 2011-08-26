@@ -1,0 +1,15 @@
+<Control name="LoremIpsumAbout">
+<prototype>
+	<GalleryPage title="LoremIpsum" sourceFileExample="LoremIpsum/LoremIpsumDemo.qui" sourceFileControl="LoremIpsum/LoremIpsum.qui">
+		<summary>
+            Generates paragraphs of placeholder
+            <a href="http://en.wikipedia.org/wiki/Lorem_ipsum">lorem ipsum</a>
+            text, useful for quickly filling in a user interface during design
+            without drawing attention to content.
+		</summary>
+		<demo>
+			<LoremIpsumDemo/>
+		</demo>
+	</GalleryPage>
+</prototype>
+</Control>

@@ -1,0 +1,3 @@
+<Control name="LoremIpsumDemo">
+    <LoremIpsum paragraphs="2"/>
+</Control>

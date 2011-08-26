@@ -1,0 +1,66 @@
+<Control name="Dialog">
+
+<prototype>
+	<Overlay dismissOnOutsideClick="false" />
+</prototype>
+
+<style>
+
+{
+	background-color: white;
+	border: 1px solid black;
+	position: fixed;
+}
+
+</style>
+
+<script>
+// Class method
+Dialog.extend({
+	showDialog: function(dialogClass, properties, callbackOk, callbackCancel) {
+		$("body")
+			.append("<div/>")
+			.find(":last")
+	        .bind({
+	            close: function() {
+	                if (callbackOk)
+	                {
+	                    callbackOk.call($(this).control());
+	                }
+	            },
+	            cancel: function() {
+	                if (callbackCancel)
+	                {
+	                    callbackCancel.call($(this).control());
+	                }
+	            }
+	        })
+			.control(dialogClass, properties)
+			.showOverlay();
+	}
+});
+
+Dialog.prototype.extend({
+    
+    cancel: function() {
+        Dialog.superclass.prototype.cancel.call(this);
+        this.remove();
+    },
+    
+    close: function() {
+        Dialog.superclass.prototype.close.call(this);
+        this.remove();
+    },
+	
+	positionOverlay: function() {
+		// Center dialog horizontally and vertically.
+		return this.css({
+			left: ($(window).width() - this.outerWidth()) / 2,
+			top: ($(window).height() - this.outerHeight()) / 2
+		});
+	}
+
+});
+</script>
+
+</Control>

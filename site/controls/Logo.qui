@@ -8,7 +8,7 @@
 </content>
 
 <style>
-#logotype a {
+#logotype {
 	border: none !important;
 	color: white !important;
 	font-size: 24pt;

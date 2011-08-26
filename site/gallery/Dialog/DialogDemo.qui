@@ -1,0 +1,34 @@
+<Control name="DialogDemo">
+    
+<prototype>
+    <Dialog>
+        <h1>Sample dialog</h1>
+        <LoremIpsum paragraphs="1"/>
+        <SampleSpriteButton id="buttonClose">Close</SampleSpriteButton>
+    </Dialog>
+</prototype>
+
+<style>
+{
+    border: 2px solid orange;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    padding: 20px;
+    min-width: 200px;
+    max-width: 500px;
+}
+</style>
+
+<script>
+DialogDemo.prototype.extend({
+    initialize: function() {
+        var self = this;
+        this.$buttonClose().click(function() {
+            self.close();
+        });
+    }
+});
+</script>
+
+</Control>

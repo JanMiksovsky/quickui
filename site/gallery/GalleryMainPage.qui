@@ -26,105 +26,113 @@
 		
 		<div id="table">
             <div>
-                <GalleryLink>AutoSizeTextBox</GalleryLink>
+                <div><GalleryLink>AutoSizeTextBox</GalleryLink></div>
                 <div>A text area that expands to contain its text.</div>
             </div>
 		    <div>
-		        <GalleryLink>BrowserSpecific</GalleryLink>
+		        <div><GalleryLink>BrowserSpecific</GalleryLink></div>
 		        <div>Conditionally shows contents for specific browsers.</div>
 		    </div>
             <div>
-                <GalleryLink>ButtonBase</GalleryLink>
+                <div><GalleryLink>ButtonBase</GalleryLink></div>
                 <div>Base class for buttons which handles tracking of button states.</div>
             </div>
             <div>
-                <GalleryLink>DeviceSpecific</GalleryLink>
+                <div><GalleryLink>DeviceSpecific</GalleryLink></div>
                 <div>
                     Conditionally loads different content, control class, or styles
                     depending on the type of device.
                 </div>
             </div>
             <div>
-                <GalleryLink>Fader</GalleryLink>
+                <div><GalleryLink>Dialog</GalleryLink></div>
+                <div>Base class for modal dialogs.</div>
+            </div>
+            <div>
+                <div><GalleryLink>Fader</GalleryLink></div>
                 <div>Fades out content on the right or bottom instead of clipping it.</div>
             </div>
             <div>
-                <GalleryLink>GalleryPage</GalleryLink>
+                <div><GalleryLink>GalleryPage</GalleryLink></div>
                 <div>The template for all pages in this gallery.</div>
             </div>
             <div>
-                <GalleryLink>Gradient</GalleryLink>
+                <div><GalleryLink>Gradient</GalleryLink></div>
                 <div>A browser-agnostic gradient representation.</div>
             </div>
             <div>
-                <GalleryLink>HintTextBox</GalleryLink>
+                <div><GalleryLink>HintTextBox</GalleryLink></div>
                 <div>A text box that displays a hint (instructions) when the text box is empty.</div>
             </div>
             <div>
-                <GalleryLink>HorizontalPanels</GalleryLink>
+                <div><GalleryLink>HorizontalPanels</GalleryLink></div>
                 <div>
                     A layout control that arranges left and/or right side panels.
                 </div>
             </div>
             <div>
-                <GalleryLink>List</GalleryLink>
+                <div><GalleryLink>List</GalleryLink></div>
                 <div>
                     An abstract control that represents each element of a JavaScript
                     array as a QuickUI control.
                 </div>
             </div>
             <div>
-                <GalleryLink>MultiLineText</GalleryLink>
+                <div><GalleryLink>LoremIpsum</GalleryLink></div>
+                <div>Generates placeholder text.</div>
+            </div>
+            <div>
+                <div><GalleryLink>MultiLineText</GalleryLink></div>
                 <div>Displays text that may have line breaks and/or HTML entities.</div>
             </div>
             <div>
-                <GalleryLink>Page</GalleryLink>
+                <div><GalleryLink>Page</GalleryLink></div>
                 <div>
                     Base class for creating top-level pages.
                 </div>
             </div>
             <div>
-                <GalleryLink>SampleSpriteButton</GalleryLink>
+                <div><GalleryLink>SampleSpriteButton</GalleryLink></div>
                 <div>An example of creating a sprite button through subclassing.</div>
             </div>
             <div>
-                <GalleryLink>SearchBox</GalleryLink>
+                <div><GalleryLink>SearchBox</GalleryLink></div>
                 <div>A typical web search box.</div>
             </div>
             <div>
-                <GalleryLink>Sprite</GalleryLink>
+                <div><GalleryLink>Sprite</GalleryLink></div>
                 <div>A basic CSS sprite.</div>
             </div>
             <div>
-                <GalleryLink>SpriteButton</GalleryLink>
+                <div><GalleryLink>SpriteButton</GalleryLink></div>
                 <div>A button that uses a sprite for its background.</div>
             </div>
             <div>
-                <GalleryLink>Switch</GalleryLink>
+                <div><GalleryLink>Switch</GalleryLink></div>
                 <div>
                     Something like a JavaScript switch statement, this shows exactly
                     one child at any given time (e.g., to reflect an UI mode).
                 </div>
             </div>
             <div>
-                <GalleryLink>Tag</GalleryLink>
+                <div><GalleryLink>Tag</GalleryLink></div>
                 <div>A simple HTML macro that includes both content and styling.</div>
             </div>
             <div>
-                <GalleryLink>TextBoxWithButton</GalleryLink>
+                <div><GalleryLink>TextBoxWithButton</GalleryLink></div>
                 <div>
                     A control with a text box and an associated button, where clicking
                     the button does something with the text box's content.
                 </div>
             </div>
             <div>
-                <GalleryLink>TextCondenser</GalleryLink>
+                <div><GalleryLink>TextCondenser</GalleryLink></div>
                 <div>
                     Switches to a condensed font when necessary to squeeze in more text.
                 </div>
             </div>
             <div>
-                <GalleryLink>VerticalPanels</GalleryLink>
+                <div><GalleryLink>VerticalPanels</GalleryLink></div>
                 <div>
                     A layout control that arranges top and/or bottom panels.
                 </div>

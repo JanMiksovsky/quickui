@@ -4,14 +4,10 @@
 .Link {
 	display: block;
 	margin: 3px;
-}
-
-.Link a {
-    display: block;
     padding: 3px;
 }
 
-.Link.highlight a {
+.Link.highlight {
     font-weight: bold;
 }
 </style>
