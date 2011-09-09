@@ -76,12 +76,17 @@ Overlay.prototype.extend({
 			.css("z-index", maximumZIndex + 1)
 			.show();
 			
-		return this
+		this
             ._bindKeydownHandler(true)
 			.css("z-index", maximumZIndex + 2)
 			.show()
 			.positionOverlay()
 			.trigger("open");
+			
+        // In case the overlay wants to resize anything now that it's visible.
+        Layout.recalc();
+        
+        return this;
 	},
     
     _bindKeydownHandler: function(handleKeydown) {
