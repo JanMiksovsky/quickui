@@ -1,10 +1,12 @@
-<!-- A control with a popup menu. -->
+<!--
+A control with a popup menu that appears above or below it.
+-->
 
 <Control name="HasPopup">
 	
 <content>
     <div id="HasPopup_content" />
-	<Overlay id="HasPopup_popup" />
+	<Popup id="HasPopup_popup" />
 </content>
 
 <script>
@@ -12,12 +14,18 @@ HasPopup.prototype.extend({
 	
 	content: Control.bindTo( "$HasPopup_content", "content" ),
 	closeOnInsideClick: Control.bindTo( "$HasPopup_popup", "closeOnInsideClick" ),
+	openOnClick: Control.property.bool(),
 	popup: Control.bindTo( "$HasPopup_popup", "content" ),
 
 	initialize: function()
 	{
 		var self = this;
-		this.$HasPopup_popup().positionOverlay = function() {
+        this.$HasPopup_content().click( function() {
+            if ( self.openOnClick() ) {
+                self.open();
+            }
+        });
+		this.$HasPopup_popup().positionPopup = function() {
 			return self.positionPopup();
 		};
 	},

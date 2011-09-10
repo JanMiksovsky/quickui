@@ -1,6 +1,8 @@
-<!-- Base class for controls like popups and dialogs that appear over other things. -->
+<!--
+Base class for popups, menus, dialogs, things that appear temporarily over other things.
+-->
 
-<Control name="Overlay">
+<Control name="Popup">
 
 <style>
 {
@@ -11,14 +13,14 @@
 </style>
 
 <script>
-Overlay.prototype.extend({
+Popup.prototype.extend({
 
 	blanket: Control.property(),
 	blanketColor: Control.property(),
 	blanketOpacity: Control.property(),
-	closeOnEscapeKey: Control.property.bool(null, true),
+	cancelOnEscapeKey: Control.property.bool(null, true),
+    cancelOnOutsideClick: Control.property.bool(null, true),
 	closeOnInsideClick: Control.property.bool(),
-	closeOnOutsideClick: Control.property.bool(null, true),
 	
 	initialize: function()
 	{
@@ -26,7 +28,7 @@ Overlay.prototype.extend({
         this.click(function() {
             if (self.closeOnInsideClick())
             {
-                self.hideOverlay();
+                self.close();
             }
         });
 	},
@@ -34,29 +36,14 @@ Overlay.prototype.extend({
     cancel: function() {
         return this
             .trigger("cancel")
-            .hideOverlay();
+            ._hidePopup();
     },
     
     close: function() {
         return this
             .trigger("close")
-            .hideOverlay();
+            ._hidePopup();
     },
-    
-	hideOverlay: function()
-	{
-        this
-            ._bindKeydownHandler(false)
-			.hide()
-			.css("z-index", null); // No need to define Z-order any longer.
-		if (this.blanket() != null)
-		{
-			this.blanket().remove();
-			this.blanket(null);
-		}
-        
-        return this;
-	},
 
     open: function()
     {
@@ -75,7 +62,7 @@ Overlay.prototype.extend({
             ._bindKeydownHandler(true)
             .css("z-index", maximumZIndex + 2)
             .show()
-            .positionOverlay()
+            .positionPopup()
             .trigger("open");
             
         // In case the overlay wants to resize anything now that it's visible.
@@ -85,7 +72,7 @@ Overlay.prototype.extend({
     },
     
     // Subclasses should override this to position themselves.
-    positionOverlay: function() {
+    positionPopup: function() {
         return this;
     },
     
@@ -95,7 +82,7 @@ Overlay.prototype.extend({
         {
             var self = this;
             handler = function(event) {
-                if (self.closeOnEscapeKey() && event.keyCode === 27 /* Escape */)
+                if (self.cancelOnEscapeKey() && event.keyCode === 27 /* Escape */)
                 {
                     self.cancel();
                 }
@@ -120,18 +107,18 @@ Overlay.prototype.extend({
 			.after("<div id='blanket'/>")
 			.next();
 			
-        var closeOnOutsideClick = this.closeOnOutsideClick();
+        var cancelOnOutsideClick = this.cancelOnOutsideClick();
 	    var color = this.blanketColor() ||
-	                    (closeOnOutsideClick ? false : "black");
+	                    (cancelOnOutsideClick ? false : "black");
 	    var opacity = this.blanketOpacity() ||
-                        (closeOnOutsideClick ? 0.01 : 0.25);
+                        (cancelOnOutsideClick ? 0.01 : 0.25);
 			
 		var self = this;
 		$blanket
 			.click(function() {
-				if (self.closeOnOutsideClick())
+				if (self.cancelOnOutsideClick())
 				{
-					self.hideOverlay();
+					self.cancel();
 				}
 			})
 			.css({
@@ -150,7 +137,22 @@ Overlay.prototype.extend({
         
 		return $blanket;
 	},
-    		
+
+    _hidePopup: function()
+    {
+        this
+            ._bindKeydownHandler(false)
+            .hide()
+            .css("z-index", null); // No need to define Z-order any longer.
+        if (this.blanket() != null)
+        {
+            this.blanket().remove();
+            this.blanket(null);
+        }
+        
+        return this;
+    },
+
 	/* Return the maximum Z-index in use by the page and its top-level controls. */
 	_maximumZIndex: function()
 	{

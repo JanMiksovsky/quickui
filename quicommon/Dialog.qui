@@ -1,45 +1,22 @@
+<!--
+Base class for modal dialogs.
+-->
+
 <Control name="Dialog">
 
 <prototype>
-	<Overlay closeOnOutsideClick="false" />
+	<Popup cancelOnOutsideClick="false" />
 </prototype>
 
 <style>
-
 {
 	background-color: white;
 	border: 1px solid black;
 	position: fixed;
 }
-
 </style>
 
 <script>
-// Class method
-Dialog.extend({
-	showDialog: function(dialogClass, properties, callbackOk, callbackCancel) {
-		$("body")
-			.append("<div/>")
-			.find(":last")
-	        .bind({
-	            close: function() {
-	                if (callbackOk)
-	                {
-	                    callbackOk.call($(this).control());
-	                }
-	            },
-	            cancel: function() {
-	                if (callbackCancel)
-	                {
-	                    callbackCancel.call($(this).control());
-	                }
-	            }
-	        })
-			.control(dialogClass, properties)
-			.open();
-	}
-});
-
 Dialog.prototype.extend({
     
     cancel: function() {
@@ -52,7 +29,7 @@ Dialog.prototype.extend({
         this.remove();
     },
 	
-	positionOverlay: function() {
+	positionPopup: function() {
 		// Center dialog horizontally and vertically.
 		return this.css({
 			left: ($(window).width() - this.outerWidth()) / 2,
@@ -60,6 +37,31 @@ Dialog.prototype.extend({
 		});
 	}
 
+});
+
+// Class methods
+Dialog.extend({
+    showDialog: function(dialogClass, properties, callbackOk, callbackCancel) {
+        $("body")
+            .append("<div/>")
+            .find(":last")
+            .bind({
+                close: function() {
+                    if (callbackOk)
+                    {
+                        callbackOk.call($(this).control());
+                    }
+                },
+                cancel: function() {
+                    if (callbackCancel)
+                    {
+                        callbackCancel.call($(this).control());
+                    }
+                }
+            })
+            .control(dialogClass, properties)
+            .open();
+    }
 });
 </script>
 

@@ -6,12 +6,12 @@
     	    <ButtonBase id="button">
     	        Show test dialog
     	    </ButtonBase>
-    	    <PopupButton>
+    	    <HasPopup openOnClick="true" closeOnInsideClick="true">
     	        <ButtonBase>Show popup</ButtonBase>
     	        <popup>
     	            Popup content
     	        </popup>
-    	    </PopupButton>
+    	    </HasPopup>
     	    <ToggleButton>
     	    	Toggle
     	    </ToggleButton>
