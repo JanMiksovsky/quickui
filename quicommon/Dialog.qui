@@ -1,7 +1,7 @@
 <Control name="Dialog">
 
 <prototype>
-	<Overlay dismissOnOutsideClick="false" />
+	<Overlay closeOnOutsideClick="false" />
 </prototype>
 
 <style>

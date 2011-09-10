@@ -1,0 +1,78 @@
+<!--
+An input area with a dropdown arrow, which invokes a popup.
+-->
+
+<Control name="ComboBox">
+
+<prototype>
+    <HasPopup>
+        <content>
+            <div id="ComboBox_content">
+                <input type="text" />
+            </div>        
+            <ButtonBase id="dropdownButton">&#9660;</ButtonBase>
+        </content>
+    </HasPopup>
+</prototype>
+
+<style>
+{
+    border: 1px solid lightgray;
+    display: inline-block;
+}
+
+#HasPopup_content {
+    display: inline-table; /* Seems to work better than table */
+}
+#HasPopup_content > * {
+    display: table-cell;
+}
+
+#ComboBox_content input[type='text'] {
+    border: none;
+    outline: none;
+    padding: 2px;
+}
+
+#dropdownButton {
+    border-left: 1px solid transparent;
+    text-align: center;
+    vertical-align: middle;
+    width: 1.4em;
+}
+
+#dropdownButton:hover {
+    border-color: lightgray;
+}
+</style>
+
+<script>
+ComboBox.prototype.extend({
+	
+    content: Control.bindTo( "$ComboBox_content", "content" ),
+    openOnFocus: Control.property.bool(),
+	
+	initialize: function() {
+	    
+	    ComboBox.superclass.prototype.initialize.call( this );
+	    
+		var self = this;
+		this.$dropdownButton().click( function() {
+			self.open();
+		});
+		this.$ComboBox_content().find( "input" ).bind({
+		    "blur": function() {
+		        self.close();
+		    },
+		    "focus": function() {
+    		    if ( self.openOnFocus() ) {
+    		        self.open();
+    		    }
+    		}
+		});
+	}
+
+});
+</script>
+
+</Control>

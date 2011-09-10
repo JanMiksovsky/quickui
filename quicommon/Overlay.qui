@@ -16,15 +16,15 @@ Overlay.prototype.extend({
 	blanket: Control.property(),
 	blanketColor: Control.property(),
 	blanketOpacity: Control.property(),
-	dismissOnEscapeKey: Control.property.bool(null, true),
-	dismissOnInsideClick: Control.property.bool(),
-	dismissOnOutsideClick: Control.property.bool(null, true),
+	closeOnEscapeKey: Control.property.bool(null, true),
+	closeOnInsideClick: Control.property.bool(),
+	closeOnOutsideClick: Control.property.bool(null, true),
 	
 	initialize: function()
 	{
 		var self = this;
         this.click(function() {
-            if (self.dismissOnInsideClick())
+            if (self.closeOnInsideClick())
             {
                 self.hideOverlay();
             }
@@ -95,7 +95,7 @@ Overlay.prototype.extend({
         {
             var self = this;
             handler = function(event) {
-                if (self.dismissOnEscapeKey() && event.keyCode === 27 /* Escape */)
+                if (self.closeOnEscapeKey() && event.keyCode === 27 /* Escape */)
                 {
                     self.cancel();
                 }
@@ -120,16 +120,16 @@ Overlay.prototype.extend({
 			.after("<div id='blanket'/>")
 			.next();
 			
-        var dismissOnOutsideClick = this.dismissOnOutsideClick();
+        var closeOnOutsideClick = this.closeOnOutsideClick();
 	    var color = this.blanketColor() ||
-	                    (dismissOnOutsideClick ? false : "black");
+	                    (closeOnOutsideClick ? false : "black");
 	    var opacity = this.blanketOpacity() ||
-                        (dismissOnOutsideClick ? 0.01 : 0.25);
+                        (closeOnOutsideClick ? 0.01 : 0.25);
 			
 		var self = this;
 		$blanket
 			.click(function() {
-				if (self.dismissOnOutsideClick())
+				if (self.closeOnOutsideClick())
 				{
 					self.hideOverlay();
 				}
