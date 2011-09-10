@@ -36,7 +36,7 @@ Dialog.extend({
 	            }
 	        })
 			.control(dialogClass, properties)
-			.showOverlay();
+			.open();
 	}
 });
 

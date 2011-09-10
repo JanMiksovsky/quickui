@@ -69,7 +69,7 @@ PopupButton.prototype.extend({
     	
 	showPopup: function()
 	{
-		this.$PopupButton_popup().showOverlay();
+		this.$PopupButton_popup().open();
 	}
 	
 });

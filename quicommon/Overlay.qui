@@ -57,37 +57,37 @@ Overlay.prototype.extend({
         
         return this;
 	},
+
+    open: function()
+    {
+        if (this.blanket() == null)
+        {
+            this.blanket(this._createBlanket());
+        }
+        
+        /* Show control and blanket at the top of the Z-order. */
+        var maximumZIndex = this._maximumZIndex();
+        this.blanket()
+            .css("z-index", maximumZIndex + 1)
+            .show();
+            
+        this
+            ._bindKeydownHandler(true)
+            .css("z-index", maximumZIndex + 2)
+            .show()
+            .positionOverlay()
+            .trigger("open");
+            
+        // In case the overlay wants to resize anything now that it's visible.
+        Layout.recalc();
+        
+        return this;
+    },
     
     // Subclasses should override this to position themselves.
     positionOverlay: function() {
         return this;
     },
-    	
-	showOverlay: function()
-	{
-		if (this.blanket() == null)
-		{
-			this.blanket(this._createBlanket());
-		}
-		
-		/* Show control and blanket at the top of the Z-order. */
-		var maximumZIndex = this._maximumZIndex();
-		this.blanket()
-			.css("z-index", maximumZIndex + 1)
-			.show();
-			
-		this
-            ._bindKeydownHandler(true)
-			.css("z-index", maximumZIndex + 2)
-			.show()
-			.positionOverlay()
-			.trigger("open");
-			
-        // In case the overlay wants to resize anything now that it's visible.
-        Layout.recalc();
-        
-        return this;
-	},
     
     _bindKeydownHandler: function(handleKeydown) {
         var handler;
