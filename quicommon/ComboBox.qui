@@ -18,12 +18,9 @@ An input area with a dropdown arrow, which invokes a popup.
 <style>
 {
     border: 1px solid lightgray;
-    display: inline-block;
+    display: inline-table;
 }
 
-#HasPopup_content {
-    display: inline-table; /* Seems to work better than table */
-}
 #HasPopup_content > * {
     display: table-cell;
 }

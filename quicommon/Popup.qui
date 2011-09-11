@@ -35,13 +35,13 @@ Popup.prototype.extend({
 	
     cancel: function() {
         return this
-            .trigger("cancel")
+            .trigger("canceled")
             ._hidePopup();
     },
     
     close: function() {
         return this
-            .trigger("close")
+            .trigger("closed")
             ._hidePopup();
     },
 
@@ -63,7 +63,7 @@ Popup.prototype.extend({
             .css("z-index", maximumZIndex + 2)
             .show()
             .positionPopup()
-            .trigger("open");
+            .trigger("opened");
             
         // In case the overlay wants to resize anything now that it's visible.
         Layout.recalc();
