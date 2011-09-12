@@ -24,8 +24,10 @@ namespace qb
             BuildPath = buildPath;
 
             string projectName = Path.GetFileName(ProjectPath);
-            CombinedJsFile = Path.Combine(ProjectPath, Path.ChangeExtension(projectName, Project.fileExtensionJs));
-            CombinedCssFile = Path.Combine(ProjectPath, Path.ChangeExtension(projectName, Project.fileExtensionCss));
+            CombinedJsFile = Path.Combine(ProjectPath,
+                projectName + Project.fileExtensionJs);
+            CombinedCssFile = Path.Combine(ProjectPath,
+                projectName + Project.fileExtensionCss);
         }
 
         /// <summary>
