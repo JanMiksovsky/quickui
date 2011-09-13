@@ -48,6 +48,11 @@
             <mobile>You're on a mobile device.</mobile>
             <default>You are not on a mobile device.</default>
         </DeviceSpecific>
+        <ComboBox content="This is a combo box">
+            <popup>
+                Popup goes here.
+            </popup>
+        </ComboBox>
     </Page>
 </prototype>
 

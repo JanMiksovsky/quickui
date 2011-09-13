@@ -17,7 +17,6 @@ An input area with a dropdown arrow, which invokes a popup.
 
 <style>
 {
-    border: 1px solid lightgray;
     display: inline-table;
 }
 
@@ -32,14 +31,24 @@ An input area with a dropdown arrow, which invokes a popup.
 }
 
 #dropdownButton {
-    border-left: 1px solid transparent;
     text-align: center;
     vertical-align: middle;
     width: 1.4em;
 }
 
-#dropdownButton:hover {
+/* Generic appearance */
+.ComboBox.generic {
+    border: 1px solid lightgray;
+}
+.ComboBox.generic #dropdownButton {
+    border-left: 1px solid transparent;
+}
+.ComboBox.generic #dropdownButton:hover {
     border-color: lightgray;
+}
+.ComboBox.generic #HasPopup_popup {
+    border: 1px solid gray;
+    padding: .25em;
 }
 </style>
 
@@ -52,6 +61,7 @@ ComboBox.prototype.extend({
 	initialize: function() {
 	    
 	    ComboBox.superclass.prototype.initialize.call( this );
+	    this.genericIfClassIs( ComboBox );
 	    
 		var self = this;
 		this.$dropdownButton().click( function() {
