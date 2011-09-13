@@ -1,7 +1,7 @@
 <Control name="TestDialog">
     
 <prototype>
-    <Dialog>
+    <Dialog generic="true">
         Dialog
         <div>
         	<ButtonBase id="buttonOk">OK</ButtonBase>

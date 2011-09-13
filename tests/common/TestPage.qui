@@ -6,7 +6,7 @@
     	    <ButtonBase id="button">
     	        Show test dialog
     	    </ButtonBase>
-    	    <HasPopup openOnClick="true" closeOnInsideClick="true">
+    	    <HasPopup openOnClick="true" closeOnInsideClick="true" style="display: inline-block;">
     	        <ButtonBase>Show popup</ButtonBase>
     	        <popup>
     	            Popup content
@@ -57,12 +57,6 @@
 </prototype>
 
 <style>
-.ButtonBase {
-	border: 1px solid gray;
-}
-.ButtonBase.hovered {
-	border-color: orange;
-}
 .ToggleButton.selected {
 	background-color: #ccc;
 }

@@ -10,14 +10,24 @@ Base class for modal dialogs.
 
 <style>
 {
-	background-color: white;
-	border: 1px solid black;
 	position: fixed;
+}
+
+/* Generic appearance */
+.Dialog.generic {
+    background-color: white;
+    border: 1px solid black;
+    padding: .75em;
 }
 </style>
 
 <script>
 Dialog.prototype.extend({
+    
+    initialize: function() {
+        Dialog.superclass.prototype.initialize.call( this );
+        this.genericIfClassIs( Dialog );
+    },
     
     cancel: function() {
         Dialog.superclass.prototype.cancel.call(this);

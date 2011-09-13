@@ -10,6 +10,13 @@ Base class for popups, menus, dialogs, things that appear temporarily over other
 	position: absolute;
 	z-index: 1;
 }
+
+/* Generic appearance */
+.Popup.generic {
+    background: white;
+    border: 1px solid gray;
+    padding: .25em;
+}
 </style>
 
 <script>
@@ -25,12 +32,14 @@ Popup.prototype.extend({
 	initialize: function()
 	{
 		var self = this;
-        this.click(function() {
-            if (self.closeOnInsideClick())
-            {
-                self.close();
-            }
-        });
+        this
+            .click(function() {
+                if (self.closeOnInsideClick())
+                {
+                    self.close();
+                }
+            })
+            .genericIfClassIs( Popup );
 	},
 	
     cancel: function() {

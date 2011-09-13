@@ -5,25 +5,4 @@
     <ButtonBase>Cancel</ButtonBase>
 </content>
 
-<style>
-.ButtonBase {
-    border: 1px solid #666;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    font-family: Helvetica, Arial, sans serif;
-    padding: .25em .5em;
-}
-
-.ButtonBase.hovered {
-    background: #eee;
-    border-color: #888;
-}
-
-.ButtonBase.pressed {
-    background: #888;
-    color: white;
-}
-</style>
-
 </Control>

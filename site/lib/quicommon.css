@@ -12,12 +12,18 @@
 	cursor: default;
 }
 
-/*** Overlay ***/
-
-.Overlay {
-	display: none;
-	position: absolute;
-	z-index: 1;
+/* Generic appearance */
+.ButtonBase.generic {
+    border: 1px solid gray;
+    font: caption;
+    padding: .25em .5em;
+}
+.ButtonBase.generic.hovered {
+    background-color: lightgray;
+}
+.ButtonBase.generic.pressed {
+    background-color: gray;
+    color: white;
 }
 
 /*** Page ***/
@@ -30,12 +36,19 @@
 	width: 100%;
 }
 
-/*** PopupButton ***/
+/*** Popup ***/
 
-.PopupButton {
-	cursor: pointer;
-	display: inline-block;
-	position: relative;
+.Popup {
+	display: none;
+	position: absolute;
+	z-index: 1;
+}
+
+/* Generic appearance */
+.Popup.generic {
+    background: white;
+    border: 1px solid gray;
+    padding: .25em;
 }
 
 /*** Sprite ***/
@@ -58,6 +71,13 @@
 
 .TabSet #buttons {
     white-space: nowrap; /* So tabs don't wrap. */
+}
+
+/*** ToggleButton ***/
+
+.ToggleButtonBase.generic.selected {
+    background: lightgray;
+    border-color: gray;
 }
 
 /*** VerticalAlign ***/
@@ -103,12 +123,50 @@
     overflow-y: auto;
 }
 
+/*** ComboBox ***/
+
+.ComboBox {
+    display: inline-table;
+}
+
+.ComboBox #HasPopup_content > * {
+    display: table-cell;
+}
+
+.ComboBox #ComboBox_content input[type='text'] {
+    border: none;
+    outline: none;
+    padding: 2px;
+}
+
+.ComboBox #dropdownButton {
+    text-align: center;
+    vertical-align: middle;
+    width: 1.4em;
+}
+
+/* Generic appearance */
+.ComboBox.generic {
+    border: 1px solid lightgray;
+}
+.ComboBox.generic #dropdownButton {
+    border-left: 1px solid transparent;
+}
+.ComboBox.generic #dropdownButton:hover {
+    border-color: lightgray;
+}
+
 /*** Dialog ***/
 
 .Dialog {
-	background-color: white;
-	border: 1px solid black;
 	position: fixed;
+}
+
+/* Generic appearance */
+.Dialog.generic {
+    background-color: white;
+    border: 1px solid black;
+    padding: .75em;
 }
 
 /*** HorizontalPanels ***/

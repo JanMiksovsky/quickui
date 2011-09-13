@@ -4,6 +4,13 @@
 	<ButtonBase/>
 </prototype>
 
+<style>
+.ToggleButtonBase.generic.selected {
+    background: lightgray;
+    border-color: gray;
+}
+</style>
+
 <script>
 ToggleButton.prototype.extend({
 	
@@ -12,12 +19,14 @@ ToggleButton.prototype.extend({
 	initialize: function() {
 		ToggleButton.superclass.prototype.initialize.call(this);
 		var self = this;
-		this.click(function() {
-            if (!self.disabled())
-            {
-                self.toggle();
-            }
-		});
+		this
+    		.click(function() {
+                if (!self.disabled())
+                {
+                    self.toggle();
+                }
+    		})
+    		.genericIfClassIs( ToggleButton );
 	},
 	
 	toggle: function(value) {

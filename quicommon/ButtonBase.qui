@@ -14,6 +14,20 @@
 .ButtonBase.disabled {
 	cursor: default;
 }
+
+/* Generic appearance */
+.ButtonBase.generic {
+    border: 1px solid gray;
+    font: caption;
+    padding: .25em .5em;
+}
+.ButtonBase.generic.hovered {
+    background-color: lightgray;
+}
+.ButtonBase.generic.pressed {
+    background-color: gray;
+    color: white;
+}
 </style>
 
 <script>
@@ -27,23 +41,26 @@ ButtonBase.prototype.extend({
 	initialize: function() {
 		var self = this;
 		this
-			.blur(function(event) { self.trackBlur(event); })
-			.click(function(event) {
-				if (self.disabled())
-				{
-					event.stopImmediatePropagation();
-				}
+			.bind({
+                blur: function(event) { self.trackBlur(event); },
+                click: function(event) {
+                    if (self.disabled())
+                    {
+                        event.stopImmediatePropagation();
+                    }
+                },
+                focus: function(event) { self.trackFocus(event); },
+                keydown: function(event) { self.trackKeydown(event); },
+                keyup: function(event) { self.trackKeyup(event); },
+                mousedown: function(event) { self.trackMousedown(event); },
+                mouseup: function(event) { self.trackMouseup(event); }
 			})
-			.focus(function(event) { self.trackFocus(event); })
-			.hover(
-				function(event) { self.trackMousein(event); },
-				function(event) { self.trackMouseout(event); }
-			)
-			.keydown (function(event) { self.trackKeydown(event); })
-			.keyup (function(event) { self.trackKeyup(event); })
-			.mousedown(function(event) { self.trackMousedown(event); })
-			.mouseup(function(event) { self.trackMouseup(event); });
-		this._renderButton();
+			.genericIfClassIs( ButtonBase )
+            .hover(
+                function(event) { self.trackMousein(event); },
+                function(event) { self.trackMouseout(event); }
+            )
+            ._renderButton();
 	},
 	
 	trackBlur: function(event) {

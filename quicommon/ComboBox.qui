@@ -10,7 +10,7 @@ An input area with a dropdown arrow, which invokes a popup.
             <div id="ComboBox_content">
                 <input type="text" />
             </div>        
-            <ButtonBase id="dropdownButton">&#9660;</ButtonBase>
+            <ButtonBase id="dropdownButton" generic="false">&#9660;</ButtonBase>
         </content>
     </HasPopup>
 </prototype>
@@ -45,10 +45,6 @@ An input area with a dropdown arrow, which invokes a popup.
 }
 .ComboBox.generic #dropdownButton:hover {
     border-color: lightgray;
-}
-.ComboBox.generic #HasPopup_popup {
-    border: 1px solid gray;
-    padding: .25em;
 }
 </style>
 
