@@ -1,0 +1,20 @@
+<Control name="ComboBoxDemo">
+
+<content>
+    <ListComboBox id="comboBox" itemClass="ButtonBase" />
+</content>
+
+<script>
+ComboBoxDemo.prototype.extend({
+    initialize: function() {
+        this.$comboBox().items({
+            "Bird",
+            "Cat",
+            "Dog",
+            "Hamster"
+        });
+    }
+});
+</script>
+	
+</Control>

@@ -1,0 +1,40 @@
+<!--
+Renders a list of items in a combo box.
+The user can type arbitrary text; if they type the beginning of a list item's content,
+the remainder of the item's content is AutoCompleted.
+-->
+
+<Control name="ListComboBox">
+
+<prototype>
+    <ComboBox>
+        <List id="list"/>
+    </ComboBox>
+</prototype>
+
+<script>
+ListComboBox.prototype.extend({
+    
+    items: Control.bindTo( "$list", "content" ),
+    mapFunction: Control.bindTo( "$list", "mapFunction" ),
+    
+    initialize: function() {
+        
+        ListComboBox.superclass.prototype.initialize.call( this );
+        
+        // Clicking an item in the list puts its content into the text box portion.
+        var self = this;
+        this.click( function( event ) {
+            var $closestItem = $( event.target ).closest( self.children() );
+            if ( $closestItem ) {
+                var itemContent = $closestItem.control().content();
+                self
+                    .content( itemContent )
+                    .close();
+            }
+        });
+    }
+});
+</script>
+
+</Control>

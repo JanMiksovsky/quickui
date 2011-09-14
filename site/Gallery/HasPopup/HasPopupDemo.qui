@@ -1,0 +1,10 @@
+<Control name="HasPopupDemo">
+    
+<HasPopup>
+    Click me for a popup
+    <popup>
+        And here's the popup!
+    </popup>
+</HasPopup>
+
+</Control>
