@@ -1,0 +1,19 @@
+<Control name="ComboBoxAbout">
+<prototype>
+	<GalleryPage title="ComboBox" sourceFileExample="ComboBox/ComboBoxDemo.qui" sourceFileControl="../common/ComboBox.qui">
+		<summary>
+			A text input area with a dropdown list. The user can make selections from the list
+			to populate input area, or they can type arbitrary text strings which don't necessarily
+			appear in the list.
+		</summary>
+		<demo>
+			<ComboBoxDemo/>
+		</demo>
+		<notes>
+			The HTML5 specification calls for a <Tag>datagrid</Tag> element which can be used to
+			create combo boxes, but even once that is broadly supported, the ComboBox class
+			still has a role to play as a base class for custom combo boxes.
+		</notes>
+	</GalleryPage>
+</prototype>
+</Control>

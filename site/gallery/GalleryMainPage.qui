@@ -61,6 +61,10 @@
                 <div>A browser-agnostic gradient representation.</div>
             </div>
             <div>
+                <div><GalleryLink>HasPopup</GalleryLink></div>
+                <div>A control that has an associated popup that will appear above or below the control.</div>
+            </div>
+            <div>
                 <div><GalleryLink>HintTextBox</GalleryLink></div>
                 <div>A text box that displays a hint (instructions) when the text box is empty.</div>
             </div>
@@ -89,6 +93,12 @@
                 <div><GalleryLink>Page</GalleryLink></div>
                 <div>
                     Base class for creating top-level pages.
+                </div>
+            </div>
+            <div>
+                <div><GalleryLink>Popup</GalleryLink></div>
+                <div>
+                    Base class for popups, menus, dialogs — things that temporarily appear over other things.
                 </div>
             </div>
             <div>

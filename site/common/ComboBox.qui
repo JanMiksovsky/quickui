@@ -9,7 +9,7 @@ An input area with a dropdown arrow, which invokes a popup.
         <content>
             <div id="ComboBox_content">
                 <input type="text" />
-            </div>
+            </div>        
             <ButtonBase id="dropdownButton" generic="false">&#9660;</ButtonBase>
         </content>
     </HasPopup>
