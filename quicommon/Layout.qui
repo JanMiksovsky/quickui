@@ -32,7 +32,12 @@ Layout.extend({
      * Re-layout any controls in the DOM.
      */
     recalc: function() {
+
         //console.log("recalc");
+        if (!this._controlsToLayout) {
+            return;
+        }
+
         // Call the layout() method of any control whose size has changed.
         var i = 0;
         while (i < this._controlsToLayout.length)
