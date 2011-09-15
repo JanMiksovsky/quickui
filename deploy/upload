@@ -1,0 +1,16 @@
+#!/bin/bash
+# Upload files to quickui.org
+# Run this *after* running mkqui (which builds some files to upload)
+
+# Get location of parent QuickUI folder relative to location of this script.
+scriptPath=$(cd ${0%/*} && echo $PWD/${0##*/})
+scriptFolder=`dirname "$scriptPath"`
+quickui="$scriptFolder/.."
+
+savePath=$(cd)
+
+# FTP script wants to start out in project root
+cd $quickui
+psftp -b $scriptFolder/upload.ftp
+
+cd $savePath
