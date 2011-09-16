@@ -25,16 +25,16 @@ Popup.prototype.extend({
 	blanket: Control.property(),
 	blanketColor: Control.property(),
 	blanketOpacity: Control.property(),
-	cancelOnEscapeKey: Control.property.bool(null, true),
-    cancelOnOutsideClick: Control.property.bool(null, true),
+	cancelOnEscapeKey: Control.property.bool( null, true ),
+    cancelOnOutsideClick: Control.property.bool( null, true ),
 	closeOnInsideClick: Control.property.bool(),
 	
 	initialize: function()
 	{
 		var self = this;
         this
-            .click(function() {
-                if (self.closeOnInsideClick())
+            .click( function() {
+                if ( self.closeOnInsideClick() )
                 {
                     self.close();
                 }
@@ -44,7 +44,7 @@ Popup.prototype.extend({
 	
     cancel: function() {
         return this
-            .trigger("canceled")
+            .trigger( "canceled" )
             ._hidePopup();
     },
     
@@ -56,23 +56,22 @@ Popup.prototype.extend({
 
     open: function()
     {
-        if (this.blanket() == null)
-        {
-            this.blanket(this._createBlanket());
+        if ( this.blanket() == null ) {
+            this.blanket( this._createBlanket() );
         }
         
         /* Show control and blanket at the top of the Z-order. */
         var maximumZIndex = this._maximumZIndex();
         this.blanket()
-            .css("z-index", maximumZIndex + 1)
+            .css( "z-index", maximumZIndex + 1 )
             .show();
             
         this
-            ._bindKeydownHandler(true)
-            .css("z-index", maximumZIndex + 2)
+            ._bindKeydownHandler( true )
+            .css( "z-index", maximumZIndex + 2 )
             .show()
             .positionPopup()
-            .trigger("opened");
+            .trigger( "opened" );
             
         // In case the overlay wants to resize anything now that it's visible.
         Layout.recalc();
@@ -85,26 +84,21 @@ Popup.prototype.extend({
         return this;
     },
     
-    _bindKeydownHandler: function(handleKeydown) {
+    _bindKeydownHandler: function( handleKeydown ) {
         var handler;
-        if (handleKeydown)
-        {
+        if ( handleKeydown ) {
             var self = this;
-            handler = function(event) {
-                if (self.cancelOnEscapeKey() && event.keyCode === 27 /* Escape */)
-                {
+            handler = function( event) {
+                if ( self.cancelOnEscapeKey() && event.keyCode === 27 /* Escape */ ) {
                     self.cancel();
                 }
             }
-            this.data("_keydownHandler", handler);
-            $(document).bind("keydown", handler);
-        }
-        else
-        {
-            handler = this.data("_keydownHandler");
-            if (handler)
-            {
-                $(document).unbind("keydown", handler);
+            this.data( "_keydownHandler", handler );
+            $( document ).bind( "keydown", handler );
+        } else {
+            handler = this.data( "_keydownHandler" );
+            if ( handler ) {
+                $( document ).unbind( "keydown", handler );
             }
         }
         return this;
@@ -113,20 +107,19 @@ Popup.prototype.extend({
 	_createBlanket: function() {
 	    
 		var $blanket = this
-			.after("<div id='blanket'/>")
+			.after( "<div id='blanket'/>" )
 			.next();
 			
         var cancelOnOutsideClick = this.cancelOnOutsideClick();
 	    var color = this.blanketColor() ||
-	                    (cancelOnOutsideClick ? false : "black");
+	                    ( cancelOnOutsideClick ? false : "black" );
 	    var opacity = this.blanketOpacity() ||
-                        (cancelOnOutsideClick ? 0.01 : 0.25);
+                        ( cancelOnOutsideClick ? 0.01 : 0.25 );
 			
 		var self = this;
 		$blanket
-			.click(function() {
-				if (self.cancelOnOutsideClick())
-				{
+			.click( function() {
+				if ( self.cancelOnOutsideClick() ) {
 					self.cancel();
 				}
 			})
@@ -139,9 +132,8 @@ Popup.prototype.extend({
 				width: "100%",
 				height: "100%"
 			});
-        if (color)
-        {
-            $blanket.css("background-color", color);
+        if ( color ) {
+            $blanket.css( "background-color", color );
         }
         
 		return $blanket;
@@ -150,11 +142,10 @@ Popup.prototype.extend({
     _hidePopup: function()
     {
         this
-            ._bindKeydownHandler(false)
+            ._bindKeydownHandler( false )
             .hide()
-            .css("z-index", null); // No need to define Z-order any longer.
-        if (this.blanket() != null)
-        {
+            .css( "z-index", null ); // No need to define Z-order any longer.
+        if ( this.blanket() != null ) {
             this.blanket().remove();
             this.blanket(null);
         }
@@ -165,16 +156,16 @@ Popup.prototype.extend({
 	/* Return the maximum Z-index in use by the page and its top-level controls. */
 	_maximumZIndex: function()
 	{
-		var topLevelElements = $("body").children().andSelf();
-		var zIndices = $.map(topLevelElements, function(element) {
-			switch ($(element).css("position")) {
+		var topLevelElements = $( "body" ).children().andSelf();
+		var zIndices = $.map( topLevelElements, function( element ) {
+			switch ( $(element).css("position") ) {
 				case "absolute":
 				case "fixed":
-					var zIndex = parseInt($(element).css("z-index")) || 1;
+					var zIndex = parseInt( $( element ).css( "z-index" ) ) || 1;
 					return zIndex;
 			}
 		});
-		return Math.max.apply(null, zIndices);
+		return Math.max.apply( null, zIndices );
 	}
 });
 </script>

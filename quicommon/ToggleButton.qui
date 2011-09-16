@@ -14,23 +14,22 @@
 <script>
 ToggleButton.prototype.extend({
 	
-	selected: Control.bindTo("applyClass/selected"),
+	selected: Control.bindTo( "applyClass/selected" ),
 	
 	initialize: function() {
-		ToggleButton.superclass.prototype.initialize.call(this);
+		ToggleButton.superclass.prototype.initialize.call( this );
 		var self = this;
 		this
-    		.click(function() {
-                if (!self.disabled())
-                {
+    		.click( function() {
+                if ( !self.disabled() ) {
                     self.toggle();
                 }
     		})
     		.genericIfClassIs( ToggleButton );
 	},
 	
-	toggle: function(value) {
-		this.selected(value || !this.selected());
+	toggle: function( value ) {
+		this.selected( value || !this.selected() );
 	}
 });
 </script>

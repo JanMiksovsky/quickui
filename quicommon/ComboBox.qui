@@ -52,7 +52,7 @@ ComboBox.prototype.extend({
     content: Control.bindTo( "$ComboBox_content", "content" ),
     openOnFocus: Control.property.bool(),
     // TODO: Allow transmute to return the current class, replace this with a binding.
-    textBoxClass: Control.property["class"]( function( textBoxClass ) {
+    textBoxClass: Control.property[ "class" ]( function( textBoxClass ) {
         this.$ComboBox_content().transmute( textBoxClass );
     }),
 	

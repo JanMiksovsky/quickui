@@ -8,23 +8,23 @@ Creates a set of controls, one for each item in a list.
 List.prototype.extend({
     
     // The control class that should be used to render items in the list.
-    itemClass: Control.property["class"](function() { this._refresh(); }, Control),
+    itemClass: Control.property[ "class" ]( function() { this._refresh(); }, Control ),
     
     // True if the control should mark itself dirty when it gets a change event.
-    dirtyOnChange: Control.property.bool(null, false),
+    dirtyOnChange: Control.property.bool( null, false ),
     
     // True if the control contents have been changed since the controls were first created.
-    isDirty: Control.property.bool(null, true),
+    isDirty: Control.property.bool( null, true ),
     
     // A copy of the items the last time they were created or refreshed.
     _itemsCache: Control.property(),
     
     initialize: function() {
         var self = this;
-        this.change(function(event) {
-            if (self.dirtyOnChange()) {
+        this.change( function( event ) {
+            if ( self.dirtyOnChange() ) {
                 // Assume the list is dirty.
-                self.isDirty(true);
+                self.isDirty( true );
             }
         });
     },
@@ -35,27 +35,23 @@ List.prototype.extend({
      */
     controls: function() {
         var itemClass = this.itemClass();
-        return itemClass(this).children();
+        return itemClass( this ).children();
     },
     
     // The items in the list.
-    items: function(items) {
-        if (items === undefined)
-        {
-            if (this.isDirty())
-            {
+    items: function( items ) {
+        if ( items === undefined ) {
+            if ( this.isDirty() ) {
                 this
-                    ._itemsCache(this._getItemsFromControls())
-                    .isDirty(false);
+                    ._itemsCache( this._getItemsFromControls() )
+                    .isDirty( false );
             }
             return this._itemsCache();
-        }
-        else
-        {
+        } else {
             return this
-                ._itemsCache(items)
-                ._createControlsForItems(items)
-                .isDirty(false);
+                ._itemsCache( items )
+                ._createControlsForItems( items )
+                .isDirty( false );
         }
     },
     
@@ -78,23 +74,23 @@ List.prototype.extend({
         "content"
     ),
     
-    _createControlsForItems: function(items) {
+    _createControlsForItems: function( items ) {
         var itemClass = this.itemClass();
         var mapFunction = this._getMapFunction();
-        var controls = $.map(items || [], function(item, index) {
+        var controls = $.map( items || [], function( item, index ) {
             var $control = itemClass.create();
-            mapFunction.call($control, index, item);
+            mapFunction.call( $control, index, item );
             return $control;
         });
-        this.content(controls);
+        this.content( controls );
         return this;
     },
     
     _getItemsFromControls: function() {
         var mapFunction = this._getMapFunction();
-        return this.controls().map(function(index, element) {
-            var $control = $(element).control();
-            return mapFunction.call($control, index);
+        return this.controls().map( function( index, element ) {
+            var $control = $( element ).control();
+            return mapFunction.call( $control, index );
         }).get();
     },
     
@@ -106,13 +102,13 @@ List.prototype.extend({
     _getMapFunction: function() {
         var mapFunction = this.mapFunction();
         return typeof mapFunction === "string"
-            ? function(index, item) { return this[mapFunction](item); }
+            ? function( index, item ) { return this[ mapFunction ]( item ); }
             : mapFunction;
     },
 
     // Get all the items, then recreate them again (possibly as different controls).        
     _refresh: function() {
-        this.items(this.items());
+        this.items( this.items() );
     }
 
 });

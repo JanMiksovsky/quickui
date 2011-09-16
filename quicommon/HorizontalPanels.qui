@@ -48,13 +48,12 @@
 <script>
 HorizontalPanels.prototype.extend({
     
-    content: Control.bindTo("$HorizontalPanels_content", "content"),
-    fill: Control.bindTo("applyClass/fill"),
-    left: Control.bindTo("$HorizontalPanels_left", "content"),
-    right: Control.bindTo("$HorizontalPanels_right", "content"),
+    content: Control.bindTo( "$HorizontalPanels_content", "content" ),
+    fill: Control.bindTo( "applyClass/fill" ),
+    left: Control.bindTo( "$HorizontalPanels_left", "content" ),
+    right: Control.bindTo( "$HorizontalPanels_right", "content" ),
 	
 	layout: function() {
-        //this._log("layout");
 	    var panelLeftWidth = this.$HorizontalPanels_left().outerWidth();
 	    var panelRightWidth = this.$HorizontalPanels_right().outerWidth();
 	    this.$HorizontalPanels_content().css({

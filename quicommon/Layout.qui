@@ -6,7 +6,7 @@
 Layout.prototype.extend({
     
     initialize: function() {
-        Layout.track(this);
+        Layout.track( this );
     },
     
     // Base implementation does nothing.
@@ -34,28 +34,26 @@ Layout.extend({
     recalc: function() {
 
         //console.log("recalc");
-        if (!this._controlsToLayout) {
+        if ( !this._controlsToLayout ) {
             return;
         }
 
         // Call the layout() method of any control whose size has changed.
         var i = 0;
-        while (i < this._controlsToLayout.length)
-        {
-            var $control = Control(this._controlsToLayout[i]).control();
-            if ($control)
-            {
-                var previousSize = $control.data("_size");
+        while ( i < this._controlsToLayout.length ) {
+            var $control = Control( this._controlsToLayout[i] ).control();
+            if ( $control ) {
+                var previousSize = $control.data( "_size" );
                 var size = {
                     height: $control.height(),
                     width: $control.width()
                 };
-                if (previousSize === undefined ||
+                if ( previousSize === undefined ||
                     size.height != previousSize.height ||
-                    size.width != previousSize.width)
-                {
+                    size.width != previousSize.width ) {
+                        
                     $control
-                        .data("_size", size)
+                        .data( "_size", size )
                         .layout();
                 }
                 i++;
@@ -64,7 +62,7 @@ Layout.extend({
             {
                 // Control unavailable, likely no longer in DOM;
                 // remove it from our list of controls to track.
-                this._controlsToLayout.splice(i, 1);
+                this._controlsToLayout.splice( i, 1 );
             }
         }
     },
@@ -73,12 +71,12 @@ Layout.extend({
      * Start tracking the indicated controls for layout purposes.
      * We won't actually lay them out until they're added to the DOM.
      */
-    track: function($controls) {
+    track: function( $controls ) {
         //$controls._log("tracking");
         this._initialize();
-        $controls.insertedIntoDocument(function() {
+        $controls.insertedIntoDocument( function() {
             this.layout();
-            Layout._controlsToLayout = Layout._controlsToLayout.concat(this);
+            Layout._controlsToLayout = Layout._controlsToLayout.concat( this );
         });
     },
 
@@ -94,8 +92,7 @@ Layout.extend({
      */
     _initialize: function() {
         
-        if (this._initialized)
-        {
+        if ( this._initialized ) {
             // Already did this.
             return;
         }
@@ -105,7 +102,7 @@ Layout.extend({
         this._controlsToLayout = [];
         
         // Recalc layout whenever the window size changes.
-        $(window).resize(function() {
+        $( window ).resize( function() {
             Layout.recalc();
         });
         
