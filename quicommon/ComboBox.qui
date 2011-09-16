@@ -7,9 +7,7 @@ An input area with a dropdown arrow, which invokes a popup.
 <prototype>
     <HasPopup>
         <content>
-            <div id="ComboBox_content">
-                <input type="text" />
-            </div>
+            <div id="ComboBox_content"/>
             <ButtonBase id="dropdownButton" generic="false">&#9660;</ButtonBase>
         </content>
     </HasPopup>
@@ -53,6 +51,10 @@ ComboBox.prototype.extend({
 	
     content: Control.bindTo( "$ComboBox_content", "content" ),
     openOnFocus: Control.property.bool(),
+    // TODO: Allow transmute to return the current class, replace this with a binding.
+    textBoxClass: Control.property["class"]( function( textBoxClass ) {
+        this.$ComboBox_content().transmute( textBoxClass );
+    }),
 	
 	initialize: function() {
 	    
@@ -73,6 +75,11 @@ ComboBox.prototype.extend({
     		    }
     		}
 		});
+		
+		if ( !this.textBoxClass() ) {
+		    // Set a default text box class
+		    this.textBoxClass( TextBox );
+		}
 	}
 
 });
