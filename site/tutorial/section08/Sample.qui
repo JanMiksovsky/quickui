@@ -1,8 +1,0 @@
-<Control name="Sample">
-	<h1>QuickUI sample</h1>
-	<Greet>Alice</Greet>
-	<Greet punctuation="!">Bob</Greet>
-	<Greet punctuation="?">
-		<i>Carol</i>
-	</Greet>
-</Control>
