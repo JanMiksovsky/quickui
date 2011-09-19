@@ -21,12 +21,16 @@
     font: caption;
     padding: .25em .5em;
 }
-.ButtonBase.generic.hovered {
+.ButtonBase.generic:hover {
     background-color: lightgray;
 }
 .ButtonBase.generic.pressed {
     background-color: gray;
     color: white;
+}
+.ButtonBase.generic.disabled {
+    background-color: inherit;
+    color: gray;
 }
 </style>
 
@@ -90,9 +94,24 @@ ButtonBase.prototype.extend({
 		return ButtonBase.state.normal;
 	},
 
-    disabled: Control.bindTo( "applyClass/disabled", function(disabled) {
-		this._renderButton();
-	}),
+    /*
+     * Get/set whether the control is disabled.
+     * This is mapped to the disabled property on the control top-level element.
+     * Setting this also applies "disabled" class in case the :disabled pseudo-class
+     * is not supported.
+     */
+    disabled: function( disabled ) {
+        if ( disabled === undefined ) {
+            return this.prop( "disabled" );
+        } else {
+            var disabledBool = (String( disabled ) === "true" );
+            this
+                .prop( "disabled", disabledBool )
+                .toggleClass( "disabled", disabledBool )
+                ._renderButton();
+            return this;
+        }
+	},
 	
 	trackFocus: function( event ) {
         if ( !this.disabled() )  {
