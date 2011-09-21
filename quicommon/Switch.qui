@@ -18,10 +18,12 @@ Switch.prototype.extend({
 	    }
 	},
     
-    // The currently visible child.
+    /*
+     * The currently visible child, cast to a control (if applicable).
+     */
     activeChild: function( activeChild ) {
         if ( activeChild === undefined ) {
-            return this.children().not( ".hidden" )[0];
+            return this.children().not( ".hidden" ).eq(0).cast( jQuery );
         } else {
             /*
              * Apply a "hidden" style instead of just forcing display to none.
@@ -39,7 +41,7 @@ Switch.prototype.extend({
         if ( index === undefined ) {
             return this.children().index( this.activeChild() );
         } else {
-            this.activeChild( this.children()[ index ] );
+            this.activeChild( this.children().eq( index ) );
         }
     }
         
