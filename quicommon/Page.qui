@@ -27,11 +27,13 @@ Page.prototype.extend({
     },
     	
 	// Gets or sets the title of the page.
-	title: function( value ) {
-		if ( value !== undefined ) {
-			document.title = value;
+	title: function( title ) {
+		if ( title === undefined ) {
+		    return document.title;
+		} else {
+			document.title = title;
+			return this;
 		}
-		return document.title;
 	}
 
 });
