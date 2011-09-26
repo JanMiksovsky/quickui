@@ -1,7 +1,7 @@
 //
 // Content
 //
-Content = Control.subclass("Content", function renderContent() {
+Content = Control.subclass( "Content", function renderContent() {
 	this.properties({
 		"content": [
 			" ",
@@ -18,6 +18,6 @@ Content = Control.subclass("Content", function renderContent() {
 			}),
 			" "
 		]
-	}, Control);
+	}, Control );
 });
 

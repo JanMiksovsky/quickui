@@ -67,7 +67,7 @@ namespace qc
             return (Id == null)
                 ? value
                 : Template.Format(
-                    "this._define(\"${Id}\", {Value})",
+                    "this._define( \"${Id}\", {Value} )",
                     new
                     {
                         Id = Id,

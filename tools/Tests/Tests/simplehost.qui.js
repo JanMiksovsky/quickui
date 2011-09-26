@@ -1,7 +1,7 @@
 ﻿//
 // SimpleHost
 //
-SimpleHost = Control.subclass("SimpleHost", function renderSimpleHost() {
+SimpleHost = Control.subclass( "SimpleHost", function renderSimpleHost() {
 	this.properties({
 		"content": [
 			" Text ",
@@ -10,6 +10,6 @@ SimpleHost = Control.subclass("SimpleHost", function renderSimpleHost() {
 			}),
 			" "
 		]
-	}, Control);
+	}, Control );
 });
 
