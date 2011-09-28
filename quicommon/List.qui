@@ -61,9 +61,10 @@ List.prototype.extend({
     // in which case it will be taken as the name of a control class property,
     // Alternately, this can be a function of the form:
     //
-    //      function foo(index, item) { ... }
+    //      function foo( item ) { ... }
     //
-    // where index is control's position in the list, and item is the list item.
+    // where item is the list item.
+    //
     // If item is undefined, the map function is being invoked as a getter,
     // and should extract the item from the control (available via "this").
     // If item is defined, the map function is being invoked as a setter, and
@@ -79,7 +80,7 @@ List.prototype.extend({
         var mapFunction = this._getMapFunction();
         var controls = $.map( items || [], function( item, index ) {
             var $control = itemClass.create();
-            mapFunction.call( $control, index, item );
+            mapFunction.call( $control, item );
             return $control;
         });
         this.content( controls );
@@ -90,7 +91,7 @@ List.prototype.extend({
         var mapFunction = this._getMapFunction();
         return this.controls().map( function( index, element ) {
             var $control = $( element ).control();
-            return mapFunction.call( $control, index );
+            return mapFunction.call( $control );
         }).get();
     },
     
@@ -102,7 +103,7 @@ List.prototype.extend({
     _getMapFunction: function() {
         var mapFunction = this.mapFunction();
         return typeof mapFunction === "string"
-            ? function( index, item ) { return this[ mapFunction ]( item ); }
+            ? function( item ) { return this[ mapFunction ]( item ); }
             : mapFunction;
     },
 
