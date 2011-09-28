@@ -172,17 +172,17 @@ function runTests() {
     	equal($c.eq(1).data("_calledFoo"), true);
     });
     
-    test("Define method with iterators()", function() {
+    test("Define method with iterator()", function() {
         
         var MyControl = Control.subclass("MyControl");
-        MyControl.prototype.iterators({
-			foo: function() {
+        MyControl.prototype.extend({
+			foo: Control.iterator( function() {
     			this.data("_calledFoo", true);
-    		},
-    		bar: function() {
+    		}),
+    		bar: Control.iterator( function() {
     		    this.data("_calledBar", true);
     		    return "Hello";    // Force getter behavior.
-    		}
+    		})
 	    });
         
     	var $elements = Control("<div/>").add("<div/>");
@@ -200,12 +200,12 @@ function runTests() {
     	equal($c.eq(1).data("_calledBar"), undefined);
     });
             
-    test("Define getter/setter with iterators()", function() {
+    test("Define getter/setter with iterator()", function() {
     	var c = Control.subclass();
-    	c.prototype.iterators({
-    		myGetterSetter: function(value) {
+    	c.prototype.extend({
+    		myGetterSetter: Control.iterator( function(value) {
 				this.data("_property", value);
-    		}
+    		})
     	});
     	var $elements = Control("<div/>").add("<div/>");
     	var $c = $elements.control(c);
