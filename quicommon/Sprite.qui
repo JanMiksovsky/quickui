@@ -25,11 +25,9 @@ Sprite.prototype.extend({
 	// The cell currently being shown.
 	currentCell: Control.property( function( value ) {
 		this._shiftBackground();
-	}, 0)
+	}, 0),
 
-});
-Sprite.prototype.iterators({
-    _shiftBackground: function() {
+    _shiftBackground: Control.iterator( function() {
         if ( this.currentCell() != null && this.cellHeight() != null ) {
             var y = ( this.currentCell() * -this.cellHeight() ) + "px";
             if ( $.browser.mozilla ) {
@@ -43,7 +41,7 @@ Sprite.prototype.iterators({
                 this.css( "background-position-y", y );
             }
         }
-    }
+    })
 });
 </script>
 
