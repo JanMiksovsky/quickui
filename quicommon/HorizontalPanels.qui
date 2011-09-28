@@ -48,10 +48,10 @@
 <script>
 HorizontalPanels.prototype.extend({
     
-    content: Control.bindTo( "$HorizontalPanels_content", "content" ),
-    fill: Control.bindTo( "applyClass/fill" ),
-    left: Control.bindTo( "$HorizontalPanels_left", "content" ),
-    right: Control.bindTo( "$HorizontalPanels_right", "content" ),
+    content: Control.chain( "$HorizontalPanels_content", "content" ),
+    fill: Control.chain( "applyClass/fill" ),
+    left: Control.chain( "$HorizontalPanels_left", "content" ),
+    right: Control.chain( "$HorizontalPanels_right", "content" ),
 	
 	layout: function() {
 	    var panelLeftWidth = this.$HorizontalPanels_left().outerWidth();

@@ -42,10 +42,10 @@
 <script>
 VerticalPanels.prototype.extend({
     
-    bottom: Control.bindTo( "$VerticalPanels_bottom", "content" ),
-    content: Control.bindTo( "$VerticalPanels_content", "content" ),
-    fill: Control.bindTo( "applyClass/fill" ),
-    top: Control.bindTo( "$VerticalPanels_top", "content" ),
+    bottom: Control.chain( "$VerticalPanels_bottom", "content" ),
+    content: Control.chain( "$VerticalPanels_content", "content" ),
+    fill: Control.chain( "applyClass/fill" ),
+    top: Control.chain( "$VerticalPanels_top", "content" ),
     
     layout: function() {
         //this._log("layout");

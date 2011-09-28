@@ -12,10 +12,10 @@ A control with a popup menu that appears above or below it.
 <script>
 HasPopup.prototype.extend({
 	
-	content: Control.bindTo( "$HasPopup_content", "content" ),
-	closeOnInsideClick: Control.bindTo( "$HasPopup_popup", "closeOnInsideClick" ),
+	content: Control.chain( "$HasPopup_content", "content" ),
+	closeOnInsideClick: Control.chain( "$HasPopup_popup", "closeOnInsideClick" ),
 	openOnClick: Control.property.bool(),
-	popup: Control.bindTo( "$HasPopup_popup", "content" ),
+	popup: Control.chain( "$HasPopup_popup", "content" ),
 
 	initialize: function()
 	{

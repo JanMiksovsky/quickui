@@ -20,7 +20,7 @@
 Page.prototype.extend({
 	
 	// If true, have the page fill its container.
-	fill: Control.bindTo( "applyClass/fill" ),
+	fill: Control.chain( "applyClass/fill" ),
 
     urlParameters: function() {
         return Page.urlParameters();

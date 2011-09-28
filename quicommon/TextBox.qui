@@ -13,7 +13,7 @@
 
 <script>
 TextBox.prototype.extend({
-    content: Control.bindTo( "$textBox", "content" )
+    content: Control.chain( "$textBox", "content" )
 });
 </script>
 

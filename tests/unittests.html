@@ -47,7 +47,7 @@ function runTests() {
     test("Create: set properties on constructor", function() {
         var Greet = createGreetClass();
         Greet.prototype.extend({
-            name: Control.bindTo("$name", "content")
+            name: Control.chain("$name", "content")
         });
         var $c = Greet.create({ name: "Bob" });
         equal($c.text(), "Hello Bob");
@@ -56,7 +56,7 @@ function runTests() {
     test("Create: set properties via .control()", function() {
         var Greet = createGreetClass();
         Greet.prototype.extend({
-            name: Control.bindTo("$name", "content")
+            name: Control.chain("$name", "content")
         });
         var $element = $("<div/>");
         $c = Greet.createAt($element);
@@ -75,7 +75,7 @@ function runTests() {
                 ]
             }, Control);
         });
-        MyControl.prototype.content = Control.bindTo("$MyControl_content", "content");
+        MyControl.prototype.content = Control.chain("$MyControl_content", "content");
         var $original = $("<div><div>Hello</div><div>world</div></div>");
         var $children = $original.children();
         var $c = MyControl.createAt($children);
@@ -278,13 +278,13 @@ function runTests() {
     });
 
     /*
-     * Control.bindTo() tests
+     * Control.chain() tests
      */
-    test("bindTo: root content", function() {
+    test("chain: root content", function() {
         
         var Greet = createGreetClass();
         Greet.prototype.extend({
-            foo: Control.bindTo("content")
+            foo: Control.chain("content")
         });
         
         var $c = Greet.create();
@@ -295,11 +295,11 @@ function runTests() {
         equal($c.html(), "world");
     });
 
-    test("bindTo: element", function() {
+    test("chain: element", function() {
         
         var Greet = createGreetClass();
         Greet.prototype.extend({
-            name: Control.bindTo("$name")
+            name: Control.chain("$name")
         });
         
         var $c = Greet.create();
@@ -308,11 +308,11 @@ function runTests() {
         equal($element.html(), "Ann");
     });
     
-    test("bindTo: element content", function() {
+    test("chain: element content", function() {
         
         var Greet = createGreetClass();
         Greet.prototype.extend({
-            name: Control.bindTo("$name", "content")
+            name: Control.chain("$name", "content")
         });
         
         var $c = Greet.create();
@@ -321,11 +321,11 @@ function runTests() {
         equal($c.html(), "Hello <span id=\"name\">Bob</span>");
     });
     
-    test("bindTo: subcontrol property", function() {
+    test("chain: subcontrol property", function() {
         
         var Greet = createGreetClass();
         Greet.prototype.extend({
-            name: Control.bindTo("$name", "content")
+            name: Control.chain("$name", "content")
         });
         
         var MyControl = Control.subclass("MyControl", function() {
@@ -336,7 +336,7 @@ function runTests() {
             }, Control);
         });
         MyControl.prototype.extend({
-            name: Control.bindTo("$greet", "name")
+            name: Control.chain("$greet", "name")
         });
         
         var $c = MyControl.create();
@@ -345,11 +345,11 @@ function runTests() {
         equal($c.html(), "<div class=\"Greet Control\">Hello <span id=\"name\">Bob</span></div>");
     });
         
-    test("bindTo: element content with iteration", function() {
+    test("chain: element content with iteration", function() {
 
         var Greet = createGreetClass();
         Greet.prototype.extend({
-            name: Control.bindTo("$name", "content")
+            name: Control.chain("$name", "content")
         });
 
         var $inner1 = Greet.create({ name: "Ann" });
@@ -368,10 +368,10 @@ function runTests() {
         equal($c.html(), "<div class=\"Greet Control\">Hello <span id=\"name\">Carol</span></div><div class=\"Greet Control\">Hello <span id=\"name\">Carol</span></div>");
     });
 
-    test("bindTo: element content with side effect function", function() {
+    test("chain: element content with side effect function", function() {
         var Greet = createGreetClass();
         Greet.prototype.extend({
-            name: Control.bindTo("$name", "content", function(name) {
+            name: Control.chain("$name", "content", function(name) {
                 this.data("_name", name);
             })
         });
@@ -381,11 +381,11 @@ function runTests() {
         equal($c.data("_name"), "Ann");
     });
     
-    test("bindTo: chaining", function() {
+    test("chain: chaining", function() {
         var Greet = createGreetClass();
         Greet.prototype.extend({
-            foo: Control.bindTo("content"),
-            bar: Control.bindTo("prop/display")
+            foo: Control.chain("content"),
+            bar: Control.chain("prop/display")
         });
         var $c = Greet.create();
         var result = $c.foo("Hello").bar("inline");
@@ -394,9 +394,9 @@ function runTests() {
         equal(result, $c);
     });
     
-    test("bindTo: functions with parameters", function() {
+    test("chain: functions with parameters", function() {
         var MyControl = Control.subclass("MyControl");
-        MyControl.prototype.display = Control.bindTo("css/display");
+        MyControl.prototype.display = Control.chain("css/display");
         var $c = MyControl.create();
         $c.css("display", "block");
         equal($c.display(), "block");

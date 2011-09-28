@@ -29,11 +29,11 @@ called name(), that will be used as the name on the tab.
 <script>
 TabSet.prototype.extend({
 
-    content: Control.bindTo( "$TabSet_content", "content", function() { this._refresh(); } ),
+    content: Control.chain( "$TabSet_content", "content", function() { this._refresh(); } ),
     selectTabOnClick: Control.property.bool( null, true ),
-    buttons: Control.bindTo( "$buttons", "children" ),
-    tabButtonClass: Control.bindTo( "$buttons", "itemClass", function() { this._refresh(); } ),
-    tabs: Control.bindTo( "$TabSet_content", "children" ),
+    buttons: Control.chain( "$buttons", "children" ),
+    tabButtonClass: Control.chain( "$buttons", "itemClass", function() { this._refresh(); } ),
+    tabs: Control.chain( "$TabSet_content", "children" ),
 
     selectedTab: function( tab ) {
         if ( tab === undefined ) {
