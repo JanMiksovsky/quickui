@@ -42,8 +42,8 @@ HasPopup.prototype.extend({
         var $content = this.$HasPopup_content();
         var contentTop = $content.position().top;
         var contentLeft = $content.position().left;
-        var contentHeight = $content.outerHeight( true );
-        var contentWidth = $content.outerWidth( true );
+        var contentHeight = $content.outerHeight();
+        var contentWidth = $content.outerWidth();
         var contentBottom = contentTop + contentHeight;
         var contentRight = contentLeft + contentWidth;
         

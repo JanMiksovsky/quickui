@@ -37,6 +37,15 @@ An input area with a dropdown arrow, which invokes a popup.
 /* Generic appearance */
 .ComboBox.generic {
     border: 1px solid lightgray;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.ComboBox.generic #HasPopup_popup {
+    -moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 .ComboBox.generic #dropdownButton {
     border-left: 1px solid transparent;
@@ -50,10 +59,11 @@ An input area with a dropdown arrow, which invokes a popup.
 ComboBox.prototype.extend({
 	
     content: Control.bindTo( "$ComboBox_content", "content" ),
-    openOnFocus: Control.property.bool(),
+    openOnFocus: Control.property.bool( null, true ),
     // TODO: Allow transmute to return the current class, replace this with a binding.
     textBoxClass: Control.property[ "class" ]( function( textBoxClass ) {
         this.$ComboBox_content().transmute( textBoxClass );
+        this._bindInputEvents();
     }),
 	
 	initialize: function() {
@@ -61,25 +71,29 @@ ComboBox.prototype.extend({
 	    ComboBox.superclass.prototype.initialize.call( this );
 	    this.genericIfClassIs( ComboBox );
 	    
-		var self = this;
+        var self = this;
 		this.$dropdownButton().click( function() {
 			self.open();
-		});
-		this.$ComboBox_content().find( "input" ).bind({
-		    "blur": function() {
-		        self.close();
-		    },
-		    "focus": function() {
-    		    if ( self.openOnFocus() ) {
-    		        self.open();
-    		    }
-    		}
 		});
 		
 		if ( !this.textBoxClass() ) {
 		    // Set a default text box class
 		    this.textBoxClass( TextBox );
 		}
+	},
+	
+	_bindInputEvents: function() {
+	    var self = this;
+        this.$ComboBox_content().find( "input" ).bind({
+            "blur": function() {
+                self.close();
+            },
+            "focus": function() {
+                if ( self.openOnFocus() ) {
+                    self.open();
+                }
+            }
+        });
 	}
 
 });
