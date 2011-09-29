@@ -47,3 +47,5 @@ output/
 debian/debhelper.log
 debian/tmp
 *-stamp
+debian/files
+debian/substvars
