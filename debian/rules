@@ -1,0 +1,65 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+INSTALL=install -Dp
+
+prefix := $(CURDIR)/debian/tmp
+bindir := $(prefix)/usr/bin
+sbindir := $(prefix)/usr/sbin
+libdir := $(prefix)/usr/lib
+localstatedir := $(prefix)/var
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+build-arch: build
+build-indep: build
+
+build: build-stamp
+build-stamp: configure-stamp 
+	dh_testdir
+	touch build-stamp
+	
+clean:
+	dh_testdir
+	dh_testroot
+	dh_clean 
+	
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k 
+	dh_installdirs
+
+	"$(CURDIR)/Makefile" install DESTDIR="$(CURDIR)/debian/tmp"
+
+# Build architecture-dependent files here.
+binary-arch: build install
+
+# Build architecture-independent files here.
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_install -i
+	dh_installchangelogs -i CHANGELOG
+	dh_installdocs -i
+	dh_installemacsen
+	dh_installlogcheck
+	dh_installman
+	dh_installlogrotate -i
+	dh_lintian -i
+	dh_compress -i
+	dh_fixperms -i
+	dh_installdeb -i
+	dh_shlibdeps -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure
