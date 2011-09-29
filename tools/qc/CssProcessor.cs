@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace qc
@@ -61,7 +62,7 @@ namespace qc
                     // Ignore selectors that meet any of the following conditions:
                     //  1) the style name is already included,
                     //  2) the selector is a CSS directive (starts with "@").
-                    if (!SelectorIncludesClassName(capture.Value, className) &&
+                    if (!SelectorIncludesClassName(capture.Value, cssClassName) &&
                         !capture.Value.StartsWith("@"))
                     {
                         // Selector doesn't already start with class name, so prepend it.
@@ -73,10 +74,19 @@ namespace qc
             return styles;
         }
 
+        // Return all class names used in the given selector.
+        private static IEnumerable<string> GetClassNamesFromSelector(string selector)
+        {
+            MatchCollection matches = findClassNamesRegEx.Matches(selector);
+            IEnumerable<string> classNames = from Match match in matches select match.ToString();
+            return classNames;
+        }
+
+        // Return true if the selector uses the indicated class name.
         private static Boolean SelectorIncludesClassName(string selector, string className)
         {
-            List<string> parts = new List<string>(selector.Split('.'));
-            return parts.Contains(className);
+            IEnumerable<string> classNames = GetClassNamesFromSelector(selector);
+            return classNames.Contains(className);
         }
 
         // Regex to find selectors in CSS.
@@ -86,5 +96,9 @@ namespace qc
             @"(?:,\s*(?<selector>.*?)\s*)*" +   // Comma separated remaining selector
             @"\{[^\}]*\}";                      // Style
         private static Regex findSelectorsRegEx = new Regex(findSelectors, RegexOptions.Compiled);
+
+        // Regex to find class names in a selector.
+        private const string findClassNames = @"(\.\w+)";
+        private static Regex findClassNamesRegEx = new Regex(findClassNames, RegexOptions.Compiled);
     }
 }

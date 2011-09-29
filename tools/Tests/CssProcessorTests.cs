@@ -52,11 +52,19 @@ namespace Tests
         }
 
         [Test]
+        public void ClassNameWithinAnotherClassName()
+        {
+            string styles = "div.FooBar { font-weight: bold; }";
+            string result = CssProcessor.AddClassNameToSelectors("Foo", styles);
+            Assert.AreEqual(".Foo div.FooBar { font-weight: bold; }", result);
+        }
+
+        [Test]
         public void ClassNameAlreadyAtStart()
         {
             string styles = ".Foo.selected { font-weight: bold; }";
             string result = CssProcessor.AddClassNameToSelectors("Foo", styles);
-            Assert.AreEqual(".Foo.selected { font-weight: bold; }", result);
+            Assert.AreEqual(styles, result);
         }
 
         [Test]
@@ -64,15 +72,15 @@ namespace Tests
         {
             string styles = "body .Foo.selected { font-weight: bold; }";
             string result = CssProcessor.AddClassNameToSelectors("Foo", styles);
-            Assert.AreEqual("body .Foo.selected { font-weight: bold; }", result);
+            Assert.AreEqual(styles, result);
         }
 
         [Test]
-        public void ClassNameWithinAnotherClassName()
+        public void ClassNameWithPseudoClass()
         {
-            string styles = "div.FooBar { font-weight: bold; }";
+            string styles = ".Foo:hover { color: red; }";
             string result = CssProcessor.AddClassNameToSelectors("Foo", styles);
-            Assert.AreEqual(".Foo div.FooBar { font-weight: bold; }", result);
+            Assert.AreEqual(styles, result);
         }
 
         [Test]
