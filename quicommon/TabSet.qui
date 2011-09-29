@@ -45,26 +45,28 @@ TabSet.prototype.extend({
     },
 
     selectedTabIndex: Control.property( function( index ) {
-        
+
         this.buttons()
             .removeClass( "selected" )    // Deselect all tab buttons.
             .eq(index)
             .addClass( "selected" );      // Select the indicated button.
-        
-        this.tabs()
+
+        var tab = this.tabs()
             .hide()                     // Hide all tabs
-            .eq( index )
-            .show();                    // Show the selected tab.
-        
-        this.trigger( "onTabSelected", [ index, this.tabs()[ index ] ]);
+            .eq(index)
+            .show()                     // Show the selected tab.
+            .control();
+        tab.onShow();
+
+        this.trigger("onTabSelected", [ index, tab ]);
     }),
-    
+
     _refresh: function() {
-        
+
         if ( this.tabButtonClass() === undefined ) {
             return;
         }
-        
+
         // Show the names for each tab as a button.
         this.$buttons().items( this._tabNames() );
 
@@ -80,13 +82,13 @@ TabSet.prototype.extend({
                 self.trigger( "onTabClicked", [ buttonIndex, self.tabs()[buttonIndex] ]);
             }
         });
-        
+
         if ( this.tabs().length > 0 && this.selectedTabIndex() === undefined ) {
             // Select first tab by default.
             this.selectedTabIndex(0);
         }
     },
-    
+
     _tabNames: function() {
         return this.tabs()
             .map( function( index, element ) {
