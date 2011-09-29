@@ -52,11 +52,27 @@ namespace Tests
         }
 
         [Test]
-        public void ClassNameAlreadyIncluded()
+        public void ClassNameAlreadyAtStart()
         {
-            string styles = ".Foo.h1 { font-weight: bold; }";
+            string styles = ".Foo.selected { font-weight: bold; }";
             string result = CssProcessor.AddClassNameToSelectors("Foo", styles);
-            Assert.AreEqual(".Foo.h1 { font-weight: bold; }", result);
+            Assert.AreEqual(".Foo.selected { font-weight: bold; }", result);
+        }
+
+        [Test]
+        public void ClassNameAlreadyInMiddle()
+        {
+            string styles = "body .Foo.selected { font-weight: bold; }";
+            string result = CssProcessor.AddClassNameToSelectors("Foo", styles);
+            Assert.AreEqual("body .Foo.selected { font-weight: bold; }", result);
+        }
+
+        [Test]
+        public void ClassNameWithinAnotherClassName()
+        {
+            string styles = "div.FooBar { font-weight: bold; }";
+            string result = CssProcessor.AddClassNameToSelectors("Foo", styles);
+            Assert.AreEqual(".Foo div.FooBar { font-weight: bold; }", result);
         }
 
         [Test]

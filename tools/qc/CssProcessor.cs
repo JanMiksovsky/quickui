@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace qc
@@ -60,7 +61,7 @@ namespace qc
                     // Ignore selectors that meet any of the following conditions:
                     //  1) the style name is already included,
                     //  2) the selector is a CSS directive (starts with "@").
-                    if (!capture.Value.StartsWith(cssClassName) &&
+                    if (!SelectorIncludesClassName(capture.Value, className) &&
                         !capture.Value.StartsWith("@"))
                     {
                         // Selector doesn't already start with class name, so prepend it.
@@ -70,6 +71,12 @@ namespace qc
             }
 
             return styles;
+        }
+
+        private static Boolean SelectorIncludesClassName(string selector, string className)
+        {
+            List<string> parts = new List<string>(selector.Split('.'));
+            return parts.Contains(className);
         }
 
         // Regex to find selectors in CSS.

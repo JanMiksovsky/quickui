@@ -20,7 +20,7 @@ Comprehensive = SampleBaseClass.subclass( "Comprehensive", function renderCompre
 	}, SampleBaseClass );
 }, "div" );
 Comprehensive.prototype.extend({
-  content: Control.bindTo( "$Comprehensive_content", "content", ),
+  content: Control.chain( "$Comprehensive_content", "content", ),
   foo: function()
   {
       alert("Hello, world!");
