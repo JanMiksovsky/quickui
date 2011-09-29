@@ -4,4 +4,4 @@ quickui (1.0) natty; urgency=low
   * [21e2e98] Make the changelog conform to package standards
   * [6d523ea] Configure git
 
- -- Cory R. King <cory@ubuntu1-cory.corp.cozi.com>  Thu, 29 Sep 2011 10:02:40 -0700
+ -- Cory R. King <cory@cozi.com>  Thu, 29 Sep 2011 10:02:40 -0700
