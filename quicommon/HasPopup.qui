@@ -13,8 +13,11 @@ A control with a popup menu that appears above or below it.
 HasPopup.prototype.extend({
 	
 	content: Control.chain( "$HasPopup_content", "content" ),
+    close: Control.chain( "$HasPopup_popup", "close" ),
 	closeOnInsideClick: Control.chain( "$HasPopup_popup", "closeOnInsideClick" ),
 	openOnClick: Control.property.bool(),
+    open: Control.chain( "$HasPopup_popup", "open" ),
+	opened: Control.chain( "$HasPopup_popup", "opened" ),
 	popup: Control.chain( "$HasPopup_popup", "content" ),
 
 	initialize: function()
@@ -30,14 +33,6 @@ HasPopup.prototype.extend({
         });
 	},
 	
-	close: function() {
-	    return this.$HasPopup_popup().close();
-	},
-    
-    open: function() {
-        return this.$HasPopup_popup().open();
-    },
-    
     _positionPopup: function() {
         var $content = this.$HasPopup_content();
         var contentTop = $content.position().top;

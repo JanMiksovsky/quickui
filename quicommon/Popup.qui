@@ -28,6 +28,7 @@ Popup.prototype.extend({
 	cancelOnEscapeKey: Control.property.bool( null, true ),
     cancelOnOutsideClick: Control.property.bool( null, true ),
 	closeOnInsideClick: Control.property.bool(),
+	opened: Control.property(),
 	
 	initialize: function()
 	{
@@ -71,6 +72,7 @@ Popup.prototype.extend({
             .css( "z-index", maximumZIndex + 2 )
             .show()
             .positionPopup()
+            .opened( true )
             .trigger( "opened" );
             
         // In case the overlay wants to resize anything now that it's visible.
@@ -143,6 +145,7 @@ Popup.prototype.extend({
     {
         this
             ._bindKeydownHandler( false )
+            .opened( false )
             .hide()
             .css( "z-index", null ); // No need to define Z-order any longer.
         if ( this.blanket() != null ) {

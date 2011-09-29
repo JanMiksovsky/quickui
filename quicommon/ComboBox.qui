@@ -86,7 +86,9 @@ ComboBox.prototype.extend({
 	    var self = this;
         this.$ComboBox_content().find( "input" ).bind({
             "blur": function() {
-                self.close();
+                if ( !self.opened() ) {
+                    self.close();
+                }
             },
             "focus": function() {
                 if ( self.openOnFocus() ) {
