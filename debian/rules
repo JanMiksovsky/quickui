@@ -36,7 +36,7 @@ install: build
 	dh_clean -k 
 	dh_installdirs
 
-	"$(CURDIR)/Makefile" install DESTDIR="$(CURDIR)/debian/tmp"
+	/usr/bin/make "$(CURDIR)/Makefile" install DESTDIR="$(CURDIR)/debian/tmp"
 
 # Build architecture-dependent files here.
 binary-arch: build install
