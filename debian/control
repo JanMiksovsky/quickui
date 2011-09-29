@@ -13,5 +13,5 @@ Package: quickui
 Architecture: all
 Depends: ${misc:Depends}, mono-runtime 
 Description: Web Control Framework
-Extended-Description: QuickUI (Quick User Interface) is a framework that simplifies the design, development, and maintenance of web-based user interfaces.
+ QuickUI (Quick User Interface) is a framework that simplifies the design, development, and maintenance of web-based user interfaces.
 Homepage: http://quickui.org
