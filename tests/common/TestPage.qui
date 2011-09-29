@@ -57,6 +57,14 @@
                 Popup goes here.
             </popup>
         </ComboBox>
+        <div>
+            <TestControl>Test control with no text styling.</TestControl>
+            <div>
+                <span>
+                    Test control <TestControl>with italic text</TestControl> because it's in a span.
+                </span>
+            </div>
+        </div>
     </Page>
 </prototype>
 
