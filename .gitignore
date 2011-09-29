@@ -43,3 +43,4 @@ deploy/QuickUI
 mono/lib
 old
 TestResult.xml
+output/
