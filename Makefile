@@ -47,8 +47,8 @@ install: build
 	# I *think* this is a legal way to symlink things...  we 
 	# don't want to symlink into the $(DESTDIR) or the symlink will be
 	# broken once installed
-	ln -sf "$(BINDIR)/qc.exe" "$(DESTDIR)$(BINDIR)/qc.exe"
-	ln -sf "$(BINDIR)/qb.exe" "$(DESTDIR)$(BINDIR)/qb.exe"
+	ln -sf "$(BINDIR)/qc.exe" "$(DESTDIR)$(BINDIR)/qc"
+	ln -sf "$(BINDIR)/qb.exe" "$(DESTDIR)$(BINDIR)/qb"
 	-@echo '..... Installing data .....'
 	$(INSTALL_DATA) "$(CURDIR)/lib/quickui.js" "$(DESTDIR)$(DATADIR)/quickui.js"
 	$(INSTALL_DATA) "$(CURDIR)/quicommon/quicommon.css" "$(DESTDIR)$(DATADIR)/quicommon.css"
