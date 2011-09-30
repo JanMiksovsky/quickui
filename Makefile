@@ -42,8 +42,13 @@ install: build
 	-@test -z "$(DESTDIR)" || mkdir -p "$(DESTDIR)" 2>/dev/null
 	-mkdir -p "$(DESTDIR)$(prefix)" "$(DESTDIR)$(BINDIR)" "$(DESTDIR)$(LIBDIR)" 2>/dev/null
 	-@echo '..... Installing the programs .....'
-	$(INSTALL_PROGRAM) $(OutputPath)/qb.exe "$(DESTDIR)$(BINDIR)/qb"
-	$(INSTALL_PROGRAM) $(OutputPath)/qc.exe "$(DESTDIR)$(BINDIR)/qc"
+	$(INSTALL_PROGRAM) $(OutputPath)/qb.exe "$(DESTDIR)$(BINDIR)/qb.exe"
+	$(INSTALL_PROGRAM) $(OutputPath)/qc.exe "$(DESTDIR)$(BINDIR)/qc.exe"
+	# I *think* this is a legal way to symlink things...  we 
+	# don't want to symlink into the $(DESTDIR) or the symlink will be
+	# broken once installed
+	ln -sf "$(BINDIR)/qc.exe" "$(DESTDIR)$(BINDIR)/qc.exe"
+	ln -sf "$(BINDIR)/qb.exe" "$(DESTDIR)$(BINDIR)/qb.exe"
 	-@echo '..... Installing data .....'
 	$(INSTALL_DATA) "$(CURDIR)/lib/quickui.js" "$(DESTDIR)$(DATADIR)/quickui.js"
 	$(INSTALL_DATA) "$(CURDIR)/quicommon/quicommon.css" "$(DESTDIR)$(DATADIR)/quicommon.css"
