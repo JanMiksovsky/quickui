@@ -42,10 +42,8 @@ install: build
 	-@test -z "$(DESTDIR)" || mkdir -p "$(DESTDIR)" 2>/dev/null
 	-mkdir -p "$(DESTDIR)$(prefix)" "$(DESTDIR)$(BINDIR)" "$(DESTDIR)$(LIBDIR)" 2>/dev/null
 	-@echo '..... Installing the programs .....'
-	$(INSTALL_PROGRAM) $(OutputPath)/qb.exe "$(DESTDIR)$(LIBDIR)/qb.exe"
-	$(INSTALL_PROGRAM) $(OutputPath)/qc.exe "$(DESTDIR)$(LIBDIR)/qc.exe"
-	ln -sf "$(DESTDIR)$(LIBDIR)/qb.exe" "$(DESTDIR)$(BINDIR)/qb"
-	ln -sf "$(DESTDIR)$(LIBDIR)/qc.exe" "$(DESTDIR)$(BINDIR)/qc"
+	$(INSTALL_PROGRAM) $(OutputPath)/qb.exe "$(DESTDIR)$(BINDIR)/qb"
+	$(INSTALL_PROGRAM) $(OutputPath)/qc.exe "$(DESTDIR)$(BINDIR)/qc"
 	-@echo '..... Installing data .....'
 	$(INSTALL_DATA) "$(CURDIR)/lib/quickui.js" "$(DESTDIR)$(DATADIR)/quickui.js"
 	$(INSTALL_DATA) "$(CURDIR)/quicommon/quicommon.css" "$(DESTDIR)$(DATADIR)/quicommon.css"
