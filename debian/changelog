@@ -1,3 +1,8 @@
+quickui (1.1.1) natty; urgency=low
+  * [dc82602] Use symlinks anyway, only do it smarter.
+
+ -- Cory R. King <cory@cozi.com>  Fri, 30 Sep 2011 10:22:02 -0700
+
 quickui (1.1) natty; urgency=low
   * [78e7b9d] Fix control file
   * [f8a210a] Install CHANGELOG
