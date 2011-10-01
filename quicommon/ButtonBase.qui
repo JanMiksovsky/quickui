@@ -18,6 +18,10 @@
 /* Generic appearance */
 .ButtonBase.generic {
     border: 1px solid gray;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
     font: caption;
     padding: .25em .5em;
 }
