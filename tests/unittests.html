@@ -21,441 +21,459 @@ function runTests() {
     /*
      * Control tests
      */
-    test("Create: from scratch", function() {
+    test( "Create: from scratch", function() {
         var $c = Control.create();
-        equal($c.attr("class"), "Control");
-        equal($c.control()[0] === $c[0], true);
+        equal( $c.attr( "class" ), "Control" );
+        equal( $c.control()[0] === $c[0], true );
     });
 
-    test("Create: on existing div", function() {
-        var $element = $("<div/>");
-        var $c = $element.control(Control);
-        equal($c.attr("class"), "Control");
-        equal($element.control()[0] === $c[0], true);
+    test( "Create: on existing div", function() {
+        var $element = $( "<div/>" );
+        var $c = $element.control( Control );
+        equal( $c.attr( "class" ), "Control" );
+        equal( $element.control()[0] === $c[0], true );
     });
     
-    test("Create: multiple", function() {
-        var MyControl = Control.subclass("MyControl");
+    test( "Create: multiple", function() {
+        var MyControl = Control.subclass( "MyControl" );
         MyControl.prototype.foo = function() {
             return "Hello";
         };
-    	var $elements = $().add("<div/>").add("<div/>");
-    	var $c = $elements.control(MyControl);
-    	equal($c.control().length, 2);
+    	var $elements = $().add( "<div/>" ).add( "<div/>" );
+    	var $c = $elements.control( MyControl );
+    	equal( $c.control().length, 2 );
     });
     
-    test("Create: set properties on constructor", function() {
+    test( "Create: set properties on constructor", function() {
         var Greet = createGreetClass();
-        Greet.prototype.extend({
-            name: Control.chain("$name", "content")
+        Greet.prototype.extend( {
+            name: Control.chain( "$name", "content" )
         });
-        var $c = Greet.create({ name: "Bob" });
-        equal($c.text(), "Hello Bob");
+        var $c = Greet.create( { name: "Bob" });
+        equal( $c.text(), "Hello Bob" );
     });
         
-    test("Create: set properties via .control()", function() {
+    test( "Create: set properties via .control()", function() {
         var Greet = createGreetClass();
-        Greet.prototype.extend({
-            name: Control.chain("$name", "content")
+        Greet.prototype.extend( {
+            name: Control.chain( "$name", "content" )
         });
-        var $element = $("<div/>");
-        $c = Greet.createAt($element);
-        equal($c.text(), "Hello Ann");
-        $element.control({ name: "Bob" });
-        equal($c.text(), "Hello Bob");
+        var $element = $( "<div/>" );
+        $c = Greet.createAt( $element );
+        equal( $c.text(), "Hello Ann" );
+        $element.control( { name: "Bob" });
+        equal( $c.text(), "Hello Bob" );
     });
         
-    test("Create: incorporate existing DOM content", function() {
-        var MyControl = Control.subclass("MyControl", function() {
-            this.properties({
+    test( "Create: incorporate existing DOM content", function() {
+        var MyControl = Control.subclass( "MyControl", function() {
+            this.properties( {
                 content: [
                     "*",
-                    this._define("$MyControl_content", "<span id='MyControl_content'/>"),
+                    this._define( "$MyControl_content", "<span id='MyControl_content'/>" ),
                     "*"
                 ]
-            }, Control);
+            }, Control );
         });
-        MyControl.prototype.content = Control.chain("$MyControl_content", "content");
-        var $original = $("<div><div>Hello</div><div>world</div></div>");
+        MyControl.prototype.content = Control.chain( "$MyControl_content", "content" );
+        var $original = $( "<div><div>Hello</div><div>world</div></div>" );
         var $children = $original.children();
-        var $c = MyControl.createAt($children);
-        equal($c.text(), "*Hello**world*");
+        var $c = MyControl.createAt( $children );
+        equal( $c.text(), "*Hello**world*" );
     });
     
     /*
      * Casting
      */
-    test("Cast: control() on plain jQuery reference returns undefined", function() {
-        var $element = $("<div/>");
-        equal($element.control(), undefined);
+    test( "Cast: control() on plain jQuery reference returns undefined", function() {
+        var $element = $( "<div/>" );
+        equal( $element.control(), undefined );
     });
     
-    test("Cast: two control classes derive from same superclass", function() {
-        var A = Control.subclass("A");
-        var B = A.subclass("B");
-        var C = A.subclass("C");
+    test( "Cast: two control classes derive from same superclass", function() {
+        var A = Control.subclass( "A" );
+        var B = A.subclass( "B" );
+        var C = A.subclass( "C" );
         var $a = A.create();
         var $b = B.create();
         var $c = C.create();
-        var $set = Control("<div/>").append($b).append($a).append($c);
+        var $set = Control( "<div/>" ).append( $b ).append( $a ).append( $c );
         var $cast = $set.children().cast();
-        equal($cast instanceof A, true);
+        equal( $cast instanceof A, true );
     });
 
-    test("Cast: control and jQuery mix", function() {
-        var A = Control.subclass("A");
+    test( "Cast: control and jQuery mix", function() {
+        var A = Control.subclass( "A" );
         var $a = A.create();
-        var $set = Control("<div/>").append($a).append($("<div/>"));
+        var $set = Control( "<div/>" ).append( $a ).append( $( "<div/>" ) );
         var $cast = $set.children().cast();
-        equal($cast instanceof Control, true);
+        equal( $cast instanceof Control, true );
     });
 
     /*
      * Control.content() tests
      */
-    test("Content: HTML text", function() {
+    test( "Content: HTML text", function() {
         var $c = Control.create();
-        $c.content("Hello");
-        equal($c.content(), "Hello");
-        equal($c.html(), "Hello");
+        $c.content( "Hello" );
+        equal( $c.content(), "Hello" );
+        equal( $c.html(), "Hello" );
     });
 
-    test("Content: HTML text, return canonical form", function() {
+    test( "Content: HTML text, return canonical form", function() {
         var $c = Control.create();
-        $c.content(["Hello"]);
-        equal($c.content(), "Hello");
-        equal($c.html(), "Hello");
+        $c.content( ["Hello"] );
+        equal( $c.content(), "Hello" );
+        equal( $c.html(), "Hello" );
     });
     
-    test("Content: HTML array", function() {
+    test( "Content: HTML array", function() {
         var $c = Control.create();
-        var b = $("<b>there</b>")[0];
-        $c.content(["Hello", b, "world"]);
-        deepEqual($c.content(), ["Hello", b, "world"]);
-        equal($c.html(), "Hello<b>there</b>world");
+        var b = $( "<b>there</b>" )[0];
+        $c.content( ["Hello", b, "world"] );
+        deepEqual( $c.content(), ["Hello", b, "world"] );
+        equal( $c.html(), "Hello<b>there</b>world" );
     });
 
-    test("Content: input element", function() {
-        var $c = Control("<input type='text'/>");
-        $c.content("Hello");
-        equal($c.content(), "Hello");
-        equal($c.val(), "Hello");
+    test( "Content: input element", function() {
+        var $c = Control( "<input type='text'/>" );
+        $c.content( "Hello" );
+        equal( $c.content(), "Hello" );
+        equal( $c.val(), "Hello" );
     });
     
     /*
      * Define tests
      */
-    test("Define scalar", function() {
-        var MyControl = Control.subclass("MyControl");
-        MyControl.prototype.extend({
+    test( "Define scalar", function() {
+        var MyControl = Control.subclass( "MyControl" );
+        MyControl.prototype.extend( {
 			foo: "Hello"
 	    });
 	    var $c = MyControl.create();
-	    equal($c.foo, "Hello");
+	    equal( $c.foo, "Hello" );
     });
     
-    test("Define method", function() {
+    test( "Define method", function() {
         
-        var MyControl = Control.subclass("MyControl");
-        MyControl.prototype.extend({
+        var MyControl = Control.subclass( "MyControl" );
+        MyControl.prototype.extend( {
 			foo: function() {
-    			this.data("_calledFoo", true);
+    			this.data( "_calledFoo", true );
     		}
 	    });
         
-    	var $elements = Control("<div/>").add("<div/>");
-    	var $c = $elements.control(MyControl);
+    	var $elements = Control( "<div/>" ).add( "<div/>" );
+    	var $c = $elements.control( MyControl );
         
         var result = $c.foo();
-        equal(result, undefined);	// No result returned
-    	equal($c.eq(0).data("_calledFoo"), true);
-    	equal($c.eq(1).data("_calledFoo"), true);
+        equal( result, undefined );	// No result returned
+    	equal( $c.eq( 0 ).data( "_calledFoo" ), true );
+    	equal( $c.eq( 1 ).data( "_calledFoo" ), true );
     });
     
-    test("Define method with iterator()", function() {
+    test( "Define method with iterator()", function() {
         
-        var MyControl = Control.subclass("MyControl");
-        MyControl.prototype.extend({
-			foo: Control.iterator( function() {
-    			this.data("_calledFoo", true);
-    		}),
-    		bar: Control.iterator( function() {
-    		    this.data("_calledBar", true);
+        var MyControl = Control.subclass( "MyControl" );
+        MyControl.prototype.extend( {
+			foo: Control.iterator(  function() {
+    			this.data( "_calledFoo", true );
+    		} ),
+    		bar: Control.iterator(  function() {
+    		    this.data( "_calledBar", true );
     		    return "Hello";    // Force getter behavior.
-    		})
+    		} )
 	    });
         
-    	var $elements = Control("<div/>").add("<div/>");
-    	var $c = $elements.control(MyControl);
+    	var $elements = Control( "<div/>" ).add( "<div/>" );
+    	var $c = $elements.control( MyControl );
         
         var methodResult = $c.foo();
-        equal(methodResult, $c); // i.e., should return "this"
-    	equal($c.eq(0).data("_calledFoo"), true);
-    	equal($c.eq(1).data("_calledFoo"), true);
+        equal( methodResult, $c ); // i.e., should return "this"
+    	equal( $c.eq( 0 ).data( "_calledFoo" ), true );
+    	equal( $c.eq( 1 ).data( "_calledFoo" ), true );
     	
 		// Function that returns result stops iteration.
     	var getterResult = $c.bar();
-    	equal(getterResult, "Hello");
-    	equal($c.eq(0).data("_calledBar"), true);
-    	equal($c.eq(1).data("_calledBar"), undefined);
+    	equal( getterResult, "Hello" );
+    	equal( $c.eq( 0 ).data( "_calledBar" ), true );
+    	equal( $c.eq( 1 ).data( "_calledBar" ), undefined );
     });
             
-    test("Define getter/setter with iterator()", function() {
+    test( "Define getter/setter with iterator()", function() {
     	var c = Control.subclass();
-    	c.prototype.extend({
-    		myGetterSetter: Control.iterator( function(value) {
-				this.data("_property", value);
-    		})
+    	c.prototype.extend( {
+    		myGetterSetter: Control.iterator(  function( value ) {
+				this.data( "_property", value );
+    		} )
     	});
-    	var $elements = Control("<div/>").add("<div/>");
-    	var $c = $elements.control(c);
-    	$c.myGetterSetter("foo");
-    	equal($c.eq(0).control().data("_property"), "foo");
-    	equal($c.eq(1).control().data("_property"), "foo");
+    	var $elements = Control( "<div/>" ).add( "<div/>" );
+    	var $c = $elements.control( c );
+    	$c.myGetterSetter( "foo" );
+    	equal( $c.eq( 0 ).control().data( "_property" ), "foo" );
+    	equal( $c.eq( 1 ).control().data( "_property" ), "foo" );
     });
     
-    test("Define getter/setter with Control.property", function() {
+    test( "Define getter/setter with Control.property", function() {
     	var c = Control.subclass();
-    	c.prototype.extend({
+    	c.prototype.extend( {
     		myProperty: Control.property()
     	});
-    	var $elements = Control("<div/>").add("<div/>");
-    	var $c = $elements.control(c);
-        equal($c.myProperty() === undefined, true);
-    	$c.myProperty("foo");
-    	equal($c.eq(0).control().myProperty(), "foo");
-    	equal($c.eq(1).control().myProperty(), "foo");
+    	var $elements = Control( "<div/>" ).add( "<div/>" );
+    	var $c = $elements.control( c );
+        equal( $c.myProperty() === undefined, true );
+    	$c.myProperty( "foo" );
+    	equal( $c.eq( 0 ).control().myProperty(), "foo" );
+    	equal( $c.eq( 1 ).control().myProperty(), "foo" );
     });
     
     /*
      * Control.property() tests
      */
-    test("property", function() {
+    test( "property", function() {
         var $c = Control.create();
         $c.foo = Control.property();
-        equal($c.foo() === undefined, true);
-        $c.foo("Hello");
-        equal($c.foo(), "Hello");
+        equal( $c.foo() === undefined, true );
+        $c.foo( "Hello" );
+        equal( $c.foo(), "Hello" );
     });
     
-    test("property: bool", function() {
+    test( "property: bool", function() {
         var $c = Control.create();
         $c.foo = Control.property.bool();
-        $c.foo("true"); // Set as string
-        equal($c.foo(), true);
-        $c.foo(false);  // Set as bool
-        equal($c.foo(), false);
+        $c.foo( "true" ); // Set as string
+        equal( $c.foo(), true );
+        $c.foo( false );  // Set as bool
+        equal( $c.foo(), false );
     });
     
-    test("property: integer", function() {
+    test( "property: integer", function() {
         var $c = Control.create();
         $c.foo = Control.property.integer();
-        $c.foo("123"); // Set as string
-        equal($c.foo(), 123);
-        $c.foo(0);     // Set as integer
-        equal($c.foo(), 0);
+        $c.foo( "123" ); // Set as string
+        equal( $c.foo(), 123 );
+        $c.foo( 0 );     // Set as integer
+        equal( $c.foo(), 0 );
     });
     
     /*
-     * Element reference functions
+     * Element functions
      */
-    test("Element reference function definition", function() {
+    test( "Element function definition", function() {
         
-        var MyControl = Control.subclass("MyControl", function() {
-            this.properties({
+        var MyControl = Control.subclass( "MyControl", function() {
+            this.properties( {
                 content: [
                     "Hello ",
-                    this._define("$name", "<span id='name'>Ann</span>")
+                    this._define( "$name", "<span id='name'>Ann</span>" )
                 ]
-            }, Control);
+            }, Control );
         });
             
         var $c = MyControl.create();
         var $name = $c.$name();
-        equal($name.html(), "Ann");
-        $c.$name().html("Bob");
-        equal($c.html(), "Hello <span id=\"name\">Bob</span>");
+        equal( $name.html(), "Ann" );
+        $c.$name().html( "Bob" );
+        equal( $c.html(), "Hello <span id=\"name\">Bob</span>" );
+    });
+    
+    test( "Element functions $.end()-able", function() {
+        
+        var MyControl = Control.subclass( "MyControl", function() {
+            this.properties( {
+                content: [
+                    this._define( "$name", "<span id='name'/>" )
+                ]
+            }, Control );
+        });
+
+        var $c = MyControl.create();
+        var $names = $c.$name();
+        var $result = $c.$name().end();
+        equal( $result, $c );
+        ok( $result instanceof MyControl );
+        ok( $names instanceof Control );
     });
 
     /*
      * Control.chain() tests
      */
-    test("chain: root content", function() {
+    test( "chain: root content", function() {
         
         var Greet = createGreetClass();
-        Greet.prototype.extend({
-            foo: Control.chain("content")
+        Greet.prototype.extend( {
+            foo: Control.chain( "content" )
         });
         
         var $c = Greet.create();
         var result = $c.foo();
-        equal(result[0], "Hello ");
-        equal($(result[1]).html(), "Ann");
-        $c.foo("world");
-        equal($c.html(), "world");
+        equal( result[0], "Hello " );
+        equal( $( result[1] ).html(), "Ann" );
+        $c.foo( "world" );
+        equal( $c.html(), "world" );
     });
 
-    test("chain: element", function() {
+    test( "chain: element", function() {
         
         var Greet = createGreetClass();
-        Greet.prototype.extend({
-            name: Control.chain("$name")
+        Greet.prototype.extend( {
+            name: Control.chain( "$name" )
         });
         
         var $c = Greet.create();
         var $element = $c.$name();
-        equal($element[0], $c.find("#name")[0]);
-        equal($element.html(), "Ann");
+        equal( $element[0], $c.find( "#name" )[0] );
+        equal( $element.html(), "Ann" );
     });
     
-    test("chain: element content", function() {
+    test( "chain: element content", function() {
         
         var Greet = createGreetClass();
-        Greet.prototype.extend({
-            name: Control.chain("$name", "content")
+        Greet.prototype.extend( {
+            name: Control.chain( "$name", "content" )
         });
         
         var $c = Greet.create();
-        equal($c.name(), "Ann");
-        $c.name("Bob");
-        equal($c.html(), "Hello <span id=\"name\">Bob</span>");
+        equal( $c.name(), "Ann" );
+        $c.name( "Bob" );
+        equal( $c.html(), "Hello <span id=\"name\">Bob</span>" );
     });
     
-    test("chain: subcontrol property", function() {
+    test( "chain: subcontrol property", function() {
         
         var Greet = createGreetClass();
-        Greet.prototype.extend({
-            name: Control.chain("$name", "content")
+        Greet.prototype.extend( {
+            name: Control.chain( "$name", "content" )
         });
         
-        var MyControl = Control.subclass("MyControl", function() {
-            this.properties({
+        var MyControl = Control.subclass( "MyControl", function() {
+            this.properties( {
                 content: [
-                    this._define("$greet", Greet.create())
+                    this._define( "$greet", Greet.create() )
                 ]
-            }, Control);
+            }, Control );
         });
-        MyControl.prototype.extend({
-            name: Control.chain("$greet", "name")
+        MyControl.prototype.extend( {
+            name: Control.chain( "$greet", "name" )
         });
         
         var $c = MyControl.create();
-        equal($c.name(), "Ann");
-        $c.name("Bob");
-        equal($c.html(), "<div class=\"Greet Control\">Hello <span id=\"name\">Bob</span></div>");
+        equal( $c.name(), "Ann" );
+        $c.name( "Bob" );
+        equal( $c.html(), "<div class=\"Greet Control\">Hello <span id=\"name\">Bob</span></div>" );
     });
         
-    test("chain: element content with iteration", function() {
+    test( "chain: element content with iteration", function() {
 
         var Greet = createGreetClass();
-        Greet.prototype.extend({
-            name: Control.chain("$name", "content")
+        Greet.prototype.extend( {
+            name: Control.chain( "$name", "content" )
         });
 
-        var $inner1 = Greet.create({ name: "Ann" });
-        var $inner2 = Greet.create({ name: "Bob" });
-        var $c = Control.create({
+        var $inner1 = Greet.create( { name: "Ann" });
+        var $inner2 = Greet.create( { name: "Bob" });
+        var $c = Control.create( {
             content: [
                 $inner1,
                 $inner2
             ]
         });
         
-        equal($c.html(), "<div class=\"Greet Control\">Hello <span id=\"name\">Ann</span></div><div class=\"Greet Control\">Hello <span id=\"name\">Bob</span></div>");
-        var $g = Greet($c.find(".Greet"));
-        equal($g.name(), "Ann");
-        $g.name("Carol");
-        equal($c.html(), "<div class=\"Greet Control\">Hello <span id=\"name\">Carol</span></div><div class=\"Greet Control\">Hello <span id=\"name\">Carol</span></div>");
+        equal( $c.html(), "<div class=\"Greet Control\">Hello <span id=\"name\">Ann</span></div><div class=\"Greet Control\">Hello <span id=\"name\">Bob</span></div>" );
+        var $g = Greet( $c.find( ".Greet" ) );
+        equal( $g.name(), "Ann" );
+        $g.name( "Carol" );
+        equal( $c.html(), "<div class=\"Greet Control\">Hello <span id=\"name\">Carol</span></div><div class=\"Greet Control\">Hello <span id=\"name\">Carol</span></div>" );
     });
 
-    test("chain: element content with side effect function", function() {
+    test( "chain: element content with side effect function", function() {
         var Greet = createGreetClass();
-        Greet.prototype.extend({
-            name: Control.chain("$name", "content", function(name) {
-                this.data("_name", name);
-            })
+        Greet.prototype.extend( {
+            name: Control.chain( "$name", "content", function( name ) {
+                this.data( "_name", name );
+            } )
         });
         var $c = Greet.create();
-        $c.name("Ann");
-        equal($c.name(), "Ann");
-        equal($c.data("_name"), "Ann");
+        $c.name( "Ann" );
+        equal( $c.name(), "Ann" );
+        equal( $c.data( "_name" ), "Ann" );
     });
     
-    test("chain: chaining", function() {
+    test( "chain: chaining", function() {
         var Greet = createGreetClass();
-        Greet.prototype.extend({
-            foo: Control.chain("content"),
-            bar: Control.chain("prop/display")
+        Greet.prototype.extend( {
+            foo: Control.chain( "content" ),
+            bar: Control.chain( "prop/display" )
         });
         var $c = Greet.create();
-        var result = $c.foo("Hello").bar("inline");
-        equal($c.content(), "Hello");
-        equal($c.prop("display"), "inline");
-        equal(result, $c);
+        var result = $c.foo( "Hello" ).bar( "inline" );
+        equal( $c.content(), "Hello" );
+        equal( $c.prop( "display" ), "inline" );
+        equal( result, $c );
     });
     
-    test("chain: functions with parameters", function() {
-        var MyControl = Control.subclass("MyControl");
-        MyControl.prototype.display = Control.chain("css/display");
+    test( "chain: functions with parameters", function() {
+        var MyControl = Control.subclass( "MyControl" );
+        MyControl.prototype.display = Control.chain( "css/display" );
         var $c = MyControl.create();
-        $c.css("display", "block");
-        equal($c.display(), "block");
-        $c.display("none");
-        equal($c.css("display"), "none");
-        equal($c.display(), "none");
+        $c.css( "display", "block" );
+        equal( $c.display(), "block" );
+        $c.display( "none" );
+        equal( $c.css( "display" ), "none" );
+        equal( $c.display(), "none" );
     });
     
     /*
      * Utilities
      */
      
-    test("Utility: eachControl", function() {
+    test( "Utility: eachControl", function() {
         
         // Create two instances of different classes.
-        var Foo = Control.subclass("Foo");
+        var Foo = Control.subclass( "Foo" );
         Foo.prototype.content = function() { return "foo"; };
         var $foo = Foo.create();
-        var Bar = Control.subclass("Bar");
+        var Bar = Control.subclass( "Bar" );
         Bar.prototype.content = function() { return "bar"; };
         var $bar = Bar.create();
         
-        var $c = Control().add($foo).add($bar);
+        var $c = Control().add( $foo ).add( $bar );
         var results = [];
         // eachControl should invoke the specific content functions.
-        $c.eachControl(function(index, $control) {
-            results.push($control.content());
+        $c.eachControl( function( index, $control ) {
+            results.push( $control.content() );
         });
-        deepEqual(results, [ "foo", "bar" ]);
+        deepEqual( results, [ "foo", "bar" ] );
     });
      
-    test("Utility: applyClass", function() {
-        var $c = Control.create().toggleClass("foo");
-        equal($c.applyClass("foo"), true);
-        equal($c.applyClass("enabled"), false);
-        $c.applyClass("enabled", true);
-        equal($c.applyClass("foo"), true);
-        equal($c.applyClass("enabled"), true);
+    test( "Utility: applyClass", function() {
+        var $c = Control.create().toggleClass( "foo" );
+        equal( $c.applyClass( "foo" ), true );
+        equal( $c.applyClass( "enabled" ), false );
+        $c.applyClass( "enabled", true );
+        equal( $c.applyClass( "foo" ), true );
+        equal( $c.applyClass( "enabled" ), true );
     });
     
-    test("Utility: visibility", function() {
+    test( "Utility: visibility", function() {
         var $c = Control.create();
-        equal($c.visibility(), false); // control isn't in DOM, so is not visible.
+        equal( $c.visibility(), false ); // control isn't in DOM, so is not visible.
     });
 }
 
 // Return a simple control class used for some tests.
 function createGreetClass() {
-    return Control.subclass("Greet", function() {
-        this.properties({
+    return Control.subclass( "Greet", function() {
+        this.properties( {
             content: [
                 "Hello ",
-                this._define("$name", "<span id='name'>Ann</span>")
+                this._define( "$name", "<span id='name'>Ann</span>" )
             ]
-        }, Control);
+        }, Control );
     });
 }
   
-$(function() {
+$( function() {
     runTests();
 });
 </script>

@@ -76,6 +76,7 @@
 
 <script>
 TestPage.prototype.extend({
+    
 	initialize: function() {
 		this.$button().click(function() {
 			Dialog.showDialog(TestDialog);
@@ -92,7 +93,8 @@ TestPage.prototype.extend({
 			self.$switch().activeIndex(index);
 		});
 		this.$shifter().transmute(ButtonBase, true);
-	}	
+	}
+
 });
 </script>
 
