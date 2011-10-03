@@ -424,6 +424,20 @@ function runTests() {
     });
     
     /*
+     * :control filter.
+     */
+    test( ":control filter" , function() {
+        var $c = Control.create();
+        var $d = $( "<div/>" );
+        var $combined = $c.add( $d );
+        ok( $c.is(":control") );
+        ok( $d.not(":control") );
+        ok( $combined.is(":control") );
+        ok( $combined.filter(":control").length === 1 &&
+            $combined.filter(":control")[0] === $c[0] );
+    });
+    
+    /*
      * Utilities
      */
      
