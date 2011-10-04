@@ -13,27 +13,22 @@ BrowserSpecific.prototype.extend({
 	
 	initialize: function() {
 	    var content;
-	    if ($.browser.mozilla)
-	    {
+	    if ( $.browser.mozilla ) {
 	        content = this.mozilla();
 	    }
-	    else if ($.browser.msie)
-	    {
+	    else if ( $.browser.msie ) {
 	        content = this.msie();
 	    }
-	    if ($.browser.opera)
-	    {
+	    if ( $.browser.opera ) {
 	        content = this.opera();
 	    }
-	    if ($.browser.webkit)
-	    {
+	    if ( $.browser.webkit ) {
 	        content = this.webkit();
 	    }
-	    if (content === undefined)
-	    {
-	        content = this["default"]();
+	    if ( content === undefined ) {
+	        content = this[ "default" ]();
 	    }
-	    this.content(content);
+	    this.content( content );
 	}
 });
 </script>

@@ -2,20 +2,24 @@
     
 <prototype>
     <Page title="Test Page">
+        
     	<p>
-    	    <ButtonBase id="button">
-    	        Show test dialog
-    	    </ButtonBase>
+    	    <ButtonBase>Button</ButtonBase>
+            <ButtonBase disabled="true">Disabled</ButtonBase>
+            <ToggleButton>
+                Toggle
+            </ToggleButton>
     	    <HasPopup openOnClick="true" closeOnInsideClick="true" style="display: inline-block;">
     	        <ButtonBase>Show popup</ButtonBase>
     	        <popup>
     	            Popup content
     	        </popup>
     	    </HasPopup>
-    	    <ToggleButton>
-    	    	Toggle
-    	    </ToggleButton>
+            <ButtonBase id="button">
+                Show test dialog
+            </ButtonBase>
     	</p>
+    	
         <List id="list" itemClass="ButtonBase"/>
         <Switch id="switch">
         	<div>Panel one</div>
@@ -53,6 +57,14 @@
                 Popup goes here.
             </popup>
         </ComboBox>
+        <div>
+            <TestControl>Test control with no text styling.</TestControl>
+            <div>
+                <span>
+                    Test control <TestControl>with italic text</TestControl> because it's in a span.
+                </span>
+            </div>
+        </div>
     </Page>
 </prototype>
 

@@ -98,7 +98,7 @@ namespace qc
 
             return EmitVariableDeclaration(
                 Template.Format(
-                    "Control({Html}){ChildNodes}",
+                    "Control( {Html} ){ChildNodes}",
                     new
                     {
                         Html = html,

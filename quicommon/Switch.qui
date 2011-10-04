@@ -12,42 +12,36 @@
 Switch.prototype.extend({
 	
 	initialize: function() {
-	    if (this.children().not(".hidden").length > 1)
-	    {
+	    if ( this.children().not( ".hidden" ).length > 1 ) {
             // Show first child by default. 
             this.activeIndex(0);
 	    }
 	},
     
-    // The currently visible child.
-    activeChild: function(activeChild) {
-        if (activeChild === undefined)
-        {
-            return this.children().not(".hidden")[0];
-        }
-        else
-        {
+    /*
+     * The currently visible child, cast to a control (if applicable).
+     */
+    activeChild: function( activeChild ) {
+        if ( activeChild === undefined ) {
+            return this.children().not( ".hidden" ).eq(0).cast( jQuery );
+        } else {
             /*
              * Apply a "hidden" style instead of just forcing display to none.
              * If we did that, we would have no good way to undo the hiding.
              * A simple .toggle(true) would set display: block, which wouldn't
              * be what we'd want for inline elements.
              */
-            this.children().not(activeChild).toggleClass("hidden", true);
-            $(activeChild).toggleClass("hidden", false);
+            this.children().not( activeChild ).toggleClass( "hidden", true );
+            $( activeChild ).toggleClass( "hidden", false );
         }
     },
     
     // The index of the currently visible child.
-    activeIndex: function(index)
-    {
-        if (index === undefined)
-        {
-            return this.children().index(this.activeChild());
-        }
-        else
-        {
-            this.activeChild(this.children()[index]);
+    activeIndex: function( index ) {
+        if ( index === undefined ) {
+            return this.children().index( this.activeChild() );
+        } else {
+            this.activeChild( this.children().eq( index ) );
         }
     }
         

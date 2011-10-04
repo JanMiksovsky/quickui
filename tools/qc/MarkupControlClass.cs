@@ -68,7 +68,7 @@ namespace qc
                 "//\n" +
                 "// {ClassName}\n" +
                 "//\n" +
-                "{ClassName} = {BaseClassName}.subclass(\"{ClassName}\"{Comma1}{RenderFunction}{Comma2}{Tag});\n" +
+                "{ClassName} = {BaseClassName}.subclass( \"{ClassName}\"{Comma1}{RenderFunction}{Comma2}{Tag}{Space});\n" +
                 "{Script}\n", // Extra break at end helps delineate between successive controls in combined output.
                 new
                 {
@@ -77,7 +77,8 @@ namespace qc
                     Comma1 = String.IsNullOrEmpty(renderFunction) ? "" : ", ",
                     RenderFunction = renderFunction,
                     Comma2 = String.IsNullOrEmpty(Tag) ? "" : ", ",
-                    Tag = String.IsNullOrEmpty(Tag) ? "" : ("\"" + Tag + "\""),
+                    Tag = String.IsNullOrEmpty(Tag) ? "" : ("\"" + Tag + "\" "),
+                    Space = String.IsNullOrEmpty(renderFunction) ? " " : "",
                     Script = EmitScript()
                 });
         }
@@ -160,7 +161,7 @@ namespace qc
                     "{Tabs}function render{ClassName}() {\n" +
                         "{Tabs}\tthis.properties({\n" +
                             "{BaseClassProperties}" +
-                        "{Tabs}\t}, {BaseClassName});\n" +
+                        "{Tabs}\t}, {BaseClassName} );\n" +
                     "{Tabs}}",
                     new {
                         Tabs = Tabs(indentLevel),

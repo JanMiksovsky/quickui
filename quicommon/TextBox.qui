@@ -1,0 +1,20 @@
+<Control name="TextBox">
+
+<content>
+    <input id="textBox" type="text"/>    
+</content>
+
+<style>
+#textBox {
+    height: 100%;
+    width: 100%;
+}
+</style>
+
+<script>
+TextBox.prototype.extend({
+    content: Control.chain( "$textBox", "content" )
+});
+</script>
+
+</Control>

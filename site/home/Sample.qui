@@ -1,4 +1,0 @@
-<Control name="Sample">
-	<h1>QuickUI sample</h1>
-	<Greet/>
-</Control>

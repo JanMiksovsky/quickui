@@ -42,16 +42,16 @@
 <script>
 VerticalPanels.prototype.extend({
     
-    bottom: Control.bindTo("$VerticalPanels_bottom", "content"),
-    content: Control.bindTo("$VerticalPanels_content", "content"),
-    fill: Control.bindTo("applyClass/fill"),
-    top: Control.bindTo("$VerticalPanels_top", "content"),
+    bottom: Control.chain( "$VerticalPanels_bottom", "content" ),
+    content: Control.chain( "$VerticalPanels_content", "content" ),
+    fill: Control.chain( "applyClass/fill" ),
+    top: Control.chain( "$VerticalPanels_top", "content" ),
     
     layout: function() {
         //this._log("layout");
         var panelHeight = this.$VerticalPanels_top().outerHeight() + this.$VerticalPanels_bottom().outerHeight();
         var availableHeight = this.height() - panelHeight;
-        this.$VerticalPanels_content().height(availableHeight);
+        this.$VerticalPanels_content().height( availableHeight );
         return this;
     }
 });

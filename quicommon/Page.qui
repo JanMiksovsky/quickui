@@ -20,19 +20,20 @@
 Page.prototype.extend({
 	
 	// If true, have the page fill its container.
-	fill: Control.bindTo("applyClass/fill"),
+	fill: Control.chain( "applyClass/fill" ),
 
     urlParameters: function() {
         return Page.urlParameters();
     },
     	
 	// Gets or sets the title of the page.
-	title: function(value) {
-		if (value !== undefined)
-		{
-			document.title = value;
+	title: function( title ) {
+		if ( title === undefined ) {
+		    return document.title;
+		} else {
+			document.title = title;
+			return this;
 		}
-		return document.title;
 	}
 
 });
@@ -48,18 +49,18 @@ Page.extend({
      * If the page then navigates to www.example.com/index.html#page=Bar, this
      * will load class Bar in situ, without forcing the browser to reload the page. 
      */
-    trackClassFromUrl: function(defaultPageClass, target) {
+    trackClassFromUrl: function( defaultPageClass, target ) {
         
-        var $control = Control(target || "body");
+        var $control = Control( target || "body" );
         
         // Watch for changes in the URL after the hash.
-        $(window).hashchange(function() {
+        $( window ).hashchange( function() {
             var pageClass = Page.urlParameters().page || defaultPageClass;
-            $control.transmute(pageClass);
+            $control.transmute( pageClass );
         })
             
         // Trigger a page class load now.
-        $(window).hashchange();
+        $( window ).hashchange();
     },
     
     /*
@@ -74,11 +75,10 @@ Page.extend({
         var regex = /[?#&](\w+)=([^?#&]*)/g;
         var results = {};
         var match = regex.exec( window.location.href );
-        while (match != null)
-        {
+        while (match != null) {
             var parameterName = match[1];
             var parameterValue = match[2];
-            results[parameterName] = parameterValue;
+            results[ parameterName ] = parameterValue;
             match = regex.exec( window.location.href );
         }
         return results;
@@ -96,10 +96,10 @@ Control.prototype.extend({
 	 */
 	page: function() {
         // Get the containing DOM element subclassing Page that contains the element
-        var pages = this.closest(".Page");
+        var pages = this.closest( ".Page" );
         
         // From the DOM element, get the associated QuickUI control.
-        return (pages.length > 0) ? pages.control() : null;
+        return ( pages.length > 0 ) ? pages.control() : null;
 	}
     
 });

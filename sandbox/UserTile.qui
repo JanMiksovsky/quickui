@@ -70,7 +70,7 @@ UserTile.prototype.extend({
      * 
      * See the discussion for name(), below, for details of how bindTo works.
      */
-    content: Control.bindTo("$UserTile_content", "content"),
+    content: Control.chain("$UserTile_content", "content"),
     
     /*
      * The following defines a function called name() that gets/sets the
@@ -104,14 +104,14 @@ UserTile.prototype.extend({
      * element with an ID at the moment that element is created. The element function
      * $UserTile_name() is the way to access that persistent reference. 
      */
-     name: Control.bindTo("$UserTile_name", "content"),
+     name: Control.chain("$UserTile_name", "content"),
     
     /*
      * The following line creates a picture() function is similar to the name()
      * function above. In this case, any string passed in will be used to set
      * the src property (attribute) on the img element above.
      */
-    picture: Control.bindTo("$UserTile_picture", "prop/src"),
+    picture: Control.chain("$UserTile_picture", "prop/src"),
     
     /*
      * The initialize() function is invoked immediately after the control has

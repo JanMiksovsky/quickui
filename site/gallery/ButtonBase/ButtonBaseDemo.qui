@@ -1,8 +1,0 @@
-<Control name="ButtonBaseDemo">
-
-<content>
-    <ButtonBase>OK</ButtonBase>
-    <ButtonBase>Cancel</ButtonBase>
-</content>
-
-</Control>

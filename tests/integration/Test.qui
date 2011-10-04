@@ -41,10 +41,10 @@
 <script>
 Test.prototype.extend({
     
-    expect: Control.bindTo("$Test_expect", "content"),
-    name: Control.bindTo("$Test_name", "content"),
-    result: Control.bindTo("$Test_result", "content"),
-    test: Control.bindTo("$Test_test", "content"),
+    expect: Control.chain("$Test_expect", "content"),
+    name: Control.chain("$Test_name", "content"),
+    result: Control.chain("$Test_result", "content"),
+    test: Control.chain("$Test_test", "content"),
     
     initialize: function() {
         

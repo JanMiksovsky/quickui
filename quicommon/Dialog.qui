@@ -30,12 +30,12 @@ Dialog.prototype.extend({
     },
     
     cancel: function() {
-        Dialog.superclass.prototype.cancel.call(this);
+        Dialog.superclass.prototype.cancel.call( this );
         this.remove();
     },
     
     close: function() {
-        Dialog.superclass.prototype.close.call(this);
+        Dialog.superclass.prototype.close.call( this );
         this.remove();
     },
 	
@@ -51,25 +51,23 @@ Dialog.prototype.extend({
 
 // Class methods
 Dialog.extend({
-    showDialog: function(dialogClass, properties, callbackOk, callbackCancel) {
+    showDialog: function( dialogClass, properties, callbackOk, callbackCancel ) {
         $("body")
-            .append("<div/>")
-            .find(":last")
+            .append( "<div/>" )
+            .find( ":last" )
             .bind({
                 closed: function() {
-                    if (callbackOk)
-                    {
-                        callbackOk.call($(this).control());
+                    if ( callbackOk ) {
+                        callbackOk.call( $( this ).control() );
                     }
                 },
                 canceled: function() {
-                    if (callbackCancel)
-                    {
-                        callbackCancel.call($(this).control());
+                    if ( callbackCancel ) {
+                        callbackCancel.call( $( this ).control() );
                     }
                 }
             })
-            .control(dialogClass, properties)
+            .control( dialogClass, properties )
             .open();
     }
 });

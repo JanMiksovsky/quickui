@@ -1,3 +1,0 @@
-<Control name="GoogleSearchBox">
-    <SearchBox query="http://www.google.com/search?q=%s" hint="Search Google" />
-</Control>
