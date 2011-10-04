@@ -473,6 +473,17 @@ function runTests() {
         var $c = Control.create();
         equal( $c.visibility(), false ); // control isn't in DOM, so is not visible.
     });
+    
+    test( "Utility: propertyVector", function() {
+        var $a = Control.create( { content: "one" }); 
+        var $b = Control.create( { content: "two" })
+        var $c = $a.add( $b );
+        var vector = $c.propertyVector( "content" );
+        deepEqual( vector, [ "one", "two" ] );
+        $c.propertyVector( "content", [ "un", "deux" ]);
+        equal( $a.content(), "un" );
+        equal( $b.content(), "deux" );
+    });
 }
 
 // Return a simple control class used for some tests.
