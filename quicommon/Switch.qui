@@ -33,6 +33,9 @@ Switch.prototype.extend({
              */
             this.children().not( activeChild ).toggleClass( "hidden", true );
             $( activeChild ).toggleClass( "hidden", false );
+            
+            // In case the new child wants to re-lay itself out.
+            Layout.recalc();
         }
     },
     
