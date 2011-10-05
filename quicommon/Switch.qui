@@ -21,10 +21,11 @@ Switch.prototype.extend({
     /*
      * The currently visible child, cast to a control (if applicable).
      */
-    activeChild: function( activeChild ) {
+    activeChild: Control.iterator( function( activeChild ) {
         if ( activeChild === undefined ) {
             return this.children().not( ".hidden" ).eq(0).cast( jQuery );
         } else {
+            
             /*
              * Apply a "hidden" style instead of just forcing display to none.
              * If we did that, we would have no good way to undo the hiding.
@@ -32,19 +33,24 @@ Switch.prototype.extend({
              * be what we'd want for inline elements.
              */
             this.children().not( activeChild ).toggleClass( "hidden", true );
-            $( activeChild ).toggleClass( "hidden", false );
+            
+            $( activeChild )
+                .trigger( "active" )
+                .toggleClass( "hidden", false );
             
             // In case the new child wants to re-lay itself out.
             Layout.recalc();
+            
+            return this;
         }
-    },
+    }),
     
     // The index of the currently visible child.
     activeIndex: function( index ) {
         if ( index === undefined ) {
             return this.children().index( this.activeChild() );
         } else {
-            this.activeChild( this.children().eq( index ) );
+            return this.activeChild( this.children().eq( index ) );
         }
     }
         
