@@ -1,0 +1,30 @@
+<Control name="Sample">
+
+<content>
+    
+    <div>
+        This is a plain div.
+    </div>
+    
+    <BoxWithHeading headingBackground="lightblue">
+
+        <heading>This is a box with some <i>buttons</i>:</heading>
+        
+        <p>
+            Here's a plain paragraph.
+        </p>
+        
+        <MyButton class="default" color="red">
+            OK
+        </MyButton>
+        
+        <MyButton generic="false">
+            <color>blue</color>
+            Cancel
+        </MyButton>
+
+    </BoxWithHeading>
+        
+</content>
+
+</Control>

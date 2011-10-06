@@ -1,23 +1,23 @@
 //
-// BoxWithLabel
+// BoxWithHeading
 //
-BoxWithLabel = Control.subclass( "BoxWithLabel", function renderBoxWithLabel() {
+BoxWithHeading = Control.subclass( "BoxWithHeading", function renderBoxWithHeading() {
 	this.properties({
 		"content": [
 			" ",
-			this._define( "$BoxWithLabel_label", Control( "<div id=\"BoxWithLabel_label\" />" ) ),
+			this._define( "$BoxWithHeading_heading", Control( "<div id=\"BoxWithHeading_heading\" />" ) ),
 			" ",
-			this._define( "$BoxWithLabel_content", Control( "<div id=\"BoxWithLabel_content\" />" ) ),
+			this._define( "$BoxWithHeading_content", Control( "<div id=\"BoxWithHeading_content\" />" ) ),
 			" "
 		]
 	}, Control );
 });
-BoxWithLabel.prototype.extend({
-    label: Control.chain( "$BoxWithLabel_label", "content" ),
-    labelBackground: Control.chain( "$BoxWithLabel_label", "css/background" ),
-    content: Control.chain( "$BoxWithLabel_content", "content" ),
+BoxWithHeading.prototype.extend({
+    heading: Control.chain( "$BoxWithHeading_heading", "content" ),
+    headingBackground: Control.chain( "$BoxWithHeading_heading", "css/background" ),
+    content: Control.chain( "$BoxWithHeading_content", "content" ),
     initialize: function() {
-        this.genericIfClassIs( BoxWithLabel );
+        this.genericIfClassIs( BoxWithHeading );
     }
 });
 
@@ -37,4 +37,40 @@ MyButton.prototype.extend({
         this.genericIfClassIs( MyButton );
     }
 })
+
+//
+// Sample
+//
+Sample = Control.subclass( "Sample", function renderSample() {
+	this.properties({
+		"content": [
+			" ",
+			"<div>\n        This is a plain div.\n    </div>",
+			" ",
+			BoxWithHeading.create({
+				"content": [
+					" ",
+					" ",
+					"<p>\n            Here's a plain paragraph.\n        </p>",
+					" ",
+					MyButton.create({
+						"content": " OK ",
+						"class": "default",
+						"color": "red"
+					}),
+					" ",
+					MyButton.create({
+						"content": "  Cancel ",
+						"generic": "false",
+						"color": "blue"
+					}),
+					" "
+				],
+				"headingBackground": "lightblue",
+				"heading": "This is a box with some <i>buttons</i>:"
+			}),
+			" "
+		]
+	}, Control );
+});
 

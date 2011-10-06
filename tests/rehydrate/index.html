@@ -16,26 +16,63 @@
 
 <script>
 $(function() {
-    Control( "body" ).rehydrate();
+    $( "#dynamic" ).control( Sample );
+    Control( "#static" ).rehydrate();
 });
 </script>
 
+<style>
+body {
+    font-family: sans-serif;
+}
+
+h1 {
+    font-size: 16pt;
+}
+
+p:first-child {
+    margin-top: 0;
+}
+
+.demo {
+    margin: 1em 0;
+}
+
+</style>
+
 <body>
-    <div>
-        This is a plain div.
+
+    <div class="demo">
+        <h1>Control dynamically created through code</h1>
+        <div id="dynamic"/>
     </div>
-    <div data-control-class="BoxWithLabel" data-labelBackground="lightblue" >
-        <div data-property="label">
-            Here are some <i>buttons</i>
+
+    <div class="demo">
+        <h1>Control rehydrated from static HTML</h1>
+        <div id="static">
+    
+            <div>
+                This is a plain div.
+            </div>
+            <div data-control-class="BoxWithHeading" data-headingBackground="lightblue" >
+                <div data-property="heading">
+                    This is a box with some <i>buttons</i>:
+                </div>
+                <p>
+                    Here's a plain paragraph.
+                </p>
+                <div data-control-class="MyButton" class="default" data-color="red">
+                    OK
+                </div>
+                <div data-control-class="MyButton" data-generic="false">
+                    <div data-property="color">blue</div>
+                    Cancel
+                </div>
+            </div>
+    
         </div>
-        <div data-control-class="MyButton" class="default" data-color="red">
-            OK
-        </div>
-        <div data-control-class="MyButton" data-generic="false" data-foo="bar" >
-            <div data-property="color">blue</div>
-            Cancel
-        </div>
-    </div>
+    </div>    
+
 </body>
 
 </html>

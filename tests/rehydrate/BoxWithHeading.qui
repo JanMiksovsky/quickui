@@ -1,0 +1,37 @@
+<Control name="BoxWithHeading">
+
+<content>
+    <div id="BoxWithHeading_heading"/>
+    <div id="BoxWithHeading_content"/>
+</content>
+
+<style>
+/* Generic appearance */
+.BoxWithHeading.generic {
+    border: 1px solid lightgray;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.BoxWithHeading.generic #BoxWithHeading_heading {
+    background: lightgray;
+    padding: 0.25em 0.5em;
+}
+.BoxWithHeading.generic #BoxWithHeading_content {
+    padding: 0.5em;
+}
+</style>
+
+<script>
+BoxWithHeading.prototype.extend({
+    heading: Control.chain( "$BoxWithHeading_heading", "content" ),
+    headingBackground: Control.chain( "$BoxWithHeading_heading", "css/background" ),
+    content: Control.chain( "$BoxWithHeading_content", "content" ),
+    initialize: function() {
+        this.genericIfClassIs( BoxWithHeading );
+    }
+});
+</script>
+
+</Control>

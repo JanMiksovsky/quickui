@@ -1,15 +1,19 @@
-/*** BoxWithLabel ***/
+/*** BoxWithHeading ***/
 
 /* Generic appearance */
-.BoxWithLabel.generic {
+.BoxWithHeading.generic {
     border: 1px solid lightgray;
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
-.BoxWithLabel.generic #BoxWithLabel_label {
+.BoxWithHeading.generic #BoxWithHeading_heading {
     background: lightgray;
+    padding: 0.25em 0.5em;
+}
+.BoxWithHeading.generic #BoxWithHeading_content {
+    padding: 0.5em;
 }
 
 /*** MyButton ***/
