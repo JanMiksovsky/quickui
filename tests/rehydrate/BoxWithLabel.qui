@@ -1,0 +1,33 @@
+<Control name="BoxWithLabel">
+
+<content>
+    <div id="BoxWithLabel_label"/>
+    <div id="BoxWithLabel_content"/>
+</content>
+
+<style>
+/* Generic appearance */
+.BoxWithLabel.generic {
+    border: 1px solid lightgray;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.BoxWithLabel.generic #BoxWithLabel_label {
+    background: lightgray;
+}
+</style>
+
+<script>
+BoxWithLabel.prototype.extend({
+    label: Control.chain( "$BoxWithLabel_label", "content" ),
+    labelBackground: Control.chain( "$BoxWithLabel_label", "css/background" ),
+    content: Control.chain( "$BoxWithLabel_content", "content" ),
+    initialize: function() {
+        this.genericIfClassIs( BoxWithLabel );
+    }
+});
+</script>
+
+</Control>

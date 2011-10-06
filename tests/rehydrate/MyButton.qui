@@ -1,0 +1,24 @@
+<Control name="MyButton">
+
+<prototype>
+    <ButtonBase/>
+</prototype>
+
+<style>
+.MyButton.default {
+    font-weight: bold;
+}
+</style>
+
+<script>
+MyButton.prototype.extend({
+    color: Control.chain( "css/color" ),
+    "default": Control.chain( "applyClass/default" ), 
+    initialize: function() {
+        MyButton.superclass.prototype.initialize.call( this );
+        this.genericIfClassIs( MyButton );
+    }
+})
+</script>
+
+</Control>

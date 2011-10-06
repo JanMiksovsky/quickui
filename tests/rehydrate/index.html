@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet" type="text/css" href="../../quicommon/quicommon.css" />
+<link rel="stylesheet" type="text/css" href="rehydrate.css" />
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/qunit/git/qunit.js"></script>
+
+<script type="text/javascript" src="../../lib/quickui.js"></script>
+<script type="text/javascript" src="../../quicommon/quicommon.js"></script>
+<script type="text/javascript" src="../../plugins/quickui.rehydrate.js"></script>
+<script type="text/javascript" src="rehydrate.js"></script>
+
+<script>
+$(function() {
+    Control( "body" ).rehydrate();
+});
+</script>
+
+<body>
+    <div>
+        This is a plain div.
+    </div>
+    <div data-control-class="BoxWithLabel" data-labelBackground="lightblue" >
+        <div data-property="label">
+            Here are some <i>buttons</i>
+        </div>
+        <div data-control-class="MyButton" class="default" data-color="red">
+            OK
+        </div>
+        <div data-control-class="MyButton" data-generic="false" data-foo="bar" >
+            <div data-property="color">blue</div>
+            Cancel
+        </div>
+    </div>
+</body>
+
+</html>
