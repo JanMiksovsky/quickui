@@ -45,22 +45,22 @@ Sample = Control.subclass( "Sample", function renderSample() {
 	this.properties({
 		"content": [
 			" ",
-			"<div>\n        This is a plain div.\n    </div>",
+			"<div>This is a plain div.</div>",
 			" ",
 			BoxWithHeading.create({
 				"content": [
 					" ",
 					" ",
-					"<p>\n            Here's a plain paragraph.\n        </p>",
+					"<p>Here's a plain paragraph.</p>",
 					" ",
 					MyButton.create({
-						"content": " OK ",
+						"content": "OK",
 						"class": "default",
 						"color": "red"
 					}),
 					" ",
 					MyButton.create({
-						"content": "  Cancel ",
+						"content": "Cancel",
 						"generic": "false",
 						"color": "blue"
 					}),
