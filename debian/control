@@ -1,0 +1,17 @@
+Source: quickui
+Section: admin
+Priority: optional
+Maintainer: Cory R. King <cory@cozi.com>
+Build-Depends-Indep: mono-2.0-devel, mono-xbuild
+Build-Depends: debhelper (>= 6.0.7~)
+Standards-Version: 3.9.1
+Vcs-Git: https://github.com/JanMiksovsky/quickui.git
+Vcs-Browser: https://github.com/JanMiksovsky/quickui
+Homepage: http://quickui.org
+
+Package: quickui
+Architecture: all
+Depends: ${misc:Depends}, mono-runtime 
+Description: Web Control Framework
+ QuickUI (Quick User Interface) is a framework that simplifies the design, development, and maintenance of web-based user interfaces.
+Homepage: http://quickui.org

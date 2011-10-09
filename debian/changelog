@@ -1,0 +1,21 @@
+quickui (1.1.2) natty; urgency=low
+  * [dc82602] Use symlinks anyway, only do it smarter.
+  * [a57ee42] Bad symlinks
+
+ -- Cory R. King <cory@cozi.com>  Fri, 30 Sep 2011 11:04:09 -0700
+
+quickui (1.1) natty; urgency=low
+  * [78e7b9d] Fix control file
+  * [f8a210a] Install CHANGELOG
+  * [934be16] Clarify how to build as a debian package.
+  * [9e54d8f] Do not do symlinking...
+
+ -- Cory R. King <cory@cozi.com>  Fri, 30 Sep 2011 09:52:03 -0700
+
+quickui (1.0) natty; urgency=low
+
+  * First Debian Package
+  * [21e2e98] Make the changelog conform to package standards
+  * [6d523ea] Configure git
+
+ -- Cory R. King <cory@cozi.com>  Thu, 29 Sep 2011 10:02:40 -0700
