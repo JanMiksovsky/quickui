@@ -38,6 +38,7 @@ site/tutorial/section13/section13.*
 site/tutorial/section14/section14.*
 tests/integration/integration.*
 tests/common/common.*
+tests/rehydrate/rehydrate.*
 
 deploy/QuickUI
 mono/lib
