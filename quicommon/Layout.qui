@@ -24,7 +24,7 @@ Layout.prototype.extend({
 });
 
 // Class methods.
-// TODO: Most of this has been factored into the new insertedIntoDocument() event,
+// TODO: Most of this has been factored into the new inDocument() event,
 // so rewrite this to use that.
 Layout.extend({
     
@@ -74,9 +74,9 @@ Layout.extend({
     track: function( $controls ) {
         //$controls._log("tracking");
         this._initialize();
-        $controls.insertedIntoDocument( function() {
-            this.layout();
-            Layout._controlsToLayout = Layout._controlsToLayout.concat( this );
+        $controls.inDocument( function( $control ) {
+            $control.layout();
+            Layout._controlsToLayout = Layout._controlsToLayout.concat( $control );
         });
     },
 
