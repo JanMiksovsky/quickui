@@ -438,6 +438,53 @@ function runTests() {
     });
     
     /*
+     * _super()
+     */
+    test( "_super()", function() {
+        /*
+         * Three sample Control subclasses: A <- B <- C
+         */
+        var A = Control.subclass( "A" );
+        var B = A.subclass( "B" );
+        var C = B.subclass( "C" );
+        
+        A.prototype.extend({
+            decorate: function ( s ) {
+                return "(a: " + s + ")";
+            },
+            calc: function ( x ) {
+                return x * 2;
+            }
+        });
+        B.prototype.extend({
+            decorate: function ( s ) {
+                return "(b: " + this._super( s ) + ")";
+            }
+            /* Omit a definition of "calc" */
+        });
+        C.prototype.extend({
+            decorate: function ( s ) {
+                return "(c: " + this._super( s ) + ")";
+            },
+            calc: function ( x ) {
+                return this._super( x ) + 1;
+            }
+        });
+        
+        var a = A();
+        equal( a.decorate( "Hello" ), "(a: Hello)" );
+        equal( a.calc(3), 6 );
+    
+        var b = B();    
+        equal( b.decorate( "Hello" ), "(b: (a: Hello))" );
+        equal( b.calc(3), 6 );
+    
+        var c = C();
+        equal( c.decorate( "Hello" ), "(c: (b: (a: Hello)))" );
+        equal( c.calc(3), 7 );
+    });
+
+    /*
      * Utilities
      */
      
