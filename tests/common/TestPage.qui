@@ -105,18 +105,14 @@ TestPage.prototype.extend({
 			self.$switch().activeIndex(index);
 		});
 		
-		/*
 		this.$tabSet().bind({
-            "active": function( event ) {
-                console.log( "active:" );
-                console.log( event.target );
+            "active": function( event, index, tab ) {
+                console.log( "active: " + index );
             },
-            "tabClick": function( event ) {
-                console.log( "tabClick:" );
-                console.log( event.target );
+            "tabClick": function( event, index, tab ) {
+                console.log( "tabClick:" + index );
             }		    
 		});
-		*/
 		
 		this.$shifter().transmute(ButtonBase, true);
 	}

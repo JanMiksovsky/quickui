@@ -34,7 +34,7 @@ Switch.prototype.extend({
              */
             this.children().not( activeChild ).toggleClass( "hidden", true );
 
-            var activeChildIndex = this.activeIndex();            
+            var activeChildIndex = this.children().index( activeChild );
             $( activeChild )
                 .trigger( "active", [ activeChildIndex, activeChild ] )
                 .toggleClass( "hidden", false );
