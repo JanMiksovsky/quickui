@@ -100,13 +100,15 @@ TestPage.prototype.extend({
 		});
 		
 		this.$tabSet().bind({
-            "active": function( event, index, tab ) {
-                console.log( "active: " + index );
-            },
             "tabClick": function( event, index, tab ) {
-                console.log( "tabClick:" + index );
-            }		    
+                console.log( "TabSet tabClick:" + index );
+            }
 		});
+		this.$tabSet().tabs().bind({
+            "active": function( event, index, tab ) {
+                console.log( "Tab active: " + index );
+            },
+		})
 		
 		this.$shifter().transmute(ButtonBase, true);
 	}

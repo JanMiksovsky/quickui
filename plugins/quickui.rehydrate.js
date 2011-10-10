@@ -13,8 +13,17 @@
      */
     Control.fn.rehydrate = function() {
         
+        var elements = [];
+        // Is top level element a control?
+        if ( this.data( "control-class" ) ) {
+            elements = elements.concat( this.get() );
+        }
+        // Add any contained controls.
+        elements = elements.concat( this.find("[data-control-class]").get() );
+        
         // Reverse order of elements so we work from leaves towards the root.
-        var elements = this.find("[data-control-class]").get().reverse();
+        var elements = elements.reverse();
+        
         $.each( elements, function( index, element ) {
             rehydrateControl( element );
         });
