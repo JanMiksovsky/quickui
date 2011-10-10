@@ -39,8 +39,8 @@ called name(), that will be used as the name on the tab.
     top: 1px;
     z-index: 1;
 }
-.TabSet.generic #tabButtons .ButtonBase.generic:not(:last-child) {
-    margin-right: 2px;
+.TabSet.generic #tabButtons .ButtonBase.generic {
+    margin-left: 0.5em;
 }
 .TabSet.generic #tabButtons .ButtonBase.generic.selected {
     border-bottom-color: white;
