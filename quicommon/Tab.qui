@@ -4,8 +4,7 @@
 
 <script>
 Tab.prototype.extend({
-    name: Control.property(),
-    onShow: function() {} // for inheriting controls to override
+    name: Control.property()
 });
 </script>
 

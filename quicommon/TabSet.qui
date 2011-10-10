@@ -10,9 +10,9 @@ called name(), that will be used as the name on the tab.
 <content>
     <VerticalPanels fill="true">
         <top>
-            <List id="buttons"/>
+            <List id="tabButtons" itemClass="ButtonBase" />
         </top>
-        <div id="TabSet_content"/>
+        <Switch id="TabSet_content"/>
     </VerticalPanels>
 </content>
 
@@ -21,7 +21,7 @@ called name(), that will be used as the name on the tab.
     position: relative;
 }
 
-#buttons {
+#tabButtons {
     white-space: nowrap; /* So tabs don't wrap. */
 }
 </style>
@@ -31,73 +31,56 @@ TabSet.prototype.extend({
 
     content: Control.chain( "$TabSet_content", "content", function() { this._refresh(); } ),
     selectTabOnClick: Control.property.bool( null, true ),
-    buttons: Control.chain( "$buttons", "children" ),
-    tabButtonClass: Control.chain( "$buttons", "itemClass", function() { this._refresh(); } ),
+    tabButtons: Control.chain( "$tabButtons", "children" ),
+    selectedTab: Control.chain( "$TabSet_content", "activeChild" ),
+    tabButtonClass: Control.chain( "$tabButtons", "itemClass", function() { this._refresh(); } ),
     tabs: Control.chain( "$TabSet_content", "children" ),
-
-    selectedTab: function( tab ) {
-        if ( tab === undefined ) {
-            return this.tabs().eq( this.selectedTabIndex );
-        } else {
-            var tabIndex = this.tabs().index( tab );
-            this.selectedTabIndex( tabIndex );
-        }
-    },
-
-    selectedTabIndex: Control.property( function( index ) {
-
-        this.buttons()
-            .removeClass( "selected" )    // Deselect all tab buttons.
-            .eq(index)
-            .addClass( "selected" );      // Select the indicated button.
-
-        var tab = this.tabs()
-            .hide()                     // Hide all tabs
-            .eq(index)
-            .show()                     // Show the selected tab.
-            .control();
-        tab.onShow();
-
-        this.trigger("onTabSelected", [ index, tab ]);
-    }),
-
-    _refresh: function() {
-
-        if ( this.tabButtonClass() === undefined ) {
-            return;
-        }
-
-        // Show the names for each tab as a button.
-        this.$buttons().items( this._tabNames() );
-
-        // By default, clicks on a tab select the tab.
-        // TODO: If buttons are moved elsewhere, unbind click event.
+    
+    initialize: function() {
+        
         var self = this;
-        this.buttons().click( function() {
-            var buttonIndex = self.buttons().index( this );
-            if ( buttonIndex >= 0 ) {
-                if ( self.selectTabOnClick() ) {
-                    self.selectedTabIndex( buttonIndex );
+        this.$tabButtons().click( function( event ) {
+            var tabButtonCssClass = "." + self.tabButtonClass().prototype.className;
+            var tabButton = $( event.target ).closest( tabButtonCssClass ).control();
+            if ( tabButton ) {
+                var index = self.tabButtons().index( tabButton );
+                if ( index >= 0 ) {
+                    var tab = self.tabs()[ index ];
+                    if ( self.selectTabOnClick() ) {
+                        self.selectedTabIndex( index );
+                    }
                 }
-                self.trigger( "onTabClicked", [ buttonIndex, self.tabs()[buttonIndex] ]);
             }
         });
-
-        if ( this.tabs().length > 0 && this.selectedTabIndex() === undefined ) {
+        
+        if ( this.tabs().length > 0 && !this.selectedTabIndex() ) {
             // Select first tab by default.
             this.selectedTabIndex(0);
         }
     },
+    
+    selectedTabIndex: Control.chain( "$TabSet_content", "activeIndex", function( index ) {
+        this.tabButtons()
+            .removeClass( "selected" )    // Deselect all tab buttons.
+            .eq( index )
+            .addClass( "selected" );      // Select the indicated button.
+    }),
 
-    _tabNames: function() {
-        return this.tabs()
-            .map( function( index, element ) {
-                var $control = $( element ).control();
-                return ( $control && $.isFunction( $control.name ) )
-                    ? $control.name()
+    _refresh: function() {
+        if ( this.tabButtonClass() === undefined ) {
+            return;
+        }
+        
+        // Show the names for each tab as a button.
+        var tabNames = this.tabs()
+            .map( function( index, tab ) {
+                var $tab = $( tab ).control();
+                return ( $tab && $.isFunction( $tab.name ) )
+                    ? $tab.name()
                     : "";
             })
             .get();
+        this.$tabButtons().items( tabNames );
     }
 });
 </script>

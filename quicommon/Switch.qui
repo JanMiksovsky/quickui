@@ -33,9 +33,10 @@ Switch.prototype.extend({
              * be what we'd want for inline elements.
              */
             this.children().not( activeChild ).toggleClass( "hidden", true );
-            
+
+            var activeChildIndex = this.activeIndex();            
             $( activeChild )
-                .trigger( "active" )
+                .trigger( "active", [ activeChildIndex, activeChild ] )
                 .toggleClass( "hidden", false );
             
             // In case the new child wants to re-lay itself out.
