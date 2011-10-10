@@ -5,9 +5,14 @@
 </prototype>
 
 <style>
-.ToggleButtonBase.generic.selected {
+/* Generic appearance */
+
+.ToggleButton.generic.selected {
     background: lightgray;
     border-color: gray;
+}
+.ToggleButton.generic.selected:hover {
+    background-color: #888;
 }
 </style>
 

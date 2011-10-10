@@ -77,12 +77,6 @@
     </Page>
 </prototype>
 
-<style>
-.ToggleButton.selected {
-	background-color: #ccc;
-}
-</style>
-
 <script>
 TestPage.prototype.extend({
     
