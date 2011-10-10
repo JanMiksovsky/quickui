@@ -1,4 +1,4 @@
-<!-- Pick exactly one child to show. -->
+<!-- Pick exactly one child to show at a time. -->
 
 <Control name="Switch">
 

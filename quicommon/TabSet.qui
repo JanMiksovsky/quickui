@@ -24,6 +24,27 @@ called name(), that will be used as the name on the tab.
 #tabButtons {
     white-space: nowrap; /* So tabs don't wrap. */
 }
+
+/* Generic appearance */
+.TabSet.generic #TabSet_content {
+    border: 1px solid gray;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 100%;
+}
+.TabSet.generic #tabButtons {
+    position: relative;
+    top: 1px;
+    z-index: 1;
+}
+.TabSet.generic #tabButtons .ButtonBase.generic:not(:last-child) {
+    margin-right: 2px;
+}
+.TabSet.generic #tabButtons .ButtonBase.generic.selected {
+    border-bottom-color: white;
+}
 </style>
 
 <script>
@@ -34,9 +55,11 @@ TabSet.prototype.extend({
     tabButtons: Control.chain( "$tabButtons", "children" ),
     selectedTab: Control.chain( "$TabSet_content", "activeChild" ),
     tabButtonClass: Control.chain( "$tabButtons", "itemClass", function() { this._refresh(); } ),
-    tabs: Control.chain( "$TabSet_content", "children" ),
+    tabs: Control.chain( "$TabSet_content", "children", "cast" ),
     
     initialize: function() {
+        
+        this.genericIfClassIs( TabSet );
         
         var self = this;
         this.$tabButtons().click( function( event ) {
@@ -46,6 +69,7 @@ TabSet.prototype.extend({
                 var index = self.tabButtons().index( tabButton );
                 if ( index >= 0 ) {
                     var tab = self.tabs()[ index ];
+                    self.trigger( "tabClick", [ index, tab ]);
                     if ( self.selectTabOnClick() ) {
                         self.selectedTabIndex( index );
                     }
