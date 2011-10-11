@@ -44,3 +44,9 @@ deploy/QuickUI
 mono/lib
 old
 TestResult.xml
+output/
+debian/debhelper.log
+debian/tmp
+*-stamp
+debian/files
+debian/substvars
