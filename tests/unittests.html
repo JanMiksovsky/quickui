@@ -19,29 +19,12 @@
 function runTests() {
     
     /*
-     * Control tests
+     * Control.create()
      */
     test( "Create: from scratch", function() {
         var $c = Control.create();
         equal( $c.attr( "class" ), "Control" );
         equal( $c.control()[0] === $c[0], true );
-    });
-
-    test( "Create: on existing div", function() {
-        var $element = $( "<div/>" );
-        var $c = $element.control( Control );
-        equal( $c.attr( "class" ), "Control" );
-        equal( $element.control()[0] === $c[0], true );
-    });
-    
-    test( "Create: multiple", function() {
-        var MyControl = Control.subclass( "MyControl" );
-        MyControl.prototype.foo = function() {
-            return "Hello";
-        };
-    	var $elements = $().add( "<div/>" ).add( "<div/>" );
-    	var $c = $elements.control( MyControl );
-    	equal( $c.control().length, 2 );
     });
     
     test( "Create: set properties on constructor", function() {
@@ -52,8 +35,27 @@ function runTests() {
         var $c = Greet.create( { name: "Bob" });
         equal( $c.text(), "Hello Bob" );
     });
+    
+    /* $.control() */
+
+    test( "control() on existing div", function() {
+        var $element = $( "<div/>" );
+        var $c = $element.control( Control );
+        equal( $c.attr( "class" ), "Control" );
+        equal( $element.control()[0] === $c[0], true );
+    });
+    
+    test( "control() on multiple divs", function() {
+        var MyControl = Control.subclass( "MyControl" );
+        MyControl.prototype.foo = function() {
+            return "Hello";
+        };
+    	var $elements = $().add( "<div/>" ).add( "<div/>" );
+    	var $c = $elements.control( MyControl );
+    	equal( $c.control().length, 2 );
+    });
         
-    test( "Create: set properties via .control()", function() {
+    test( "control() set properties", function() {
         var Greet = createGreetClass();
         Greet.prototype.extend( {
             name: Control.chain( "$name", "content" )
@@ -65,7 +67,7 @@ function runTests() {
         equal( $c.text(), "Hello Bob" );
     });
         
-    test( "Create: incorporate existing DOM content", function() {
+    test( "control() incorporate existing DOM content", function() {
         var MyControl = Control.subclass( "MyControl", function() {
             this.properties( {
                 content: [
@@ -80,6 +82,15 @@ function runTests() {
         var $children = $original.children();
         var $c = MyControl.createAt( $children );
         equal( $c.text(), "*Hello**world*" );
+    });
+        
+    test( "control() on existing content preserves existing control", function() {
+        var MyControl = Control.subclass( "MyControl" );
+        var $original = $( "<div><div id='subcontrol'/></div>" );
+        var $subcontrol = $original.find( "#subcontrol" ).control( MyControl );
+        var $c = $original.control( Control );
+        var $sub = $c.find( "#subcontrol" ).control();
+        equal( $sub.attr( "class" ), "MyControl Control" );
     });
     
     /*
