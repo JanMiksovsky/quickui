@@ -1,6 +1,8 @@
 open quickui.org
 cd public_html/quickui
+
 put lib/quickui.js lib/quickui.js
+
 lcd quicommon
 cd quicommon
 put quicommon.js
@@ -9,6 +11,13 @@ rm *.qui
 mput *.qui
 lcd ..
 cd ..
+
+lcd plugins
+cd plugins
+mput *
+lcd ..
+cd ..
+
 put "tools/Setup/Setup/Release/QuickUI Setup.msi" "downloads/QuickUI Setup.msi"
 put deploy/QuickUI.zip downloads/QuickUI.zip
 quit
