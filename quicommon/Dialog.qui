@@ -25,17 +25,17 @@ Base class for modal dialogs.
 Dialog.prototype.extend({
     
     initialize: function() {
-        Dialog.superclass.prototype.initialize.call( this );
+        this._super();
         this.genericIfClassIs( Dialog );
     },
     
     cancel: function() {
-        Dialog.superclass.prototype.cancel.call( this );
+        this._super();
         this.remove();
     },
     
     close: function() {
-        Dialog.superclass.prototype.close.call( this );
+        this._super();
         this.remove();
     },
 	

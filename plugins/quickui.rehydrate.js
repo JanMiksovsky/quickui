@@ -13,8 +13,17 @@
      */
     Control.fn.rehydrate = function() {
         
+        var elements = [];
+        // Is top level element a control?
+        if ( this.data( "control" ) ) {
+            elements = elements.concat( this.get() );
+        }
+        // Add any contained controls.
+        elements = elements.concat( this.find("[data-control]").get() );
+        
         // Reverse order of elements so we work from leaves towards the root.
-        var elements = this.find("[data-control-class]").get().reverse();
+        var elements = elements.reverse();
+        
         $.each( elements, function( index, element ) {
             rehydrateControl( element );
         });
@@ -26,9 +35,9 @@
      */
     function rehydrateControl ( element ) {
 
-        // Extract the control class from the element's control-class property.        
+        // Extract the control class from the element's control property.        
         var $element = $( element );
-        var className = $element.data( "control-class" );
+        var className = $element.data( "control" );
         if ( !className ) {
             return;
         }
@@ -37,8 +46,8 @@
             return;
         }
 
-        // Now that we've got the class, we can remove the control-class property.
-        $element.removeAttr( "data-control-class" );
+        // Now that we've got the class, we can remove the control property.
+        $element.removeAttr( "data-control" );
 
         // Extract properties. Compound properties (those defined in children)
         // will get removed from the control content at this point.
@@ -133,3 +142,15 @@
     }
     
 })( jQuery );
+
+/*
+ * Auto-loader for rehydration.
+ * Set data-create-controls="true" on the body tag to have the current
+ * page automatically rehydrated on load.
+ */
+jQuery( function() {
+    var $body = Control( "body" );
+    if ( $body.data( "create-controls" ) ) {
+        $body.rehydrate();
+    }
+});

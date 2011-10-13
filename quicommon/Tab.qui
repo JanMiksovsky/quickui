@@ -1,5 +1,5 @@
 <!-- A control that can be used as a tab in a TabSet. -->
-    
+
 <Control name="Tab">
 
 <script>

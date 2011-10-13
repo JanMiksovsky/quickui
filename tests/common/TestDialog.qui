@@ -12,7 +12,7 @@
 <script>
 TestDialog.prototype.extend({
 	initialize: function() {
-	    TestDialog.superclass.prototype.initialize.call(this);
+        this._super();
 		var self = this;
 		this.$buttonOk().click(function() {
 			self.close();

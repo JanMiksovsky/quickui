@@ -21,7 +21,8 @@ FacebookUserTile.prototype.extend({
      * it would need to invoke its superclass' initialize() function.
      * 
      *  initialize: function() {
-     *      FacebookUserTile.superclass.prototype.initialize.call(this);
+     *      this._super();
+     *      ... extra initialization performed by the subclass ...
      *  }
      *
      */

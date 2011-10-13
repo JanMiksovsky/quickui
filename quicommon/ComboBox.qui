@@ -68,7 +68,7 @@ ComboBox.prototype.extend({
 	
 	initialize: function() {
 	    
-	    ComboBox.superclass.prototype.initialize.call( this );
+	    this._super();
 	    this.genericIfClassIs( ComboBox );
 	    
         var self = this;

@@ -5,9 +5,14 @@
 </prototype>
 
 <style>
-.ToggleButtonBase.generic.selected {
+/* Generic appearance */
+
+.ToggleButton.generic.selected {
     background: lightgray;
     border-color: gray;
+}
+.ToggleButton.generic.selected:hover {
+    background-color: #888;
 }
 </style>
 
@@ -17,7 +22,7 @@ ToggleButton.prototype.extend({
 	selected: Control.chain( "applyClass/selected" ),
 	
 	initialize: function() {
-		ToggleButton.superclass.prototype.initialize.call( this );
+		this._super();
 		var self = this;
 		this
     		.click( function() {
