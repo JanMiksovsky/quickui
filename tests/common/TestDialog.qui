@@ -4,20 +4,20 @@
     <Dialog generic="true">
         Dialog
         <div>
-        	<ButtonBase id="buttonOk">OK</ButtonBase>
+            <ButtonBase id="buttonOk">OK</ButtonBase>
         </div>
     </Dialog>
 </prototype>
 
 <script>
 TestDialog.prototype.extend({
-	initialize: function() {
+    initialize: function() {
         this._super();
-		var self = this;
-		this.$buttonOk().click(function() {
-			self.close();
-		});
-	}	
+        var self = this;
+        this.$buttonOk().click(function() {
+            self.close();
+        });
+    }    
 });
 </script>
 

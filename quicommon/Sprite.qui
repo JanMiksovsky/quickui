@@ -7,25 +7,25 @@ The images have to be stacked vertically, and all be the same height.
 
 <style>
 {
-	background-repeat: no-repeat;
-}	
+    background-repeat: no-repeat;
+}    
 </style>
 
 <script>
 Sprite.prototype.extend({
-	
-	image: Control.chain( "css/background-image" ),
+    
+    image: Control.chain( "css/background-image" ),
 
-	// The height of a single cell in the strip, in pixels.
-	cellHeight: Control.property( function( value ) {
-		this.css( "height", value + "px" );
-		this._shiftBackground();
-	}),
-	
-	// The cell currently being shown.
-	currentCell: Control.property( function( value ) {
-		this._shiftBackground();
-	}, 0),
+    // The height of a single cell in the strip, in pixels.
+    cellHeight: Control.property( function( value ) {
+        this.css( "height", value + "px" );
+        this._shiftBackground();
+    }),
+    
+    // The cell currently being shown.
+    currentCell: Control.property( function( value ) {
+        this._shiftBackground();
+    }, 0),
 
     _shiftBackground: Control.iterator( function() {
         if ( this.currentCell() != null && this.cellHeight() != null ) {

@@ -4,19 +4,19 @@
 
 <style>
 .hidden {
-	display: none !important;
+    display: none !important;
 }
 </style>
 
 <script>
 Switch.prototype.extend({
-	
-	initialize: function() {
-	    if ( this.children().not( ".hidden" ).length > 1 ) {
+    
+    initialize: function() {
+        if ( this.children().not( ".hidden" ).length > 1 ) {
             // Show first child by default. 
             this.activeIndex(0);
-	    }
-	},
+        }
+    },
     
     /*
      * The currently visible child, cast to a control (if applicable).

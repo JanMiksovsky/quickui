@@ -4,13 +4,13 @@
 
 <style>
 {
-	display: table;
-	height: 100%;
+    display: table;
+    height: 100%;
 }
 
 > * {
-	display: table-cell;
-	vertical-align: middle;
+    display: table-cell;
+    vertical-align: middle;
 }
 </style>
 

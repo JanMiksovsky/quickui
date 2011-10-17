@@ -1,7 +1,7 @@
 <Control name="ToggleButton">
 
 <prototype>
-	<ButtonBase/>
+    <ButtonBase/>
 </prototype>
 
 <style>
@@ -18,24 +18,24 @@
 
 <script>
 ToggleButton.prototype.extend({
-	
-	selected: Control.chain( "applyClass/selected" ),
-	
-	initialize: function() {
-		this._super();
-		var self = this;
-		this
-    		.click( function() {
+    
+    selected: Control.chain( "applyClass/selected" ),
+    
+    initialize: function() {
+        this._super();
+        var self = this;
+        this
+            .click( function() {
                 if ( !self.disabled() ) {
                     self.toggle();
                 }
-    		})
-    		.genericIfClassIs( ToggleButton );
-	},
-	
-	toggle: function( value ) {
-		this.selected( value || !this.selected() );
-	}
+            })
+            .genericIfClassIs( ToggleButton );
+    },
+    
+    toggle: function( value ) {
+        this.selected( value || !this.selected() );
+    }
 });
 </script>
 

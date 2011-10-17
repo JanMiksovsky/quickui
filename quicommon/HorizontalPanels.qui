@@ -52,16 +52,16 @@ HorizontalPanels.prototype.extend({
     fill: Control.chain( "applyClass/fill" ),
     left: Control.chain( "$HorizontalPanels_left", "content" ),
     right: Control.chain( "$HorizontalPanels_right", "content" ),
-	
-	layout: function() {
-	    var panelLeftWidth = this.$HorizontalPanels_left().outerWidth();
-	    var panelRightWidth = this.$HorizontalPanels_right().outerWidth();
-	    this.$HorizontalPanels_content().css({
-	        left: panelLeftWidth,
-	        right: panelRightWidth
-	    });
+    
+    layout: function() {
+        var panelLeftWidth = this.$HorizontalPanels_left().outerWidth();
+        var panelRightWidth = this.$HorizontalPanels_right().outerWidth();
+        this.$HorizontalPanels_content().css({
+            left: panelLeftWidth,
+            right: panelRightWidth
+        });
         return this;
-	}
+    }
 });
 </script>
 

@@ -34,11 +34,11 @@ Nullam quam ipsum, ornare eu lacinia nec, scelerisque in mauris. Vestibulum rhon
 
 <style>
 p {
-	display: none;
+    display: none;
 }
 
 p:first-child {
-	display: block;
+    display: block;
     margin-top: 0;
 }
 </style>

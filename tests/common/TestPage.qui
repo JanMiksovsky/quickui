@@ -3,29 +3,29 @@
 <prototype>
     <Page title="Test Page">
         
-    	<p>
-    	    <ButtonBase>Button</ButtonBase>
+        <p>
+            <ButtonBase>Button</ButtonBase>
             <ButtonBase disabled="true">Disabled</ButtonBase>
             <ToggleButton>
                 Toggle
             </ToggleButton>
-    	    <HasPopup openOnClick="true" closeOnInsideClick="true" style="display: inline-block;">
-    	        <ButtonBase>Show popup</ButtonBase>
-    	        <popup>
-    	            Popup content
-    	        </popup>
-    	    </HasPopup>
+            <HasPopup openOnClick="true" closeOnInsideClick="true" style="display: inline-block;">
+                <ButtonBase>Show popup</ButtonBase>
+                <popup>
+                    Popup content
+                </popup>
+            </HasPopup>
             <ButtonBase id="button">
                 Show test dialog
             </ButtonBase>
-    	</p>
-    	
+        </p>
+        
         <List id="list" itemClass="ButtonBase"/>
         
         <Switch id="switch">
-        	<div>Panel one</div>
-        	<div>Panel two</div>
-        	<div>Panel three</div>
+            <div>Panel one</div>
+            <div>Panel two</div>
+            <div>Panel three</div>
         </Switch>
         
         <TabSet id="tabSet" style="height: 100px;">
@@ -41,9 +41,9 @@
         </HorizontalPanels>
         
         <VerticalPanels id="verticalPanels" style="height: 200px;">
-        	<top>Top</top>
-        	<content>Vertical panels</content>
-        	<bottom>Bottom</bottom>
+            <top>Top</top>
+            <content>Vertical panels</content>
+            <bottom>Bottom</bottom>
         </VerticalPanels>
         
         <BrowserSpecific>
@@ -80,38 +80,38 @@
 <script>
 TestPage.prototype.extend({
     
-	initialize: function() {
+    initialize: function() {
 
         var self = this;
-	    
-		this.$button().click(function() {
-			Dialog.showDialog(TestDialog);
-		});
-		
-		this.$list().items([
-			"One",
-			"Two",
-			"Three"
-		]);
-		this.$list().find(".ButtonBase").click(function() {
-			var button = this;
-			var index = self.$list().children().index(button);
-			self.$switch().activeIndex(index);
-		});
-		
-		this.$tabSet().bind({
+        
+        this.$button().click(function() {
+            Dialog.showDialog(TestDialog);
+        });
+        
+        this.$list().items([
+            "One",
+            "Two",
+            "Three"
+        ]);
+        this.$list().find(".ButtonBase").click(function() {
+            var button = this;
+            var index = self.$list().children().index(button);
+            self.$switch().activeIndex(index);
+        });
+        
+        this.$tabSet().bind({
             "tabClick": function( event, index, tab ) {
                 console.log( "TabSet tabClick:" + index );
             }
-		});
-		this.$tabSet().tabs().bind({
+        });
+        this.$tabSet().tabs().bind({
             "active": function( event, index, tab ) {
                 console.log( "Tab active: " + index );
             },
-		})
-		
-		this.$shifter().transmute(ButtonBase, true);
-	}
+        })
+        
+        this.$shifter().transmute(ButtonBase, true);
+    }
 
 });
 </script>

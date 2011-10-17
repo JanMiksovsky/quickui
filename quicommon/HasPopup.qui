@@ -3,36 +3,36 @@ A control with a popup menu that appears above or below it.
 -->
 
 <Control name="HasPopup">
-	
+    
 <content>
     <div id="HasPopup_content" />
-	<Popup id="HasPopup_popup" />
+    <Popup id="HasPopup_popup" />
 </content>
 
 <script>
 HasPopup.prototype.extend({
-	
-	content: Control.chain( "$HasPopup_content", "content" ),
+    
+    content: Control.chain( "$HasPopup_content", "content" ),
     close: Control.chain( "$HasPopup_popup", "close" ),
-	closeOnInsideClick: Control.chain( "$HasPopup_popup", "closeOnInsideClick" ),
-	openOnClick: Control.property.bool(),
+    closeOnInsideClick: Control.chain( "$HasPopup_popup", "closeOnInsideClick" ),
+    openOnClick: Control.property.bool(),
     open: Control.chain( "$HasPopup_popup", "open" ),
-	opened: Control.chain( "$HasPopup_popup", "opened" ),
-	popup: Control.chain( "$HasPopup_popup", "content" ),
+    opened: Control.chain( "$HasPopup_popup", "opened" ),
+    popup: Control.chain( "$HasPopup_popup", "content" ),
 
-	initialize: function()
-	{
-		var self = this;
-		this.bind( "opened", function() {
-		    self._positionPopup();
-		});
+    initialize: function()
+    {
+        var self = this;
+        this.bind( "opened", function() {
+            self._positionPopup();
+        });
         this.$HasPopup_content().click( function() {
             if ( self.openOnClick() ) {
                 self.open();
             }
         });
-	},
-	
+    },
+    
     _positionPopup: function() {
         var $content = this.$HasPopup_content();
         var contentTop = $content.position().top;

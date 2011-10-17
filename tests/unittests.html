@@ -50,9 +50,9 @@ function runTests() {
         MyControl.prototype.foo = function() {
             return "Hello";
         };
-    	var $elements = $().add( "<div/>" ).add( "<div/>" );
-    	var $c = $elements.control( MyControl );
-    	equal( $c.control().length, 2 );
+        var $elements = $().add( "<div/>" ).add( "<div/>" );
+        var $c = $elements.control( MyControl );
+        equal( $c.control().length, 2 );
     });
         
     test( "control() set properties", function() {
@@ -159,83 +159,83 @@ function runTests() {
     test( "Define scalar", function() {
         var MyControl = Control.subclass( "MyControl" );
         MyControl.prototype.extend( {
-			foo: "Hello"
-	    });
-	    var $c = MyControl.create();
-	    equal( $c.foo, "Hello" );
+            foo: "Hello"
+        });
+        var $c = MyControl.create();
+        equal( $c.foo, "Hello" );
     });
     
     test( "Define method", function() {
         
         var MyControl = Control.subclass( "MyControl" );
         MyControl.prototype.extend( {
-			foo: function() {
-    			this.data( "_calledFoo", true );
-    		}
-	    });
+            foo: function() {
+                this.data( "_calledFoo", true );
+            }
+        });
         
-    	var $elements = Control( "<div/>" ).add( "<div/>" );
-    	var $c = $elements.control( MyControl );
+        var $elements = Control( "<div/>" ).add( "<div/>" );
+        var $c = $elements.control( MyControl );
         
         var result = $c.foo();
-        equal( result, undefined );	// No result returned
-    	equal( $c.eq( 0 ).data( "_calledFoo" ), true );
-    	equal( $c.eq( 1 ).data( "_calledFoo" ), true );
+        equal( result, undefined );    // No result returned
+        equal( $c.eq( 0 ).data( "_calledFoo" ), true );
+        equal( $c.eq( 1 ).data( "_calledFoo" ), true );
     });
     
     test( "Define method with iterator()", function() {
         
         var MyControl = Control.subclass( "MyControl" );
         MyControl.prototype.extend( {
-			foo: Control.iterator(  function() {
-    			this.data( "_calledFoo", true );
-    		} ),
-    		bar: Control.iterator(  function() {
-    		    this.data( "_calledBar", true );
-    		    return "Hello";    // Force getter behavior.
-    		} )
-	    });
+            foo: Control.iterator(  function() {
+                this.data( "_calledFoo", true );
+            } ),
+            bar: Control.iterator(  function() {
+                this.data( "_calledBar", true );
+                return "Hello";    // Force getter behavior.
+            } )
+        });
         
-    	var $elements = Control( "<div/>" ).add( "<div/>" );
-    	var $c = $elements.control( MyControl );
+        var $elements = Control( "<div/>" ).add( "<div/>" );
+        var $c = $elements.control( MyControl );
         
         var methodResult = $c.foo();
         equal( methodResult, $c ); // i.e., should return "this"
-    	equal( $c.eq( 0 ).data( "_calledFoo" ), true );
-    	equal( $c.eq( 1 ).data( "_calledFoo" ), true );
-    	
-		// Function that returns result stops iteration.
-    	var getterResult = $c.bar();
-    	equal( getterResult, "Hello" );
-    	equal( $c.eq( 0 ).data( "_calledBar" ), true );
-    	equal( $c.eq( 1 ).data( "_calledBar" ), undefined );
+        equal( $c.eq( 0 ).data( "_calledFoo" ), true );
+        equal( $c.eq( 1 ).data( "_calledFoo" ), true );
+        
+        // Function that returns result stops iteration.
+        var getterResult = $c.bar();
+        equal( getterResult, "Hello" );
+        equal( $c.eq( 0 ).data( "_calledBar" ), true );
+        equal( $c.eq( 1 ).data( "_calledBar" ), undefined );
     });
             
     test( "Define getter/setter with iterator()", function() {
-    	var c = Control.subclass();
-    	c.prototype.extend( {
-    		myGetterSetter: Control.iterator(  function( value ) {
-				this.data( "_property", value );
-    		} )
-    	});
-    	var $elements = Control( "<div/>" ).add( "<div/>" );
-    	var $c = $elements.control( c );
-    	$c.myGetterSetter( "foo" );
-    	equal( $c.eq( 0 ).control().data( "_property" ), "foo" );
-    	equal( $c.eq( 1 ).control().data( "_property" ), "foo" );
+        var c = Control.subclass();
+        c.prototype.extend( {
+            myGetterSetter: Control.iterator(  function( value ) {
+                this.data( "_property", value );
+            } )
+        });
+        var $elements = Control( "<div/>" ).add( "<div/>" );
+        var $c = $elements.control( c );
+        $c.myGetterSetter( "foo" );
+        equal( $c.eq( 0 ).control().data( "_property" ), "foo" );
+        equal( $c.eq( 1 ).control().data( "_property" ), "foo" );
     });
     
     test( "Define getter/setter with Control.property", function() {
-    	var c = Control.subclass();
-    	c.prototype.extend( {
-    		myProperty: Control.property()
-    	});
-    	var $elements = Control( "<div/>" ).add( "<div/>" );
-    	var $c = $elements.control( c );
+        var c = Control.subclass();
+        c.prototype.extend( {
+            myProperty: Control.property()
+        });
+        var $elements = Control( "<div/>" ).add( "<div/>" );
+        var $c = $elements.control( c );
         equal( $c.myProperty() === undefined, true );
-    	$c.myProperty( "foo" );
-    	equal( $c.eq( 0 ).control().myProperty(), "foo" );
-    	equal( $c.eq( 1 ).control().myProperty(), "foo" );
+        $c.myProperty( "foo" );
+        equal( $c.eq( 0 ).control().myProperty(), "foo" );
+        equal( $c.eq( 1 ).control().myProperty(), "foo" );
     });
     
     /*

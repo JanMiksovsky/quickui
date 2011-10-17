@@ -5,12 +5,12 @@ Base class for modal dialogs.
 <Control name="Dialog">
 
 <prototype>
-	<Popup cancelOnOutsideClick="false" />
+    <Popup cancelOnOutsideClick="false" />
 </prototype>
 
 <style>
 {
-	position: fixed;
+    position: fixed;
 }
 
 /* Generic appearance */
@@ -38,14 +38,14 @@ Dialog.prototype.extend({
         this._super();
         this.remove();
     },
-	
-	positionPopup: function() {
-		// Center dialog horizontally and vertically.
-		return this.css({
-			left: ($(window).width() - this.outerWidth()) / 2,
-			top: ($(window).height() - this.outerHeight()) / 2
-		});
-	}
+    
+    positionPopup: function() {
+        // Center dialog horizontally and vertically.
+        return this.css({
+            left: ($(window).width() - this.outerWidth()) / 2,
+            top: ($(window).height() - this.outerHeight()) / 2
+        });
+    }
 
 });
 

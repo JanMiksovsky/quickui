@@ -6,9 +6,9 @@ Base class for popups, menus, dialogs, things that appear temporarily over other
 
 <style>
 {
-	display: none;
-	position: absolute;
-	z-index: 1;
+    display: none;
+    position: absolute;
+    z-index: 1;
 }
 
 /* Generic appearance */
@@ -22,17 +22,17 @@ Base class for popups, menus, dialogs, things that appear temporarily over other
 <script>
 Popup.prototype.extend({
 
-	blanket: Control.property(),
-	blanketColor: Control.property(),
-	blanketOpacity: Control.property(),
-	cancelOnEscapeKey: Control.property.bool( null, true ),
+    blanket: Control.property(),
+    blanketColor: Control.property(),
+    blanketOpacity: Control.property(),
+    cancelOnEscapeKey: Control.property.bool( null, true ),
     cancelOnOutsideClick: Control.property.bool( null, true ),
-	closeOnInsideClick: Control.property.bool(),
-	opened: Control.property(),
-	
-	initialize: function()
-	{
-		var self = this;
+    closeOnInsideClick: Control.property.bool(),
+    opened: Control.property(),
+    
+    initialize: function()
+    {
+        var self = this;
         this
             .click( function() {
                 if ( self.closeOnInsideClick() )
@@ -41,8 +41,8 @@ Popup.prototype.extend({
                 }
             })
             .genericIfClassIs( Popup );
-	},
-	
+    },
+    
     cancel: function() {
         return this
             .trigger( "canceled" )
@@ -106,40 +106,40 @@ Popup.prototype.extend({
         return this;
     },
 
-	_createBlanket: function() {
-	    
-		var $blanket = this
-			.after( "<div id='blanket'/>" )
-			.next();
-			
+    _createBlanket: function() {
+        
+        var $blanket = this
+            .after( "<div id='blanket'/>" )
+            .next();
+            
         var cancelOnOutsideClick = this.cancelOnOutsideClick();
-	    var color = this.blanketColor() ||
-	                    ( cancelOnOutsideClick ? false : "black" );
-	    var opacity = this.blanketOpacity() ||
+        var color = this.blanketColor() ||
+                        ( cancelOnOutsideClick ? false : "black" );
+        var opacity = this.blanketOpacity() ||
                         ( cancelOnOutsideClick ? 0.01 : 0.25 );
-			
-		var self = this;
-		$blanket
-			.click( function() {
-				if ( self.cancelOnOutsideClick() ) {
-					self.cancel();
-				}
-			})
-			.css({
-				cursor: "default",
-				position: "fixed",
-				opacity: opacity,
-				top: 0,
-				left: 0,
-				width: "100%",
-				height: "100%"
-			});
+            
+        var self = this;
+        $blanket
+            .click( function() {
+                if ( self.cancelOnOutsideClick() ) {
+                    self.cancel();
+                }
+            })
+            .css({
+                cursor: "default",
+                position: "fixed",
+                opacity: opacity,
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%"
+            });
         if ( color ) {
             $blanket.css( "background-color", color );
         }
         
-		return $blanket;
-	},
+        return $blanket;
+    },
 
     _hidePopup: function()
     {
@@ -156,20 +156,20 @@ Popup.prototype.extend({
         return this;
     },
 
-	/* Return the maximum Z-index in use by the page and its top-level controls. */
-	_maximumZIndex: function()
-	{
-		var topLevelElements = $( "body" ).children().andSelf();
-		var zIndices = $.map( topLevelElements, function( element ) {
-			switch ( $(element).css("position") ) {
-				case "absolute":
-				case "fixed":
-					var zIndex = parseInt( $( element ).css( "z-index" ) ) || 1;
-					return zIndex;
-			}
-		});
-		return Math.max.apply( null, zIndices );
-	}
+    /* Return the maximum Z-index in use by the page and its top-level controls. */
+    _maximumZIndex: function()
+    {
+        var topLevelElements = $( "body" ).children().andSelf();
+        var zIndices = $.map( topLevelElements, function( element ) {
+            switch ( $(element).css("position") ) {
+                case "absolute":
+                case "fixed":
+                    var zIndex = parseInt( $( element ).css( "z-index" ) ) || 1;
+                    return zIndex;
+            }
+        });
+        return Math.max.apply( null, zIndices );
+    }
 });
 </script>
 

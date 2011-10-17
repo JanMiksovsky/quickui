@@ -5,10 +5,10 @@
 <style>
 .Page.fill {
     height: 100%;
-	margin: 0;
-	padding: 0;
-	position: absolute;
-	width: 100%;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    width: 100%;
 }
 </style>
 
@@ -18,23 +18,23 @@
  * General page utility functions.
  */
 Page.prototype.extend({
-	
-	// If true, have the page fill its container.
-	fill: Control.chain( "applyClass/fill" ),
+    
+    // If true, have the page fill its container.
+    fill: Control.chain( "applyClass/fill" ),
 
     urlParameters: function() {
         return Page.urlParameters();
     },
-    	
-	// Gets or sets the title of the page.
-	title: function( title ) {
-		if ( title === undefined ) {
-		    return document.title;
-		} else {
-			document.title = title;
-			return this;
-		}
-	}
+        
+    // Gets or sets the title of the page.
+    title: function( title ) {
+        if ( title === undefined ) {
+            return document.title;
+        } else {
+            document.title = title;
+            return this;
+        }
+    }
 
 });
 
@@ -90,17 +90,17 @@ Page.extend({
  * General utility functions made available to all controls.
  */
 Control.prototype.extend({
-	
-	/*
-	 * Look up the page hosting a control.
-	 */
-	page: function() {
+    
+    /*
+     * Look up the page hosting a control.
+     */
+    page: function() {
         // Get the containing DOM element subclassing Page that contains the element
         var pages = this.closest( ".Page" );
         
         // From the DOM element, get the associated QuickUI control.
         return ( pages.length > 0 ) ? pages.control() : null;
-	}
+    }
     
 });
 </script>
