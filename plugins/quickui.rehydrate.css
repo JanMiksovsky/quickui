@@ -1,0 +1,13 @@
+/*
+ * Until a control has been rehydrated, we set the color of a dehydrated
+ * control and any subelements to white. This avoids a flash of dehydrated
+ * content before the rehydrate plugin can reconstitute the controls. Once the
+ * control has been rehydrated, the data-control attribute will automatically be
+ * removed, which in turn will remove these style overrides.
+ */
+*[data-control],
+*[data-control] * {
+    background: none !important;
+    border-color: white !important;
+    color: white !important;
+}
