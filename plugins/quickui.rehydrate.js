@@ -42,9 +42,6 @@
             return;
         }
         var controlClass = Control._convertToClass( className );
-        if ( !controlClass ) {
-            return;
-        }
 
         // Extract properties. Compound properties (those defined in children)
         // will get removed from the control content at this point.
