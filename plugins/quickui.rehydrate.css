@@ -1,13 +1,19 @@
 /*
- * Until a control has been rehydrated, we set the color of a dehydrated
- * control and any subelements to white. This avoids a flash of dehydrated
- * content before the rehydrate plugin can reconstitute the controls. Once the
- * control has been rehydrated, the data-control attribute will automatically be
- * removed, which in turn will remove these style overrides.
+ * Until a control has been rehydrated, we try to render the control and any
+ * subelements invisible by setting opacity to zero. This avoids a flash of
+ * dehydrated content before the rehydrate plugin can reconstitute the controls.
+ * Once the control has been rehydrated, the data-control attribute will
+ * automatically be removed, which in turn will remove these style overrides.
+ * 
+ * The purpose of dehydrated controls is to ensure that their contents can
+ * be made available as static HTML to web search engines, ideally to make
+ * the page content searchable. Presumably search engines like Google are
+ * highly skeptical of pages with content that's theoretically visible to
+ * the web crawling robots but (at least initially) invisible to people.
+ * Time will tell whether this approach to hiding dehydrated control content
+ * hinders the SEO value of the page. 
  */
-*[data-control],
-*[data-control] * {
-    background: none !important;
-    border-color: white !important;
-    color: white !important;
+*[data-control] {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; /* IE8 */
+    opacity: 0 !important;
 }
