@@ -46,9 +46,6 @@
             return;
         }
 
-        // Now that we've got the class, we can remove the control property.
-        $element.removeAttr( "data-control" );
-
         // Extract properties. Compound properties (those defined in children)
         // will get removed from the control content at this point.
         var lowerCaseProperties = $.extend( {},
@@ -59,6 +56,9 @@
         
         // Create the control.
         var $control = $( element ).control( controlClass, properties );
+
+        // Now that it's rehydrated, remove the control property.
+        $element.removeAttr( "data-control" );
     }
     
     /*
@@ -75,7 +75,9 @@
             var match = regexDataProperty.exec( attributeName );
             if ( match ) {
                 var propertyName = match[1];
-                properties[ propertyName ] = attributes[i].value;
+                if ( propertyName !== "control" ) {
+                    properties[ propertyName ] = attributes[i].value;
+                }
             }
         }
         
@@ -101,8 +103,10 @@
             .each( function( index, element ) {
                 var $element = Control( element );
                 var propertyName = $element.attr( "data-property" );
-                var propertyValue = $element.content();
-                properties[ propertyName ] = propertyValue;
+                if ( propertyName !== "control" ) {
+                    var propertyValue = $element.content();
+                    properties[ propertyName ] = propertyValue;
+                }
             })
             .remove();
         return properties;
