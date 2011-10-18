@@ -43,6 +43,10 @@ An input area with a dropdown arrow, which invokes a popup.
     box-sizing: border-box;
 }
 .ComboBox.generic #HasPopup_popup {
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
     -moz-user-select: -moz-none;
     -webkit-user-select: none;
     user-select: none;
@@ -80,6 +84,17 @@ ComboBox.prototype.extend({
             // Set a default text box class
             this.textBoxClass( TextBox );
         }
+    },
+    
+    open: function() {
+        if ( this.hasClass( "generic" ) ) {
+            // Make popup at least as wide as content.
+            this.eachControl( function( index, $control ) {
+                var width = $control.outerWidth();
+                this.$HasPopup_popup().css( "min-width", width + "px" );
+            });
+        }
+        return this._super();
     },
     
     _bindInputEvents: function() {
