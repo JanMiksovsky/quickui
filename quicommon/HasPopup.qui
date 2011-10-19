@@ -34,13 +34,14 @@ HasPopup.prototype.extend({
     },
     
     _positionPopup: function() {
-        var $content = this.$HasPopup_content();
-        var contentTop = $content.position().top;
-        var contentLeft = $content.position().left;
-        var contentHeight = $content.outerHeight();
-        var contentWidth = $content.outerWidth();
-        var contentBottom = contentTop + contentHeight;
-        var contentRight = contentLeft + contentWidth;
+        
+        var position = this.position();
+        var top = Math.round( position.top );
+        var left = Math.round( position.left );
+        var height = this.outerHeight();
+        var width = this.outerWidth();
+        var bottom = top + height;
+        var right = left + width;
         
         var $popup = this.$HasPopup_popup();
         var popupHeight = $popup.outerHeight( true );
@@ -52,18 +53,18 @@ HasPopup.prototype.extend({
         var windowWidth = $( window ).width();
 
         // Vertically position below (preferred) or above the content.
-        var popupFitsBelow = ( contentBottom + popupHeight <= windowHeight + scrollTop );
-        var popupFitsAbove = ( contentTop - popupHeight >= scrollTop ); 
+        var popupFitsBelow = ( bottom + popupHeight <= windowHeight + scrollTop );
+        var popupFitsAbove = ( top - popupHeight >= scrollTop ); 
         var popupTop = ( popupFitsBelow || !popupFitsAbove )
-                            ? contentBottom                 // Show below
-                            : contentTop - popupHeight;     // Show above
+                            ? bottom                 // Show below
+                            : top - popupHeight;     // Show above
         
         // Horizontally left (preferred) or right align w.r.t. content.
-        var popupFitsLeftAligned = ( contentLeft + popupWidth <= windowWidth + scrollLeft );
-        var popupFitsRightAligned = ( contentRight - popupWidth >= scrollLeft );
+        var popupFitsLeftAligned = ( left + popupWidth <= windowWidth + scrollLeft );
+        var popupFitsRightAligned = ( right - popupWidth >= scrollLeft );
         var popupLeft = ( popupFitsLeftAligned || !popupFitsRightAligned )
-                            ? contentLeft                   // Left align
-                            : contentRight - popupWidth;    // Right align 
+                            ? left                   // Left align
+                            : right - popupWidth;    // Right align 
 
         $popup.css({
             "top": popupTop,
