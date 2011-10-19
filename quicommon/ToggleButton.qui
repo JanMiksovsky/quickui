@@ -27,13 +27,13 @@ ToggleButton.prototype.extend({
         this
             .click( function() {
                 if ( !self.disabled() ) {
-                    self.toggle();
+                    self.toggleSelected();
                 }
             })
             .genericIfClassIs( ToggleButton );
     },
     
-    toggle: function( value ) {
+    toggleSelected: function( value ) {
         this.selected( value || !this.selected() );
     }
 });

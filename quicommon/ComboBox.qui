@@ -8,7 +8,7 @@ An input area with a dropdown arrow, which invokes a popup.
     <HasPopup>
         <content>
             <div id="ComboBox_content"/>
-            <ButtonBase id="dropdownButton" generic="false">&#9660;</ButtonBase>
+            <ToggleButton id="dropdownButton">&#9660;</ToggleButton>
         </content>
     </HasPopup>
 </prototype>
@@ -24,6 +24,10 @@ An input area with a dropdown arrow, which invokes a popup.
 
 #ComboBox_content input[type='text'] {
     border: none;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
     outline: none;
     padding: 2px;
 }
@@ -31,7 +35,6 @@ An input area with a dropdown arrow, which invokes a popup.
 #dropdownButton {
     text-align: center;
     vertical-align: middle;
-    width: 1.4em;
 }
 
 /* Generic appearance */
@@ -52,10 +55,7 @@ An input area with a dropdown arrow, which invokes a popup.
     user-select: none;
 }
 .ComboBox.generic #dropdownButton {
-    border-left: 1px solid transparent;
-}
-.ComboBox.generic #dropdownButton:hover {
-    border-color: lightgray;
+    border: none;
 }
 </style>
 
@@ -76,6 +76,11 @@ ComboBox.prototype.extend({
         this.genericIfClassIs( ComboBox );
         
         var self = this;
+        this.$HasPopup_popup().bind({
+            "closed canceled": function() {
+                self.$dropdownButton().toggleSelected( false );
+            }
+        });
         this.$dropdownButton().click( function() {
             self.open();
         });
@@ -87,6 +92,7 @@ ComboBox.prototype.extend({
     },
     
     open: function() {
+        
         if ( this.hasClass( "generic" ) ) {
             // Make popup at least as wide as content.
             this.eachControl( function( index, $control ) {
@@ -94,7 +100,13 @@ ComboBox.prototype.extend({
                 this.$HasPopup_popup().css( "min-width", width + "px" );
             });
         }
-        return this._super();
+        
+        // User may have invoked popup by clicking in text box with
+        // openOnFocus true, in which case we should ensure button looks
+        // pressed while popup is open.
+        this.$dropdownButton().toggleSelected( true );
+        
+        return this._super(); 
     },
     
     _bindInputEvents: function() {
