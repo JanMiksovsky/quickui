@@ -45,15 +45,6 @@ An input area with a dropdown arrow, which invokes a popup.
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
-.ComboBox.generic #HasPopup_popup {
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    -moz-user-select: -moz-none;
-    -webkit-user-select: none;
-    user-select: none;
-}
 .ComboBox.generic #dropdownButton {
     border: none;
 }
@@ -63,6 +54,7 @@ An input area with a dropdown arrow, which invokes a popup.
 ComboBox.prototype.extend({
     
     content: Control.chain( "$ComboBox_content", "content" ),
+    
     openOnFocus: Control.property.bool( null, true ),
     // TODO: Allow transmute to return the current class, replace this with a binding.
     textBoxClass: Control.property[ "class" ]( function( textBoxClass ) {
@@ -89,6 +81,15 @@ ComboBox.prototype.extend({
             // Set a default text box class
             this.textBoxClass( TextBox );
         }
+    },
+    
+    /*
+     * Return the combo box's input control. By default we return the first
+     * text input element in the content. Subclasses can override this to
+     * point at a different element.
+     */
+    inputControl: function() {
+        return this.$ComboBox_content().find( "input[type='text']" ).eq(0);
     },
     
     open: function() {

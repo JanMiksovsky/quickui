@@ -15,7 +15,17 @@ Base class for popups, menus, dialogs, things that appear temporarily over other
 .Popup.generic {
     background: white;
     border: 1px solid gray;
+    -moz-box-shadow: 3px 3px 5px #b0b0b0;
+    -webkit-box-shadow: 3px 3px 5px #b0b0b0;
+    box-shadow: 3px 3px 5px #b0b0b0;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
     padding: .25em;
+    -moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 </style>
 
