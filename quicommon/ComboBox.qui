@@ -52,15 +52,10 @@ An input area with a dropdown arrow, which invokes a popup.
 
 <script>
 ComboBox.prototype.extend({
-    
+
+    closeOnEnter: Control.property.bool( null, true ),    
     content: Control.chain( "$ComboBox_content", "content" ),
-    
     openOnFocus: Control.property.bool( null, true ),
-    // TODO: Allow transmute to return the current class, replace this with a binding.
-    textBoxClass: Control.property[ "class" ]( function( textBoxClass ) {
-        this.$ComboBox_content().transmute( textBoxClass );
-        this._bindInputEvents();
-    }),
     
     initialize: function() {
         
@@ -68,9 +63,18 @@ ComboBox.prototype.extend({
         this.genericIfClassIs( ComboBox );
         
         var self = this;
+        this.$ComboBox_content().bind({
+            "keydown": function( event ) {
+                if ( event.which === 13 /* Enter key */
+                    && self.closeOnEnter()
+                    && self.$HasPopup_popup().opened() ) {
+                    self.close();
+                }
+            }
+        });
         this.$HasPopup_popup().bind({
             "closed canceled": function() {
-                self.$dropdownButton().toggleSelected( false );
+                self.$dropdownButton().selected( false );
             }
         });
         this.$dropdownButton().click( function() {
@@ -105,10 +109,19 @@ ComboBox.prototype.extend({
         // User may have invoked popup by clicking in text box with
         // openOnFocus true, in which case we should ensure button looks
         // pressed while popup is open.
-        this.$dropdownButton().toggleSelected( true );
+        this.$dropdownButton().selected( true );
         
         return this._super(); 
     },
+
+    /*
+     * The class of the text box portion of the combo box.
+     */
+    textBoxClass: Control.property[ "class" ]( function( textBoxClass ) {
+        // Transmute to new class, preserving any bound events.
+        this.$ComboBox_content().transmute( textBoxClass, false, false, true );
+        this._bindInputEvents();
+    }),
     
     _bindInputEvents: function() {
         var self = this;
