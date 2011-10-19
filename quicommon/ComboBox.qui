@@ -47,6 +47,7 @@ An input area with a dropdown arrow, which invokes a popup.
 }
 .ComboBox.generic #dropdownButton {
     border: none;
+    padding: 0 0.25em; /* Tighter padding that normal */
 }
 </style>
 
@@ -111,7 +112,13 @@ ComboBox.prototype.extend({
         // pressed while popup is open.
         this.$dropdownButton().selected( true );
         
-        return this._super(); 
+        /*
+        var result = this._super();
+        this.inputControl().focus();
+        return result;
+        */
+       
+        return this._super();
     },
 
     /*
