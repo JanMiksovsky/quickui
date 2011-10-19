@@ -125,12 +125,17 @@ ComboBox.prototype.extend({
      * The class of the text box portion of the combo box.
      */
     textBoxClass: Control.property[ "class" ]( function( textBoxClass ) {
-        // Transmute to new class, preserving any bound events.
-        this.$ComboBox_content().transmute( textBoxClass, false, false, true );
-        this._bindInputEvents();
+        
+        this.$ComboBox_content().transmute( textBoxClass );
+        
+        // Rebind any content events we want to track.
+        this._bindContentEvents();
     }),
     
-    _bindInputEvents: function() {
+    _bindContentEvents: function() {
+        
+        this._super();
+        
         var self = this;
         this.$ComboBox_content().find( "input" ).bind({
             "blur": function() {
