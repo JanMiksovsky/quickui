@@ -134,10 +134,33 @@ ComboBox.prototype.extend({
             }
         });
         this.$ComboBox_content().find( "input" ).bind({
-            "blur": function() {
-                self.close();
+            "blur": function( event ) {
+                /*
+                 * We want to close the popup if the focus moves completely
+                 * outside the combo box; i.e., is not within the input box or
+                 * the popup. Unfortunately, if the user clicks in the popup,
+                 * the input will blur before we've had a chance to even
+                 * register the click. And at the point the blur handler here
+                 * is invoked, document.activeElement may not be set yet,
+                 * so we can't inspect it to see whether the focus is still
+                 * inside the popup.
+                 * 
+                 * HACK: We close the popup in a timeout, trusting that any
+                 * click within the popup will have completed by the time the
+                 * timeout completes. Wish there were a better way to do this;
+                 * relying on the timing of events this way is far too fragile.
+                 * In defense, this blur behavior is meant as a clean-up step
+                 * in the case where the user fails to make a choice or
+                 * actively dismiss the popup; presumably, this situation won't
+                 * come up all that often.
+                 */
+                if ( self.opened() ) {
+                    setTimeout( function() {
+                        self.cancel(); 
+                    }, 250 );
+                }
             },
-            "focus": function() {
+            "click focus": function() {
                 if ( self.openOnFocus() ) {
                     self.open();
                 }
