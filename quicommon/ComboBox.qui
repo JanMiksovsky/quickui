@@ -54,7 +54,7 @@ An input area with a dropdown arrow, which invokes a popup.
 <script>
 ComboBox.prototype.extend({
 
-    closeOnEnter: Control.property.bool( null, true ),    
+    closeOnEnter: Control.property.bool( null, true ),
     content: Control.chain( "$ComboBox_content", "content" ),
     openOnFocus: Control.property.bool( null, true ),
     
@@ -64,15 +64,6 @@ ComboBox.prototype.extend({
         this.genericIfClassIs( ComboBox );
         
         var self = this;
-        this.$ComboBox_content().bind({
-            "keydown": function( event ) {
-                if ( event.which === 13 /* Enter key */
-                    && self.closeOnEnter()
-                    && self.$HasPopup_popup().opened() ) {
-                    self.close();
-                }
-            }
-        });
         this.$HasPopup_popup().bind({
             "closed canceled": function() {
                 self.$dropdownButton().selected( false );
@@ -98,26 +89,22 @@ ComboBox.prototype.extend({
     },
     
     open: function() {
+        if ( !this.opened() ) {
         
-        if ( this.hasClass( "generic" ) ) {
-            // Make popup at least as wide as content.
-            this.eachControl( function( index, $control ) {
-                var width = $control.outerWidth();
-                this.$HasPopup_popup().css( "min-width", width + "px" );
-            });
+            if ( this.hasClass( "generic" ) ) {
+                // Make popup at least as wide as content.
+                this.eachControl( function( index, $control ) {
+                    var width = $control.outerWidth();
+                    this.$HasPopup_popup().css( "min-width", width + "px" );
+                });
+            }
+            
+            // User may have invoked popup by clicking in text box with
+            // openOnFocus true, in which case we should ensure button looks
+            // pressed while popup is open.
+            this.$dropdownButton().selected( true );
+            
         }
-        
-        // User may have invoked popup by clicking in text box with
-        // openOnFocus true, in which case we should ensure button looks
-        // pressed while popup is open.
-        this.$dropdownButton().selected( true );
-        
-        /*
-        var result = this._super();
-        this.inputControl().focus();
-        return result;
-        */
-       
         return this._super();
     },
 
@@ -137,11 +124,18 @@ ComboBox.prototype.extend({
         this._super();
         
         var self = this;
-        this.$ComboBox_content().find( "input" ).bind({
-            "blur": function() {
-                if ( !self.opened() ) {
+        this.$ComboBox_content().bind({
+            "keydown": function( event ) {
+                if ( event.which === 13 /* Enter key */
+                    && self.closeOnEnter()
+                    && self.$HasPopup_popup().opened() ) {
                     self.close();
                 }
+            }
+        });
+        this.$ComboBox_content().find( "input" ).bind({
+            "blur": function() {
+                self.close();
             },
             "focus": function() {
                 if ( self.openOnFocus() ) {

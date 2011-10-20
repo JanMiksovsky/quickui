@@ -38,7 +38,6 @@ Popup.prototype.extend({
     cancelOnEscapeKey: Control.property.bool( null, true ),
     cancelOnOutsideClick: Control.property.bool( null, true ),
     closeOnInsideClick: Control.property.bool(),
-    opened: Control.property(),
     
     initialize: function()
     {
@@ -53,20 +52,44 @@ Popup.prototype.extend({
             .genericIfClassIs( Popup );
     },
     
+    /*
+     * Cancel the popup. This is just like closing it, but raises a "canceled"
+     * event instead.
+     * 
+     * This has no effect if the popup is already closed.
+     */
     cancel: function() {
-        return this
-            .trigger( "canceled" )
-            ._hidePopup();
+        return !this.opened()
+            ? this
+            : this
+                .trigger( "canceled" )
+                ._hidePopup();
     },
     
+    /*
+     * Close the popup (dismiss it).
+     * 
+     * This has no effect if the popup is already closed.
+     */
     close: function() {
-        return this
-            .trigger("closed")
-            ._hidePopup();
+        return !this.opened()
+            ? this
+            : this
+                .trigger("closed")
+                ._hidePopup();
     },
 
+    /*
+     * Open the popup (show it).
+     * 
+     * This has no effect if the popup is already opened.
+     */
     open: function()
     {
+        if ( this.opened() ) {
+            return this;
+        }
+        
         if ( this.blanket() == null ) {
             this.blanket( this._createBlanket() );
         }
@@ -82,13 +105,17 @@ Popup.prototype.extend({
             .css( "z-index", maximumZIndex + 2 )
             .show()
             .positionPopup()
-            .opened( true )
             .trigger( "opened" );
             
         // In case the overlay wants to resize anything now that it's visible.
         Layout.recalc();
         
         return this;
+    },
+    
+    // Return true if the popup is currently open (visible).
+    opened: function() {
+        return this.blanket() != null;
     },
     
     // Subclasses should override this to position themselves.
@@ -155,7 +182,6 @@ Popup.prototype.extend({
     {
         this
             ._bindKeydownHandler( false )
-            .opened( false )
             .hide()
             .css( "z-index", null ); // No need to define Z-order any longer.
         if ( this.blanket() != null ) {
