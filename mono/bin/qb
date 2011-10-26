@@ -1,4 +1,10 @@
 #!/bin/bash
 # Launch the qb tool via Mono.
-# Replace the qb.exe location below with your own install location.
-exec /usr/bin/mono /Developer/Applications/QuickUI/lib/qb.exe "$@"
+# This script expects to live in a sibling folder to the QuickUI /lib folder.
+
+scriptPath=$(cd ${0%/*} && echo $PWD/${0##*/})
+scriptFolder=`dirname "$scriptPath"`
+libFolder="$scriptFolder/../lib"
+qbExe="$libFolder/qb.exe"
+
+exec /usr/bin/mono $qbExe "$@"
