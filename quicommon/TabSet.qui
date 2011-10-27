@@ -69,7 +69,7 @@ TabSet.prototype.extend({
                 var index = self.tabButtons().index( tabButton );
                 if ( index >= 0 ) {
                     var tab = self.tabs()[ index ];
-                    self.trigger( "tabClick", [ index, tab ]);
+                    self.trigger( "tabButtonClick", [ index, tab ]);
                     if ( self.selectTabOnClick() ) {
                         self.selectedTabIndex( index );
                     }

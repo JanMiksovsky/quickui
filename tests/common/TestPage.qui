@@ -107,9 +107,8 @@ TestPage.prototype.extend({
         });
         
         this.$tabSet().bind({
-            "tabClick": function( event, index, tab ) {
-                console.log( "Click on tab: " + index );
-            },
+            
+            // Raised by any child of a Switch inside the TabSet.
             "active": function( event ) {
                 var target = event.target;
                 var s = target.nodeName.toLowerCase();
@@ -125,12 +124,22 @@ TestPage.prototype.extend({
                 }
                 console.log( "Element now active: " + s );
             },
+            
+            // Raised by a Switch inside the TabSet
             "activeChildChanged": function( event, index, child ) {
                 console.log( "Active child changed to: " + index );
             },
+            
+            // Raised by the TabSet
             "activeTabChanged": function( event, index, tab ) {
                 console.log( "Active tab changed to: " + index );
             },
+            
+            // Raised by the TabSet
+            "tabButtonClick": function( event, index, tab ) {
+                console.log( "Click on tab: " + index );
+            }
+            
         });
         this.$buttonChangeAnimal().click( function() {
             var animalIndex = self.$switchAnimals().activeIndex();
