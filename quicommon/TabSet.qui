@@ -77,6 +77,22 @@ TabSet.prototype.extend({
             }
         });
         
+        /*
+         * Map the Switch's activeChildChanged event to a more semantically
+         * specific activeTabChanged event.
+         */
+        this.$TabSet_content().bind({
+            "activeChildChanged": function( event, index, child ) {
+                // Only map active events coming from our own Switch;
+                // ignore events coming from any Switch within a tab.
+                var tab = $( event.target ).filter( self.tabs() );
+                if ( tab.length > 0 ) {
+                    event.stopPropagation();
+                    self.trigger( "activeTabChanged", [ index, child ] );
+                }
+            }
+        });
+        
         if ( this.tabs().length > 0 && !this.selectedTabIndex() ) {
             // Select first tab by default.
             this.selectedTabIndex(0);

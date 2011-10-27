@@ -29,7 +29,14 @@
         </Switch>
         
         <TabSet id="tabSet" style="height: 100px;">
-            <Tab name="Tab A">Aardvark</Tab>
+            <Tab name="Tab A">
+                <Switch id="switchAnimals">
+                    <div>Aardvark</div>
+                    <div>Ant</div>
+                    <div>Anteater</div>
+                </Switch>
+                <ButtonBase id="buttonChangeAnimal">Change</ButtonBase>
+            </Tab>
             <Tab name="Tab B">Bandicoot</Tab>
             <Tab name="Tab C">Chickadee</Tab>
         </TabSet>
@@ -101,14 +108,36 @@ TestPage.prototype.extend({
         
         this.$tabSet().bind({
             "tabClick": function( event, index, tab ) {
-                console.log( "TabSet tabClick:" + index );
-            }
-        });
-        this.$tabSet().tabs().bind({
-            "active": function( event, index, tab ) {
-                console.log( "Tab active: " + index );
+                console.log( "Click on tab: " + index );
             },
-        })
+            "active": function( event ) {
+                var target = event.target;
+                var s = target.nodeName.toLowerCase();
+                var $target = $( target );
+                var elementClass = $target.attr( "class" );
+                if ( elementClass ) {
+                    var firstClass = elementClass.split(" ")[0];
+                    s += "." + firstClass;
+                }
+                var id = $target.attr( "id" );
+                if ( id ) {
+                    s += "#" + id;
+                }
+                console.log( "Element now active: " + s );
+            },
+            "activeChildChanged": function( event, index, child ) {
+                console.log( "Active child changed to: " + index );
+            },
+            "activeTabChanged": function( event, index, tab ) {
+                console.log( "Active tab changed to: " + index );
+            },
+        });
+        this.$buttonChangeAnimal().click( function() {
+            var animalIndex = self.$switchAnimals().activeIndex();
+            var animalCount = self.$switchAnimals().children().length;
+            animalIndex = ( ( animalIndex + 1 ) % animalCount );
+            self.$switchAnimals().activeIndex( animalIndex ); 
+        });
         
         this.$shifter().transmute(ButtonBase, true);
     }

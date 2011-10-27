@@ -35,9 +35,14 @@ Switch.prototype.extend({
             this.children().not( activeChild ).toggleClass( "hidden", true );
 
             var activeChildIndex = this.children().index( activeChild );
+
+            // Tell the child it's now active, and show it.
             $( activeChild )
-                .trigger( "active", [ activeChildIndex, activeChild ] )
+                .trigger( "active" )
                 .toggleClass( "hidden", false );
+                
+            // Trigger our own activeChildChanged event.
+            this.trigger( "activeChildChanged", [ activeChildIndex, activeChild ] );
             
             // In case the new child wants to re-lay itself out.
             Layout.recalc();
