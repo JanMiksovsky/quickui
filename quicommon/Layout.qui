@@ -6,6 +6,10 @@
 Layout.prototype.extend({
     
     initialize: function() {
+        var self = this;
+        this.bind( "sizeChanged", function() {
+            self.layout();
+        });
         Layout.track( this );
     },
     

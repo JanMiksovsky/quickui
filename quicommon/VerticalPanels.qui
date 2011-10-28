@@ -45,14 +45,6 @@ VerticalPanels.prototype.extend({
     content: Control.chain( "$VerticalPanels_content", "content" ),
     fill: Control.chain( "applyClass/fill" ),
     
-    initialize: function() {
-        this._super();
-        var self = this;
-        this.bind( "sizeChanged", function() {
-            self.layout();
-        });
-    },
-    
     bottom: Control.chain( "$VerticalPanels_bottom", "content", function() {
         if ( this.inDocument() ) {
             this.layout();
