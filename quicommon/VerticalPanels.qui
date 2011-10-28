@@ -42,10 +42,28 @@
 <script>
 VerticalPanels.prototype.extend({
     
-    bottom: Control.chain( "$VerticalPanels_bottom", "content" ),
     content: Control.chain( "$VerticalPanels_content", "content" ),
     fill: Control.chain( "applyClass/fill" ),
-    top: Control.chain( "$VerticalPanels_top", "content" ),
+    
+    initialize: function() {
+        this._super();
+        var self = this;
+        this.bind( "sizeChanged", function() {
+            self.layout();
+        });
+    },
+    
+    bottom: Control.chain( "$VerticalPanels_bottom", "content", function() {
+        if ( this.inDocument() ) {
+            this.layout();
+        }
+    }),
+    
+    top: Control.chain( "$VerticalPanels_top", "content", function() {
+        if ( this.inDocument() ) {
+            this.layout();
+        }
+    }),
     
     layout: function() {
         //this._log("layout");

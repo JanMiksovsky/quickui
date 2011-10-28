@@ -50,8 +50,14 @@ HorizontalPanels.prototype.extend({
     
     content: Control.chain( "$HorizontalPanels_content", "content" ),
     fill: Control.chain( "applyClass/fill" ),
-    left: Control.chain( "$HorizontalPanels_left", "content" ),
-    right: Control.chain( "$HorizontalPanels_right", "content" ),
+    
+    initialize: function() {
+        this._super();
+        var self = this;
+        this.bind( "sizeChanged", function() {
+            self.layout();
+        });
+    },
     
     layout: function() {
         var panelLeftWidth = this.$HorizontalPanels_left().outerWidth();
@@ -61,7 +67,20 @@ HorizontalPanels.prototype.extend({
             right: panelRightWidth
         });
         return this;
-    }
+    },
+    
+    left: Control.chain( "$HorizontalPanels_left", "content", function() {
+        if ( this.inDocument() ) {
+            this.layout();
+        }
+    }),
+    
+    right: Control.chain( "$HorizontalPanels_right", "content", function() {
+        if ( this.inDocument() ) {
+            this.layout();
+        }
+    })
+
 });
 </script>
 
