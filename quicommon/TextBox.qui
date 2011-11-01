@@ -25,6 +25,7 @@ top-level element.
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
     -webkit-box-sizing: border-box;
+    display: inline-block;
     height: 100%;
     width: 100%;
 }
