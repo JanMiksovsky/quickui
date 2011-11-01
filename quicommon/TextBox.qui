@@ -1,27 +1,15 @@
-<Control name="TextBox">
-
-<content>
-    <input id="textBox" type="text"/>    
-</content>
-
-<style>
-{
-    display: inline-block;
-}
-
-#textBox {
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    height: 100%;
-    width: 100%;
-}
-</style>
+<!--
+General purpose base class for text box controls.
+This simply wraps a normal input element.
+-->
+ 
+<Control name="TextBox" tag="input">
 
 <script>
 TextBox.prototype.extend({
-    content: Control.chain( "$textBox", "content" )
+    initialize: function() {
+        this.attr( "type", "text" )
+    }
 });
 </script>
 
