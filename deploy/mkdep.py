@@ -21,15 +21,16 @@ import sys
 script_path = sys.path[0]
 project_path = os.path.normpath(os.path.join(script_path, ".."))
 lib_path = os.path.join(project_path, "lib")
-exe_path = os.path.join(project_path, "tools/qb/bin/release")
+exe_path = os.path.join(project_path, os.path.normpath("tools/qb/bin/release"))
 uploads_path = script_path
 
 runtime_path = os.path.join(lib_path, "quickui.js")
 versioned_runtime_template = os.path.join(lib_path, "quickui-{0}.js")
 
-assembly_info_path = os.path.join(exe_path, "AssemblyInfo.cs")
+assembly_info_path = os.path.join(project_path,
+                                  os.path.normpath("tools/qb/Properties/AssemblyInfo.cs"))
 setup_path = os.path.join(exe_path, "QuickUI Setup.msi")
-versioned_setup_template = os.path.join(download_path, "QuickUI Setup-{0}.msi")
+versioned_setup_template = os.path.join(uploads_path, "QuickUI Setup-{0}.msi")
 
 version_js_path = os.path.join(uploads_path, "version.js")
 
