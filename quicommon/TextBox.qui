@@ -1,3 +1,14 @@
+<!--
+General purpose base class for text box controls.
+
+This simply wraps a normal input element. For now the text box is contained
+within the control. This makes it easier for controls like ComboBox to change
+their text box class; currently, Control.prototype.transmute() can't
+accommodate changing the tag of a control. If that gets fixed, then TextBox
+here could be simplified and actually have the input element be the control's
+top-level element. 
+-->
+
 <Control name="TextBox">
 
 <content>
