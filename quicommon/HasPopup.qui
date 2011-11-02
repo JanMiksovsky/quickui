@@ -27,17 +27,6 @@ HasPopup.prototype.extend({
         this.bind( "opened", function() {
             self._positionPopup();
         });
-        
-        this._bindContentEvents();
-    },
-    
-    /*
-     * We bind handlers to the content here. Subclasses like ComboBox may
-     * transmute the content to different classes, so they'll need some
-     * function they can call (and override) to rebind any handlers.
-     */
-    _bindContentEvents: function() {
-        var self = this;
         this.$HasPopup_content().click( function() {
             if ( self.openOnClick() ) {
                 self.open();
