@@ -65,10 +65,24 @@ ComboBox.prototype.extend({
         
         var self = this;
         this.$HasPopup_popup().bind({
-            "closed canceled": function() {
+            "canceled": function() {
+                self.$dropdownButton().selected( false );
+            },
+            "closed": function() {
+                // Closing the popup leaves the text selected.
+                // HACK for IE: If we set focus to the input while the popup is
+                // being closed, IE won't hide the popup. It seems quite hard
+                // to prevent this behavior, so we simply disable the selection
+                // behavior in IE.
+                if ( !$.browser.msie ) {
+                    var content = self.content();
+                    self.inputControl().focus();
+                    self._selectText( 0, content.length );
+                }
                 self.$dropdownButton().selected( false );
             }
         });
+
         this.$dropdownButton().click( function() {
             self.open();
         });
@@ -166,6 +180,28 @@ ComboBox.prototype.extend({
                 }
             }
         });
+    },
+
+    /*
+     * Select the text at the indicated positions in the input control.
+     */
+    _selectText: function( start, end ) {
+        
+        var inputControl = this.inputControl()[0];
+        if ( !inputControl ) {
+            return; // Can't find input control.
+        }
+        
+        if ( inputControl.setSelectionRange ) {
+            // Mozilla/WebKit
+            inputControl.setSelectionRange( start, end );
+        } else if ( inputControl.createTextRange ) {
+            // IE
+            var range = inputControl.createTextRange();
+            range.moveStart( "character", start );
+            range.moveEnd( "character", end );
+            range.select();
+        }
     }
 
 });
