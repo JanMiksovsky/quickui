@@ -22,6 +22,10 @@ An input area with a dropdown arrow, which invokes a popup.
     display: table-cell;
 }
 
+#HasPopup_popup {
+    -moz-outline: none;
+}
+
 #ComboBox_content input[type='text'] {
     border: none;
     -moz-box-sizing: border-box;
@@ -57,6 +61,7 @@ ComboBox.prototype.extend({
     closeOnEnter: Control.property.bool( null, true ),
     content: Control.chain( "$ComboBox_content", "content" ),
     openOnFocus: Control.property.bool( null, true ),
+    _handlingPopupClick: Control.property(),
     
     initialize: function() {
         
@@ -67,6 +72,10 @@ ComboBox.prototype.extend({
         this.$HasPopup_popup().bind({
             "canceled": function() {
                 self.$dropdownButton().selected( false );
+            },
+            "click": function() {
+                // See notes at focusout handler below.
+                self._handlingPopupClick( true );
             },
             "closed": function() {
                 // Closing the popup leaves the text selected.
@@ -80,13 +89,68 @@ ComboBox.prototype.extend({
                     self._selectText( 0, content.length );
                 }
                 self.$dropdownButton().selected( false );
+                self._handlingPopupClick( false );
             }
         });
-
+        
+        this.bind({
+            // Open the popup when any part of the control gets focus.
+            "focusin": function( event ) {
+                self._handlingPopupClick( false );
+                if ( self.openOnFocus() && !self.opened() ) {
+                    self.open();
+                }
+            },
+            // Close the popup when the control loses focus.
+            "focusout": function( event ) {
+                /*
+                 * We want to close the popup if the focus moves completely
+                 * outside the combo box; i.e., is not within the input box or
+                 * the popup. Unfortunately, if the user clicks in the popup,
+                 * the input will blur before we've had a chance to even
+                 * register the click. And at the point the blur handler here
+                 * is invoked, there's no reliable way to determine where
+                 * the focus is going to end up.
+                 * 
+                 * HACK: We close the popup in a timeout. If the user is
+                 * clicking in the popup, we set a flag (see click handler,
+                 * above). If the flag is set by the time the timeout completes,
+                 * we assume the focus was lost due to the click -- i.e., we
+                 * can ignore the loss of focus. Otherwise, we assume the
+                 * focus has really been moved to another control, and close
+                 * the popup. Relying on the timing of events this way is far
+                 * too fragile, but many other strategies here have failed
+                 * (especially cross-browser).
+                 * 
+                 * In defense, this blur behavior is meant as a clean-up step
+                 * in the case where the user fails to make a choice or
+                 * actively dismiss the popup; presumably, this situation won't
+                 * come up all that often.
+                 */
+                if ( self.opened() ) {
+                    setTimeout( function() {
+                        if ( self._handlingPopupClick() ) {
+                            // Focus probably lost due to click.
+                            // Reset our flag which was tracking this.
+                            self._handlingPopupClick( false );
+                        } else  if ( self.opened() ) { // Still open?
+                            self.cancel();
+                        }
+                    }, 200);
+                }
+            }
+        });
+        
         this.$dropdownButton().click( function() {
             self.open();
         });
         
+        /*
+        this.$HasPopup_popup()
+            .prop( "tabindex", 0 )
+            .css( "-moz-outline", "none" );
+        */
+       
         if ( !this.textBoxClass() ) {
             // Set a default text box class
             this.textBoxClass( TextBox );
@@ -134,9 +198,7 @@ ComboBox.prototype.extend({
     }),
     
     _bindContentEvents: function() {
-        
         this._super();
-        
         var self = this;
         this.$ComboBox_content().bind({
             "keydown": function( event ) {
@@ -144,39 +206,6 @@ ComboBox.prototype.extend({
                     && self.closeOnEnter()
                     && self.$HasPopup_popup().opened() ) {
                     self.close();
-                }
-            }
-        });
-        this.$ComboBox_content().find( "input" ).bind({
-            "blur": function( event ) {
-                /*
-                 * We want to close the popup if the focus moves completely
-                 * outside the combo box; i.e., is not within the input box or
-                 * the popup. Unfortunately, if the user clicks in the popup,
-                 * the input will blur before we've had a chance to even
-                 * register the click. And at the point the blur handler here
-                 * is invoked, document.activeElement may not be set yet,
-                 * so we can't inspect it to see whether the focus is still
-                 * inside the popup.
-                 * 
-                 * HACK: We close the popup in a timeout, trusting that any
-                 * click within the popup will have completed by the time the
-                 * timeout completes. Wish there were a better way to do this;
-                 * relying on the timing of events this way is far too fragile.
-                 * In defense, this blur behavior is meant as a clean-up step
-                 * in the case where the user fails to make a choice or
-                 * actively dismiss the popup; presumably, this situation won't
-                 * come up all that often.
-                 */
-                if ( self.opened() ) {
-                    setTimeout( function() {
-                        self.cancel(); 
-                    }, 250 );
-                }
-            },
-            "click focus": function() {
-                if ( self.openOnFocus() ) {
-                    self.open();
                 }
             }
         });
