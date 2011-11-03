@@ -52,7 +52,7 @@ An input area with a dropdown arrow, which invokes a popup.
 }
 .ComboBox.generic #dropdownButton {
     border: none;
-    padding: 0 0.25em; /* Tighter padding that normal */
+    padding: 0 0.4em; /* Tighter padding that normal */
 }
 </style>
 
@@ -61,6 +61,7 @@ ComboBox.prototype.extend({
 
     closeOnEnter: Control.property.bool( null, true ),
     content: Control.chain( "$ComboBox_content", "content" ),
+    dropdownButtonContent: Control.chain( "$dropdownButton", "content" ),
     openOnFocus: Control.property.bool( null, true ),
     _handlingPopupClick: Control.property(),
     
