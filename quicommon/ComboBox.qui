@@ -187,6 +187,11 @@ ComboBox.prototype.extend({
         this._super();
         var self = this;
         this.$ComboBox_content().bind({
+            "click": function( event ) {
+                if ( self.openOnFocus() && !self.opened() ) {
+                    self.open();
+                }
+            },
             "keydown": function( event ) {
                 if ( event.which === 13 /* Enter key */
                     && self.closeOnEnter()
