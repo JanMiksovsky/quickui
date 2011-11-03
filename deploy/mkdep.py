@@ -21,11 +21,12 @@ import sys
 script_path = sys.path[0]
 project_path = os.path.normpath(os.path.join(script_path, ".."))
 lib_path = os.path.join(project_path, "lib")
-exe_path = os.path.join(project_path, os.path.normpath("tools/qb/bin/release"))
+exe_path = os.path.join(project_path,
+                        os.path.normpath("tools/Setup/Setup/Release"))
 uploads_path = script_path
 
 runtime_path = os.path.join(lib_path, "quickui.js")
-versioned_runtime_template = os.path.join(lib_path, "quickui-{0}.js")
+versioned_runtime_template = os.path.join(uploads_path, "quickui-{0}.js")
 
 assembly_info_path = os.path.join(project_path,
                                   os.path.normpath("tools/qb/Properties/AssemblyInfo.cs"))
@@ -57,7 +58,7 @@ def copy_versioned_file(source_path, version_path, re_version, destination_templ
     source_name = os.path.basename(source_path)
     destination_name = os.path.basename(destination_path)
     print("Copying {0} to {1}".format(source_name, destination_name))
-    # shutil.copyfile(source_path, destination_path)
+    shutil.copyfile(source_path, destination_path)
     return {
         "version": version,
         "path": destination_path
