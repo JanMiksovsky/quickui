@@ -52,7 +52,11 @@ An input area with a dropdown arrow, which invokes a popup.
 }
 .ComboBox.generic #dropdownButton {
     border: none;
+    border-left: 1px solid transparent;
     padding: 0 0.4em; /* Tighter padding that normal */
+}
+.ComboBox.generic:hover #dropdownButton {
+    border-left-color: lightgray;
 }
 </style>
 
