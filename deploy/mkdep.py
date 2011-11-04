@@ -35,7 +35,7 @@ setup_path = os.path.join(exe_path, "QuickUI Setup.msi")
 versioned_setup_template = os.path.join(uploads_path, "QuickUI Setup-{0}.msi")
 
 zip_path = os.path.join(script_path, "QuickUI.zip")
-versioned_setup_template = os.path.join(uploads_path, "QuickUI-{0}.zip")
+versioned_zip_template = os.path.join(uploads_path, "QuickUI-{0}.zip")
 
 version_js_path = os.path.join(uploads_path, "version.js")
 
@@ -65,9 +65,10 @@ def copy_versioned_file(source_path, version_path, re_version, destination_templ
     version = get_version(version_path, re_version)
     destination_path = destination_template.format(version)
     copyfile(source_path, destination_path)
+    destination_name = os.path.basename(destination_path)
     return {
         "version": version,
-        "path": destination_path
+        "filename": destination_name
     }
 
 def copyfile(source_path, destination_path):
@@ -76,9 +77,13 @@ def copyfile(source_path, destination_path):
     print("Copying {0} to {1}".format(source_name, destination_name))
     shutil.copyfile(source_path, destination_path)
     
-def write_version_js_file(runtime_info, setup_info):
+def write_version_js_file(runtime_info, setup_info, zip_info):
     """ Copy the version information to a file that can be read by quickui.org """
-    versionInfo = { "runtime": runtime_info, "setup": setup_info }
+    versionInfo = {
+                    "runtime": runtime_info,
+                    "setup": setup_info,
+                    "zip": zip_info
+                  }
     with open(version_js_path, "w") as f:
         f.write("// QuickUI version information\n")
         f.write("var quickUIVersion = ")
