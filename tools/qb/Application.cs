@@ -172,9 +172,8 @@ If no project is specified, the current directory is used.
             out bool doVersion,
             out List<string> projectPaths)
         {
-
             projectPaths = new List<string>();
-            doBuild = false;
+            doBuild = true; // Default action
             doClean = false;
             doHelp = false;
             doVersion = false;
@@ -184,21 +183,23 @@ If no project is specified, the current directory is used.
                 switch (arg)
                 {
                     case argumentClean:
+                        doBuild = false;
                         doClean = true;
                         break;
 
                     case argumentHelp:
                         // Help trumps other arguments.
+                        doBuild = false;
                         doHelp = true;
                         return;
 
                     case argumentRebuild:
                         doClean = true;
-                        doBuild = true;
                         break;
 
                     case argumentVersion:
                         // Version trumps other arguments.
+                        doBuild = false;
                         doVersion = true;
                         return;
 
@@ -209,7 +210,6 @@ If no project is specified, the current directory is used.
                             doHelp = true;
                             return;
                         }
-                        doBuild = true;
                         projectPaths.Add(arg);
                         break;
                 }
