@@ -23,15 +23,19 @@ project_path = os.path.normpath(os.path.join(script_path, ".."))
 lib_path = os.path.join(project_path, "lib")
 exe_path = os.path.join(project_path,
                         os.path.normpath("tools/Setup/Setup/Release"))
-uploads_path = script_path
+uploads_path = os.path.join(script_path, "packages")
 
-runtime_path = os.path.join(lib_path, "quickui.js")
+runtime_name = "quickui.js"
+runtime_path = os.path.join(lib_path, runtime_name)
 versioned_runtime_template = os.path.join(uploads_path, "quickui-{0}.js")
 
 assembly_info_path = os.path.join(project_path,
                                   os.path.normpath("tools/qb/Properties/AssemblyInfo.cs"))
 setup_path = os.path.join(exe_path, "QuickUI Setup.msi")
 versioned_setup_template = os.path.join(uploads_path, "QuickUI Setup-{0}.msi")
+
+zip_path = os.path.join(script_path, "QuickUI.zip")
+versioned_setup_template = os.path.join(uploads_path, "QuickUI-{0}.zip")
 
 version_js_path = os.path.join(uploads_path, "version.js")
 
@@ -42,6 +46,7 @@ re_runtime_version = 'quickui: "([\d\.]+)"'
 re_setup_version = 'AssemblyVersion\("([\d\.]+)"\)'
 
 def build_deployment_files():
+    #copyfile(runtime_path, os.path.join(uploads_path, runtime_name))    
     runtime_info = copy_versioned_file(runtime_path,
                                        runtime_path,
                                        re_runtime_version,
@@ -50,20 +55,27 @@ def build_deployment_files():
                                      assembly_info_path,
                                      re_setup_version,
                                      versioned_setup_template)
-    write_version_js_file(runtime_info, setup_info)
+    zip_info = copy_versioned_file(zip_path,
+                                     assembly_info_path,
+                                     re_setup_version,
+                                     versioned_zip_template)
+    write_version_js_file(runtime_info, setup_info, zip_info)
 
 def copy_versioned_file(source_path, version_path, re_version, destination_template):
     version = get_version(version_path, re_version)
     destination_path = destination_template.format(version)
-    source_name = os.path.basename(source_path)
-    destination_name = os.path.basename(destination_path)
-    print("Copying {0} to {1}".format(source_name, destination_name))
-    shutil.copyfile(source_path, destination_path)
+    copyfile(source_path, destination_path)
     return {
         "version": version,
         "path": destination_path
     }
 
+def copyfile(source_path, destination_path):
+    source_name = os.path.basename(source_path)
+    destination_name = os.path.basename(destination_path)
+    print("Copying {0} to {1}".format(source_name, destination_name))
+    shutil.copyfile(source_path, destination_path)
+    
 def write_version_js_file(runtime_info, setup_info):
     """ Copy the version information to a file that can be read by quickui.org """
     versionInfo = { "runtime": runtime_info, "setup": setup_info }

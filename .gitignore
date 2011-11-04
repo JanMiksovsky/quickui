@@ -40,7 +40,7 @@ tests/integration/integration.*
 tests/common/common.*
 tests/rehydrate/rehydrate.*
 
-deploy/QuickUI
+deploy/packages
 mono/lib
 old
 TestResult.xml

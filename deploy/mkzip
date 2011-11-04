@@ -1,5 +1,8 @@
 #!/bin/bash
-# Gather up the QuickUI tools (binaries, scripts, etc.).
+#
+# Gather up the QuickUI tools (binaries, scripts, etc.) for OS/X and Linux
+# under mono.
+#
 # Relies on the ZIP utility 7-Zip from 7-zip.org.
 
 # Get location of parent QuickUI folder relative to location of this script.
@@ -25,11 +28,11 @@ if [ -d $lib ]; then
 fi
 mkdir $lib
 
-# Copy tool outputs to lib folder.
+# Copy tool outputs to mono lib folder.
 cp $quickui/tools/qb/bin/Release/qb.exe $lib
 cp $quickui/tools/qb/bin/Release/qc.exe $lib
 
-# Copy QuickUI libraries to lib folder.
+# Copy QuickUI libraries to mono lib folder.
 cp $quickui/lib/quickui.js $lib
 cp $quickui/quicommon/quicommon.js $lib
 cp $quickui/quicommon/quicommon.css $lib
