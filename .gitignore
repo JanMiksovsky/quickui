@@ -40,7 +40,7 @@ tests/integration/integration.*
 tests/common/common.*
 tests/rehydrate/rehydrate.*
 
-deploy/packages
+release
 mono/lib
 old
 TestResult.xml

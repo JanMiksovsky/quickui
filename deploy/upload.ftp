@@ -18,6 +18,10 @@ mput *
 lcd ..
 cd ..
 
-put "tools/Setup/Setup/Release/QuickUI Setup.msi" "downloads/QuickUI Setup.msi"
-put deploy/QuickUI.zip downloads/QuickUI.zip
+lcd deploy/packages
+cd release
+mput *
+lcd ../..
+cd ..
+
 quit

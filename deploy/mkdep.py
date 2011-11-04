@@ -23,7 +23,7 @@ project_path = os.path.normpath(os.path.join(script_path, ".."))
 lib_path = os.path.join(project_path, "lib")
 exe_path = os.path.join(project_path,
                         os.path.normpath("tools/Setup/Setup/Release"))
-uploads_path = os.path.join(script_path, "packages")
+uploads_path = os.path.join(project_path, "release")
 
 runtime_name = "quickui.js"
 runtime_path = os.path.join(lib_path, runtime_name)
