@@ -68,7 +68,7 @@ def copy_versioned_file(source_path, version_path, re_version, destination_templ
     destination_name = os.path.basename(destination_path)
     return {
         "version": version,
-        "filename": destination_name
+        "fileName": destination_name
     }
 
 def copyfile(source_path, destination_path):
