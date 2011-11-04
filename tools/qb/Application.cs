@@ -12,23 +12,13 @@ namespace qb
         /// Main entry point.
         /// </summary>
         /// <remarks>
-        /// Usage:
-        /// qb [ -clean | -rebuild | -version ] [ project1 ... projectN ]
-        /// 
-        /// -clean Cleans project
-        /// -rebuild Cleans project, then builds
-        /// 
-        /// project: Either a folder whose subtree includes .qui files that will be compiled,
-        /// or a file name ending in .qb that contains a list of project files/folders to build.
-        /// 
-        /// Default is incremental build.
-        /// If no project is specified, the current directory is used.
-        /// The outputs for a project folder called /foo will be called foo.js and foo.css.
+        /// See WriteHelp for command line parameter explanation.
         /// </remarks>
         static void Main(string[] args)
         {
             bool doBuild;
             bool doClean;
+            bool doHelp;
             bool doVersion;
             List<string> projectPaths;
 
@@ -37,14 +27,18 @@ namespace qb
                 ArgumentProcessor.ProcessArguments(args,
                     out doBuild,
                     out doClean,
+                    out doHelp,
                     out doVersion,
                     out projectPaths);
 
+                if (doHelp)
+                {
+                    WriteHelp();
+                }
                 if (doVersion)
                 {
                     WriteVersion();
                 }
-
                 if (doBuild || doClean)
                 {
                     if (projectPaths.Count == 0)
@@ -133,6 +127,27 @@ namespace qb
             Console.Error.WriteLine(String.Format("qb: Error: {0}", message));
         }
 
+        static void WriteHelp()
+        {
+            var help =
+@"usage: qb [ --clean | --rebuild ] [ project1 ... projectN ]
+
+--clean     Clean project
+--help      Print this help
+--rebuild   Rebuild: clean project, then build
+--version   Print the application version number
+
+If neither --clean nor --rebuild is specified, the default operation is an
+incremental build.
+
+The project arguments should be folder paths. The folder will be checked for a
+text file called build.qb that lists additional folder paths to build, or else
+the folder will be searched for .qui files that will be compiled and combined.
+If no project is specified, the current directory is used.
+";
+            Console.Write(help);
+        }
+
         static void WriteVersion()
         {
             String version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(); 
@@ -142,9 +157,10 @@ namespace qb
 
     static class ArgumentProcessor
     {
-        const string argumentClean = "-clean";
-        const string argumentRebuild = "-rebuild";
-        const string argumentVersion = "-version";
+        const string argumentClean = "--clean";
+        const string argumentHelp = "--help";
+        const string argumentRebuild = "--rebuild";
+        const string argumentVersion = "--version";
 
         /// <summary>
         /// Crack command-line arguments.
@@ -152,6 +168,7 @@ namespace qb
         public static void ProcessArguments(string[] args,
             out bool doBuild,
             out bool doClean,
+            out bool doHelp,
             out bool doVersion,
             out List<string> projectPaths)
         {
@@ -159,6 +176,7 @@ namespace qb
             projectPaths = new List<string>();
             doBuild = false;
             doClean = false;
+            doHelp = false;
             doVersion = false;
 
             foreach (string arg in args)
@@ -168,6 +186,11 @@ namespace qb
                     case argumentClean:
                         doClean = true;
                         break;
+
+                    case argumentHelp:
+                        // Help trumps other arguments.
+                        doHelp = true;
+                        return;
 
                     case argumentRebuild:
                         doClean = true;
@@ -180,6 +203,12 @@ namespace qb
                         return;
 
                     default:
+                        if (arg.StartsWith("-"))
+                        {
+                            // Unknown argument
+                            doHelp = true;
+                            return;
+                        }
                         doBuild = true;
                         projectPaths.Add(arg);
                         break;

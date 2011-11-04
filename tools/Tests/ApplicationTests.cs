@@ -16,8 +16,10 @@ namespace Tests
             string sourceFileName;
             string jsFileName;
             string cssFileName;
+            bool doHelp;
+            bool doVersion;
             string[] args = new string[] { };
-            ArgumentProcessor.GetFileNames(args, out sourceFileName, out jsFileName, out cssFileName);
+            ArgumentProcessor.GetFileNames(args, out sourceFileName, out jsFileName, out cssFileName, out doHelp, out doVersion);
             Assert.IsNull(sourceFileName);
             Assert.IsNull(jsFileName);
             Assert.IsNull(cssFileName);
@@ -29,12 +31,14 @@ namespace Tests
             string sourceFileName;
             string jsFileName;
             string cssFileName;
+            bool doHelp;
+            bool doVersion;
             string[] args = new string[] {
                         "foo.css",
                         "foo.qui",
                         "foo.js"
                     };
-            ArgumentProcessor.GetFileNames(args, out sourceFileName, out jsFileName, out cssFileName);
+            ArgumentProcessor.GetFileNames(args, out sourceFileName, out jsFileName, out cssFileName, out doHelp, out doVersion);
             Assert.AreEqual("foo.qui", sourceFileName);
             Assert.AreEqual("foo.js", jsFileName);
             Assert.AreEqual("foo.css", cssFileName);
@@ -47,12 +51,14 @@ namespace Tests
             string sourceFileName;
             string jsFileName;
             string cssFileName;
+            bool doHelp;
+            bool doVersion;
             string[] args = new string[] {
                         "foo.qui",
                         "foo.js",
                         "foo.qui"
                     };
-            ArgumentProcessor.GetFileNames(args, out sourceFileName, out jsFileName, out cssFileName);
+            ArgumentProcessor.GetFileNames(args, out sourceFileName, out jsFileName, out cssFileName, out doHelp, out doVersion);
         }
     }
 }
