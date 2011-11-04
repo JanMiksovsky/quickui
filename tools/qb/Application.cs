@@ -13,7 +13,7 @@ namespace qb
         /// </summary>
         /// <remarks>
         /// Usage:
-        /// qb [ -clean | -rebuild ] [ project1 ... projectN ]
+        /// qb [ -clean | -rebuild | -version ] [ project1 ... projectN ]
         /// 
         /// -clean Cleans project
         /// -rebuild Cleans project, then builds
@@ -29,6 +29,7 @@ namespace qb
         {
             bool doBuild;
             bool doClean;
+            bool doVersion;
             List<string> projectPaths;
 
             try
@@ -36,26 +37,30 @@ namespace qb
                 ArgumentProcessor.ProcessArguments(args,
                     out doBuild,
                     out doClean,
+                    out doVersion,
                     out projectPaths);
 
-                if (projectPaths.Count == 0)
+                if (doVersion)
                 {
-                    // No projects explicitly listed; process current directory as a project.
-                    projectPaths.Add(Directory.GetCurrentDirectory());
+                    WriteVersion();
                 }
 
-                CompileProjects(projectPaths, doBuild, doClean);
+                if (doBuild || doClean)
+                {
+                    if (projectPaths.Count == 0)
+                    {
+                        // No projects explicitly listed; process current directory as a project.
+                        projectPaths.Add(Directory.GetCurrentDirectory());
+                    }
+
+                    CompileProjects(projectPaths, doBuild, doClean);
+                }
             }
             catch (Exception e)
             {
                 WriteError(e.Message);
                 Environment.Exit(1);
             }
-        }
-
-        static void WriteError(string message)
-        {
-            Console.Error.WriteLine(String.Format("qb: Error: {0}", message));
         }
 
         /// <summary>
@@ -122,12 +127,24 @@ namespace qb
 
             CompileProjects(projects, doBuild, doClean);
         }
+
+        static void WriteError(string message)
+        {
+            Console.Error.WriteLine(String.Format("qb: Error: {0}", message));
+        }
+
+        static void WriteVersion()
+        {
+            String version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(); 
+            Console.WriteLine(String.Format("qb {0}", version));
+        }
     }
 
     static class ArgumentProcessor
     {
         const string argumentClean = "-clean";
         const string argumentRebuild = "-rebuild";
+        const string argumentVersion = "-version";
 
         /// <summary>
         /// Crack command-line arguments.
@@ -135,12 +152,14 @@ namespace qb
         public static void ProcessArguments(string[] args,
             out bool doBuild,
             out bool doClean,
+            out bool doVersion,
             out List<string> projectPaths)
         {
 
             projectPaths = new List<string>();
-            doBuild = true;
+            doBuild = false;
             doClean = false;
+            doVersion = false;
 
             foreach (string arg in args)
             {
@@ -148,7 +167,6 @@ namespace qb
                 {
                     case argumentClean:
                         doClean = true;
-                        doBuild = false;
                         break;
 
                     case argumentRebuild:
@@ -156,7 +174,13 @@ namespace qb
                         doBuild = true;
                         break;
 
+                    case argumentVersion:
+                        // Version trumps other arguments.
+                        doVersion = true;
+                        return;
+
                     default:
+                        doBuild = true;
                         projectPaths.Add(arg);
                         break;
                 }
