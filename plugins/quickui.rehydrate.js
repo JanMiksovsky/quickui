@@ -27,7 +27,7 @@
         $.each( elements, function( index, element ) {
             rehydrateControl( element );
         });
-        return this;
+        return this.cast();
     };
     
     /*
