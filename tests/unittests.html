@@ -59,7 +59,7 @@ function runTests() {
         
     test( "control() set properties", function() {
         var Greet = createGreetClass();
-        Greet.prototype.extend( {
+        Greet.prototype.extend({
             name: Control.chain( "$name", "content" )
         });
         var $element = $( "<div/>" );
@@ -89,7 +89,9 @@ function runTests() {
     });
         
     test( "control() on existing content preserves existing control", function() {
-        var MyControl = Control.subclass2( "MyControl" );
+        var MyControl = Control.subclass2({
+            name: "MyControl"
+        });
         var $original = $( "<div><div id='subcontrol'/></div>" );
         var $subcontrol = $original.find( "#subcontrol" ).control( MyControl );
         var $c = $original.control( Control );
@@ -106,9 +108,9 @@ function runTests() {
     });
     
     test( "Cast: two control classes derive from same superclass", function() {
-        var A = Control.subclass2( "A" );
-        var B = A.subclass2( "B" );
-        var C = A.subclass2( "C" );
+        var A = Control.subclass2({ name: "A" });
+        var B = A.subclass2({ name: "B" });
+        var C = A.subclass2({ name: "C" });
         var $a = A.create();
         var $b = B.create();
         var $c = C.create();
@@ -118,7 +120,7 @@ function runTests() {
     });
 
     test( "Cast: control and jQuery mix", function() {
-        var A = Control.subclass2( "A" );
+        var A = Control.subclass2({ name: "A" });
         var $a = A.create();
         var $set = Control( "<div/>" ).append( $a ).append( $( "<div/>" ) );
         var $cast = $set.children().cast();
@@ -161,7 +163,7 @@ function runTests() {
      * Define tests
      */
     test( "Define scalar", function() {
-        var MyControl = Control.subclass2( "MyControl" );
+        var MyControl = Control.subclass2({ name: "MyControl" });
         MyControl.prototype.extend( {
             foo: "Hello"
         });
@@ -171,7 +173,7 @@ function runTests() {
     
     test( "Define method", function() {
         
-        var MyControl = Control.subclass2( "MyControl" );
+        var MyControl = Control.subclass2({ name: "MyControl" });
         MyControl.prototype.extend( {
             foo: function() {
                 this.data( "_calledFoo", true );
@@ -189,7 +191,7 @@ function runTests() {
     
     test( "Define method with iterator()", function() {
         
-        var MyControl = Control.subclass2( "MyControl" );
+        var MyControl = Control.subclass2({ name: "MyControl" });
         MyControl.prototype.extend( {
             foo: Control.iterator(  function() {
                 this.data( "_calledFoo", true );
@@ -276,13 +278,15 @@ function runTests() {
      */
     test( "Element function definition", function() {
         
-        var MyControl = Control.subclass2( "MyControl", function() {
-            this.properties( {
-                content: [
-                    "Hello ",
-                    this._define( "$name", "<span id='name'>Ann</span>" )
-                ]
-            }, Control );
+        var MyControl = Control.subclass2({
+            name: "MyControl", 
+            content: [
+                "Hello ",
+                {
+                    html: "<span/>",
+                    id: "name"
+                }
+            ]
         });
             
         var $c = MyControl.create();
@@ -294,14 +298,17 @@ function runTests() {
     
     test( "Element functions $.end()-able", function() {
         
-        var MyControl = Control.subclass2( "MyControl", function() {
-            this.properties( {
-                content: [
-                    this._define( "$name", "<span id='name'/>" )
-                ]
-            }, Control );
+        var MyControl = Control.subclass2({
+            name: "MyControl", 
+            content: [
+                "Hello ",
+                {
+                    html: "<span/>",
+                    id: "name"
+                }
+            ]
         });
-
+            
         var $c = MyControl.create();
         var $names = $c.$name();
         var $result = $c.$name().end();
@@ -361,12 +368,12 @@ function runTests() {
             name: Control.chain( "$name", "content" )
         });
         
-        var MyControl = Control.subclass2( "MyControl", function() {
-            this.properties( {
-                content: [
-                    this._define( "$greet", Greet.create() )
-                ]
-            }, Control );
+        var MyControl = Control.subclass2({
+            name: "MyControl",
+            content: {
+                control: "Greet",
+                id: "greet"
+            }
         });
         MyControl.prototype.extend( {
             name: Control.chain( "$greet", "name" )
@@ -428,7 +435,7 @@ function runTests() {
     });
     
     test( "chain: functions with parameters", function() {
-        var MyControl = Control.subclass2( "MyControl" );
+        var MyControl = Control.subclass2({ name: "MyControl" });
         MyControl.prototype.display = Control.chain( "css/display" );
         var $c = MyControl.create();
         $c.css( "display", "block" );
@@ -506,10 +513,10 @@ function runTests() {
     test( "Utility: eachControl", function() {
         
         // Create two instances of different classes.
-        var Foo = Control.subclass2( "Foo" );
+        var Foo = Control.subclass2({ name: "Foo" });
         Foo.prototype.content = function() { return "foo"; };
         var $foo = Foo.create();
-        var Bar = Control.subclass2( "Bar" );
+        var Bar = Control.subclass2({ name: "Bar" });
         Bar.prototype.content = function() { return "bar"; };
         var $bar = Bar.create();
         
