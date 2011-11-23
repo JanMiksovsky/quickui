@@ -1,15 +1,15 @@
 ﻿//
 // SimpleHost
 //
-SimpleHost = Control.subclass( "SimpleHost", function renderSimpleHost() {
-	this.properties({
-		"content": [
-			" Text ",
-			Simple.create({
-				"content": "Hello, world!"
-			}),
-			" "
-		]
-	}, Control );
+SimpleHost = Control.subclass({
+    name: "SimpleHost",
+    content: [
+        " Text ",
+        {
+            control: "Simple",
+            content: "Hello, world!"
+        },
+        " "
+    ]
 });
 

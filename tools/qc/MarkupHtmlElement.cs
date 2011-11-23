@@ -104,7 +104,7 @@ namespace qc
             
             return Template.Format(
                 "{\n" +
-                "{Tabs}\thtml: {Html}{Comma1}\n" +
+                "{Tabs}    html: {Html}{Comma1}\n" +
                 "{IdDeclaration}{Comma2}{NewLine}" + 
                 "{Children}" +
                 "{Tabs}}",

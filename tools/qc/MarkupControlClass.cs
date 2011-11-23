@@ -82,7 +82,8 @@ namespace qc
                     Comma1 = (String.IsNullOrEmpty(tag) && String.IsNullOrEmpty(baseClassProperties))
                         ? "" : ",",
                     Tag = tag,
-                    Comma2 = String.IsNullOrEmpty(baseClassProperties) ? "" : ",\n",
+                    Comma2 = String.IsNullOrEmpty(tag) || String.IsNullOrEmpty(baseClassProperties)
+                        ? "" : ",\n",
                     BaseClassProperties = baseClassProperties,
                     Script = EmitScript()
                 });
@@ -173,6 +174,10 @@ namespace qc
             if (Content != null)
             {
                 return EmitBaseClassProperty("content", Content, indentLevel) + "\n";
+            }
+            if (Prototype == null)
+            {
+                return String.Empty;
             }
 
             // UNDONE: Write out prototype's content property first?

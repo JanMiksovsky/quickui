@@ -171,12 +171,15 @@ namespace qc
             return false;
         }
 
+        /// <summary>
+        /// Emit a given number of tab stops, using 4 spaces per tab stop.
+        /// </summary>
         protected string Tabs(int tabCount)
         {
             StringBuilder output = new StringBuilder();
             for (int i = 0; i < tabCount; i++)
             {
-                output.Append('\t');
+                output.Append("    ");
             }
             return output.ToString();
         }

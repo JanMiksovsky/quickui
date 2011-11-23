@@ -1,23 +1,25 @@
 //
 // Content
 //
-Content = Control.subclass( "Content", function renderContent() {
-	this.properties({
-		"content": [
-			" ",
-			Simple.create({
-				"content": "Hello"
-			}),
-			" ",
-			Simple.create({
-				"content": "There"
-			}),
-			" ",
-			Simple.create({
-				"content": " World "
-			}),
-			" "
-		]
-	}, Control );
+Content = Control.subclass({
+    name: "Content",
+    content: [
+        " ",
+        {
+            control: "Simple",
+            content: "Hello"
+        },
+        " ",
+        {
+            control: "Simple",
+            content: "There"
+        },
+        " ",
+        {
+            control: "Simple",
+            content: " World "
+        },
+        " "
+    ]
 });
 

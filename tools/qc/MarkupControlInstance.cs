@@ -50,13 +50,11 @@ namespace qc
         /// </summary>
         public override string JavaScript(int indentLevel)
         {
-            //string idDeclaration = EmitIdDeclaration(indentLevel + 1);
             string controlProperties = EmitControlProperties(indentLevel + 1);
 
             return Template.Format(
                     "{\n" +
-                    "{Tabs}\tcontrol: \"{ClassName}\"{Comma1}\n" +
-                    //"{IdDeclaration}{Comma2}" + 
+                    "{Tabs}    control: \"{ClassName}\"{Comma1}\n" +
                     "{ControlProperties}" +
                     "{Tabs}}",
                     new
@@ -66,8 +64,6 @@ namespace qc
                         Comma1 = String.IsNullOrEmpty(controlProperties) /* && String.IsNullOrEmpty(idDeclaration) */
                                     ? ""
                                     : ",",
-                        //IdDeclaration = idDeclaration,
-                        //Comma2 = String.IsNullOrEmpty(controlProperties) ? "" : ",\n",
                         ControlProperties = controlProperties
                     });
         }
@@ -78,23 +74,11 @@ namespace qc
             int i = 0;
             int propertyCount = Properties.Keys.Count;
 
-            /*
-            // If subcontrol has a content property, write that out first.
-            if (Properties.ContainsKey("content"))
-            {
-                bool isLast = (++i >= propertyCount);
-                code.Append(EmitControlProperty("content", isLast, indentLevel));
-            }
-            */
-
             // Write out remaining properties.
             foreach (string propertyName in Properties.Keys)
             {
-                //if (propertyName != "content")
-                //{
-                    bool isLast = (++i >= propertyCount);
-                    code.Append(EmitControlProperty(propertyName, isLast, indentLevel));
-                //}
+                bool isLast = (++i >= propertyCount);
+                code.Append(EmitControlProperty(propertyName, isLast, indentLevel));
             }
 
             return code.ToString();
