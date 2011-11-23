@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace qc
 {
@@ -59,26 +60,31 @@ namespace qc
         /// </summary>
         public override string JavaScript(int indentLevel)
         {
-            string renderFunction = EmitRenderFunction(indentLevel);
-            if (!String.IsNullOrEmpty(Tag) && String.IsNullOrEmpty(renderFunction))
-            {
-                renderFunction = "null";    // Placeholder for render function parameter so we can specify tag.
-            }
+            string tag = String.IsNullOrEmpty(Tag)
+                ? ""
+                : Tabs(indentLevel + 1) + "tag: \"" + Tag + "\"";
+            string baseClassProperties = EmitBaseClassProperties(indentLevel + 1);
+
             return Template.Format(
                 "//\n" +
                 "// {ClassName}\n" +
                 "//\n" +
-                "{ClassName} = {BaseClassName}.subclass( \"{ClassName}\"{Comma1}{RenderFunction}{Comma2}{Tag}{Space});\n" +
+                "{ClassName} = {BaseClassName}.subclass({\n" +
+                "{Tabs}name: \"{ClassName}\"{Comma1}\n" +
+                "{Tag}{Comma2}" +
+                "{BaseClassProperties}" +
+                "});\n" + 
                 "{Script}\n", // Extra break at end helps delineate between successive controls in combined output.
                 new
                 {
                     ClassName = Name,
                     BaseClassName = BaseClassName,
-                    Comma1 = String.IsNullOrEmpty(renderFunction) ? "" : ", ",
-                    RenderFunction = renderFunction,
-                    Comma2 = String.IsNullOrEmpty(Tag) ? "" : ", ",
-                    Tag = String.IsNullOrEmpty(Tag) ? "" : ("\"" + Tag + "\" "),
-                    Space = String.IsNullOrEmpty(renderFunction) ? " " : "",
+                    Tabs = Tabs(indentLevel + 1),
+                    Comma1 = (String.IsNullOrEmpty(tag) && String.IsNullOrEmpty(baseClassProperties))
+                        ? "" : ",",
+                    Tag = tag,
+                    Comma2 = String.IsNullOrEmpty(baseClassProperties) ? "" : ",\n",
+                    BaseClassProperties = baseClassProperties,
                     Script = EmitScript()
                 });
         }
@@ -153,24 +159,6 @@ namespace qc
             }
         }
 
-        private string EmitRenderFunction(int indentLevel)
-        {
-            return (Content == null && Prototype == null)
-                ? String.Empty
-                : Template.Format(
-                    "{Tabs}function render{ClassName}() {\n" +
-                        "{Tabs}\tthis.properties({\n" +
-                            "{BaseClassProperties}" +
-                        "{Tabs}\t}, {BaseClassName} );\n" +
-                    "{Tabs}}",
-                    new {
-                        Tabs = Tabs(indentLevel),
-                        ClassName = Name,
-                        BaseClassName = BaseClassName,
-                        BaseClassProperties = EmitBaseClassProperties(indentLevel + 2)
-                    });
-        }
-
         /// <summary>
         /// Return the JavaScript for the control properties which will be set
         /// via calls to the base class.
@@ -195,12 +183,17 @@ namespace qc
 
         private string EmitBaseClassProperty(string propertyName, MarkupNode propertyValue, int indentLevel)
         {
+            bool nameIsLegalIdentifier = jsIdentifierRegex.IsMatch(propertyName);
+            string formattedName = nameIsLegalIdentifier
+                                        ? propertyName
+                                        : "\"" + propertyName + "\"";
+
             return Template.Format(
-               "{Tabs}\"{PropertyName}\": {PropertyValue}",
+               "{Tabs}{PropertyName}: {PropertyValue}",
                new
                {
                    Tabs = Tabs(indentLevel),
-                   PropertyName = propertyName,
+                   PropertyName = formattedName,
                    PropertyValue = propertyValue.JavaScript(indentLevel)
                });
         }
@@ -276,5 +269,8 @@ namespace qc
             throw new CompilerException(
                 "A control's <prototype> must be a single instance of a QuickUI control class.");
         }
+
+        // Matches a legal JavaScript identifier
+        private static Regex jsIdentifierRegex = new Regex("^[$A-Za-z_][0-9A-Za-z_]*$", RegexOptions.Compiled);
     }
 }

@@ -1,24 +1,30 @@
 ﻿//
 // Comprehensive
 //
-Comprehensive = SampleBaseClass.subclass( "Comprehensive", function renderComprehensive() {
-	this.properties({
-		"content": [
-			" ",
-			this._define( "$message", Simple.create({
-				"content": " Hello, <i>world</i>! ",
-				"id": "message"
-			}) ),
-			" ",
-			Control( "<div />" ).content(
-				" ",
-				this._define( "$Comprehensive_content", Control( "<p id=\"Comprehensive_content\" />" ) ),
-				" "
-			),
-			" "
-		]
-	}, SampleBaseClass );
-}, "div" );
+Comprehensive = SampleBaseClass.subclass({
+	name: "Comprehensive",
+	tag: "div",
+	content: [
+		" ",
+		{
+		    control: "Simple",
+			id: "message",
+			content: " Hello, <i>world</i>! "
+		},
+		" ",
+		{
+		    html: "<div />",
+		    content: [
+			    " ",
+			    {
+			        html: "<p />",
+			        id: "Comprehensive_content"
+			    }
+			    " "
+		},
+		" "
+	]
+});
 Comprehensive.prototype.extend({
   content: Control.chain( "$Comprehensive_content", "content", ),
   foo: function()
