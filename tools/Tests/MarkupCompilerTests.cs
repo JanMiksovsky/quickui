@@ -110,7 +110,7 @@ namespace Tests
             Assert.AreEqual("Simple", c.Name);
             MarkupHtmlElement content = (MarkupHtmlElement)((MarkupElementCollection)c.Content).Items.ToArray()[1];
             Assert.AreEqual("Simple_content", content.Id);
-            Assert.AreEqual("<span id=\"Simple_content\" />", content.Html);
+            Assert.AreEqual("<span />", content.Html);
         }
 
         [Test]

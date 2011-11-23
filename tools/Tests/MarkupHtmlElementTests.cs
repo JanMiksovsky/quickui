@@ -26,8 +26,13 @@ namespace Tests
             );
             MarkupHtmlElement node = new MarkupHtmlElement(element);
             Assert.AreEqual("foo", node.Id);
-            Assert.AreEqual("<div id=\"foo\">Hi</div>", node.Html);
-            Assert.AreEqual("this._define( \"$foo\", Control( \"<div id=\\\"foo\\\">Hi</div>\" ) )", node.JavaScript());
+            Assert.AreEqual("<div>Hi</div>", node.Html);
+            Assert.AreEqual(
+                "{\n" +
+                "    html: \"<div>Hi</div>\",\n" + 
+                "    id: \"foo\"\n" +
+                "}",
+                node.JavaScript());
         }
 
         [Test]
@@ -78,7 +83,7 @@ namespace Tests
             List<MarkupElement> items = new List<MarkupElement>(node.ChildNodes);
             Assert.IsInstanceOf<MarkupHtmlElement>(items[0]);
             MarkupHtmlElement contentNode = (MarkupHtmlElement)items[0];
-            Assert.AreEqual("<p id=\"content\" />", contentNode.Html);
+            Assert.AreEqual("<p />", contentNode.Html);
             Assert.AreEqual("content", contentNode.Id);
         }
 
@@ -100,7 +105,7 @@ namespace Tests
             Assert.AreEqual("<h1 />", ((MarkupHtmlElement)items[0]).Html);
             Assert.IsInstanceOf<MarkupHtmlElement>(items[1]);
             MarkupHtmlElement contentNode = (MarkupHtmlElement)items[1];
-            Assert.AreEqual("<p id=\"content\">Hello</p>", contentNode.Html);
+            Assert.AreEqual("<p>Hello</p>", contentNode.Html);
             Assert.AreEqual("content", contentNode.Id);
         }
 

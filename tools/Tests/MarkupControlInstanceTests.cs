@@ -19,10 +19,11 @@ namespace Tests
             control.Properties.Add("id", new MarkupHtmlElement("foo"));
             control.Properties.Add("content", new MarkupHtmlElement("Hello"));
             Assert.AreEqual(
-                "this._define( \"$foo\", Simple.create({\n" +
-                "\t\"content\": \"Hello\",\n" +
-                "\t\"id\": \"foo\"\n" +
-                "}) )",
+                "{\n" +
+                "    control: \"Simple\",\n" +
+                "    id: \"foo\",\n" +
+                "    content: \"Hello\"\n" +
+                "}",
                 control.JavaScript());
         }
 
