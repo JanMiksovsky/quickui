@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
@@ -32,10 +33,12 @@ namespace qc
             if (idAttribute != null && IsPublicId(idAttribute.Value))
             {
                 Id = idAttribute.Value;
+                // TODO: Make a copy of the element instead of destructively modifying it.
+                idAttribute.Remove();
             }
 
             MarkupNode childrenNode = MarkupNode.Parse(element.Nodes());
-            if (childrenNode == null
+            if ( childrenNode == null
                 || (childrenNode is MarkupHtmlElement
                     && ((MarkupHtmlElement)childrenNode).Id == null
                     && ((MarkupHtmlElement)childrenNode).ChildNodes == null))
@@ -96,14 +99,22 @@ namespace qc
                     });
             }
 
-            string idDeclaration = EmitIdDeclaration(indentLevel + 1);
+            // string idDeclaration = EmitIdDeclaration(indentLevel + 1);
+            string children = (ChildNodes == null)
+                ? String.Empty
+                : ChildNodes.JavaScript(indentLevel + 1);
 
             return Template.Format(
-                    "Control( {Html} ){ChildNodes}",
+                    "{\n" +
+                    "{Tabs}html: {Html}{Comma}\n" +
+                    "{Tabs}content: {Children}" +
+                    "{Tabs}}",
                     new
                     {
+                        Tabs = Tabs(indentLevel + 1),
                         Html = html,
-                        ChildNodes = EmitChildren(indentLevel)
+                        Comma = String.IsNullOrEmpty(children) ? "" : ",",
+                        Children = children
                     });
         }
 
@@ -131,19 +142,6 @@ namespace qc
             return whiteSpaceRuns.Replace(s, " ");
         }
         private static readonly Regex whiteSpaceRuns = new Regex(@"\s+", RegexOptions.Compiled);
-
-        private string EmitChildren(int indentLevel)
-        {
-            return (ChildNodes == null)
-                ? String.Empty
-                : Template.Format(
-                    ".content(\n{ChildNodes}{Tabs})",
-                    new
-                    {
-                        ChildNodes = ChildNodes.EmitItems(indentLevel + 1),
-                        Tabs = Tabs(indentLevel)
-                    });
-        }
 
         // WebKit doesn't seem to like seeing "<" in text.
         // Undo any entity replacement made by the parser in a text node

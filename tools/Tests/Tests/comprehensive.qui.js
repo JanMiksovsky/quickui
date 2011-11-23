@@ -13,14 +13,15 @@ Comprehensive = SampleBaseClass.subclass({
 		},
 		" ",
 		{
-		    html: "<div />",
+			html: "<div />",
 			content: [
-			    " ",
-			    {
+				" ",
+				{
 					html: "<p />",
 					id: "Comprehensive_content"
-			    }
-			    " "
+			    },
+				" "
+			]
 		},
 		" "
 	]

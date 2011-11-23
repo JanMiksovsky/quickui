@@ -34,9 +34,10 @@ namespace qc
                     return new MarkupHtmlElement((XCData) node);
 
                 case XmlNodeType.Element:
-                    return HtmlElementNames.IsHtmlElement((XElement) node)
+                    MarkupElement foo = HtmlElementNames.IsHtmlElement((XElement) node)
                         ? new MarkupHtmlElement((XElement) node)
                         : (MarkupElement) new MarkupControlInstance((XElement) node);
+                    return foo;
 
                 case XmlNodeType.Text:
                     return new MarkupHtmlElement((XText) node);
@@ -46,7 +47,6 @@ namespace qc
                         String.Format("Couldn't parse unexpected XML element <{0}>.", node));
             }
         }
-
 
         /// <summary>
         /// Return true if the given string is valid as a public ID for an element or control.
