@@ -96,14 +96,15 @@ namespace qc
                     });
             }
 
-            return EmitVariableDeclaration(
-                Template.Format(
+            string idDeclaration = EmitIdDeclaration(indentLevel + 1);
+
+            return Template.Format(
                     "Control( {Html} ){ChildNodes}",
                     new
                     {
                         Html = html,
                         ChildNodes = EmitChildren(indentLevel)
-                    }));
+                    });
         }
 
         public override bool IsWhiteSpace()

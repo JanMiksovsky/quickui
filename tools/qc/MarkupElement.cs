@@ -58,21 +58,14 @@ namespace qc
         }
 
         /// <summary>
-        /// If the node defines an ID, return the JavaScript for the
-        /// left-hand side of a variable declaration on the control class
-        /// that will use that ID. If there is no ID, return Empty.
+        /// If the node defines an ID, return the JavaScript for that ID.
+        /// If there is no ID, return Empty.
         /// </summary>
-        protected string EmitVariableDeclaration(string value)
+        protected string EmitIdDeclaration(int indentLevel)
         {
             return (Id == null)
-                ? value
-                : Template.Format(
-                    "this._define( \"${Id}\", {Value} )",
-                    new
-                    {
-                        Id = Id,
-                        Value = value
-                    });
+                ? String.Empty
+                : Tabs(indentLevel) + "id: \"" + Id + "\"";
         }
     }
 }

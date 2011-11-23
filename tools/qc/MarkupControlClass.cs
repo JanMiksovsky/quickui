@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace qc
 {
@@ -183,17 +182,12 @@ namespace qc
 
         private string EmitBaseClassProperty(string propertyName, MarkupNode propertyValue, int indentLevel)
         {
-            bool nameIsLegalIdentifier = jsIdentifierRegex.IsMatch(propertyName);
-            string formattedName = nameIsLegalIdentifier
-                                        ? propertyName
-                                        : "\"" + propertyName + "\"";
-
             return Template.Format(
                "{Tabs}{PropertyName}: {PropertyValue}",
                new
                {
                    Tabs = Tabs(indentLevel),
-                   PropertyName = formattedName,
+                   PropertyName = EmitPropertyName(propertyName),
                    PropertyValue = propertyValue.JavaScript(indentLevel)
                });
         }
@@ -269,8 +263,5 @@ namespace qc
             throw new CompilerException(
                 "A control's <prototype> must be a single instance of a QuickUI control class.");
         }
-
-        // Matches a legal JavaScript identifier
-        private static Regex jsIdentifierRegex = new Regex("^[$A-Za-z_][0-9A-Za-z_]*$", RegexOptions.Compiled);
     }
 }

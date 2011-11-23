@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
 namespace qc
@@ -145,6 +146,13 @@ namespace qc
             return stringBuilder.ToString();
         }
 
+        protected string EmitPropertyName(string propertyName)
+        {
+            return jsIdentifierRegex.IsMatch(propertyName)
+                    ? propertyName
+                    : "\"" + propertyName + "\"";
+        }
+
         protected string IndentLine(string s, int tabCount)
         {
             StringBuilder output = new StringBuilder();
@@ -171,5 +179,8 @@ namespace qc
             }
             return output.ToString();
         }
+
+        // Matches a legal JavaScript identifier
+        protected static Regex jsIdentifierRegex = new Regex("^[$A-Za-z_][0-9A-Za-z_]*$", RegexOptions.Compiled);
     }
 }

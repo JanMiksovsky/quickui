@@ -50,29 +50,25 @@ namespace qc
         /// </summary>
         public override string JavaScript(int indentLevel)
         {
-            return EmitVariableDeclaration(
-                Template.Format(
-                    "{ClassName}.create({ControlConstructorArguments})",
-                    new
-                    {
-                        ClassName = ClassName,
-                        ControlConstructorArguments = EmitControlConstructorArguments(indentLevel)
-                    }));
-        }
+            //string idDeclaration = EmitIdDeclaration(indentLevel + 1);
+            string controlProperties = EmitControlProperties(indentLevel + 1);
 
-        /// <summary>
-        /// Return the JavaScript to define a control initial properties.
-        /// </summary>
-        private string EmitControlConstructorArguments(int indentLevel)
-        {
-            return (!Properties.Any())
-                ? String.Empty
-                : Template.Format(
-                    "{\n{ControlProperties}{Tabs}}",
+            return Template.Format(
+                    "{\n" +
+                    "{Tabs}\tcontrol: \"{ClassName}\"{Comma1}\n" +
+                    //"{IdDeclaration}{Comma2}" + 
+                    "{ControlProperties}" +
+                    "{Tabs}}",
                     new
                     {
-                        ControlProperties = EmitControlProperties(indentLevel + 1),
-                        Tabs = Tabs(indentLevel)
+                        Tabs = Tabs(indentLevel),
+                        ClassName = ClassName,
+                        Comma1 = String.IsNullOrEmpty(controlProperties) /* && String.IsNullOrEmpty(idDeclaration) */
+                                    ? ""
+                                    : ",",
+                        //IdDeclaration = idDeclaration,
+                        //Comma2 = String.IsNullOrEmpty(controlProperties) ? "" : ",\n",
+                        ControlProperties = controlProperties
                     });
         }
 
@@ -82,21 +78,23 @@ namespace qc
             int i = 0;
             int propertyCount = Properties.Keys.Count;
 
+            /*
             // If subcontrol has a content property, write that out first.
             if (Properties.ContainsKey("content"))
             {
                 bool isLast = (++i >= propertyCount);
                 code.Append(EmitControlProperty("content", isLast, indentLevel));
             }
+            */
 
             // Write out remaining properties.
             foreach (string propertyName in Properties.Keys)
             {
-                if (propertyName != "content")
-                {
+                //if (propertyName != "content")
+                //{
                     bool isLast = (++i >= propertyCount);
                     code.Append(EmitControlProperty(propertyName, isLast, indentLevel));
-                }
+                //}
             }
 
             return code.ToString();
@@ -105,11 +103,11 @@ namespace qc
         private string EmitControlProperty(string propertyName, bool isLast, int indentLevel)
         {
             return Template.Format(
-                "{Tabs}\"{PropertyName}\": {PropertyValue}{Comma}\n",
+                "{Tabs}{PropertyName}: {PropertyValue}{Comma}\n",
                 new
                 {
                     Tabs = Tabs(indentLevel),
-                    PropertyName = propertyName,
+                    PropertyName = EmitPropertyName(propertyName),
                     PropertyValue = Properties[propertyName].JavaScript(indentLevel),
                     Comma = isLast ? String.Empty : ","
                 });

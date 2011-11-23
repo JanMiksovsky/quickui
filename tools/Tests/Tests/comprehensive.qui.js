@@ -7,18 +7,18 @@ Comprehensive = SampleBaseClass.subclass({
 	content: [
 		" ",
 		{
-		    control: "Simple",
+			control: "Simple",
 			id: "message",
 			content: " Hello, <i>world</i>! "
 		},
 		" ",
 		{
 		    html: "<div />",
-		    content: [
+			content: [
 			    " ",
 			    {
-			        html: "<p />",
-			        id: "Comprehensive_content"
+					html: "<p />",
+					id: "Comprehensive_content"
 			    }
 			    " "
 		},
