@@ -19,7 +19,7 @@ Comprehensive = SampleBaseClass.subclass({
 				{
 					html: "<p />",
 					id: "Comprehensive_content"
-			    },
+				},
 				" "
 			]
 		},

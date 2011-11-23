@@ -99,28 +99,51 @@ namespace qc
                     });
             }
 
-            // string idDeclaration = EmitIdDeclaration(indentLevel + 1);
-            string children = (ChildNodes == null)
-                ? String.Empty
-                : ChildNodes.JavaScript(indentLevel + 1);
-
+            string idDeclaration = EmitIdDeclaration(indentLevel + 1);
+            string children = EmitChildren(indentLevel + 1);
+            
             return Template.Format(
-                    "{\n" +
-                    "{Tabs}html: {Html}{Comma}\n" +
-                    "{Tabs}content: {Children}" +
-                    "{Tabs}}",
-                    new
-                    {
-                        Tabs = Tabs(indentLevel + 1),
-                        Html = html,
-                        Comma = String.IsNullOrEmpty(children) ? "" : ",",
-                        Children = children
-                    });
+                "{\n" +
+                "{Tabs}\thtml: {Html}{Comma1}\n" +
+                "{IdDeclaration}{Comma2}{NewLine}" + 
+                "{Children}" +
+                "{Tabs}}",
+                new
+                {
+                    Tabs = Tabs(indentLevel),
+                    Html = html,
+                    Comma1 = String.IsNullOrEmpty(idDeclaration) && String.IsNullOrEmpty(children)
+                        ? ""
+                        : ",",
+                    IdDeclaration = idDeclaration,
+                    Comma2 = String.IsNullOrEmpty(idDeclaration) || String.IsNullOrEmpty(children)
+                        ? ""
+                        : ",",
+                    NewLine = String.IsNullOrEmpty(idDeclaration) ? "" : "\n",
+                    Children = children
+                });
         }
 
         public override bool IsWhiteSpace()
         {
             return Html != null && Html.Trim().Length == 0;
+        }
+
+        private string EmitChildren(int indentLevel)
+        {
+            if (ChildNodes == null)
+            {
+                return String.Empty;
+            }
+
+            return Template.Format(
+                "{Tabs}content: {ChildNodes}\n",
+                new
+                {
+                    Tabs = Tabs(indentLevel),
+                    ChildNodes = ChildNodes.JavaScript(indentLevel)
+                });
+
         }
 
         /// <summary>

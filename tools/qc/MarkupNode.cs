@@ -51,8 +51,9 @@ namespace qc
             }
 
             // Parse each item in the collection.
-            IEnumerable<MarkupElement> elements = xNodes.Select(
-                                    xNode => MarkupElement.Parse(xNode));
+            List<MarkupElement> elements = xNodes.Select(
+                                                xNode => MarkupElement.Parse(xNode)
+                                            ).ToList();
 
             // If the nodes are all HTML, and there are no Ids below this point,
             // the nodes can be collapsed to a single node.
@@ -60,7 +61,7 @@ namespace qc
             // or HTML nodes with Ids, too.
             if (elements.All(element =>
                 element is MarkupHtmlElement
-                && ((MarkupHtmlElement)element).Id == null
+                && element.Id == null
                 && ((MarkupHtmlElement)element).ChildNodes == null))
             {
                 return new MarkupHtmlElement(elements.Concatenate(node => ((MarkupHtmlElement)node).Html));
