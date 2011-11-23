@@ -28,11 +28,11 @@ function runTests() {
     });
     
     test( "Create: set properties on constructor", function() {
-        var Greet = createGreetClass();
+        createGreetClass();
         Greet.prototype.extend( {
             name: Control.chain( "$name", "content" )
         });
-        var $c = Greet.create( { name: "Bob" });
+        var $c = Greet.create({ name: "Bob" });
         equal( $c.text(), "Hello Bob" );
     });
     
@@ -58,14 +58,14 @@ function runTests() {
     });
         
     test( "control() set properties", function() {
-        var Greet = createGreetClass();
+        createGreetClass();
         Greet.prototype.extend({
             name: Control.chain( "$name", "content" )
         });
         var $element = $( "<div/>" );
         $c = Greet.createAt( $element );
         equal( $c.text(), "Hello Ann" );
-        $element.control( { name: "Bob" });
+        $element.control({ name: "Bob" });
         equal( $c.text(), "Hello Bob" );
     });
         
@@ -277,44 +277,20 @@ function runTests() {
      * Element functions
      */
     test( "Element function definition", function() {
-        
-        var MyControl = Control.subclass2({
-            name: "MyControl", 
-            content: [
-                "Hello ",
-                {
-                    html: "<span/>",
-                    id: "name"
-                }
-            ]
-        });
-            
-        var $c = MyControl.create();
-        var $name = $c.$name();
-        equal( $name.html(), "Ann" );
+        createGreetClass();
+        var $c = Greet.create();
+        equal( $c.$name().html(), "Ann" );
         $c.$name().html( "Bob" );
         equal( $c.html(), "Hello <span id=\"name\">Bob</span>" );
     });
     
     test( "Element functions $.end()-able", function() {
-        
-        var MyControl = Control.subclass2({
-            name: "MyControl", 
-            content: [
-                "Hello ",
-                {
-                    html: "<span/>",
-                    id: "name"
-                }
-            ]
-        });
-            
-        var $c = MyControl.create();
-        var $names = $c.$name();
+        createGreetClass();
+        var $c = Greet.create();
         var $result = $c.$name().end();
         equal( $result, $c );
-        ok( $result instanceof MyControl );
-        ok( $names instanceof Control );
+        ok( $result instanceof Greet );
+        ok( $c.$name() instanceof Control );
     });
 
     /*
@@ -322,7 +298,7 @@ function runTests() {
      */
     test( "chain: root content", function() {
         
-        var Greet = createGreetClass();
+        createGreetClass();
         Greet.prototype.extend( {
             foo: Control.chain( "content" )
         });
@@ -337,7 +313,7 @@ function runTests() {
 
     test( "chain: element", function() {
         
-        var Greet = createGreetClass();
+        createGreetClass();
         Greet.prototype.extend( {
             name: Control.chain( "$name" )
         });
@@ -350,7 +326,7 @@ function runTests() {
     
     test( "chain: element content", function() {
         
-        var Greet = createGreetClass();
+        createGreetClass();
         Greet.prototype.extend( {
             name: Control.chain( "$name", "content" )
         });
@@ -363,8 +339,8 @@ function runTests() {
     
     test( "chain: subcontrol property", function() {
         
-        var Greet = createGreetClass();
-        Greet.prototype.extend( {
+        createGreetClass();
+        Greet.prototype.extend({
             name: Control.chain( "$name", "content" )
         });
         
@@ -382,12 +358,12 @@ function runTests() {
         var $c = MyControl.create();
         equal( $c.name(), "Ann" );
         $c.name( "Bob" );
-        equal( $c.html(), "<div class=\"Greet Control\">Hello <span id=\"name\">Bob</span></div>" );
+        equal( $c.html(), "<div id=\"greet\" class=\"Greet Control\">Hello <span id=\"name\">Bob</span></div>" );
     });
         
     test( "chain: element content with iteration", function() {
 
-        var Greet = createGreetClass();
+        createGreetClass();
         Greet.prototype.extend( {
             name: Control.chain( "$name", "content" )
         });
@@ -409,7 +385,7 @@ function runTests() {
     });
 
     test( "chain: element content with side effect function", function() {
-        var Greet = createGreetClass();
+        createGreetClass();
         Greet.prototype.extend( {
             name: Control.chain( "$name", "content", function( name ) {
                 this.data( "_name", name );
@@ -422,7 +398,7 @@ function runTests() {
     });
     
     test( "chain: chaining", function() {
-        var Greet = createGreetClass();
+        createGreetClass();
         Greet.prototype.extend( {
             foo: Control.chain( "content" ),
             bar: Control.chain( "prop/display" )
@@ -555,14 +531,14 @@ function runTests() {
     });
 }
 
-// Return a simple control class used for some tests.
+// Create a simple control class used for some tests.
 function createGreetClass() {
-    return Control.subclass2({
+    window.Greet = Control.subclass2({
         name: "Greet",
         content: [
             "Hello ",
             {
-                html: "<span/>",
+                html: "<span>Ann</span>",
                 id: "name"
             }
         ]
