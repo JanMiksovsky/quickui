@@ -67,7 +67,6 @@ ComboBox.prototype.extend({
     content: Control.chain( "$ComboBox_content", "content" ),
     dropdownButtonContent: Control.chain( "$dropdownButton", "content" ),
     openOnFocus: Control.property.bool( null, true ),
-    _handlingPopupClick: Control.property(),
     
     initialize: function() {
         
@@ -75,13 +74,9 @@ ComboBox.prototype.extend({
         this.genericIfClassIs( ComboBox );
         
         var self = this;
-        this.$HasPopup_popup().bind({
+        this.$HasPopup_popup().on({
             "canceled": function() {
                 self.$dropdownButton().selected( false );
-            },
-            "click": function() {
-                // See notes at focusout handler below.
-                self._handlingPopupClick( true );
             },
             "closed": function() {
                 // Closing the popup leaves the text selected.
@@ -95,14 +90,12 @@ ComboBox.prototype.extend({
                     self._selectText( 0, content.length );
                 }
                 self.$dropdownButton().selected( false );
-                self._handlingPopupClick( false );
             }
         });
         
-        this.bind({
+        this.on({
             // Open the popup when any part of the control gets focus.
             "focusin": function( event ) {
-                self._handlingPopupClick( false );
                 if ( self.openOnFocus() && !self.opened() ) {
                     self.open();
                 }

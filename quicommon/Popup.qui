@@ -108,17 +108,18 @@ Popup.prototype.extend({
             
         this
             ._bindKeydownHandler( true )
-            //.css( "visibility", "hidden" )
             .css( "z-index", maximumZIndex + 2 )
             .show()
             .trigger( "opened" );
             
         // In case the overlay wants to resize anything now that it's visible.
         Layout.recalc();
-            
-        this
-            .trigger( "position" )  // After layout recalc
-            .css( "visibility", "normal" );
+        
+        // Position the popup after the layout recalc.
+        var position = this.position();
+        if ( position ) {
+            position.call( this );
+        }
         
         // Listen for window blur event.
         $( window ).bind( "blur", this._windowBlurHandler() );
@@ -132,11 +133,12 @@ Popup.prototype.extend({
     },
     
     /*
-    // Subclasses should override this to position themselves.
-    positionPopup: function() {
-        return this;
-    },
-    */
+     * A callback function that will be invoked to position the popup.
+     * This is implemented as a property instead of an overrideable method
+     * so that the position logic can be set on a per-instance basis without
+     * having to create a new subclass.
+     */
+    position: Control.property(),
     
     _bindKeydownHandler: function( handleKeydown ) {
         var handler;

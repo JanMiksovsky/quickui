@@ -24,21 +24,22 @@ HasPopup.prototype.extend({
     initialize: function()
     {
         var self = this;
-        this.bind( "position", function() {
-            self._positionPopup();
-        });
         this.$HasPopup_content().click( function() {
             if ( self.openOnClick() ) {
                 self.open();
             }
         });
+        this.$HasPopup_popup().position( function() {
+            self._positionPopup();
+        });
     },
     
     _positionPopup: function() {
         
+        var offset = this.offset();
         var position = this.position();
-        var top = Math.round( position.top );
-        var left = Math.round( position.left );
+        var top = Math.round( offset.top );
+        var left = Math.round( offset.left );
         var height = this.outerHeight();
         var width = this.outerWidth();
         var bottom = top + height;
@@ -57,15 +58,15 @@ HasPopup.prototype.extend({
         var popupFitsBelow = ( bottom + popupHeight <= windowHeight + scrollTop );
         var popupFitsAbove = ( top - popupHeight >= scrollTop ); 
         var popupTop = ( popupFitsBelow || !popupFitsAbove )
-                            ? bottom                 // Show below
-                            : top - popupHeight;     // Show above
+                            ? position.top + height         // Show below
+                            : position.top - popupHeight;   // Show above
         
         // Horizontally left (preferred) or right align w.r.t. content.
         var popupFitsLeftAligned = ( left + popupWidth <= windowWidth + scrollLeft );
         var popupFitsRightAligned = ( right - popupWidth >= scrollLeft );
         var popupLeft = ( popupFitsLeftAligned || !popupFitsRightAligned )
-                            ? left                   // Left align
-                            : right - popupWidth;    // Right align 
+                            ? position.left                         // Left align
+                            : position.left + width - popupWidth;   // Right align 
 
         $popup.css({
             "top": popupTop,
