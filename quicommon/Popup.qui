@@ -108,13 +108,17 @@ Popup.prototype.extend({
             
         this
             ._bindKeydownHandler( true )
+            //.css( "visibility", "hidden" )
             .css( "z-index", maximumZIndex + 2 )
             .show()
-            .positionPopup()
             .trigger( "opened" );
             
         // In case the overlay wants to resize anything now that it's visible.
         Layout.recalc();
+            
+        this
+            .trigger( "position" )  // After layout recalc
+            .css( "visibility", "normal" );
         
         // Listen for window blur event.
         $( window ).bind( "blur", this._windowBlurHandler() );
@@ -127,10 +131,12 @@ Popup.prototype.extend({
         return this.blanket() != null;
     },
     
+    /*
     // Subclasses should override this to position themselves.
     positionPopup: function() {
         return this;
     },
+    */
     
     _bindKeydownHandler: function( handleKeydown ) {
         var handler;
