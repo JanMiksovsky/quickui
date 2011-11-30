@@ -13,6 +13,7 @@ A control with a popup menu that appears above or below it.
 HasPopup.prototype.extend({
     
     cancel: Control.chain( "$HasPopup_popup", "cancel" ),
+    cancelOnOutsideClick: Control.chain( "$HasPopup_popup", "cancelOnOutsideClick" ),
     content: Control.chain( "$HasPopup_content", "content" ),
     close: Control.chain( "$HasPopup_popup", "close" ),
     closeOnInsideClick: Control.chain( "$HasPopup_popup", "closeOnInsideClick" ),
