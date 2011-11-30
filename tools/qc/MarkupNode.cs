@@ -147,6 +147,35 @@ namespace qc
             return stringBuilder.ToString();
         }
 
+        protected string EmitProperties(Dictionary<string, MarkupNode> properties, int indentLevel)
+        {
+            StringBuilder code = new StringBuilder();
+            int i = 0;
+            int propertyCount = properties.Keys.Count;
+
+            foreach (string propertyName in properties.Keys)
+            {
+                string propertyValue = properties[propertyName].JavaScript(indentLevel);
+                bool isLast = (++i >= propertyCount);
+                code.Append(EmitProperty(propertyName, propertyValue, isLast, indentLevel));
+            }
+
+            return code.ToString();
+        }
+
+        protected string EmitProperty(string propertyName, string propertyValue, bool isLast, int indentLevel)
+        {
+            return Template.Format(
+                "{Tabs}{PropertyName}: {PropertyValue}{Comma}\n",
+                new
+                {
+                    Tabs = Tabs(indentLevel),
+                    PropertyName = EmitPropertyName(propertyName),
+                    PropertyValue = propertyValue,
+                    Comma = isLast ? String.Empty : ","
+                });
+        }
+
         protected string EmitPropertyName(string propertyName)
         {
             return jsIdentifierRegex.IsMatch(propertyName)

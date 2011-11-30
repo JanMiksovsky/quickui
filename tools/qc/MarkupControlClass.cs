@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 
 namespace qc
 {
@@ -167,34 +168,18 @@ namespace qc
         /// This covers virtually all the properties (except className) which the
         /// developer will set on a control.
         /// </remarks>
-        /// UNDONE: This function has evolved to be nearly identical to code in MarkupControlInstance,
-        /// so those functions should probably be refactored and shared.
         private string EmitBaseClassProperties(int indentLevel)
         {
             if (Content != null)
             {
-                return EmitBaseClassProperty("content", Content, indentLevel) + "\n";
+                return EmitProperty("content", Content.JavaScript(indentLevel), true, indentLevel);
             }
             if (Prototype == null)
             {
                 return String.Empty;
             }
 
-            // UNDONE: Write out prototype's content property first?
-            return Prototype.Properties.Keys.Concatenate(propertyName =>
-                EmitBaseClassProperty(propertyName, Prototype.Properties[propertyName], indentLevel), ",\n") + "\n";
-        }
-
-        private string EmitBaseClassProperty(string propertyName, MarkupNode propertyValue, int indentLevel)
-        {
-            return Template.Format(
-               "{Tabs}{PropertyName}: {PropertyValue}",
-               new
-               {
-                   Tabs = Tabs(indentLevel),
-                   PropertyName = EmitPropertyName(propertyName),
-                   PropertyValue = propertyValue.JavaScript(indentLevel)
-               });
+            return EmitProperties(Prototype.Properties, indentLevel);
         }
 
         /// <summary>

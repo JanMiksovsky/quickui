@@ -50,7 +50,7 @@ namespace qc
         /// </summary>
         public override string JavaScript(int indentLevel)
         {
-            string controlProperties = EmitControlProperties(indentLevel + 1);
+            string controlProperties = EmitProperties(Properties, indentLevel + 1);
 
             return Template.Format(
                     "{\n" +
@@ -66,35 +66,6 @@ namespace qc
                                     : ",",
                         ControlProperties = controlProperties
                     });
-        }
-
-        private string EmitControlProperties(int indentLevel)
-        {
-            StringBuilder code = new StringBuilder();
-            int i = 0;
-            int propertyCount = Properties.Keys.Count;
-
-            // Write out remaining properties.
-            foreach (string propertyName in Properties.Keys)
-            {
-                bool isLast = (++i >= propertyCount);
-                code.Append(EmitControlProperty(propertyName, isLast, indentLevel));
-            }
-
-            return code.ToString();
-        }
-
-        private string EmitControlProperty(string propertyName, bool isLast, int indentLevel)
-        {
-            return Template.Format(
-                "{Tabs}{PropertyName}: {PropertyValue}{Comma}\n",
-                new
-                {
-                    Tabs = Tabs(indentLevel),
-                    PropertyName = EmitPropertyName(propertyName),
-                    PropertyValue = Properties[propertyName].JavaScript(indentLevel),
-                    Comma = isLast ? String.Empty : ","
-                });
         }
 
         /// <summary>
