@@ -49,6 +49,25 @@ namespace Tests
             Assert.Contains("bar", control.Properties.Keys);
             Assert.AreEqual("Attribute property value", ((MarkupHtmlElement)control.Properties["bar"]).Html);
         }
+        [Test]
+
+        public void ControlPropertyIsReservedWord()
+        {
+            MarkupControlInstance control = new MarkupControlInstance()
+            {
+                ClassName = "Foo",
+                Id = "foo"
+            };
+            control.Properties.Add("id", new MarkupHtmlElement("foo"));
+            control.Properties.Add("class", new MarkupHtmlElement("bar"));
+            Assert.AreEqual(
+                "{\n" +
+                "    control: \"Foo\",\n" +
+                "    id: \"foo\",\n" +
+                "    \"class\": \"bar\"\n" +
+                "}",
+                control.JavaScript());
+        }
 
         [Test]
         public void CompoundPropertyContainsText()

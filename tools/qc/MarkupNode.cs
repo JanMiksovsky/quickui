@@ -178,9 +178,11 @@ namespace qc
 
         protected string EmitPropertyName(string propertyName)
         {
-            return jsIdentifierRegex.IsMatch(propertyName)
-                    ? propertyName
-                    : "\"" + propertyName + "\"";
+            bool needsQuotes = JavaScriptReservedWords.IsReservedWord(propertyName)
+                                || !jsIdentifierRegex.IsMatch(propertyName);
+            return needsQuotes
+                    ? "\"" + propertyName + "\""
+                    : propertyName;
         }
 
         protected string IndentLine(string s, int tabCount)
