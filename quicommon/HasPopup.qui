@@ -30,7 +30,7 @@ HasPopup.prototype.extend({
                 self.open();
             }
         });
-        this.$HasPopup_popup().position( function() {
+        this.$HasPopup_popup().positionPopup( function() {
             self._positionPopup();
         });
     },

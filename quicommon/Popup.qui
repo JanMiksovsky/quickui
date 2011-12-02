@@ -116,9 +116,9 @@ Popup.prototype.extend({
         Layout.recalc();
         
         // Position the popup after the layout recalc.
-        var position = this.position();
-        if ( position ) {
-            position.call( this );
+        var positionPopup = this.positionPopup();
+        if ( positionPopup ) {
+            positionPopup.call( this );
         }
         
         // Listen for window blur event.
@@ -138,7 +138,7 @@ Popup.prototype.extend({
      * so that the position logic can be set on a per-instance basis without
      * having to create a new subclass.
      */
-    position: Control.property(),
+    positionPopup: Control.property(),
     
     _bindKeydownHandler: function( handleKeydown ) {
         var handler;

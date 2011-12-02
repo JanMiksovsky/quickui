@@ -28,8 +28,8 @@ Dialog.prototype.extend({
         this._super();
         this.genericIfClassIs( Dialog );
         var self = this;
-        this.position( function() {
-            self._position();
+        this.positionPopup( function() {
+            self._positionPopup();
         });
     },
     
@@ -47,7 +47,7 @@ Dialog.prototype.extend({
      * Position the dialog.
      * By default, center dialog horizontally and vertically. 
      */
-    _position: function() {
+    _positionPopup: function() {
         return this.css({
             left: ($(window).width() - this.outerWidth()) / 2,
             top: ($(window).height() - this.outerHeight()) / 2
