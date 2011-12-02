@@ -7,7 +7,7 @@ During this transition, the process is a bit clunky.
 1. Use Visual Studio to build tools/Setup/Setup.sln and create the .msi
 installer.
 2. Run mkzip to create the QuickUI.zip file for OS/X and Linux.
-3. Run mkdep to create the versioned .msi and .zip files that will be uploaded.
+3. Run mkdep.py to create the versioned .msi and .zip files that will be uploaded.
 This also creates a version.js file that can be used by quickui.org to
 see what the latest files are. These are all placed in /releases,
 which is ignored by git.

@@ -35,11 +35,11 @@ namespace qb
                 {
                     WriteHelp();
                 }
-                if (doVersion)
+                else if (doVersion)
                 {
                     WriteVersion();
                 }
-                if (doBuild || doClean)
+                else if (doBuild || doClean)
                 {
                     if (projectPaths.Count == 0)
                     {
