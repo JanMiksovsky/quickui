@@ -1,7 +1,7 @@
 <Control name="ToggleButton">
 
 <prototype>
-    <ButtonBase/>
+    <BasicButton/>
 </prototype>
 
 <style>

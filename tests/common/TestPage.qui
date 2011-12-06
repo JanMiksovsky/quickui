@@ -4,23 +4,23 @@
     <Page title="Test Page">
         
         <p>
-            <ButtonBase>Button</ButtonBase>
-            <ButtonBase disabled="true">Disabled</ButtonBase>
+            <BasicButton>Button</BasicButton>
+            <BasicButton disabled="true">Disabled</BasicButton>
             <ToggleButton>
                 Toggle
             </ToggleButton>
             <HasPopup openOnClick="true" closeOnInsideClick="true" style="display: inline-block;">
-                <ButtonBase>Show popup</ButtonBase>
+                <BasicButton>Show popup</BasicButton>
                 <popup>
                     Popup content
                 </popup>
             </HasPopup>
-            <ButtonBase id="button">
+            <BasicButton id="button">
                 Show test dialog
-            </ButtonBase>
+            </BasicButton>
         </p>
         
-        <List id="list" itemClass="ButtonBase"/>
+        <List id="list" itemClass="BasicButton"/>
         
         <Switch id="switch">
             <div>Panel one</div>
@@ -35,7 +35,7 @@
                     <div>Ant</div>
                     <div>Anteater</div>
                 </Switch>
-                <ButtonBase id="buttonChangeAnimal">Change</ButtonBase>
+                <BasicButton id="buttonChangeAnimal">Change</BasicButton>
             </Tab>
             <Tab name="Tab B">Bandicoot</Tab>
             <Tab name="Tab C">Chickadee</Tab>
@@ -100,7 +100,7 @@ TestPage.prototype.extend({
             "Two",
             "Three"
         ]);
-        this.$list().find(".ButtonBase").click(function() {
+        this.$list().find(".BasicButton").click(function() {
             var button = this;
             var index = self.$list().children().index(button);
             self.$switch().activeIndex(index);
@@ -148,7 +148,7 @@ TestPage.prototype.extend({
             self.$switchAnimals().activeIndex( animalIndex ); 
         });
         
-        this.$shifter().transmute(ButtonBase, true);
+        this.$shifter().transmute(BasicButton, true);
     }
 
 });

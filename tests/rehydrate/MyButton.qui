@@ -1,7 +1,7 @@
 <Control name="MyButton">
 
 <prototype>
-    <ButtonBase/>
+    <BasicButton/>
 </prototype>
 
 <style>

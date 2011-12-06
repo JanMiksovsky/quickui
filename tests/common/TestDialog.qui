@@ -4,7 +4,7 @@
     <Dialog generic="true">
         Dialog
         <div>
-            <ButtonBase id="buttonOk">OK</ButtonBase>
+            <BasicButton id="buttonOk">OK</BasicButton>
         </div>
     </Dialog>
 </prototype>

@@ -10,7 +10,7 @@ called name(), that will be used as the name on the tab.
 <content>
     <VerticalPanels fill="true">
         <top>
-            <List id="tabButtons" itemClass="ButtonBase" />
+            <List id="tabButtons" itemClass="BasicButton" />
         </top>
         <Switch id="TabSet_content"/>
     </VerticalPanels>
@@ -39,10 +39,10 @@ called name(), that will be used as the name on the tab.
     top: 1px;
     z-index: 1;
 }
-.TabSet.generic #tabButtons .ButtonBase.generic {
+.TabSet.generic #tabButtons .BasicButton.generic {
     margin-left: 0.5em;
 }
-.TabSet.generic #tabButtons .ButtonBase.generic.selected {
+.TabSet.generic #tabButtons .BasicButton.generic.selected {
     border-bottom-color: white;
 }
 </style>

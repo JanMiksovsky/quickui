@@ -1,6 +1,6 @@
 <!-- Button base class. Handles mouse events, abstract styles. -->
 
-<Control name="ButtonBase">
+<Control name="BasicButton">
 
 <style>
 {
@@ -11,12 +11,12 @@
     user-select: none;
 }
 
-.ButtonBase.disabled {
+.BasicButton.disabled {
     cursor: default;
 }
 
 /* Generic appearance */
-.ButtonBase.generic {
+.BasicButton.generic {
     border: 1px solid gray;
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
@@ -25,21 +25,21 @@
     font: caption;
     padding: .25em .5em;
 }
-.ButtonBase.generic:hover {
+.BasicButton.generic:hover {
     background-color: lightgray;
 }
-.ButtonBase.generic.pressed {
+.BasicButton.generic.pressed {
     background-color: gray;
     color: white;
 }
-.ButtonBase.generic.disabled {
+.BasicButton.generic.disabled {
     background-color: inherit;
     color: gray;
 }
 </style>
 
 <script>
-ButtonBase.prototype.extend({
+BasicButton.prototype.extend({
     
     isFocused: Control.property.bool( null, false ),
     isKeyPressed: Control.property.bool( null, false ),
@@ -62,7 +62,7 @@ ButtonBase.prototype.extend({
                 mousedown: function( event ) { self.trackMousedown( event ); },
                 mouseup: function( event ) { self.trackMouseup( event ); }
             })
-            .genericIfClassIs( ButtonBase )
+            .genericIfClassIs( BasicButton )
             .hover(
                 function( event ) { self.trackMousein( event ); },
                 function( event ) { self.trackMouseout( event ); }
@@ -84,18 +84,18 @@ ButtonBase.prototype.extend({
     // The current state of the button.
     buttonState: function() {
         if ( this.disabled() ) {
-            return ButtonBase.state.disabled;
+            return BasicButton.state.disabled;
         } else if ( (this.isMouseButtonDown() && this.isMouseOverControl() )
             || this.isKeyPressed()) {
-            return ButtonBase.state.pressed;
+            return BasicButton.state.pressed;
         } else if ( this.isFocused() ) {
-            return ButtonBase.state.focused;
+            return BasicButton.state.focused;
         } else if ( this.isMouseOverControl() /* || this.isMouseButtonDown() */ )
         {
-            return ButtonBase.state.hovered;
+            return BasicButton.state.hovered;
         }
 
-        return ButtonBase.state.normal;
+        return BasicButton.state.normal;
     },
 
     /*
@@ -174,7 +174,7 @@ ButtonBase.prototype.extend({
         this._renderButtonState( this.buttonState() );
     }
 });
-$.extend( ButtonBase, {
+$.extend( BasicButton, {
     state: {
         normal: 0,
         hovered: 1,
