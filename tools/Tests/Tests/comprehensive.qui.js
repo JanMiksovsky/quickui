@@ -1,7 +1,7 @@
 ﻿//
 // Comprehensive
 //
-Comprehensive = SampleBaseClass.subclass({
+var Comprehensive = SampleBaseClass.subclass({
     name: "Comprehensive",
     tag: "div",
     content: [

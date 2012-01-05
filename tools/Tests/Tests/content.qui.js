@@ -1,7 +1,7 @@
 //
 // Content
 //
-Content = Control.subclass({
+var Content = Control.subclass({
     name: "Content",
     content: [
         " ",

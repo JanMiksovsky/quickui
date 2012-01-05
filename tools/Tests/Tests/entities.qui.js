@@ -1,7 +1,7 @@
 //
 // Entities
 //
-Entities = Control.subclass({
+var Entities = Control.subclass({
     name: "Entities"
 });
 Entities.prototype.extend({

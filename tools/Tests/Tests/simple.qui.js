@@ -1,7 +1,7 @@
 ﻿//
 // Simple
 //
-Simple = Control.subclass({
+var Simple = Control.subclass({
     name: "Simple",
     content: [
         " ",

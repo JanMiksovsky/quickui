@@ -69,7 +69,7 @@ namespace qc
                 "//\n" +
                 "// {ClassName}\n" +
                 "//\n" +
-                "{ClassName} = {BaseClassName}.subclass({\n" +
+                "var {ClassName} = {BaseClassName}.subclass({\n" +
                 "{Tabs}name: \"{ClassName}\"{Comma1}\n" +
                 "{Tag}{Comma2}" +
                 "{BaseClassProperties}" +
