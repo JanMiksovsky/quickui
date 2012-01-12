@@ -15,25 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_18EF20A0502749498EC1A8F0C0369824"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_3F629091013040E4AA4D4066AD82CAFF"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_7B346D30E19C4F65820543023176FC06"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_808348CC8D2540BC920635BA506DC810"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -160,71 +142,11 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_18EF20A0502749498EC1A8F0C0369824"
-            {
-            "SourcePath" = "8:..\\..\\..\\quicommon\\quicommon.css"
-            "TargetName" = "8:quicommon.css"
-            "Tag" = "8:"
-            "Folder" = "8:_444C2E134A014AEB939C7F316DC15ED2"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3F629091013040E4AA4D4066AD82CAFF"
-            {
-            "SourcePath" = "8:..\\..\\..\\quicommon\\quicommon.js"
-            "TargetName" = "8:quicommon.js"
-            "Tag" = "8:"
-            "Folder" = "8:_444C2E134A014AEB939C7F316DC15ED2"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_808348CC8D2540BC920635BA506DC810"
-            {
-            "SourcePath" = "8:..\\..\\..\\lib\\quickui.js"
-            "TargetName" = "8:quickui.js"
-            "Tag" = "8:"
-            "Folder" = "8:_444C2E134A014AEB939C7F316DC15ED2"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_91F6CB1B392FAFCD6269A62BA397D79F"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:qc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:qc, Version=0.8.7.1, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_91F6CB1B392FAFCD6269A62BA397D79F"
@@ -330,7 +252,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:QuickUI"
         "ProductCode" = "8:{B2BE581D-7BD7-4F7A-BA61-F13FF9713F5E}"
-        "PackageCode" = "8:{87393AD5-FFA2-4E51-9617-94F854E02127}"
+        "PackageCode" = "8:{5568EF85-0E58-4E3A-91F5-245EC543BAB4}"
         "UpgradeCode" = "8:{E128B386-61C0-450B-A9AF-F2F2BE52E0FF}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"

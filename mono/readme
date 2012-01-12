@@ -1,6 +1,6 @@
 This QuickUI folder contains the tools and associated files for using QuickUI under OS/X.
 
-The \lib folder contains the QuickUI .NET binaries (qb.exe and qc.exe), as well as the quickui.js file required at runtime.
+The \lib folder contains the QuickUI .NET binaries (qb.exe and qc.exe).
 The \bin folder contains bash shell scripts for running the .NET binaries on OS/X via mono.
 
 To install on OS/X:
