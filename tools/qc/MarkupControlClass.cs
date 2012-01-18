@@ -70,7 +70,7 @@ namespace qc
                 "// {ClassName}\n" +
                 "//\n" +
                 "var {ClassName} = {BaseClassName}.subclass({\n" +
-                "{Tabs}name: \"{ClassName}\"{Comma1}\n" +
+                "{Tabs}className: \"{ClassName}\"{Comma1}\n" +
                 "{Tag}{Comma2}" +
                 "{BaseClassProperties}" +
                 "});\n" + 
@@ -123,7 +123,7 @@ namespace qc
 
                 switch (propertyName)
                 {
-                    case "name":
+                    case "className":
                         VerifyPropertyIsNull(propertyName, this.Name);
                         this.Name = text;
                         break;

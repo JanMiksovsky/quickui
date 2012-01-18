@@ -1,6 +1,6 @@
 <!-- A control that shows several different ways of defining content. -->
 
-<Control name="Content">
+<Control className="Content">
   <Simple>Hello</Simple>
   <Simple content="There" />
   <Simple>

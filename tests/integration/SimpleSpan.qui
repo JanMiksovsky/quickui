@@ -1,1 +1,1 @@
-<Control name="SimpleSpan" tag="span"/>
+<Control className="SimpleSpan" tag="span"/>

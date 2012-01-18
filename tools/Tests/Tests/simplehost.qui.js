@@ -2,7 +2,7 @@
 // SimpleHost
 //
 var SimpleHost = Control.subclass({
-    name: "SimpleHost",
+    className: "SimpleHost",
     content: [
         " Text ",
         {

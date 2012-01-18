@@ -1,6 +1,6 @@
 <!-- Subclass -->
 
-<Control name="Bar">
+<Control className="Bar">
 
 <prototype>
     <Foo>Hello, world.</Foo>

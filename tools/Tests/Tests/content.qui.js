@@ -2,7 +2,7 @@
 // Content
 //
 var Content = Control.subclass({
-    name: "Content",
+    className: "Content",
     content: [
         " ",
         {

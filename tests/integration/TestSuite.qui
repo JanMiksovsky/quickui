@@ -1,4 +1,4 @@
-<Control name="TestSuite">
+<Control className="TestSuite">
 
 <h1>QuickUI Test Suite</h1>
 

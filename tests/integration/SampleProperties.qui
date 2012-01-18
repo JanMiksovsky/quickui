@@ -1,4 +1,4 @@
-<Control name="SampleProperties">
+<Control className="SampleProperties">
 
 <content><span id="SampleProperties_content"/></content>
 

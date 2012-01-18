@@ -1,4 +1,4 @@
-<Control name="BoxWithHeading">
+<Control className="BoxWithHeading">
 
 <content>
     <div id="BoxWithHeading_heading"/>

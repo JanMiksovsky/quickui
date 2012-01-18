@@ -1,6 +1,6 @@
 <!-- A simple control that shows a user picture and name -->
 
-<Control name="UserTile">
+<Control className="UserTile">
 
 <!--
 This control defines a couple of slots (name, picture) that can be

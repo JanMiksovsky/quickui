@@ -16,7 +16,7 @@ Case is significant in QuickUI markup, so Control has to be capitalized. Since t
 file will generate a JavaScript class, which by convention are also capitalized,
 the control class name Demo is capitalized.
 -->
-<Control name="Demo">
+<Control className="Demo">
 
 <!--
 The content tag (must be lowercase) defines the initial markup for a control.

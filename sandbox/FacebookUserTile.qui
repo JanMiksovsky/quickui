@@ -2,7 +2,7 @@
 A specific type of user tile for showing a Facebook user.
 -->
 
-<Control name="FacebookUserTile">
+<Control className="FacebookUserTile">
 
 <!--
 To create a subclass of the UserTile class, we create a prototype of the

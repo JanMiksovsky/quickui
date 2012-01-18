@@ -2,7 +2,7 @@
 Control whose script contains characters ("&" and "<") that get interpreted as HTML entities.
 -->
 
-<Control name="Entities">
+<Control className="Entities">
 <script>
 Entities.prototype.extend({
   ready: function() {

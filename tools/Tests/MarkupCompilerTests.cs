@@ -13,7 +13,7 @@ namespace Tests
         [Test]
         public void Empty()
         {
-            string markup = @"<Control name='foo'/>";
+            string markup = @"<Control className='foo'/>";
             string source = markup;
             CheckExtraction(markup, source, null, null);
         }
@@ -21,7 +21,7 @@ namespace Tests
         [Test]
         public void ContentImplicit()
         {
-            string markup = @"<Control name='foo'>Hello</Control>";
+            string markup = @"<Control className='foo'>Hello</Control>";
             string source = markup;
             CheckExtraction(markup, source, null, null);
         }
@@ -29,7 +29,7 @@ namespace Tests
         [Test]
         public void ContentExplicit()
         {
-            string markup = @"<Control name='foo'><content>Hello</content></Control>";
+            string markup = @"<Control className='foo'><content>Hello</content></Control>";
             string source = markup;
             CheckExtraction(markup, source, null, null);
         }
@@ -37,7 +37,7 @@ namespace Tests
         [Test]
         public void Prototype()
         {
-            string markup = @"<Control name='foo'><prototype><Button>Hello</Button></prototype></Control>";
+            string markup = @"<Control className='foo'><prototype><Button>Hello</Button></prototype></Control>";
             string source = markup;
             CheckExtraction(markup, source, null, null);
         }
@@ -45,8 +45,8 @@ namespace Tests
         [Test]
         public void Script()
         {
-            string markup = @"<Control name='foo'>Hello<script>alert('Hi');</script></Control>";
-            string source = @"<Control name='foo'>Hello</Control>";
+            string markup = @"<Control className='foo'>Hello<script>alert('Hi');</script></Control>";
+            string source = @"<Control className='foo'>Hello</Control>";
             string script = @"alert('Hi');";
             CheckExtraction(markup, source, script, null);
         }
@@ -54,8 +54,8 @@ namespace Tests
         [Test]
         public void ScriptCData()
         {
-            string markup = @"<Control name='foo'>Hello<script><![CDATA[alert('Hi');]]></script></Control>";
-            string source = @"<Control name='foo'>Hello</Control>";
+            string markup = @"<Control className='foo'>Hello<script><![CDATA[alert('Hi');]]></script></Control>";
+            string source = @"<Control className='foo'>Hello</Control>";
             string script = @"alert('Hi');";
             CheckExtraction(markup, source, script, null);
         }
@@ -63,8 +63,8 @@ namespace Tests
         [Test]
         public void Style()
         {
-            string markup = @"<Control name='foo'>Hello<style>{ color: red; }</style></Control>";
-            string source = @"<Control name='foo'>Hello</Control>";
+            string markup = @"<Control className='foo'>Hello<style>{ color: red; }</style></Control>";
+            string source = @"<Control className='foo'>Hello</Control>";
             string style = @"{ color: red; }";
             CheckExtraction(markup, source, null, style);
         }
@@ -72,8 +72,8 @@ namespace Tests
         [Test]
         public void PrototypeScriptStyle()
         {
-            string markup = @"<Control name='foo'><prototype>Hello</prototype><style>{ color: red; }</style><script>alert('Hi');</script></Control>";
-            string source = @"<Control name='foo'><prototype>Hello</prototype></Control>";
+            string markup = @"<Control className='foo'><prototype>Hello</prototype><style>{ color: red; }</style><script>alert('Hi');</script></Control>";
+            string source = @"<Control className='foo'><prototype>Hello</prototype></Control>";
             string script = @"alert('Hi');";
             string style = @"{ color: red; }";
             CheckExtraction(markup, source, script, style);
@@ -99,7 +99,7 @@ namespace Tests
         [ExpectedException(typeof(CompilerException))]
         public void DuplicateScript()
         {
-            string markup = @"<Control name='foo'><script>alert('Hi');</script><script>alert('Bye');</script></Control>";
+            string markup = @"<Control className='foo'><script>alert('Hi');</script><script>alert('Bye');</script></Control>";
             CheckExtraction(markup, null, null, null);
         }
 

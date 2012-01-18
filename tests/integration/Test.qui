@@ -1,4 +1,4 @@
-<Control name="Test">
+<Control className="Test">
 
 <content>
     <div id="header">

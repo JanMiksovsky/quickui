@@ -11,7 +11,7 @@ namespace Tests
         public void ControlClass()
         {
             XElement element = new XElement("Control",
-                new XAttribute("name", "Minimal")
+                new XAttribute("className", "Minimal")
             );
             MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
             Assert.AreEqual("Minimal", c.Name);
@@ -22,7 +22,7 @@ namespace Tests
         public void ImplicitContent()
         {
             XElement element = new XElement("Control",
-                new XAttribute("name", "Foo"),
+                new XAttribute("className", "Foo"),
                 new XText("Hello")
             );
             MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
@@ -33,7 +33,7 @@ namespace Tests
         public void ExplicitContent()
         {
             XElement element = new XElement("Control",
-                new XAttribute("name", "Foo"),
+                new XAttribute("className", "Foo"),
                 new XElement("content",
                     new XText("Hello")
                 )
@@ -46,7 +46,7 @@ namespace Tests
         public void Prototype()
         {
             XElement element = new XElement("Control",
-                new XAttribute("name", "Foo"),
+                new XAttribute("className", "Foo"),
                 new XElement("prototype",
                     new XElement("Button",
                         new XAttribute("content", "Hello")
@@ -63,7 +63,7 @@ namespace Tests
         public void ExplicitTag()
         {
             XElement element = new XElement("Control",
-                new XAttribute("name", "Foo"),
+                new XAttribute("className", "Foo"),
                 new XAttribute("tag", "span")
             );
             MarkupControlClass c = new MarkupControlClass(new MarkupControlInstance(element));
@@ -83,7 +83,7 @@ namespace Tests
         public void PrototypeNotClass()
         {
             XElement element = new XElement("Control",
-                new XAttribute("name", "Foo"),
+                new XAttribute("className", "Foo"),
                 new XElement("prototype",
                     new XElement("div")
                 )
@@ -96,7 +96,7 @@ namespace Tests
         public void PrototypeNotSingleton()
         {
             XElement element = new XElement("Control",
-                new XAttribute("name", "Foo"),
+                new XAttribute("className", "Foo"),
                 new XElement("prototype",
                     new XElement("Link"),
                     new XElement("Button")
@@ -110,7 +110,7 @@ namespace Tests
         public void ContentAndPrototype()
         {
             XElement element = new XElement("Control",
-                new XAttribute("name", "Foo"),
+                new XAttribute("className", "Foo"),
                 new XElement("content",
                     new XText("Hello")
                 ),

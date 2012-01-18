@@ -1,1 +1,1 @@
-<Control name="Simple">Hello, world!</Control>
+<Control className="Simple">Hello, world!</Control>

@@ -1,4 +1,4 @@
-<Control name="MyButton">
+<Control className="MyButton">
 
 <prototype>
     <BasicButton/>

@@ -1,5 +1,5 @@
 <!-- Simple control. -->
 
-<Control name="Simple">
+<Control className="Simple">
   <span id="Simple_content" />
 </Control>
