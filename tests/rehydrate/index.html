@@ -3,15 +3,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<link rel="stylesheet" type="text/css" href="../../quicommon/quicommon.css" />
 <link rel="stylesheet" type="text/css" href="rehydrate.css" />
+<link rel="stylesheet" type="text/css" href="http://quickui/release/quickui.catalog.css" />
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="http://code.jquery.com/qunit/git/qunit.js"></script>
 
 <script type="text/javascript" src="../../lib/quickui.js"></script>
-<script type="text/javascript" src="../../quicommon/quicommon.js"></script>
 <script type="text/javascript" src="../../plugins/quickui.rehydrate.js"></script>
+<script type="text/javascript" src="http://quickui/release/quickui.catalog.js"></script>
 <script type="text/javascript" src="rehydrate.js"></script>
 
 <script>
@@ -53,15 +52,15 @@ p:first-child {
     
             <div>This is a plain div.</div>
             
-            <div data-control-class="BoxWithHeading" data-headingBackground="lightblue" >
+            <div data-control="BoxWithHeading" data-headingBackground="lightblue" >
                 <div data-property="heading">
                     This is a box with some <i>buttons</i>:
                 </div>
                 <p>Here's a plain paragraph.</p>
-                <div data-control-class="MyButton" class="default" data-color="red">
+                <div data-control="MyButton" class="default" data-color="red">
                     OK
                 </div>
-                <div data-control-class="MyButton" data-generic="false" data-color="blue">
+                <div data-control="MyButton" data-generic="false" data-color="blue">
                     Cancel
                 </div>
             </div>
