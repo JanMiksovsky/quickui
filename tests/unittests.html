@@ -130,33 +130,45 @@ function runTests() {
     /*
      * Control.content() tests
      */
-    test( "Content: HTML text", function() {
+    test( "content: HTML text", function() {
         var $c = Control.create();
         $c.content( "Hello" );
         equal( $c.content(), "Hello" );
         equal( $c.html(), "Hello" );
     });
 
-    test( "Content: HTML text, return canonical form", function() {
+    test( "content: HTML text, return canonical form", function() {
         var $c = Control.create();
         $c.content( ["Hello"] );
         equal( $c.content(), "Hello" );
         equal( $c.html(), "Hello" );
     });
     
-    test( "Content: HTML array", function() {
+    test( "content: HTML array", function() {
         var $c = Control.create();
         var b = $( "<b>there</b>" )[0];
         $c.content( ["Hello", b, "world"] );
-        deepEqual( $c.content(), ["Hello", b, "world"] );
         equal( $c.html(), "Hello<b>there</b>world" );
+        var content = $c.content();
+        equal( content[0], "Hello" );
+        equal( content[1], b );
+        equal( content[2], "world" );
     });
 
-    test( "Content: input element", function() {
+    test( "content: input element", function() {
         var $c = Control( "<input type='text'/>" );
         $c.content( "Hello" );
         equal( $c.content(), "Hello" );
         equal( $c.val(), "Hello" );
+    });
+    
+    test( "content: jQuery object", function() {
+        var $c = Control.create();
+        $c.content( "<h1>Hello</h1>" );
+        var content = $c.content();
+        ok( content instanceof jQuery );
+        equal( content[0].nodeName.toLowerCase(), "h1" );
+        equal( content.html(), "Hello" );
     });
     
     /*
@@ -480,6 +492,58 @@ function runTests() {
         var a = A();
         equal( a.decorate( "Hello" ), "(a: Hello)" );
         equal( a.calc(3), 6 );
+    });
+    
+    /*
+     * json()
+     */
+    test( "json: plain text", function() {
+        var c = Control.create();
+        c.json({
+            content: "Hello"
+        });
+        equal( c.content(), "Hello" );
+    });
+
+    test( "json: html", function() {
+        var c = Control.create();
+        c.json({
+            content: {
+                html: "<h1>Hello</h1>"
+            }
+        });
+        equal( c.html(), "<h1>Hello</h1>" );
+    });
+
+    test( "json: control", function() {
+        createGreetClass();
+        Greet.prototype.extend({
+            name: Control.chain( "$name", "content" )
+        });
+        var c = Control.create();
+        c.json({
+            content: {
+                control: "Greet",
+                name: "Bob"
+            }
+        });
+
+        var greet = c.content().control();
+        ok( greet instanceof Greet );
+        equal( greet.text(), "Hello Bob" );
+    });
+    
+    test( "json: array", function() {
+        var c = Control.create();
+        c.json({
+            content: [
+                "Hello",
+                "world"
+            ]
+        });
+        equal( c.contents().length, 2 );
+        equal( c.contents().eq(0).text(), "Hello" );
+        equal( c.contents().eq(1).text(), "world" );
     });
 
     /*
