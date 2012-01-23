@@ -1,8 +1,6 @@
 open quickui.org
 cd public_html/quickui
 
-put lib/quickui.js lib/quickui.js
-
 lcd plugins
 cd plugins
 mput *

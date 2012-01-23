@@ -46,7 +46,7 @@ re_runtime_version = 'quickui: "([\d\.]+)"'
 re_setup_version = 'AssemblyVersion\("([\d\.]+)"\)'
 
 def build_deployment_files():
-    #copyfile(runtime_path, os.path.join(uploads_path, runtime_name))    
+    copyfile(runtime_path, os.path.join(uploads_path, runtime_name))    
     runtime_info = copy_versioned_file(runtime_path,
                                        runtime_path,
                                        re_runtime_version,
