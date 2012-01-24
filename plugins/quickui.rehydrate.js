@@ -103,6 +103,9 @@
                 if ( propertyName !== "control" ) {
                     var propertyValue = $element.content();
                     properties[ propertyName ] = propertyValue;
+                    
+                    // Detach before removing so we preserve subcontrols.
+                    propertyValue.detach();
                 }
             })
             .remove();
