@@ -10,7 +10,7 @@
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/qunit/git/qunit.js"></script>
-<script type="text/javascript" src="../release/quickui.js"></script>
+<script type="text/javascript" src="../lib/quickui.js"></script>
 
 <script>
 /*
@@ -148,7 +148,7 @@ function runTests() {
         var $c = Control.create();
         var b = $( "<b>there</b>" )[0];
         $c.content( ["Hello", b, "world"] );
-        equal( $c.html(), "Hello<b>there</b>world" );
+        equal( $c.html().toLowerCase(), "hello<b>there</b>world" );
         var content = $c.content();
         equal( content[0], "Hello" );
         equal( content[1], b );
@@ -293,7 +293,7 @@ function runTests() {
         var $c = Greet.create();
         equal( $c.$name().html(), "Ann" );
         $c.$name().html( "Bob" );
-        equal( $c.html(), "Hello <span id=\"name\">Bob</span>" );
+        equal( $c.text(), "Hello Bob" );
     });
     
     test( "Element functions $.end()-able", function() {
@@ -346,7 +346,7 @@ function runTests() {
         var $c = Greet.create();
         equal( $c.name(), "Ann" );
         $c.name( "Bob" );
-        equal( $c.html(), "Hello <span id=\"name\">Bob</span>" );
+        equal( $c.text(), "Hello Bob" );
     });
     
     test( "chain: subcontrol property", function() {
@@ -370,8 +370,7 @@ function runTests() {
         var $c = MyControl.create();
         equal( $c.name(), "Ann" );
         $c.name( "Bob" );
-        equal( $c.html(), "<div class=\"Greet Control\" id=\"greet\">Hello <span id=\"name\">Bob</span></div>" );
-    });
+        equal( $c.$greet().text(), "Hello Bob" );    });
         
     test( "chain: element content with iteration", function() {
 
@@ -385,15 +384,16 @@ function runTests() {
         var $c = Control.create( {
             content: [
                 $inner1,
+                "/",
                 $inner2
             ]
         });
         
-        equal( $c.html(), "<div class=\"Greet Control\">Hello <span id=\"name\">Ann</span></div><div class=\"Greet Control\">Hello <span id=\"name\">Bob</span></div>" );
+        equal( $c.text(), "Hello Ann/Hello Bob" );
         var $g = Greet( $c.find( ".Greet" ) );
         equal( $g.name(), "Ann" );
         $g.name( "Carol" );
-        equal( $c.html(), "<div class=\"Greet Control\">Hello <span id=\"name\">Carol</span></div><div class=\"Greet Control\">Hello <span id=\"name\">Carol</span></div>" );
+        equal( $c.text(), "Hello Carol/Hello Carol" );
     });
 
     test( "chain: element content with side effect function", function() {
@@ -512,7 +512,7 @@ function runTests() {
                 html: "<h1>Hello</h1>"
             }
         });
-        equal( c.html(), "<h1>Hello</h1>" );
+        equal( c.html().toLowerCase(), "<h1>hello</h1>" );
     });
 
     test( "json: control", function() {
