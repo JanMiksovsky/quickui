@@ -28,12 +28,8 @@ function runTests() {
     });
     
     test( "Create: set properties on constructor", function() {
-        createGreetClass();
-        Greet.prototype.extend( {
-            name: Control.chain( "$name", "content" )
-        });
-        var $c = Greet.create({ name: "Bob" });
-        equal( $c.text(), "Hello Bob" );
+        var $c = Control.create({ text: "Hello" });
+        equal( $c.text(), "Hello" );
     });
     
     /* $.control() */
@@ -49,24 +45,16 @@ function runTests() {
         var MyControl = Control.subclass({
             className: "MyControl"
         });
-        MyControl.prototype.foo = function() {
-            return "Hello";
-        };
         var $elements = $().add( "<div/>" ).add( "<div/>" );
         var $c = $elements.control( MyControl );
         equal( $c.control().length, 2 );
     });
         
     test( "control() set properties", function() {
-        createGreetClass();
-        Greet.prototype.extend({
-            name: Control.chain( "$name", "content" )
-        });
         var $element = $( "<div/>" );
-        $c = Greet.createAt( $element );
-        equal( $c.text(), "Hello Ann" );
-        $element.control({ name: "Bob" });
-        equal( $c.text(), "Hello Bob" );
+        $c = Control.createAt( $element );
+        $element.control({ text: "Hello" });
+        equal( $c.text(), "Hello" );
     });
         
     test( "control() incorporate existing DOM content", function() {
@@ -568,7 +556,7 @@ function runTests() {
         });
         deepEqual( results, [ "foo", "bar" ] );
     });
-     
+    
     test( "Utility: applyClass", function() {
         var $c = Control.create().toggleClass( "foo" );
         equal( $c.applyClass( "foo" ), true );
