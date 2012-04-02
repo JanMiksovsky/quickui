@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/qunit/git/qunit.css" />
+<link rel="stylesheet" type="text/css" href="http://quickui/release/quickui.catalog.css" />
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/qunit/git/qunit.js"></script>
+<script type="text/javascript" src="http://quickui/release/quickui.js"></script>
+<script type="text/javascript" src="http://quickui/release/quickui.catalog.js"></script>
+
+<style>
+#container {
+    display: none;
+}
+</style>
+
+<script language="JavaScript">
+
+// Sample control that creates an inDocument callback request.
+var Sample = Control.subclass({
+    className: "Sample",
+    prototype: {
+        
+        inDocumentCalled: Control.property.bool(),
+        
+        initialize: function() {
+            this.inDocument( function() {
+                this.inDocumentCalled( true );
+            });
+        }
+        
+    }
+});
+
+/*
+ * Create a control *before* the document body is ready. Any inDocument()
+ * callbacks queued up here should still work.
+*/
+var $createdBeforeReady = Sample.create();
+    
+function pendingCount() {
+    return Control._elementInsertionCallbacks
+        ? Control._elementInsertionCallbacks.length
+        : 0;
+}
+
+var $container;
+
+/*
+ * Add a control to the container. If we're in IE8, force the insertion timer
+ * (if it's live) to execute immediately. These tests aren't trying to prove
+ * that the timer will run (it should), but rather test whether, once the timer
+ * does run, everything that should happen does happen.
+ */
+function addControl( $c ) {
+    $container.append( $c );
+    if ( Control._elementInsertionInterval ) {
+        // A timer has been set up, which means we're in IE 8.
+        // Simulate the timer ticking over.
+        Control._checkForElementInsertion();
+    }
+}
+
+/*
+ * Clear any controls added during a test.
+ */
+function teardown() {
+    $container.empty();
+}
+
+/*
+ * Qunit tests
+ * 
+ */
+function runTests() {
+
+    /*
+     * We need the first test to execute first. It's the only one that relies
+     * on a pre-existing inDocument() callback. The order of the other tests
+     * doesn't matter. 
+     */
+    QUnit.config.reorder = false;
+    
+    teardown();
+    
+    test( "inDocument: control created before document ready", function() {
+        equal( pendingCount(), 1 );
+        ok( !$createdBeforeReady.inDocumentCalled() );
+        addControl( $createdBeforeReady );
+        equal( pendingCount(), 0 );
+        ok( $createdBeforeReady.inDocumentCalled() );
+        teardown();
+    });
+    
+    test( "inDocument: typical invocation in control created outside document and then added", function() {
+        equal( pendingCount(), 0 );
+        var $c = Sample.create();
+        equal( pendingCount(), 1 );
+        ok( !$c.inDocumentCalled() );
+        addControl( $c );
+        equal( pendingCount(), 0 );
+        ok( $c.inDocumentCalled() );
+        teardown();
+    });
+    
+    test( "inDocument: nested invocations outside document", function() {
+        equal( pendingCount(), 0 );
+        var $c = Sample.create().content( Sample.create() );
+        equal( pendingCount(), 2 );
+        ok( !$c.inDocumentCalled() );
+        addControl( $c );
+        equal( pendingCount(), 0 );
+        ok( $c.inDocumentCalled() );
+        teardown();
+    });
+    
+    /*
+     * inDocument callbacks should get invoked in reverse document order, so
+     * if we have a control containing two children A and B, in that order,
+     * then B's callbacks should get invoked before A's.
+     */
+    test( "inDocument: invocations happen in reverse document order", function() {
+        equal( pendingCount(), 0 );
+        var $a, $b, $c;
+        $a = Sample.create( "A" )
+                    .inDocument( function() {
+                        ok( $b.inDocumentCalled() );
+                    });
+        $b = Sample.create( "B" )
+                    .inDocument( function() {
+                        ok( !$a.inDocumentCalled() );
+                    });
+        $c = Control.create().content([ $a, $b ]);
+        equal( pendingCount(), 4 );
+        addControl( $c );
+        equal( pendingCount(), 0 );
+        teardown();
+    });
+        
+    test( "inDocument: create controls on element in document", function() {
+        equal( pendingCount(), 0 );
+        var $c = $( "<div/>" );
+        addControl( $c );
+        equal( pendingCount(), 0 );
+        $c = $c.control( Sample );
+        equal( pendingCount(), 0 );
+        ok( $c.inDocumentCalled() );
+        teardown();
+    });
+
+}
+
+$(function() {
+    $container = $( "#container" );
+    runTests();
+});
+</script>
+
+</head>
+
+<body>
+    <h1 id="qunit-header">QuickUI Unit Tests</h1>
+    <h2 id="qunit-banner"></h2>
+    <div id="qunit-testrunner-toolbar"></div>
+    <h2 id="qunit-userAgent"></h2>
+    <ol id="qunit-tests"></ol>
+    <div id="qunit-fixture">test markup, will be hidden</div>
+    <div id="container">container for additions/deletions of test controls</div>
+</body>
+
+</html>
