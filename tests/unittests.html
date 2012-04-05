@@ -533,6 +533,21 @@ function runTests() {
         equal( c.contents().eq(0).text(), "Hello" );
         equal( c.contents().eq(1).text(), "world" );
     });
+    
+    /*
+     * Transmute (needs more tests)
+     */
+    test( "transmute: existing tag doesn't match desired tag", function() {
+        var MyButton = Control.subclass({
+            className: "MyButton",
+            tag: "button"
+        });
+        var c = Control.create( "Hello" );
+        equal( c[0].nodeName.toLowerCase(), "div" );
+        c = c.transmute( MyButton, true );
+        equal( c[0].nodeName.toLowerCase(), "button" );
+        equal( c.text(), "Hello" );
+    });
 
     /*
      * Utilities
