@@ -521,7 +521,7 @@ function runTests() {
         equal( greet.text(), "Hello Bob" );
     });
     
-    test( "json: array", function() {
+    test( "json: explicit content array", function() {
         var c = Control.create();
         c.json({
             content: [
@@ -529,6 +529,17 @@ function runTests() {
                 "world"
             ]
         });
+        equal( c.contents().length, 2 );
+        equal( c.contents().eq(0).text(), "Hello" );
+        equal( c.contents().eq(1).text(), "world" );
+    });
+    
+    test( "json: implicit content array", function() {
+        var c = Control.create();
+        c.json([
+            "Hello",
+            "world"
+        ]);
         equal( c.contents().length, 2 );
         equal( c.contents().eq(0).text(), "Hello" );
         equal( c.contents().eq(1).text(), "world" );
