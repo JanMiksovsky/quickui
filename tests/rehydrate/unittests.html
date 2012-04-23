@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>QuickUI Rehydrate Unit Tests</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/qunit/git/qunit.css" />
+<link rel="stylesheet" type="text/css" href="http://quickui/plugins/rehydrate.css" />
+<link rel="stylesheet" type="text/css" href="http://quickui/release/quickui.catalog.css" />
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/qunit/git/qunit.js"></script>
+<script type="text/javascript" src="http://quickui/release/quickui.js"></script>
+<script type="text/javascript" src="http://quickui/plugins/quickui.rehydrate.js"></script>
+<script type="text/javascript" src="http://quickui/release/quickui.catalog.js"></script>
+<script type="text/javascript" src="rehydrate.js"></script>
+
+<script>
+/*
+ * QUnit tests
+ */
+function runTests() {
+    
+    test( "Control", function() {
+        var $e = $( "#testCaseButton" );
+        var $c = Control( $e ).rehydrate();
+        ok( $c instanceof Control );
+    });
+    
+}
+    
+$( function() {
+    runTests();
+});
+</script>
+
+<style>
+#test-cases {
+    display: none;
+}
+</style>
+
+</head>
+
+<body>
+    <h1 id="qunit-header">QuickUI Unit Tests</h1>
+    <h2 id="qunit-banner"></h2>
+    <div id="qunit-testrunner-toolbar"></div>
+    <h2 id="qunit-userAgent"></h2>
+    <ol id="qunit-tests"></ol>
+    <div id="qunit-fixture">test markup, will be hidden</div>
+    <div id="test-cases">
+        
+        <div id="testBasicButton" data-control="Control">Hello</div>
+        
+    </div>
+</body>
+
+</html>
