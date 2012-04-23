@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 <link rel="stylesheet" type="text/css" href="http://code.jquery.com/qunit/git/qunit.css" />
-<link rel="stylesheet" type="text/css" href="http://quickui/plugins/rehydrate.css" />
+<link rel="stylesheet" type="text/css" href="http://quickui/plugins/quickui.rehydrate.css" />
 <link rel="stylesheet" type="text/css" href="http://quickui/release/quickui.catalog.css" />
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
@@ -15,7 +15,6 @@
 <script type="text/javascript" src="http://quickui/release/quickui.js"></script>
 <script type="text/javascript" src="http://quickui/plugins/quickui.rehydrate.js"></script>
 <script type="text/javascript" src="http://quickui/release/quickui.catalog.js"></script>
-<script type="text/javascript" src="rehydrate.js"></script>
 
 <script>
 /*
@@ -23,10 +22,21 @@
  */
 function runTests() {
     
-    test( "Control", function() {
-        var $e = $( "#testCaseButton" );
+    test( "Control with content", function() {
+        var $e = $( "#testControl" );
         var $c = Control( $e ).rehydrate();
         ok( $c instanceof Control );
+        ok( $e.control() instanceof Control );
+        equal( $c.content(), "Hello" );
+    });
+    
+    test( "BasicButton", function() {
+        var $e = $( "#testBasicButton" );
+        var $c = Control( $e ).rehydrate();
+        // Since $e was a div, and $c is now a button, they should differ.
+        ok( $e[0] !== $c[0] );
+        equal( $c.content(), "OK" );
+        equal( $c[0].nodeName.toLowerCase(), "button" );
     });
     
 }
@@ -53,7 +63,9 @@ $( function() {
     <div id="qunit-fixture">test markup, will be hidden</div>
     <div id="test-cases">
         
-        <div id="testBasicButton" data-control="Control">Hello</div>
+        <div id="testControl" data-control="Control">Hello</div>
+        
+        <div id="testBasicButton" data-control="BasicButton">OK</div>
         
     </div>
 </body>

@@ -24,10 +24,12 @@
         // Reverse order of elements so we work from leaves towards the root.
         var elements = elements.reverse();
         
+        var $controls = Control();
         $.each( elements, function( index, element ) {
-            rehydrateControl( element );
+            var $control = rehydrateControl( element );
+            $controls = $controls.add( $control );
         });
-        return this.cast();
+        return $controls.cast();
     };
     
     /*
@@ -35,12 +37,14 @@
      */
     function rehydrateControl ( element ) {
 
-        // Extract the control class from the element's control property.        
+        // Extract the control class from the element's "control" property
+        // and remove it from the element.       
         var $element = $( element );
         var className = $element.data( "control" );
         if ( !className ) {
             return;
         }
+        $element.removeAttr( "data-control" );
         var controlClass = Control.getClass( className );
 
         // Extract properties. Compound properties (those defined in children)
@@ -52,10 +56,7 @@
         var properties = restorePropertyCase( controlClass, lowerCaseProperties );
         
         // Create the control.
-        var $control = $( element ).control( controlClass, properties );
-
-        // Now that it's rehydrated, remove the control property.
-        $element.removeAttr( "data-control" );
+        return $( element ).control( controlClass, properties );
     }
     
     /*
