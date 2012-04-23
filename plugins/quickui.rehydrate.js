@@ -123,11 +123,9 @@
     }
     
     /*
-     * Map the given property dictionary, in which all property names may
-     * be in lowercase, to the equivalent camelCase names, using the given
-     * control class's prototype for reference.
-     * 
-     * Properties which are not found in the control class are dropped.
+     * Map the given property dictionary, in which all property names may be in
+     * lowercase, to the equivalent mixed case names. Properties which are not
+     * found in the control class are dropped.
      */
     function restorePropertyCase( controlClass, properties ) {
         
@@ -135,24 +133,41 @@
             return properties;
         }
         
-        // Build a map of properties available on the control.
-        // This can be lossy, but it'd be bad practice to have two properties
-        // on the same class that differ only in case.
-        var mapLowerCaseToCamelCase = {};
-        for ( var camelCaseName in controlClass.prototype ) {
-            var lowerCaseName = camelCaseName.toLowerCase();
-            mapLowerCaseToCamelCase[ lowerCaseName ] = camelCaseName;
-        }
-        
+        var map = classPropertyNameMap( controlClass );
         var result = {};
         for ( var propertyName in properties ) {
-            var camelCaseName = mapLowerCaseToCamelCase[ propertyName.toLowerCase() ];
-            if ( camelCaseName ) {
-                result[ camelCaseName ] = properties[ propertyName ];
+            var mixedCaseName = map[ propertyName.toLowerCase() ];
+            if ( mixedCaseName ) {
+                result[ mixedCaseName ] = properties[ propertyName ];
             }
         }
         
         return result;
+    }
+    
+    /*
+     * Cached maps for property names in rehydrated control classes. See below.
+     */
+    var propertyNameMaps = {};
+    
+    /*
+     * Return a dictionary for the given class which maps the lowercase forms of
+     * its properties' names to their full mixed-case property names.
+     */
+    function classPropertyNameMap( controlClass ) {
+        var className = controlClass.className;
+        if ( !propertyNameMaps[ className ] ) {
+            
+            var map = {};
+            // Use the names on the control class' prototype for reference.
+            for ( var mixedCaseName in controlClass.prototype ) {
+                var lowerCaseName = mixedCaseName.toLowerCase();
+                map[ lowerCaseName ] = mixedCaseName;
+            }
+            
+            propertyNameMaps[ className ] = map;
+        }
+        return propertyNameMaps[ className ];
     }
     
 })( jQuery );
