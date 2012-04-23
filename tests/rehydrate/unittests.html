@@ -30,8 +30,9 @@ function runTests() {
         equal( $c.content(), "Hello" );
     });
     
-    test( "BasicButton", function() {
-        var $e = $( "#testBasicButton" );
+    // Try changing a div to a button.
+    test( "Replace element", function() {
+        var $e = $( "#testReplaceElement" );
         var $c = Control( $e ).rehydrate();
         // Since $e was a div, and $c is now a button, they should differ.
         ok( $e[0] !== $c[0] );
@@ -39,6 +40,35 @@ function runTests() {
         equal( $c[0].nodeName.toLowerCase(), "button" );
     });
     
+    test( "Property attribute", function() {
+        var $c = Control( "#testPropertyAttribute" ).rehydrate();
+        ok( $c.disabled() );
+    });
+    
+    test( "Compound property", function() {
+        var $c = Control( "#testCompoundProperty" ).rehydrate();
+        equal( $c.heading().trim(), "Heading" );
+        // The content property ends up with an extra white space text node,
+        // which we ignore.
+        equal( $c.content()[1].trim(), "Content" );
+    });
+    
+    test( "Subcontrol", function() {
+        var $c = Control( "#testSubcontrol" ).rehydrate();
+        ok( $c instanceof Page );
+        // Ignore white space text nodes in content.
+        var $subcontrol = $c.content().eq(1).control();
+        ok( $subcontrol instanceof BasicButton );
+        equal( $subcontrol.content(), "OK" );
+    });
+    
+    test( "Multiple controls at once", function() {
+        var $c = Control( "#testMultiple" ).children().rehydrate();
+        equal( $c.length, 2 );
+        ok( $c instanceof BasicButton );
+        equal( $c.eq(0).content(), "OK" );
+        equal( $c.eq(1).content(), "Cancel" );
+    })
 }
     
 $( function() {
@@ -65,7 +95,23 @@ $( function() {
         
         <div id="testControl" data-control="Control">Hello</div>
         
-        <div id="testBasicButton" data-control="BasicButton">OK</div>
+        <div id="testReplaceElement" data-control="BasicButton">OK</div>
+        
+        <div id="testPropertyAttribute" data-control="BasicButton" data-disabled="true">Cancel</div>
+                
+        <div id="testCompoundProperty" data-control="Collapsible">
+            <div data-property="heading">Heading</div>
+            Content
+        </div>
+        
+        <div id="testSubcontrol" data-control="Page">
+            <div data-control="BasicButton">OK</div>
+        </div>
+        
+        <div id="testMultiple">
+            <div data-control="BasicButton">OK</div>
+            <div data-control="BasicButton">Cancel</div>
+        </div>
         
     </div>
 </body>

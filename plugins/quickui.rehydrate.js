@@ -13,22 +13,29 @@
      */
     Control.fn.rehydrate = function() {
         
-        var elements = [];
-        // Is top level element a control?
-        if ( this.data( "control" ) ) {
-            elements = elements.concat( this.get() );
+        // Process any contained controls first.
+        var subcontrols = this.find("[data-control]").get();
+        if ( subcontrols.length > 0 ) {
+            // Reverse order so we work from leaves towards roots.
+            subcontrols = subcontrols.reverse();
+            $.each( subcontrols, function( index, element ) {
+                rehydrateControl( element );
+            });
         }
-        // Add any contained controls.
-        elements = elements.concat( this.find("[data-control]").get() );
         
-        // Reverse order of elements so we work from leaves towards the root.
-        var elements = elements.reverse();
-        
+        // Process top elements if they're controls.
+        // Collect the processed controls, which may differ from the original
+        // elements if the existing elements didn't have they right tags.
         var $controls = Control();
-        $.each( elements, function( index, element ) {
-            var $control = rehydrateControl( element );
+        this.each( function( index, element ) {
+            var $element = Control( element );
+            var $control = $element.data( "control" )
+                ? rehydrateControl( element )
+                : $element;
             $controls = $controls.add( $control );
         });
+
+        // Return the top elements, potentially as controls.        
         return $controls.cast();
     };
     
