@@ -25,6 +25,9 @@ function runTests() {
     test( "Control with content", function() {
         var $e = $( "#testControl" );
         var $c = Control( $e ).rehydrate();
+        // Since original element was a div, and control's desired tag is a div,
+        // the control should use the original element.
+        equal( $c[0], $e[0] );
         ok( $c instanceof Control );
         ok( $e.control() instanceof Control );
         equal( $c.content(), "Hello" );
