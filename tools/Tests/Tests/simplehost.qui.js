@@ -1,6 +1,4 @@
-﻿//
-// SimpleHost
-//
+﻿/* A control whose prototype hosts other controls. */
 var SimpleHost = Control.subclass({
     className: "SimpleHost",
     content: [

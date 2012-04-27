@@ -1,6 +1,6 @@
-//
-// Entities
-//
+/*
+Control whose script contains characters ("&" and "<") that get interpreted as HTML entities.
+*/
 var Entities = Control.subclass({
     className: "Entities"
 });

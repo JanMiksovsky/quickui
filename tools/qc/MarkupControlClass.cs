@@ -61,15 +61,16 @@ namespace qc
         /// </summary>
         public override string JavaScript(int indentLevel)
         {
+            string comment = String.IsNullOrEmpty(Comments)
+                ? ""
+                : Tabs(indentLevel) + "/*" + Comments + "*/\n";
             string tag = String.IsNullOrEmpty(Tag)
                 ? ""
                 : Tabs(indentLevel + 1) + "tag: \"" + Tag + "\"";
             string baseClassProperties = EmitBaseClassProperties(indentLevel + 1);
 
             return Template.Format(
-                "//\n" +
-                "// {ClassName}\n" +
-                "//\n" +
+                "{Comment}" +
                 "var {ClassName} = {BaseClassName}.subclass({\n" +
                 "{Tabs}className: \"{ClassName}\"{Comma1}\n" +
                 "{Tag}{Comma2}" +
@@ -78,6 +79,7 @@ namespace qc
                 "{Script}\n", // Extra break at end helps delineate between successive controls in combined output.
                 new
                 {
+                    Comment = comment,
                     ClassName = Name,
                     BaseClassName = BaseClassName,
                     Tabs = Tabs(indentLevel + 1),

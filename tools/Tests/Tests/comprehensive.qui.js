@@ -1,6 +1,7 @@
-﻿//
-// Comprehensive
-//
+﻿/*
+Comprehensive control:
+Tests a bunch of compiler features.
+*/
 var Comprehensive = SampleBaseClass.subclass({
     className: "Comprehensive",
     tag: "div",

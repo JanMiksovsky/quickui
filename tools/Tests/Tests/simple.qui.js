@@ -1,4 +1,4 @@
-﻿/* Simple */
+﻿/* Simple control. */
 var Simple = Control.subclass({
     className: "Simple",
     content: [

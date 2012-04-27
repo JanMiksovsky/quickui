@@ -1,10 +1,12 @@
-<!-- Comprehensive control tests a bunch of compiler features. -->
+<!--
+Comprehensive control:
+Tests a bunch of compiler features.
+-->
 
 <Control className="Comprehensive" tag="div">
 
 <prototype>
   <SampleBaseClass>
-    <!-- A comment -->
     <Simple id="message">
       Hello, <i>world</i>!
     </Simple>
