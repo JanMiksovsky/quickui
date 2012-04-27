@@ -4,6 +4,7 @@
 
 <prototype>
   <SampleBaseClass>
+    <!-- A comment -->
     <Simple id="message">
       Hello, <i>world</i>!
     </Simple>

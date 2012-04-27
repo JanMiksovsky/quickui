@@ -1,6 +1,4 @@
-﻿//
-// Simple
-//
+﻿/* Simple */
 var Simple = Control.subclass({
     className: "Simple",
     content: [

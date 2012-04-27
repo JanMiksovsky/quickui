@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -39,31 +41,47 @@ namespace qc
             string processed = PreprocessMarkup(markup, out script, out style);
 
             // Parse the remaining (processed) source.
-            XElement controlElement = GetControlElement(processed);
+            XDocument document = GetDocument(processed);
+            IEnumerable<XComment> comments = GetComments(document);
+            XElement controlElement = GetControlElement(document);
             MarkupControlInstance controlInstance = new MarkupControlInstance(controlElement);
             MarkupControlClass controlClass = new MarkupControlClass(controlInstance, script, style);
+            AddCommentsToClass(controlClass, comments);
 
             return controlClass;
         }
 
-        /// <summary>
-        /// Read the markup as XML and return the <Control/> element.
-        /// </summary>
-        private static XElement GetControlElement(string markup)
+        private static void AddCommentsToClass(MarkupControlClass controlClass, IEnumerable<XComment> comments)
         {
-            StringReader markupReader = new StringReader(markup);
-			
-			// Need both XmlReader and XDocument to preserve white space.
-			// By default, .Net XDocument seems to preserve white space, but
-			// Mono XDocument seems to ignore white space by default.
-            XmlReaderSettings xmlReaderSettings = new XmlReaderSettings
+            StringBuilder s = new StringBuilder();
+            foreach (XComment comment in comments)
             {
-                IgnoreComments = true,
-                IgnoreProcessingInstructions = true
-            };
-            XmlReader xmlReader = XmlReader.Create(markupReader, xmlReaderSettings);
-            XDocument document = XDocument.Load(xmlReader, LoadOptions.PreserveWhitespace);
-			
+                if (s.Length > 0)
+                {
+                    s.AppendLine();
+                }
+                s.Append(comment.Value);
+            }
+
+            controlClass.Comments = s.ToString();
+        }
+
+        /// <summary>
+        /// Return any <!-- Comment --> nodes at the top level of the document.
+        /// </summary>
+        private static IEnumerable<XComment> GetComments(XDocument document)
+        {
+            IEnumerable<XComment> comments = from node in document.Nodes()
+                                        where node is XComment
+                                        select ((XComment) node);
+            return comments;
+        }
+
+        /// <summary>
+        /// Return the top-level <Control> element in the document.
+        /// </summary>
+        private static XElement GetControlElement(XDocument document)
+        {
             XElement controlElement = document.Element("Control");
 
             // Ensure the root element actually is "Control".
@@ -74,6 +92,29 @@ namespace qc
             }
 
             return controlElement;
+        }
+
+        /// <summary>
+        /// Return the top-level document from the given markup.
+        /// </summary>
+        /// <param name="markup"></param>
+        /// <returns></returns>
+        private static XDocument GetDocument(string markup)
+        {
+            StringReader markupReader = new StringReader(markup);
+
+            // Need both XmlReader and XDocument to preserve white space.
+            // By default, .Net XDocument seems to preserve white space, but
+            // Mono XDocument seems to ignore white space by default.
+            XmlReaderSettings xmlReaderSettings = new XmlReaderSettings
+            {
+                // IgnoreComments = true,
+                IgnoreProcessingInstructions = true
+            };
+            XmlReader xmlReader = XmlReader.Create(markupReader, xmlReaderSettings);
+            XDocument document = XDocument.Load(xmlReader, LoadOptions.PreserveWhitespace);
+
+            return document;
         }
 
         /// <summary>

@@ -11,6 +11,7 @@ namespace qc
     {
         private const string DEFAULT_CLASS_NAME = "Control";
 
+        public string Comments { get; set; }
         public string Name { get; set; }
         public string Script { get; set; }
         public string Style { get; set; }
