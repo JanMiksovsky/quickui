@@ -7,6 +7,8 @@ var Comprehensive = SampleBaseClass.subclass({
     tag: "div",
     content: [
         " ",
+        /* Say hello */
+        " ",
         {
             control: "Simple",
             id: "message",

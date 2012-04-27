@@ -42,6 +42,9 @@ namespace qc
                 case XmlNodeType.Text:
                     return new MarkupHtmlElement((XText) node);
 
+                case XmlNodeType.Comment:
+                    return new MarkupComment((XComment) node);
+
                 default:
                     throw new CompilerException(
                         String.Format("Couldn't parse unexpected XML element <{0}>.", node));

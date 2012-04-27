@@ -7,6 +7,7 @@ Tests a bunch of compiler features.
 
 <prototype>
   <SampleBaseClass>
+    <!-- Say hello -->
     <Simple id="message">
       Hello, <i>world</i>!
     </Simple>

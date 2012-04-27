@@ -108,6 +108,7 @@ namespace qc
             // Mono XDocument seems to ignore white space by default.
             XmlReaderSettings xmlReaderSettings = new XmlReaderSettings
             {
+                // Uncomment the following line to ignore comments.
                 // IgnoreComments = true,
                 IgnoreProcessingInstructions = true
             };

@@ -38,7 +38,26 @@ namespace qc
         /// </summary>
         public string EmitItems(int indentLevel)
         {
-            return Items.Concatenate(element => EmitElementInCollection(element, indentLevel), ",\n") + "\n";
+            StringBuilder s = new StringBuilder();
+            List<MarkupElement> elements = new List<MarkupElement>(Items);
+            for (int i = 0; i < elements.Count; i++)
+            {
+                MarkupElement element = elements[i];
+                s.Append(EmitElementInCollection(element, indentLevel));
+                // Add separator between elements.
+                if (i < elements.Count - 1)
+                {
+                    // Add a comma after each element (except comments).
+                    if (!(element is MarkupComment))
+                    {
+                        s.Append(",");
+                    }
+                    s.Append("\n");
+                }
+            }
+            s.Append("\n");
+
+            return s.ToString();
         }
 
         public override bool IsWhiteSpace()

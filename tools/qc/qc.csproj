@@ -50,6 +50,7 @@
     <Compile Include="CssProcessor.cs" />
     <Compile Include="HtmlElementNames.cs" />
     <Compile Include="JavaScriptReservedWords.cs" />
+    <Compile Include="MarkupComment.cs" />
     <Compile Include="MarkupCompiler.cs" />
     <Compile Include="MarkupControlClass.cs" />
     <Compile Include="MarkupControlInstance.cs" />
