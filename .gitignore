@@ -12,6 +12,7 @@ Release
 
 build
 quicommon/quicommon.*
+plugins/quickui.coffee.js
 sandbox/sandbox.*
 site/blog/blog.*
 site/controls/controls.*
