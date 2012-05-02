@@ -28,7 +28,7 @@ CoffeeScript tests
         return this.coffee(arguments);
       }
 
-      Greet.prototype.settings = {
+      Greet.prototype.inherited = {
         content: [
           "Hello ", {
             html: "<span>",
@@ -49,6 +49,8 @@ CoffeeScript tests
       ok(simple instanceof Control);
       ok(simple instanceof Simple);
       ok(simple instanceof Simple.prototype.init);
+      equal(simple.className, "Simple");
+      equal(simple.classHierarchy, "Simple Control");
       return equal(simple.content(), "Hello");
     });
     return test("CoffeeScript: create subclass", function() {
@@ -56,6 +58,8 @@ CoffeeScript tests
       greet = Greet.create("Ann");
       ok(greet instanceof Simple);
       ok(greet instanceof Greet);
+      equal(greet.className, "Greet");
+      equal(greet.classHierarchy, "Greet Simple Control");
       equal(greet.content(), "Ann");
       return equal(greet.text(), "Hello Ann");
     });

@@ -9,7 +9,7 @@ window.coffeeTests = ->
   
   class Greet extends Simple
     constructor: -> return @coffee arguments
-    settings:
+    inherited:
       content: [
         "Hello ",
         { html: "<span>", id: "Greet_content" }
