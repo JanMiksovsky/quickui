@@ -142,12 +142,8 @@ Make the given CoffeeScript class compatible with QuickUI.
 ###
 makeQuickUICompatible = ( classFn ) ->
 
-  className = if classFn.name
-    # Modern browser.
-    classFn.name
-  else
-    # Get the class name from the class' constructor's string definition.
-    [ match, className ] = /function\s+([^\(]*)/.exec( classFn.toString() )
+  # Get class name from function in modern browser, otherwise parse constructor.
+  className = classFn.name ? /function\s+([^\(]*)/.exec( classFn.toString() )[1]
   classFn.className = className
   classFn.classHierarchy = className + " " + classFn.superclass.classHierarchy
   
