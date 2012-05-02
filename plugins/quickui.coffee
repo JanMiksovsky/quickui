@@ -53,7 +53,7 @@ window.coffee = ( args )->
   # in strict mode.
   classFn = arguments.callee.caller
   if ( $.isFunction classFn ) and ( classFn:: ) instanceof Control
-    return createCoffeeInstance classFn, args...
+    return coffeeControl classFn, args...
   throw "window.coffee was invoked some context other than a control class' constructor, which is unsupported."
 
 
@@ -70,7 +70,7 @@ See notes at window.coffee for why the args parameter is not a splat.
 ###
 Control::coffee = ( args ) ->
   args = args ? []
-  return createCoffeeInstance @constructor, args...
+  return coffeeControl @constructor, args...
 
 
 ###
@@ -78,7 +78,7 @@ Create a new instance of a CoffeeScript control class, checking first to
 ensure the class has been treated to be jQuery- and QuickUI-compatible.
 This function is for internal use, and is not intended to be invoked directly.
 ###
-createCoffeeInstance = ( classFn, args... ) ->
+coffeeControl = ( classFn, args... ) ->
   makeCompatible classFn unless isCompatible classFn
   new classFn::init args...
 
@@ -118,7 +118,7 @@ makeJQueryCompatible = ( classFn ) ->
     # Make CoffeeScript-based superclass compatible first.
     makeCompatible superclass 
 
-  # This is the same init function that jQuery.sub() creates.
+  # This is the same init helper class that $.sub() creates.
   classFn::init = ( selector, context ) ->
     if ( context && context instanceof jQuery && !( context instanceof jQuerySub ) )
       context = jQuerySub( context )
@@ -142,9 +142,12 @@ Make the given CoffeeScript class compatible with QuickUI.
 ###
 makeQuickUICompatible = ( classFn ) ->
 
-  # Get the class name from the class' constructor's string definition.
-  match = /function\s+([^\(]*)/.exec( classFn.toString() )
-  className = match[1]
+  className = if classFn.name
+    # Modern browser.
+    classFn.name
+  else
+    # Get the class name from the class' constructor's string definition.
+    [ match, className ] = /function\s+([^\(]*)/.exec( classFn.toString() )
   classFn.className = className
   classFn.classHierarchy = className + " " + classFn.superclass.classHierarchy
   
