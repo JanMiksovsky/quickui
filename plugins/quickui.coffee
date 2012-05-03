@@ -10,7 +10,7 @@ To create a QuickUI control class in CoffeeScript, a boilerplate constructor
 is required. The constructor should look like the second line below:
   
   class window.MyControl extends Control
-    constructor: -> return @coffee arguments...
+    constructor: -> return control arguments...
 
 NOTE: The routines here are not generally called by QuickUI users. This support
 deals primarily with instantiating a jQuery (QuickUI) object from a selector.
@@ -39,7 +39,7 @@ If one invokes a CoffeeScript-based control class statically, e.g.:
 
   var c = MyControl( elem )
   
-this will cause the coffee() method to be invoked on the window object.
+this will cause the quickui() method to be invoked on the window object.
 This delegates handling to the class whose constructor called the coffee method.
   
 Note that the args parameter is not an "args..." splat. To keep the boilerplate
@@ -47,7 +47,7 @@ constructor as concise as possible, we allow it to pass "arguments" as a single
 parameter, instead of "arguments...". So the routine here ends up with the
 calling arguments in a single args parameter (an array holding a subarray). 
 ###
-window.coffee = ( args )->
+window.control = ( args ) ->
   # Figure out which control's constructor invoked us.
   # Warning: this uses the deprecated "caller" method, which is not permitted
   # in strict mode.
@@ -55,22 +55,6 @@ window.coffee = ( args )->
   if ( $.isFunction classFn ) and ( classFn:: ) instanceof Control
     return coffeeControl classFn, args...
   throw "window.coffee was invoked some context other than a control class' constructor, which is unsupported."
-
-
-###
-Control instance method invoked from the boilerplate constructor (see top).
-If one invokes a CoffeeScript-based class with "new", e.g.:
-
-  var c = new MyControl( elem )
-
-then this will invoke the coffee() method on the class' prototype. This is a
-somewhat rarer way to create a jQuery object, but is supported for completeness.
-
-See notes at window.coffee for why the args parameter is not a splat.
-###
-Control::coffee = ( args ) ->
-  args = args ? []
-  return coffeeControl @constructor, args...
 
 
 ###
