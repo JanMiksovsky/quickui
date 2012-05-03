@@ -504,6 +504,16 @@ function runTests() {
         });
         equal( c.html().toLowerCase(), "<h1>hello</h1>" );
     });
+    
+    test( "json: html tag singleton without brackets", function() {
+        var c = Control.create();
+        c.json({
+            content: {
+                html: "span"
+            }
+        });
+        equal( c.html().toLowerCase(), "<span></span>" );
+    })
 
     test( "json: control", function() {
         createGreetClass();
