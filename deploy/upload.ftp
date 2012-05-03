@@ -3,7 +3,8 @@ cd public_html/quickui
 
 lcd plugins
 cd plugins
-mput *
+mput *.css
+mput *.js
 lcd ..
 cd ..
 
