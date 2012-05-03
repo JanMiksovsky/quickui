@@ -10,7 +10,7 @@ To create a QuickUI control class in CoffeeScript, a boilerplate constructor
 is required. The constructor should look like the second line below:
   
   class window.MyControl extends Control
-    constructor: -> return Control.coffee arguments...
+    constructor: -> return Control.coffee()
 
 NOTE: The routines here are not generally called by QuickUI users. This support
 deals primarily with instantiating a jQuery (QuickUI) object from a selector.
@@ -47,22 +47,19 @@ of instantiation:
   
 The static form will invoke the MyControl() constructor (and therefore this
 method) with "this" as the global window object. This means we have to jump
-through some hoops to figure out which class we're instantiating.
-  
-Note that the args parameter is not an "args..." splat. To keep the boilerplate
-constructor as concise as possible, we allow it to pass "arguments" as a single
-parameter, instead of "arguments...". So the routine here ends up with the
-calling arguments in a single args parameter (an array holding a subarray). 
+through some hoops to figure out which class we're instantiating. 
 ###
-Control.coffee = ( args ) ->
-  # Figure out which class' constructor invoked us.
-  # Warning: this uses the deprecated "caller" method, which is not permitted
-  # in strict mode.
+Control.coffee = ->
+  # Figure out which class' constructor invoked us. Warning: this uses the
+  # deprecated "caller" method, which is not permitted in strict mode.
   classFn = arguments.callee.caller
   if not ( $.isFunction classFn ) and ( classFn:: ) instanceof Control
     throw "Control.coffee was invoked some context other than a control class' constructor, which is unsupported."
   # Ensure the class has been treated to be jQuery- and QuickUI-compatible.
   makeCompatible classFn unless isCompatible classFn
+  # Get the arguments passed to the class' constructor. This is quite
+  # unorthodox, but lets us keep the required boilerplate as short as possible. 
+  args = classFn.arguments
   # Actually create an instance of the init helper class per standard jQuery.
   new classFn::init args...
 

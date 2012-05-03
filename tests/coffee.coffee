@@ -5,10 +5,10 @@ CoffeeScript tests
 window.coffeeTests = ->
 
   class Simple extends Control
-    constructor: -> return Control.coffee arguments
+    constructor: -> return Control.coffee()
   
   class Greet extends Simple
-    constructor: -> return Control.coffee arguments
+    constructor: -> return Control.coffee()
     inherited:
       content: [
         "Hello ",
