@@ -10,7 +10,7 @@ To create a QuickUI control class in CoffeeScript, a boilerplate constructor
 is required. The constructor should look like the second line below:
   
   class window.MyControl extends Control
-    constructor: -> return control arguments...
+    constructor: -> return Control.coffee arguments...
 
 NOTE: The routines here are not generally called by QuickUI users. This support
 deals primarily with instantiating a jQuery (QuickUI) object from a selector.
@@ -34,36 +34,36 @@ time; the $.control plugin will cast the result to the correct type.
 
 
 ###
-Top-level window method invoked from the boilerplate constructor (see top). 
-If one invokes a CoffeeScript-based control class statically, e.g.:
+Returns a new instance of a CoffeeScript-based QuickUI control class, ensuring
+that the class has been properly set up for jQuery and QuickUI. This method
+should be invoked from the boilerplate constructor (see top) of any CoffeeScript
+control class.
 
-  var c = MyControl( elem )
+For full jQuery compatibility, a control class should be able to handle two forms
+of instantiation:
   
-this will cause the quickui() method to be invoked on the window object.
-This delegates handling to the class whose constructor called the coffee method.
+  var c = MyControl( selector )       // Static form
+  var c = new MyControl( selector )   // New form
+  
+The static form will invoke the MyControl() constructor (and therefore this
+method) with "this" as the global window object. This means we have to jump
+through some hoops to figure out which class we're instantiating.
   
 Note that the args parameter is not an "args..." splat. To keep the boilerplate
 constructor as concise as possible, we allow it to pass "arguments" as a single
 parameter, instead of "arguments...". So the routine here ends up with the
 calling arguments in a single args parameter (an array holding a subarray). 
 ###
-window.control = ( args ) ->
-  # Figure out which control's constructor invoked us.
+Control.coffee = ( args ) ->
+  # Figure out which class' constructor invoked us.
   # Warning: this uses the deprecated "caller" method, which is not permitted
   # in strict mode.
   classFn = arguments.callee.caller
-  if ( $.isFunction classFn ) and ( classFn:: ) instanceof Control
-    return coffeeControl classFn, args...
-  throw "window.coffee was invoked some context other than a control class' constructor, which is unsupported."
-
-
-###
-Create a new instance of a CoffeeScript control class, checking first to
-ensure the class has been treated to be jQuery- and QuickUI-compatible.
-This function is for internal use, and is not intended to be invoked directly.
-###
-coffeeControl = ( classFn, args... ) ->
+  if not ( $.isFunction classFn ) and ( classFn:: ) instanceof Control
+    throw "Control.coffee was invoked some context other than a control class' constructor, which is unsupported."
+  # Ensure the class has been treated to be jQuery- and QuickUI-compatible.
   makeCompatible classFn unless isCompatible classFn
+  # Actually create an instance of the init helper class per standard jQuery.
   new classFn::init args...
 
 
