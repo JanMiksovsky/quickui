@@ -8,7 +8,13 @@ module.exports = function(grunt) {
     grunt.initConfig({
         coffee: {
             controls: {
-                src: "*.coffee",
+                src: [
+                    "control.coffee",
+                    "json.coffee",
+                    "properties.coffee",
+                    "layout.coffee",
+                    "styles.coffee"
+                ],
                 dest: "quickui-pre.js"
             }
         },
