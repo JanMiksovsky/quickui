@@ -48,91 +48,12 @@ $.fn.control = (arg1, arg2) ->
 
 
 ###
-Selector for ":control": reduces the set of matched elements to the ones
-which are controls.
- 
-With this, $foo.is(":control") returns true if at least one element in $foo
-is a control, and $foo.filter(":control") returns just the controls in $foo.
-###
-$.expr[":"].control = (elem) ->
-  controlClass = Control(elem)._controlClass()
-  (if controlClass then controlClass is Control or controlClass:: instanceof Control else false)
-
-
-###
 Control subclass of jQuery.
 This is used as the base class for all QuickUI controls.
 ###
 Control = $.sub()
 $.extend Control,
 
-  ###
-  Given an array of functions, repeatedly invoke them as a chain.
-  
-  This function allows the compact definition of getter/setter functions
-  for Control classes that are delegated to aspects of the control or
-  elements within its DOM.
-  
-  For example:
-  
-      MyControl.prototype.foo = Control.chain( "$foo", "content" );
-  
-  will create a function foo() on all MyControl instances that sets or gets
-  the content of the elements returned by the element function $foo(),
-  which in turn likely means any element with id "#foo" inside the control.
-  
-  The parameters to chain are the names of functions that are invoked in
-  turn to produce the result. The last parameter may be an optional side
-  effect function that will be invoked whenever the chain function is
-  invoked as a setter.
-  
-  The function names passed as parameters may also define an optional
-  string-valued parameter that will be passed in. So chain( "css/display" )
-  creates a curried setter/getter function equivalent to css("display", value ).
-  ###
-  chain: ->
-        # Check for a side effect function as last parameter.
-    args = arguments
-    sideEffectFn = undefined
-    if $.isFunction(args[args.length - 1])
-            # Convert arguments to a real array in order to grab last param.
-      args = [].slice.call(arguments)
-      sideEffectFn = args.pop()
-        # Identify function names and optional parameters.
-    functionNames = []
-    functionParams = []
-    i = 0
-    length = args.length
-
-    while i < length
-            # Check for optional parameter.
-      parts = arguments[i].split("/")
-      functionNames[i] = parts.shift()
-      functionParams[i] = parts
-      i++
-        # Generate a function that executes the chain.
-    chain = (value) ->
-      result = this
-      i = 0
-      length = functionNames.length
-
-      while i < length
-        fn = result[functionNames[i]]
-        params = functionParams[i]
-                    # Invoke last function as setter.
-        params = params.concat([ value ])  if value isnt `undefined` and i is length - 1
-        if fn is `undefined`
-          message = "Control class \"" + @className() + "\" tried to chain to an undefined getter/setter function \"" + functionNames[i] + "\"."
-          throw message
-        result = fn.apply(result, params)
-        i++
-      if value is `undefined`
-                # Chain invoked as getter.
-        result
-      else
-                    # Carry out side effect.
-        sideEffectFn.call this, value  if sideEffectFn
-        this
 
   ###
   A class' "classHierarchy" member reflects the names of all classes
@@ -213,51 +134,6 @@ $.extend Control,
       i++
     $controls
 
-  ###
-  Given a value, returns a corresponding class:
-  - A string value returns the global class with that string name.
-  - A function value returns that function as is.
-  - An object value returns a new anonymous class created from that JSON.
-  ###
-  getClass: (value) ->
-    classFn = undefined
-    if value is null or value is ""
-            # Special cases used to clear class-valued properties.
-      classFn = null
-    else if $.isFunction(value)
-      classFn = value
-    else if $.isPlainObject(value)
-      classFn = Control.subclass(value)
-    else
-      classFn = window[value]
-      throw "Unable to find a class called \"" + value + "\"."  unless classFn
-    classFn
-
-    # Return true if the given element is a control.
-  isControl: (element) ->
-    Control(element).control() isnt `undefined`
-
-  ###
-  Return a function that applies another function to each control in a
-  jQuery array.
-  
-  If the inner function returns a defined value, then the function is
-  assumed to be a property getter, and that result is return immediately.
-  Otherwise, "this" is returned to permit chaining.
-  ###
-  iterator: (fn) ->
-    ->
-      args = arguments
-      iteratorResult = undefined
-      @eachControl (index, $control) ->
-        result = fn.apply($control, args)
-        if result isnt `undefined`
-          iteratorResult = result
-          false
-      if iteratorResult != `undefined`
-        iteratorResult # Getter
-      else
-        this # Method or setter
   
   ###
   Create a subclass of this class.
@@ -323,32 +199,7 @@ $.extend Control,
 ###
 Control instance methods.
 ###
-$.extend Control::,
-
-  ###
-  Return the array of elements cast to their closest JavaScript class ancestor.
-  E.g., a jQuery $(".foo") selector might pick up instances of control classes
-  A, B, and C. If B and C are subclasses of A, this will return an instance of
-  class A. So Control(".foo").cast() does the same thing as A(".foo"), but without
-  having to know the type of the elements in advance.
-  
-  The highest ancestor class this will return is the current class, even for plain
-  jQuery objects, in order to allow Control methods (like content()) to be applied to
-  the result.
-  ###
-  cast: (defaultClass) ->
-    defaultClass = defaultClass or @constructor
-    setClass = undefined
-    i = 0
-    length = @length
-
-    while i < length
-      $element = @nth(i)
-      elementClass = $element._controlClass() or defaultClass
-      setClass = elementClass  if setClass is `undefined` or ( setClass:: ) instanceof elementClass
-      i++
-    setClass = setClass or defaultClass  # In case "this" had no elements.
-    setClass this
+Control::extend
 
   ###
   The name of the control's class.
@@ -357,42 +208,6 @@ $.extend Control::,
   ###
   className: ->
     @constructor.className
-
-  ###
-  The control's culture.
-  If jQuery Globalize is present, this defaults to the current culture.
-  This can be overridden on a per-control basis, e.g., for testing purposes.
-  
-  Control classes can override this method to respond immediately to an
-  explicit change in culture. They should invoke their base class' culture
-  method, do whatever work they want (if the culture parameter is defined),
-  then return the result of the base class call.
-  ###
-  culture: (culture) ->
-    cultureDataMember = "_culture"
-    controlCulture = undefined
-    if culture is `undefined`
-      controlCulture = @data(cultureDataMember)
-      controlCulture or (if window.Globalize then Globalize.culture() else null)
-    else
-      controlCulture = (if (typeof culture is "string") then Globalize.findClosestCulture(culture) else culture)
-      @data cultureDataMember, controlCulture
-      this
-
-  ###
-  Execute a function once for each control in the array.
-  Inside the function, "this" refers to the single control.
-  ###
-  eachControl: (fn) ->
-    i = 0
-    length = @length
-
-    while i < length
-      $control = @nth(i).control()
-      result = fn.call($control, i, $control)
-      break  if result is false
-      i++
-    this
 
     # Allow controls have an element ID specified on them in markup.
   id: (id) ->
@@ -404,13 +219,6 @@ $.extend Control::,
   (e.g., wiring up events).
   ###    
   initialize: ->
-
-  ###
-  Experimental function like eq, but faster because it doesn't manipulate
-  the selector stack.
-  ###
-  nth: (index) ->
-    @constructor this[index]
 
   ###
   Save or retrieve an element associated with the control using the
@@ -462,53 +270,6 @@ $.extend Control::,
                 # Apply the class' settings using superclass's setters.
       superclass(this).render().json @inherited, this
     this
-
-  ###
-  Invoke the indicated setter functions on the control to
-  set control properties. E.g.,
-  
-     $c.properties( { foo: "Hello", bar: 123 } );
-  
-  is shorthand for $c.foo( "Hello" ).bar( 123 ).
-  ###
-  properties: (properties) ->
-    for propertyName of properties
-      if this[propertyName] is `undefined`
-        message = "Tried to set undefined property " + @className() + "." + propertyName + "()."
-        throw message
-      value = properties[propertyName]
-      this[propertyName].call this, value
-    this
-
-  ###
-  Get/set the given property on multiple elements at once. If called
-  as a getter, an array of the property's current values is returned.
-  If called as a setter, that property of each element will be set to
-  the corresponding defined member of the values array. (Array values
-  which are undefined will not be set.)
-  ###
-  propertyVector: (propertyName, values) ->
-    propertyFn = this[propertyName]
-    if values is `undefined`
-            # Getter
-      results = []
-      i = 0
-      length = @length
-
-      while i < length
-        results[i] = propertyFn.call(@nth(i))
-        i++
-      results
-    else
-            # Setter
-      i = 0
-      length1 = @length
-      length2 = values.length
-
-      while i < length1 and i < length2
-        propertyFn.call @nth(i), values[i]  unless not values[i]
-        i++
-      this
 
   ### Control has no settings that need to be applied on render.###
   inherited: null

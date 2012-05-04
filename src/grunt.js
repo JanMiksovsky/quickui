@@ -15,6 +15,7 @@ module.exports = function(grunt) {
                     "properties.coffee",
                     "inDocument.coffee",
                     "layout.coffee",
+                    "localization.coffee",
                     "styles.coffee",
                     "super.coffee",
                     "utilities.coffee"
