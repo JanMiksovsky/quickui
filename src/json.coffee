@@ -13,7 +13,7 @@ the JSON dictionary
          bar: "World"
      }
 
-will invoke this.foo("Hello").bar("World").
+will invoke this.foo( "Hello" ).bar( "World" ).
 
 If a dictionary value is itself a JSON object, it will be reconstituted
 into HTML, or controls, or an array.
@@ -23,14 +23,14 @@ processing of the values.
 
 The logicalParent parameter is intended for internal use only.
 ###
-Control::json = (json, logicalParent) ->
+Control::json = ( json, logicalParent ) ->
   logicalParent = logicalParent or this
   i = 0
   length = @length
 
   while i < length
-    control = @nth(i)
-    properties = evaluateControlJsonProperties(json, logicalParent.nth(i))
+    control = @nth( i )
+    properties = evaluateControlJsonProperties( json, logicalParent.nth( i ) )
     control.properties properties
     i++
 
@@ -66,28 +66,28 @@ control.
 
 The third form is any other JSON dictionary object, returned as is.
 ###
-evaluateControlJson = (json, logicalParent) ->
+evaluateControlJson = ( json, logicalParent ) ->
   # Get the first key in the JSON.
   for firstKey of json
     break
   return json  if firstKey isnt "html" and firstKey isnt "control"  # Regular object, return as is.
   reservedKeys = {}
   reservedKeys[firstKey] = true
-  stripped = copyExcludingKeys(json, reservedKeys)
-  properties = evaluateControlJsonProperties(stripped, logicalParent)
+  stripped = copyExcludingKeys( json, reservedKeys )
+  properties = evaluateControlJsonProperties( stripped, logicalParent )
   control = undefined
   if firstKey is "html"
     html = json.html
-    html = "<" + html + ">"  if /^\w+$/.test(html)              # HTML tag singleton. Map tag like "div" to "<div>".
-    control = Control(html).properties(properties)
+    html = "<" + html + ">"  if /^\w+$/.test( html )              # HTML tag singleton. Map tag like "div" to "<div>".
+    control = Control( html ).properties( properties )
   else
-    control = Control.getClass(json.control).create(properties)
+    control = Control.getClass( json.control ).create( properties )
   if json.id
     # Create an element reference function on the parent's class.
     logicalParentClass = logicalParent.constructor
     elementReference = "$" + json.id
     unless logicalParentClass::[elementReference]
-      logicalParentClass::[elementReference] = (elements) ->
+      logicalParentClass::[elementReference] = ( elements ) ->
         @referencedElement elementReference, elements
     logicalParent.referencedElement elementReference, control
   control
@@ -100,12 +100,12 @@ If the JSON is a scalar value (e.g., a string) or array, this will implicitly
 be taken as a content property. E.g., a json argument of "Hello" would have
 the same as { content: "Hello" }.
 ###
-evaluateControlJsonProperties = (json, logicalParent) ->
+evaluateControlJsonProperties = ( json, logicalParent ) ->
   # Scalar value or array; take this as the content property.
-  json = content: json  unless $.isPlainObject(json)
+  json = content: json  unless $.isPlainObject( json )
   properties = {}
   for key of json
-    properties[key] = evaluateControlJsonValue(json[key], logicalParent)
+    properties[key] = evaluateControlJsonValue( json[key], logicalParent )
   properties
   
   
@@ -123,23 +123,23 @@ The "logical parent" is the control whose JSON defined the elements being
 created. The logical parent for a given element may not be the element's
 immediate parent in the DOM; it might be higher up.
 ###
-evaluateControlJsonValue = (value, logicalParent) ->
+evaluateControlJsonValue = ( value, logicalParent ) ->
   result = undefined
-  if $.isArray(value)
+  if $.isArray( value )
         # Recursively process each member of the array.
     result = []
     i = 0
 
     while i < value.length
       item = value[i]
-      itemValue = evaluateControlJsonValue(item, logicalParent)
+      itemValue = evaluateControlJsonValue( item, logicalParent )
       itemValue = itemValue[0]  if itemValue instanceof jQuery            # When adding jQuery object to array, just add their element.
 
       result.push itemValue
       i++
-  else if $.isPlainObject(value)
+  else if $.isPlainObject( value )
         # Process JSON sub-dictionary.
-    result = evaluateControlJson(value, logicalParent)
+    result = evaluateControlJson( value, logicalParent )
   else
         # Return other types of values as is.
     result = value

@@ -9,13 +9,14 @@ module.exports = function(grunt) {
         coffee: {
             controls: {
                 src: [
-                    "control.coffee",
-                    "json.coffee",
+                    "control.coffee",   // Defines Control class, must come first.
+                    "coffee.coffee",
                     "content.coffee",
-                    "properties.coffee",
                     "inDocument.coffee",
+                    "json.coffee",
                     "layout.coffee",
                     "localization.coffee",
+                    "properties.coffee",
                     "styles.coffee",
                     "super.coffee",
                     "utilities.coffee"

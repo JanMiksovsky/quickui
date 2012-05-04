@@ -35,12 +35,12 @@ $.event.special.layout =
   ###
   Add a layout event handler.
   ###
-  add: (handleObj) ->
+  add: ( handleObj ) ->
         # Add the element to the set of element being tracked.
     layout = $.event.special.layout
-    layout._trackedElements = layout._trackedElements.add(this)
+    layout._trackedElements = layout._trackedElements.add( this )
         # Send an initial layout event when the element is in the document.
-    Control(this).inDocument ->
+    Control( this ).inDocument ->
        ###
              Directly invoke the handler instead of triggering the event.
              If add() is invoked on an element that's already in the document,
@@ -48,14 +48,14 @@ $.event.special.layout =
              be wired up yet.
         ###
       handler = handleObj.handler
-      event = new jQuery.Event("layout")
+      event = new jQuery.Event( "layout" )
       handler.call this, event
 
   ###
   Handle the layout event.
   ###
-  handle: (event) ->
-    control = Control(this)
+  handle: ( event ) ->
+    control = Control( this )
     return unless control.inDocument()            # Not currently in document; no need for layout.
     # TODO: Shouldn't the line below invoke _updateSavedSize()?
     return unless control.checkForSizeChange()    # Size hasn't actually changed; no need for layout.
@@ -69,7 +69,7 @@ $.event.special.layout =
     layout = $.event.special.layout
     unless layout._trackingResizeEvent
             # Start handling window resize.
-      $(window).resize ->
+      $( window ).resize ->
         layout._windowResized()
 
       layout._trackingResizeEvent = true
@@ -79,7 +79,7 @@ $.event.special.layout =
   ###    
   teardown: ->
     # Remove the control from the set of controls being tracked.
-    $.event.special.layout._trackedElements = $.event.special.layout._trackedElements.not(this)
+    $.event.special.layout._trackedElements = $.event.special.layout._trackedElements.not( this )
 
     # The set of elements receiving layout events.
   _trackedElements: $()
@@ -98,7 +98,7 @@ If the size has not changed, return false. If the size has changed,
 update the recorded size and return true.
 ###
 _updateSavedSize: ->
-  previousSize = @data("_size") ? {}
+  previousSize = @data( "_size" ) ? {}
   size =
     height: @height()
     width: @width()

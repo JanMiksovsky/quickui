@@ -28,15 +28,15 @@ $.extend Control,
   
   The function names passed as parameters may also define an optional
   string-valued parameter that will be passed in. So chain( "css/display" )
-  creates a curried setter/getter function equivalent to css("display", value ).
+  creates a curried setter/getter function equivalent to css( "display", value ).
   ###
   chain: ->
         # Check for a side effect function as last parameter.
     args = arguments
     sideEffectFn = undefined
-    if $.isFunction(args[args.length - 1])
+    if $.isFunction( args[args.length - 1] )
             # Convert arguments to a real array in order to grab last param.
-      args = [].slice.call(arguments)
+      args = [].slice.call( arguments )
       sideEffectFn = args.pop()
         # Identify function names and optional parameters.
     functionNames = []
@@ -46,12 +46,12 @@ $.extend Control,
 
     while i < length
             # Check for optional parameter.
-      parts = arguments[i].split("/")
+      parts = arguments[i].split( "/" )
       functionNames[i] = parts.shift()
       functionParams[i] = parts
       i++
         # Generate a function that executes the chain.
-    chain = (value) ->
+    chain = ( value ) ->
       result = this
       i = 0
       length = functionNames.length
@@ -60,11 +60,11 @@ $.extend Control,
         fn = result[functionNames[i]]
         params = functionParams[i]
                     # Invoke last function as setter.
-        params = params.concat([ value ])  if value isnt `undefined` and i is length - 1
+        params = params.concat( [ value ] )  if value isnt `undefined` and i is length - 1
         if fn is `undefined`
           message = "Control class \"" + @className() + "\" tried to chain to an undefined getter/setter function \"" + functionNames[i] + "\"."
           throw message
-        result = fn.apply(result, params)
+        result = fn.apply( result, params )
         i++
       if value is `undefined`
                 # Chain invoked as getter.
@@ -83,12 +83,12 @@ $.extend Control,
   assumed to be a property getter, and that result is return immediately.
   Otherwise, "this" is returned to permit chaining.
   ###
-  iterator: (fn) ->
+  iterator: ( fn ) ->
     ->
       args = arguments
       iteratorResult = undefined
-      @eachControl (index, $control) ->
-        result = fn.apply($control, args)
+      @eachControl ( index, $control ) ->
+        result = fn.apply( $control, args )
         if result isnt `undefined`
           iteratorResult = result
           false
@@ -101,18 +101,18 @@ $.extend Control,
   ###
   Generic factory for a property getter/setter.
   ###
-  property: (sideEffectFn, defaultValue, converterFunction) ->
+  property: ( sideEffectFn, defaultValue, converterFunction ) ->
     backingPropertyName = "_property" + Control.property._symbolCounter++
-    (value) ->
+    ( value ) ->
       result = undefined
       if value is `undefined`
         # Getter
-        result = @data(backingPropertyName)
-        (if (result is `undefined`) then defaultValue else result)
+        result = @data( backingPropertyName )
+        ( if ( result is `undefined` ) then defaultValue else result )
       else
         # Setter. Allow chaining.
-        @eachControl (index, $control) ->
-          result = (if (converterFunction) then converterFunction.call($control, value) else value)
+        @eachControl ( index, $control ) ->
+          result = ( if ( converterFunction ) then converterFunction.call( $control, value ) else value )
           $control.data backingPropertyName, result
           sideEffectFn.call $control, result  if sideEffectFn
 
@@ -123,25 +123,25 @@ Factories for getter/setters of various types.
 $.extend Control.property,
 
     # A boolean property.
-  bool: (sideEffectFn, defaultValue) ->
+  bool: ( sideEffectFn, defaultValue ) ->
                 # Convert either string or bool to bool.
-    Control.property sideEffectFn, defaultValue, convertToBool = (value) ->
-      String(value) is "true"
+    Control.property sideEffectFn, defaultValue, convertToBool = ( value ) ->
+      String( value ) is "true"
 
   ###
   A class-valued property.
   This accepts either a function (the class) or a class name as a string.
   ###
-  class: (sideEffectFn, defaultValue) ->
+  class: ( sideEffectFn, defaultValue ) ->
     Control.property sideEffectFn, defaultValue, Control.getClass
 
   # A date-valued property. Accepts a JavaScript date or parseable date string.
-  date: (sideEffectFn, defaultValue) ->
-    Control.property sideEffectFn, defaultValue, convertToDate = (value) ->
-      (if (value instanceof Date or not value?) then value else new Date(Date.parse(value)))
+  date: ( sideEffectFn, defaultValue ) ->
+    Control.property sideEffectFn, defaultValue, convertToDate = ( value ) ->
+      ( if ( value instanceof Date or not value? ) then value else new Date( Date.parse( value ) ) )
 
   # An integer property.
-  integer: (sideEffectFn, defaultValue) ->
+  integer: ( sideEffectFn, defaultValue ) ->
     Control.property sideEffectFn, defaultValue, parseInt
 
   # Used to generate symbols to back new properties.

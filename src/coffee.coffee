@@ -1,8 +1,8 @@
 ###
-CoffeeScript plugin for QuickUI.
+CoffeeScript support.
 
-This allows creation of Control subclasses ( and, generally speaking, jQuery
-subclasses ) in CoffeeScript using its built-in "extend" syntax for classes.
+This allows creation of Control subclasses (and, generally speaking, jQuery
+subclasses) in CoffeeScript using its built-in "extend" syntax for classes.
 This plugin is only necessary to *create* control classes in CoffeeScript;
 controls can be instantiated in CoffeeScript without this.
   
@@ -13,7 +13,7 @@ is required. The constructor should look like the second line below:
     constructor: -> return Control.coffee()
 
 NOTE: The routines here are not generally called by QuickUI users. This support
-deals primarily with instantiating a jQuery ( QuickUI ) object from a selector.
+deals primarily with instantiating a jQuery (QuickUI) object from a selector.
 E.g., given the class definition above, a collection of MyControl instances on
 the page could be obtained via
 
@@ -36,7 +36,7 @@ time; the $.control plugin will cast the result to the correct type.
 ###
 Returns a new instance of a CoffeeScript-based QuickUI control class, ensuring
 that the class has been properly set up for jQuery and QuickUI. This method
-should be invoked from the boilerplate constructor ( see top ) of any CoffeeScript
+should be invoked from the boilerplate constructor (see top) of any CoffeeScript
 control class.
 
 For full jQuery compatibility, a control class should be able to handle two forms
@@ -45,8 +45,8 @@ of instantiation:
   var c = MyControl( selector )       // Static form
   var c = new MyControl( selector )   // New form
   
-The static form will invoke the MyControl() constructor ( and therefore this
-method ) with "this" as the global window object. This means we have to jump
+The static form will invoke the MyControl() constructor (and therefore this
+method) with "this" as the global window object. This means we have to jump
 through some hoops to figure out which class we're instantiating. 
 ###
 Control.coffee = ->

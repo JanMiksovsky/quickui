@@ -61,7 +61,7 @@ Control::_super = ->
   superFn = callerFn._superFn
   unless superFn
     # Find the class implementing this method.
-    classInfo = findMethodImplementation(callerFn, @constructor)
+    classInfo = findMethodImplementation( callerFn, @constructor )
     if classInfo
       classFn = classInfo.classFn
       callerFnName = classInfo.fnName
@@ -75,7 +75,7 @@ Control::_super = ->
     throw "Tried to invoke _super(), but couldn't find a function of the same name in the base class."
 
   # Invoke superfunction
-  superFn.apply(this, arguments)
+  superFn.apply( this, arguments )
 
 
 ###
@@ -88,7 +88,7 @@ function identical to the method we're looking for.
 Returns the class that implements the function, and the name of the class
 member that references it. Returns null if the class was not found.
 ###
-findMethodImplementation = (methodFn, classFn) ->
+findMethodImplementation = ( methodFn, classFn ) ->
   # See if this particular class defines the function.
   prototype = classFn::
   for key of prototype
@@ -96,13 +96,13 @@ findMethodImplementation = (methodFn, classFn) ->
       # Found the function implementation.
       # Check to see whether it's really defined by this class,
       # or is actually inherited.
-      methodInherited = (if classFn.superclass then prototype[key] is classFn.superclass::[key] else false)
+      methodInherited = ( if classFn.superclass then prototype[key] is classFn.superclass::[key] else false )
       unless methodInherited
         # This particular class defines the function.
-        return (
+        return ( 
           classFn: classFn
           fnName: key
         )
   # Didn't find the function in this class.
   # Look in parent classes (if any).
-  (if classFn.superclass then findMethodImplementation(methodFn, classFn.superclass) else null)
+  ( if classFn.superclass then findMethodImplementation( methodFn, classFn.superclass ) else null )

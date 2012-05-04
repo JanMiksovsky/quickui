@@ -4,7 +4,7 @@ Version 0.8.9
 Modular web control framework
 http:#quickui.org/
 
-Copyright (c) 2009-2012 Jan Miksovsky
+Copyright 2009-2012 Jan Miksovsky
 Licensed under the MIT license.
 ###
 
@@ -22,36 +22,36 @@ $( element ).control( { content: "Hello" } );
   Sets the content property of the control at this element.
 
 $( element ).control( MyControlClass );
-  Creates a new instance of MyControlClass around the element(s).
+  Creates a new instance of MyControlClass around the element( s ).
 
 $( element ).control( MyControlClass, { content: "Hello" } );
-  Creates new control instance(s) and sets its (their) content property.
+  Creates new control instance( s ) and sets its ( their ) content property.
 
 NOTE: the forms that create new control instances may return a jQuery array
 of elements other than the ones which were passed in. This occurs whenever
 the control class wants a different root tag than the tag on the supplied
 array of elements.
 ###
-$.fn.control = (arg1, arg2) ->
+$.fn.control = ( arg1, arg2 ) ->
   if arg1 is `undefined`
-        # Return the controls bound to these element(s), cast to the correct class.
-    $cast = Control(this).cast(jQuery)
-    (if ($cast instanceof Control) then $cast else null)
-  else if $.isFunction(arg1)
-        # Create a new control around the element(s).
+        # Return the controls bound to these element( s ), cast to the correct class.
+    $cast = Control( this ).cast( jQuery )
+    ( if ( $cast instanceof Control ) then $cast else null )
+  else if $.isFunction( arg1 )
+        # Create a new control around the element( s ).
     controlClass = arg1
     properties = arg2
     controlClass.createAt this, properties
   else
-        # Set properties on the control(s).
-    Control(this).cast().properties arg1
+        # Set properties on the control( s ).
+    Control( this ).cast().properties arg1
 
 
 ###
 Control subclass of jQuery.
 This is used as the base class for all QuickUI controls.
 ###
-Control = $.sub()
+window.Control = $.sub()
 $.extend Control,
 
 
@@ -65,19 +65,21 @@ $.extend Control,
   ###
   classHierarchy: "Control"
 
+
   ###
   Each control class knows its own name.
-  We'd prefer to use "name" for this, but something (the browser? jQuery?)
-  creates a "name" property on jQuery instances that's unchangeable.
+  We'd prefer to use "name" for this, but this is a reserved word.
   ###
   className: "Control"
+
     
   ###
   Create an instance of this control class around a specific element (or
   multiple instances around a set of elements).
   ###
-  create: (properties) ->
+  create: ( properties ) ->
     @createAt null, properties
+
 
   ###
   Create instance(s) of this control class around the given target(s).
@@ -94,22 +96,22 @@ $.extend Control,
   If the properties argument is a single string, it will be passed to
   the controls' content() property.
   ###
-  createAt: (target, properties) ->
+  createAt: ( target, properties ) ->
     defaultTarget = "<" + @::tag + "/>"
         # Instantiate the control class.
     $controls = undefined
     oldContents = undefined
     if target is null
             # Create a default element.
-      $controls = this(defaultTarget)
+      $controls = this( defaultTarget )
       oldContents = []
     else
             # Grab the existing contents of the target elements.
-      $controls = this(target)
+      $controls = this( target )
       oldContents = $controls._significantContents()
       existingTag = $controls[0].nodeName.toLowerCase()
                 # Tags don't match; replace with elements with the right tag.
-      $controls = @_replaceElements($controls, this(defaultTarget))  if existingTag isnt @::tag.toLowerCase() and existingTag isnt "body"
+      $controls = @_replaceElements( $controls, this( defaultTarget ) )  if existingTag isnt @::tag.toLowerCase() and existingTag isnt "body"
             # Plain string becomes control content
     properties = content: properties  if typeof properties is "string"
             # Save a reference to the controls' class.
@@ -119,10 +121,10 @@ $.extend Control,
 
             # Render controls as DOM elements.
 
-            # Pass in the target's old contents (if any).
+            # Pass in the target's old contents ( if any ).
 
             # Set any requested properties.
-    $controls._controlClass(this).addClass(@classHierarchy).render().propertyVector("content", oldContents).properties properties
+    $controls._controlClass( this ).addClass( @classHierarchy ).render().propertyVector( "content", oldContents ).properties properties
         # Apply generic style if class supports that.
     $controls.generic true  if @genericIfClassIs is @className
         # Tell the controls they're ready.
@@ -130,7 +132,7 @@ $.extend Control,
     length = $controls.length
 
     while i < length
-      $controls.nth(i).initialize()
+      $controls.nth( i ).initialize()
       i++
     $controls
 
@@ -138,7 +140,7 @@ $.extend Control,
   ###
   Create a subclass of this class.
   ###
-  subclass: (json) ->
+  subclass: ( json ) ->
     superclass = this
     newClass = superclass.sub()
         # $.sub uses $.extend to copy properties from super to subclass, so
@@ -156,7 +158,7 @@ $.extend Control,
            (which go on the class). We use the remaining JSON values as
            "inherited" on the class' prototype for use by render(). 
       ###
-      inherited = copyExcludingKeys(json,
+      inherited = copyExcludingKeys( json,
         className: true
         genericSupport: true
         prototype: true
@@ -171,10 +173,12 @@ $.extend Control,
       newClass::inherited = null
     newClass
 
+
   ###
   The name of the data element used to store a reference to an element's control class.
   ###
   _controlClassData: "_controlClass"
+
 
   ###
   Replace the indicated existing element(s) with copies of the indicated
@@ -182,16 +186,16 @@ $.extend Control,
   
   This is used if, say, we need to convert a bunch of divs to buttons.
   ###
-  _replaceElements: ($existing, $replacement) ->
+  _replaceElements: ( $existing, $replacement ) ->
         # Gather the existing IDs.
-    ids = $existing.map((index, element) ->
-      $(element).prop "id"
+    ids = $existing.map( ( index, element ) ->
+      $( element ).prop "id"
     )
-    $new = $replacement.replaceAll($existing)
+    $new = $replacement.replaceAll( $existing )
         # Put IDs onto new elements.
-    $new.each (index, element) ->
+    $new.each ( index, element ) ->
       id = ids[index]
-      $(element).prop "id", ids[index]  if id and id.length > 0
+      $( element ).prop "id", ids[index]  if id and id.length > 0
 
     $new
 
@@ -209,9 +213,6 @@ Control::extend
   className: ->
     @constructor.className
 
-    # Allow controls have an element ID specified on them in markup.
-  id: (id) ->
-    @attr "id", id
 
   ###
   Invoked when the control has finished rendering.
@@ -220,40 +221,6 @@ Control::extend
   ###    
   initialize: ->
 
-  ###
-  Save or retrieve an element associated with the control using the
-  given key. For a collection of controls, the getter maps the collection
-  to a collection of the corresponding elements.
-  ###
-  referencedElement: (key, elements) ->
-    if elements is `undefined`
-            # Map a collection of control instances to the given element
-            # defined for each instance.
-      elements = []
-      i = 0
-      length = @length
-
-      while i < length
-        element = $(this[i]).data(key)
-        elements.push element  if element isnt `undefined`
-        i++
-      $result = Control(elements).cast()
-            # To make the element function $.end()-able, we want to call
-            # jQuery's public pushStack() API. Unfortunately, that call
-            # won't allow us to both a) return a result of the proper class
-            # AND b) ensure that the result of calling end() will be of
-            # the proper class. So, we directly set the internal prevObject
-            # member used by end().
-      $result.prevObject = this
-      $result
-    else
-      i = 0
-      length = @length
-
-      while i < length
-        $(this[i]).data key, elements[i]
-        i++
-      this
 
   ###
   Rendering a control lets each class in the control class' hierarchy,
@@ -268,11 +235,15 @@ Control::extend
                 # Superclass renders first.
 
                 # Apply the class' settings using superclass's setters.
-      superclass(this).render().json @inherited, this
+      superclass( this ).render().json @inherited, this
     this
 
-  ### Control has no settings that need to be applied on render.###
+
+  ###
+  Control itself has no settings that need to be applied on render.
+  ###
   inherited: null
+
 
   ###
   Replace this control with an instance of the given class and properties.
@@ -292,34 +263,39 @@ Control::extend
   perhaps should be deprecated. Callers could rely on transmute() if they
   need to preserve existing content.
   ###
-  transmute: (newClass, preserveContent, preserveClasses, preserveEvents) ->
-    classFn = Control.getClass(newClass)
-    oldContents = (if preserveContent then @_significantContents() else null)
-    oldClasses = (if preserveClasses then @prop("class") else null)
+  transmute: ( newClass, preserveContent, preserveClasses, preserveEvents ) ->
+    classFn = Control.getClass( newClass )
+    oldContents = ( if preserveContent then @_significantContents() else null )
+    oldClasses = ( if preserveClasses then @prop( "class" ) else null )
         # Reset everything.
     @empty().removeClass().removeData()
     @off()  unless preserveEvents
-    $controls = classFn.createAt(this)
+    $controls = classFn.createAt( this )
     $controls.propertyVector "content", oldContents  if oldContents
-    $controls.removeClass("Control").addClass(oldClasses).addClass "Control"  if oldClasses       # Ensures Control ends up rightmost
+    $controls.removeClass( "Control" ).addClass( oldClasses ).addClass "Control"  if oldClasses       # Ensures Control ends up rightmost
     $controls
+
 
   ###
   By default, the root tag of the control will be a div.
   Control classes can override this: <Control name="Foo" tag="span">
   ###
   tag: "div"
+
   
   ###
   The current version of QuickUI.
   ###
   quickui: "0.8.9"
 
+
   ###
-  Get/set the reference for the class for these control(s).
+  Get/set the reference for the class for these control( s ).
+  TODO: Promote to real utility.
   ###
-  _controlClass: (classFn) ->
-    (if classFn then @data(Control._controlClassData, classFn) else @data(Control._controlClassData))
+  _controlClass: ( classFn ) ->
+    ( if classFn then @data( Control._controlClassData, classFn ) else @data( Control._controlClassData ) )
+
 
   ###
   Return the control's "significant" contents: contents which contain
@@ -327,24 +303,23 @@ Control::extend
   If an element has no significant contents, return null for that element.
   ###
   _significantContents: ->
-        # Use base implementation of content().
-    contents = Control(this).propertyVector("content")
-    significantContents = $.map(contents, (content) ->
-      return content  if $.trim(content).length > 0  if typeof content is "string"                     # Found significant text
-            # Content is an array
+    # Use base implementation of content().
+    contents = Control( this ).propertyVector( "content" )
+    significantContents = $.map( contents, ( content ) ->
+      return content  if $.trim( content ).length > 0  if typeof content is "string"                     # Found significant text
+      # Content is an array
       i = 0
       length = content.length
-
       while i < length
         c = content[i]
         if typeof c is "string"
-          return content  if $.trim(c).length > 0                 # Found significant text
+          return content  if $.trim( c ).length > 0                 # Found significant text
         # Comment node
         else return content  if c.nodeType isnt 8                     # Found some real element
         i++
-      null
+      null  # Didn't find anything significant
     )
-    significantContents    # Didn't find anything significant
+    significantContents
 
 
 ###
@@ -353,12 +328,8 @@ Keys should be provided as a dictionary with true values. E.g., the dictionary
 { a: true, b: true } specifies that keys "a" and "b" should be excluded
 from the result.
 ###
-copyExcludingKeys = (obj, excludeKeys) ->
+copyExcludingKeys = ( obj, excludeKeys ) ->
   copy = {}
   for key of obj
     copy[key] = obj[key]  unless excludeKeys[key]
   copy
-
-
-# Expose Control class as a global.
-window.Control = Control

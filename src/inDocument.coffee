@@ -29,7 +29,7 @@ Control::inDocument = ( callback ) ->
     i = 0
 
     while i < @length
-      return false  unless isElementInDocument(this[i])                     # At least one control is not in the document.
+      return false  unless isElementInDocument( this[i] )                     # At least one control is not in the document.
 
       i++
           # All controls are in the document.
@@ -41,9 +41,9 @@ Control::inDocument = ( callback ) ->
     i = 0
 
     while i < @length
-      $element = @nth(i)
+      $element = @nth( i )
       element = $element[0]
-      if isElementInDocument(element)
+      if isElementInDocument( element )
                   # Element already in document
         callback.call $element
       else
@@ -53,7 +53,7 @@ Control::inDocument = ( callback ) ->
           callback: callback
       i++
     if callbacks.length > 0
-      Control._elementInsertionCallbacks = callbacks.concat(Control._elementInsertionCallbacks)
+      Control._elementInsertionCallbacks = callbacks.concat( Control._elementInsertionCallbacks )
       Control._startListeningForElementInsertion()  unless Control._listeningForElementInsertion
     this
 
@@ -65,15 +65,15 @@ $.extend Control,
   An element may have been added to the document; see if it's a control that's
   waiting to be notified of that via Control.prototype.inDocument().
   ### 
-  _checkForElementInsertion: (event) ->
+  _checkForElementInsertion: ( event ) ->
     callbacksReady = []
     i = 0
     while i < Control._elementInsertionCallbacks.length
       element = Control._elementInsertionCallbacks[i].element
-      if isElementInDocument(element)
+      if isElementInDocument( element )
                 # The element has been inserted into the document. Move it
                 # into the list of callbacks which we can now invoke.
-        callbacksReady = callbacksReady.concat(Control._elementInsertionCallbacks[i])
+        callbacksReady = callbacksReady.concat( Control._elementInsertionCallbacks[i] )
                 # Now remove it from the pending list. We remove it from the list
                 # *beforewe invoke the callback -- because the callback
                 # itself might do DOM manipulations that trigger more DOM
@@ -86,7 +86,7 @@ $.extend Control,
     i = 0
     while i < callbacksReady.length
       element = callbacksReady[i].element
-      $control = Control(element).control()
+      $control = Control( element ).control()
       callback = callbacksReady[i].callback
       callback.call $control
       i++
@@ -103,7 +103,7 @@ $.extend Control,
         # mutation events is IE8, we just look for that. If need be, we
         # could programmatically detect support using something like
         # Diego Perini's NWMatcher approach.
-    not $.browser.msie or parseInt($.browser.version) >= 9
+    not $.browser.msie or parseInt( $.browser.version ) >= 9
 
   ###
   Start listening for insertions of elements into the document body.
@@ -125,12 +125,12 @@ $.extend Control,
             # Use mutation events.
       if document.body
                 # The document's ready for us to wire up mutation event handlers.
-        jQuery("body").on "DOMNodeInserted", Control._checkForElementInsertion
+        jQuery( "body" ).on "DOMNodeInserted", Control._checkForElementInsertion
         Control._listeningForElementInsertion = true
       else unless Control._deferredElementInsertionListening
                 # We can't sink events yet, so things get messy. We have to
                 # queue up a ready() callback that can wire up the events.
-        jQuery("body").ready ->
+        jQuery( "body" ).ready ->
                     # Check pending callbacks.
           Control._checkForElementInsertion()
                     # If any callbacks are left, start listening.
@@ -142,13 +142,13 @@ $.extend Control,
     else
             # Use timer
       self = this
-      Control._elementInsertionInterval = window.setInterval(->
+      Control._elementInsertionInterval = window.setInterval( ->
         self._checkForElementInsertion()
-      , 10)
+      , 10 )
 
   _stopListeningForElementInsertion: ->
     if Control._mutationEvents()
-      jQuery("body").off "DOMNodeInserted", Control._checkForElementInsertion
+      jQuery( "body" ).off "DOMNodeInserted", Control._checkForElementInsertion
       Control._listeningForElementInsertion = false
     else
       window.clearInterval Control._elementInsertionInterval
@@ -159,5 +159,5 @@ $.extend Control,
 Return true if the document body contains the indicated element, or if
 if the element *is* the document body.
 ###
-isElementInDocument = (element) ->
-  !!document.body and (document.body is element or $.contains(document.body, element))
+isElementInDocument = ( element ) ->
+  !!document.body and ( document.body is element or $.contains( document.body, element ) )

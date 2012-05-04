@@ -12,7 +12,7 @@ Control::extend
   You can set content to a single item, an array of items, or a set
   of items listed as parameters. Setting multiple items at a time
   is an important case in compiled QuickUI markup. Input elements
-  are also handled specially: their value (val) is their content.
+  are also handled specially: their value ( val ) is their content.
   
   This function attempts to return contents in a canonical form, so
   that setting contents with common parameter types is likely to
@@ -22,18 +22,18 @@ Control::extend
   it is returned as a string.
   
   Usage:
-   $element.content("Hello")              # Simple string
-   $element.content(["Hello", "world"])   # Array
-   $element.content("Hello", "world")     # Parameters
-   Control("<input type='text'/>").content("Hi")   # Sets text value
+   $element.content( "Hello" )              # Simple string
+   $element.content( ["Hello", "world"] )   # Array
+   $element.content( "Hello", "world" )     # Parameters
+   Control( "<input type='text'/>" ).content( "Hi" )   # Sets text value
   
   This is used as the default implementation of a control's content
   property. Controls can override this behavior.
   ###
-  content: (value) ->
+  content: ( value ) ->
     if value is `undefined`
             # Getting contents. Just process first element.
-      $element = @nth(0)
+      $element = @nth( 0 )
       result = undefined
       if $element.isInputElement()
                 # Return input element value.
@@ -41,7 +41,7 @@ Control::extend
       else
                 # Return HTML contents in a canonical form.
         resultContainsStrings = false
-        result = $element.contents().map((index, item) ->
+        result = $element.contents().map( ( index, item ) ->
           if item.nodeType is 3
                         # Return text as simple string
             resultContainsStrings = true
@@ -63,9 +63,9 @@ Control::extend
                  
                  # single array parameter
                  # singleton parameter
-      array = (if (arguments.length > 1) then arguments else (if value instanceof jQuery then value.get() else (if $.isArray(value) then value else [ value ])))
-      @each (index, element) ->
-        $element = Control(element)
+      array = ( if ( arguments.length > 1 ) then arguments else ( if value instanceof jQuery then value.get() else ( if $.isArray( value ) then value else [ value ] ) ) )
+      @each ( index, element ) ->
+        $element = Control( element )
         if $element.isInputElement()
                     # Set input element value.
           $element.val value
@@ -91,4 +91,4 @@ Control::extend
   # TODO: Make regular function
   isInputElement: ->
     inputTags = [ "input", "select", "textarea" ]
-    (if @length is 0 then false else ($.inArray(this[0].nodeName.toLowerCase(), inputTags) >= 0))
+    ( if @length is 0 then false else ( $.inArray( this[0].nodeName.toLowerCase(), inputTags ) >= 0 ) )
