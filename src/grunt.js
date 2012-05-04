@@ -11,6 +11,7 @@ module.exports = function(grunt) {
                 src: [
                     "control.coffee",
                     "json.coffee",
+                    "content.coffee",
                     "properties.coffee",
                     "inDocument.coffee",
                     "layout.coffee",

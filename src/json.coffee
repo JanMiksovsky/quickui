@@ -4,6 +4,38 @@ Control JSON: a JSON scheme for defining a control class.
 
 
 ###
+Apply the indicated JSON to the control. Each key in the JSON will
+invoke the corresponding setter function in a function chain. E.g.,
+the JSON dictionary
+
+     {
+         foo: "Hello",
+         bar: "World"
+     }
+
+will invoke this.foo("Hello").bar("World").
+
+If a dictionary value is itself a JSON object, it will be reconstituted
+into HTML, or controls, or an array.
+
+This is similar to properties(), but that function doesn't attempt any
+processing of the values.
+
+The logicalParent parameter is intended for internal use only.
+###
+Control::json = (json, logicalParent) ->
+  logicalParent = logicalParent or this
+  i = 0
+  length = @length
+
+  while i < length
+    control = @nth(i)
+    properties = evaluateControlJsonProperties(json, logicalParent.nth(i))
+    control.properties properties
+    i++
+
+
+###
 Create the control from the given JSON. This will be of three forms.
 The first form creates a control:
 
