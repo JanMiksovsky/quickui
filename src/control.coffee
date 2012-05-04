@@ -8,118 +8,6 @@ Copyright (c) 2009-2012 Jan Miksovsky
 Licensed under the MIT license.
 ###
 
-###
-Control JSON routines.
-###
-
-###
-Create the control from the given JSON. This will be of three forms.
-The first form creates a control:
-
- {
-     control: "MyButton",
-     id: "foo",     
-     content: "Hello, world."
- }
-
-The special "control" property determines the class of the control. 
-The second form creates a plain HTML element:
-
- {
-     html: "<div/>",
-     id: "foo"
- }
-
-The html can be any HTML string supported by jQuery. It can also be an HTML
-tag singleton without braces: e.g., "div" instead of needing "<div>" or
-"<div/>". In normal jQuery, a tag like "div" would be a selector, and would
-not create an element. But in the context of creating controls, it seems
-more useful to interpret this to create an element of the indicated type.
-
-The "id" property determines the ID *andhas the side effect of creating
-an element reference so the logical parent can find that control later.
-The remainder of the JSON properties are invoked as setters on the new
-control.
-
-The third form is any other JSON dictionary object, returned as is.
-###
-evaluateControlJson = (json, logicalParent) ->
-  # Get the first key in the JSON.
-  for firstKey of json
-    break
-  return json  if firstKey isnt "html" and firstKey isnt "control"  # Regular object, return as is.
-  reservedKeys = {}
-  reservedKeys[firstKey] = true
-  stripped = copyExcludingKeys(json, reservedKeys)
-  properties = evaluateControlJsonProperties(stripped, logicalParent)
-  control = undefined
-  if firstKey is "html"
-    html = json.html
-    html = "<" + html + ">"  if /^\w+$/.test(html)              # HTML tag singleton. Map tag like "div" to "<div>".
-    control = Control(html).properties(properties)
-  else
-    control = Control.getClass(json.control).create(properties)
-  if json.id
-    # Create an element reference function on the parent's class.
-    logicalParentClass = logicalParent.constructor
-    elementReference = "$" + json.id
-    unless logicalParentClass::[elementReference]
-      logicalParentClass::[elementReference] = (elements) ->
-        @referencedElement elementReference, elements
-    logicalParent.referencedElement elementReference, control
-  control
-  
-###
-For each key in the given JSON object, evaluate its value.
-
-If the JSON is a scalar value (e.g., a string) or array, this will implicitly
-be taken as a content property. E.g., a json argument of "Hello" would have
-the same as { content: "Hello" }.
-###
-evaluateControlJsonProperties = (json, logicalParent) ->
-  # Scalar value or array; take this as the content property.
-  json = content: json  unless $.isPlainObject(json)
-  properties = {}
-  for key of json
-    properties[key] = evaluateControlJsonValue(json[key], logicalParent)
-  properties
-  
-  
-###
-Determine the value of the given JSON object found during the processing
-of control JSON.
-
-If the supplied json is a JavaScript object, it will be treated as a control
-and created from that object's properties.
-If it's an array, its items will be mapped to their values using this same
-function.
-Otherwise, the object is returned as is.
-
-The "logical parent" is the control whose JSON defined the elements being
-created. The logical parent for a given element may not be the element's
-immediate parent in the DOM; it might be higher up.
-###
-evaluateControlJsonValue = (value, logicalParent) ->
-  result = undefined
-  if $.isArray(value)
-        # Recursively process each member of the array.
-    result = []
-    i = 0
-
-    while i < value.length
-      item = value[i]
-      itemValue = evaluateControlJsonValue(item, logicalParent)
-      itemValue = itemValue[0]  if itemValue instanceof jQuery            # When adding jQuery object to array, just add their element.
-
-      result.push itemValue
-      i++
-  else if $.isPlainObject(value)
-        # Process JSON sub-dictionary.
-    result = evaluateControlJson(value, logicalParent)
-  else
-        # Return other types of values as is.
-    result = value
-  result
   
 ###
 Utilities
@@ -657,18 +545,6 @@ $.extend Control::,
     setClass this
 
   ###
-  See if the control's size has changed since the last time we checked and,
-  if so, trigger the sizeChanged event.
-  
-  A control can use this method to let layout-performing ancestors know
-  that the control has changed its size, in case the ancestor will now
-  need to update the layout.
-  ###
-  checkForSizeChange: ->
-    @trigger "sizeChanged"  if @_updateSavedSize()
-    this
-
-  ###
   The set of classes on the control's element.
   If no value is supplied, this gets the current list of classes.
   If a value is supplied, the specified class name(s) are *added*
@@ -1190,23 +1066,6 @@ $.extend Control::,
                 # to speed things up next time.
         callerFn._superFn = superFn
     (if superFn then superFn.apply(this, arguments) else `undefined`)  # Invoke superfunction
-
-  ###
-  Compare element's current size with its previously recorded size.
-  If the size has not changed, return false. If the size has changed,
-  update the recorded size and return true.
-  ###
-  _updateSavedSize: ->
-    previousSize = @data("_size") or {}
-    size =
-      height: @height()
-      width: @width()
-
-    return false  if size.height is previousSize.height and size.width is previousSize.width            # Size hasn't changed.
-
-        # Size changed; record the new size.
-    @data "_size", size
-    true
 
 # Expose Control class as a global.
 window.Control = Control

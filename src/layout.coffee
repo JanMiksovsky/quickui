@@ -3,6 +3,19 @@ Layout helpers.
 ###
 
 ###
+See if the control's size has changed since the last time we checked and,
+if so, trigger the sizeChanged event.
+
+A control can use this method to let layout-performing ancestors know
+that the control has changed its size, in case the ancestor will now
+need to update the layout.
+###
+Control::checkForSizeChange = ->
+  @trigger "sizeChanged"  if @_updateSavedSize()
+  @
+
+
+###
 Layout event.
 
 Elements can use the layout event if they want to perform custom layout when
@@ -18,6 +31,7 @@ know about changes in the contained element's size can do so by triggering
 a layout event that will bubble up to the container.      
 ###
 $.event.special.layout =
+
   ###
   Add a layout event handler.
   ###
@@ -42,9 +56,9 @@ $.event.special.layout =
   ###
   handle: (event) ->
     control = Control(this)
-    return  unless control.inDocument()            # Not currently in document; no need for layout.
-
-    return  unless control.checkForSizeChange()     # Size hasn't actually changed; no need for layout.
+    return unless control.inDocument()            # Not currently in document; no need for layout.
+    # TODO: Shouldn't the line below invoke _updateSavedSize()?
+    return unless control.checkForSizeChange()    # Size hasn't actually changed; no need for layout.
     event.handleObj.handler.apply this, arguments
 
   ###
@@ -64,7 +78,7 @@ $.event.special.layout =
   The last layout event handler for an element has been removed.
   ###    
   teardown: ->
-        # Remove the control from the set of controls being tracked.
+    # Remove the control from the set of controls being tracked.
     $.event.special.layout._trackedElements = $.event.special.layout._trackedElements.not(this)
 
     # The set of elements receiving layout events.
@@ -76,3 +90,22 @@ $.event.special.layout =
   _windowResized: ->
         # Trigger layout event for all elements being asked.
     $.event.special.layout._trackedElements.trigger "layout"
+
+
+###
+Compare element's current size with its previously recorded size.
+If the size has not changed, return false. If the size has changed,
+update the recorded size and return true.
+###
+_updateSavedSize: ->
+  previousSize = @data("_size") ? {}
+  size =
+    height: @height()
+    width: @width()
+  if size.height is previousSize.height and size.width is previousSize.width
+    # Size hasn't changed.
+    false
+  else
+    # Size changed; record the new size.
+    @data "_size", size
+    true
