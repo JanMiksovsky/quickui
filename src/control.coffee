@@ -416,11 +416,10 @@ $.extend Control,
         if result isnt `undefined`
           iteratorResult = result
           false
-
-  # Getter
-   
-  # Method or setter 
-        (if (iteratorResult isnt `undefined`) then iteratorResult else this)
+      if iteratorResult != `undefined`
+        iteratorResult # Getter
+      else
+        this # Method or setter
   
   ###
   Generic factory for a property getter/setter.
@@ -455,13 +454,12 @@ $.extend Control,
         newClass.extend
           className: json.className
           classHierarchy: json.className + " " + superclass.classHierarchy
-      if json.genericSupport
-        newClass.genericIfClassIs = json.className 
-        ###
-             Create a copy of the JSON that doesn't include the reserved keys
-             (which go on the class). We use the remaining JSON values as
-             "inherited" on the class' prototype for use by render(). 
-        ###
+      newClass.genericIfClassIs = json.className  if json.genericSupport        
+      ###
+           Create a copy of the JSON that doesn't include the reserved keys
+           (which go on the class). We use the remaining JSON values as
+           "inherited" on the class' prototype for use by render(). 
+      ###
       inherited = copyExcludingKeys(json,
         className: true
         genericSupport: true
