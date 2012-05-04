@@ -13,7 +13,8 @@ module.exports = function(grunt) {
                     "json.coffee",
                     "properties.coffee",
                     "layout.coffee",
-                    "styles.coffee"
+                    "styles.coffee",
+                    "super.coffee"
                 ],
                 dest: "quickui-pre.js"
             }

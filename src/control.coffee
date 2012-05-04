@@ -31,35 +31,7 @@ if the element *isthe document body.
 ###
 isElementInDocument = (element) ->
   !!document.body and (document.body is element or $.contains(document.body, element))
-  
-###
-Find which class implements the given method, starting at the given
-point in the class hierarchy and walking up.
 
-At each level, we enumerate all class prototype members to search for a
-function identical to the method we're looking for.
-
-Returns the class that implements the function, and the name of the class
-member that references it. Returns null if the class was not found.
-###
-findMethodImplementation = (methodFn, classFn) ->
-    # See if this particular class defines the function.
-  prototype = classFn::
-  for key of prototype
-    if prototype[key] is methodFn
-            # Found the function implementation.
-            # Check to see whether it's really defined by this class,
-            # or is actually inherited.
-      methodInherited = (if classFn.superclass then prototype[key] is classFn.superclass::[key] else false)
-      unless methodInherited
-                # This particular class defines the function.
-        return (
-          classFn: classFn
-          fnName: key
-        )
-    # Didn't find the function in this class.
-    # Look in parent classes (if any).
-  (if classFn.superclass then findMethodImplementation(methodFn, classFn.superclass) else null)
     
 ###
 QuickUI "control" jQuery extension to create and manipulate
@@ -466,14 +438,6 @@ Control instance methods.
 $.extend Control::,
 
   ###
-  Get/set whether the indicated class(es) are applied to the elements.
-  This effectively combines $.hasClass() and $.toggleClass() into a single
-  getter/setter.
-  ###
-  applyClass: (classes, value) ->
-    (if (value is `undefined`) then @hasClass(classes) else @toggleClass(classes, String(value) is "true"))
-
-  ###
   Return the array of elements cast to their closest JavaScript class ancestor.
   E.g., a jQuery $(".foo") selector might pick up instances of control classes
   A, B, and C. If B and C are subclasses of A, this will return an instance of
@@ -497,18 +461,6 @@ $.extend Control::,
       i++
     setClass = setClass or defaultClass  # In case "this" had no elements.
     setClass this
-
-  ###
-  The set of classes on the control's element.
-  If no value is supplied, this gets the current list of classes.
-  If a value is supplied, the specified class name(s) are *added*
-  to the element. This is useful for allowing a class to be added
-  at design-time to an instance, e.g., <Foo class="bar"/>. The
-  resulting element will end up with "bar" as a class, as well as
-  the control's class hierarchy: <div class="Foo Control bar">.
-  ###
-  class: (classList) ->
-    (if (classList is `undefined`) then @attr("class") else @toggleClass(classList, true))
 
   ###
   The name of the control's class.
@@ -843,14 +795,6 @@ $.extend Control::,
 
   ### Control has no settings that need to be applied on render.###
   inherited: null
-  
-  ###
-  Sets/gets the style of matching elements.
-  This lets one specify a style attribute in QuickUI markup for a control instance;
-  the style will apply to the control's root element.
-  ###
-  style: (style) ->
-    @attr "style", style
 
   ###
   The tabindex of the control.
@@ -900,14 +844,6 @@ $.extend Control::,
   quickui: "0.8.9"
 
   ###
-  Toggle the element's visibility.
-  Like $.toggle(), but if no value is supplied, the current visibility is returned
-  (rather than toggling the element's visibility).
-  ###
-  visibility: (value) ->
-    (if (value is `undefined`) then @is(":visible") else @toggle(String(value) is "true"))
-
-  ###
   Get/set the reference for the class for these control(s).
   ###
   _controlClass: (classFn) ->
@@ -938,63 +874,6 @@ $.extend Control::,
     )
     significantContents    # Didn't find anything significant
 
-  ###
-  Call a function of the same name in a superclass.
-  
-  E.g., if A is a superclass of B, then:
-  
-       A.prototype.calc = function ( x ) {
-           return x 2;
-       }
-       B.prototype.calc = function ( x ) {
-           return this._super( x ) + 1;
-       }
-  
-       var b = new B();
-       b.calc( 3 );         # = 7
-    
-  This assumes a standard prototype-based class system in which all classes have
-  a member called "superclass" pointing to their parent class, and all instances
-  have a member called "constructor" pointing to the class which created them.
-  
-  This routine has to do some work to figure out which class defined the
-  calling function. It will have to walk up the class hierarchy and,
-  if we're running in IE, do a bunch of groveling through function
-  definitions. To speed things up, the first call to _super() within a
-  function creates a property called "_superFn" on the calling function;
-  subsequent calls to _super() will use the memoized answer.
-  
-  Some prototype-based class systems provide a _super() function through the
-  use of closures. The closure approach generally creates overhead whether or
-  not _super() will ever be called. The approach below adds no overhead if
-  _super() is never invoked, and adds minimal overhead if it is invoked.
-  This code relies upon the JavaScript .caller method, which many claims
-  has slow performance because it cannot be optimized. However, "slow" is
-  a relative term, and this approach might easily have acceptable performance
-  for many applications.
-  ###
-  _super: _super = ->
-        # Figure out which function called us.
-        
-                     # Modern browser
-                     
-                       # IE9 and earlier
-    callerFn = (if (_super and _super.caller) then _super.caller else arguments.callee.caller)
-    return `undefined`  unless callerFn
-        # Have we called super() within the calling function before?
-    superFn = callerFn._superFn
-    unless superFn
-            # Find the class implementing this method.
-      classInfo = findMethodImplementation(callerFn, @constructor)
-      if classInfo
-        classFn = classInfo.classFn
-        callerFnName = classInfo.fnName
-                # Go up one level in the class hierarchy to get the superfunction.
-        superFn = classFn.superclass::[callerFnName]
-                # Memoize our answer, storing the value on the calling function,
-                # to speed things up next time.
-        callerFn._superFn = superFn
-    (if superFn then superFn.apply(this, arguments) else `undefined`)  # Invoke superfunction
 
 # Expose Control class as a global.
 window.Control = Control
