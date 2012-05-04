@@ -37,6 +37,7 @@ site/tutorial/section11/section11.*
 site/tutorial/section12/section12.*
 site/tutorial/section13/section13.*
 site/tutorial/section14/section14.*
+src/quickui-pre.js
 tests/tests.js
 tests/integration/integration.*
 tests/common/common.*

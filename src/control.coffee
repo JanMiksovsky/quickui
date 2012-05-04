@@ -301,7 +301,7 @@ $.extend Control::,
     while i < length
       $element = @nth(i)
       elementClass = $element._controlClass() or defaultClass
-      setClass = elementClass  if setClass is `undefined` or setClass:: instanceof elementClass
+      setClass = elementClass  if setClass is `undefined` or ( setClass:: ) instanceof elementClass
       i++
     setClass = setClass or defaultClass
     setClass this
