@@ -2,7 +2,7 @@
 
 module.exports = function(grunt) {
 
-    grunt.loadTasks( "grunt" );
+    grunt.loadTasks( "../src/grunt" );
 
     // Project configuration.
     grunt.initConfig({
