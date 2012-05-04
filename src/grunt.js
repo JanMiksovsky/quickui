@@ -12,16 +12,18 @@ module.exports = function(grunt) {
                     "control.coffee",
                     "json.coffee",
                     "properties.coffee",
+                    "inDocument.coffee",
                     "layout.coffee",
                     "styles.coffee",
-                    "super.coffee"
+                    "super.coffee",
+                    "utilities.coffee"
                 ],
                 dest: "quickui-pre.js"
             }
         },
         watch: {
             coffee: {
-                files: "<config:coffee.controls.src>",
+                files: "*.coffee",
                 tasks: "coffee"
             }
         }
