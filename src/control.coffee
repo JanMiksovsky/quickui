@@ -140,12 +140,8 @@ $.extend Control,
     # Apply generic style if class supports that.
     $controls.generic true if @genericIfClassIs is @className
 
-    # Tell the controls they're ready.
-    i = 0
-    length = $controls.length
-    while i < length
-      $controls.nth( i ).initialize()
-      i++
+    # Let each control initialize itself.
+    c.initialize() for c in $controls.each()
     
     # Return the new controls
     $controls
