@@ -33,7 +33,7 @@ Control::extend
   content: ( value ) ->
     if value is undefined
       # Getting contents. Just process first element.
-      $element = @nth( 0 )
+      $element = @nth 0
       result = undefined
       if $element.isInputElement()
         # Return input element value.
@@ -41,16 +41,16 @@ Control::extend
       else
         # Return HTML contents in a canonical form.
         resultContainsStrings = false
-        result = $element.contents().map( ( index, item ) ->
+        # TODO: List comprehension
+        result = $element.contents().map ( index, item ) ->
           if item.nodeType is 3
             # Return text as simple string
             resultContainsStrings = true
             item.nodeValue
           else
             item
-        )
         # Return the single string instead of an array.
-        result = result[0]  if resultContainsStrings and result.length is 1
+        result = result[0] if resultContainsStrings and result.length is 1
       result
     else
       # Setting contents.

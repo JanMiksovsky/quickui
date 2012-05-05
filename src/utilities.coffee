@@ -16,13 +16,13 @@ $.extend Control,
     if value is null or value is ""
             # Special cases used to clear class-valued properties.
       classFn = null
-    else if $.isFunction( value )
+    else if $.isFunction value
       classFn = value
-    else if $.isPlainObject( value )
-      classFn = Control.subclass( value )
+    else if $.isPlainObject value
+      classFn = Control.subclass value
     else
-      classFn = window[value]
-      throw "Unable to find a class called \"" + value + "\"."  unless classFn
+      classFn = window[ value ]
+      throw "Unable to find a class called \"" + value + "\"." unless classFn
     classFn
 
 
@@ -63,14 +63,13 @@ Control::extend
     setClass = undefined
     i = 0
     length = @length
-
     while i < length
       $element = @nth( i )
       elementClass = $element._controlClass() or defaultClass
       setClass = elementClass  if setClass is undefined or ( setClass:: ) instanceof elementClass
       i++
     setClass = setClass or defaultClass  # In case "this" had no elements.
-    setClass this
+    setClass @
 
 
   ###
@@ -80,13 +79,12 @@ Control::extend
   eachControl: ( fn ) ->
     i = 0
     length = @length
-
     while i < length
       $control = @nth( i ).control()
-      result = fn.call( $control, i, $control )
+      result = fn.call $control, i, $control
       break  if result is false
       i++
-    this
+    @
 
 
   # Allow controls have an element ID specified on them in markup.
@@ -99,7 +97,7 @@ Control::extend
   the selector stack.
   ###
   nth: ( index ) ->
-    @constructor this[index]
+    @constructor @[ index ]
 
 
   ###
@@ -112,12 +110,12 @@ Control::extend
   ###
   properties: ( properties ) ->
     for propertyName of properties
-      if this[propertyName] is undefined
+      if @[ propertyName ] is undefined
         message = "Tried to set undefined property " + @className() + "." + propertyName + "()."
         throw message
-      value = properties[propertyName]
-      this[propertyName].call this, value
-    this
+      value = properties[ propertyName ]
+      @[ propertyName ].call @, value
+    @
 
 
   ###
@@ -128,27 +126,25 @@ Control::extend
   which are undefined will not be set.)
   ###
   propertyVector: ( propertyName, values ) ->
-    propertyFn = this[propertyName]
+    propertyFn = @[ propertyName ]
     if values is undefined
-            # Getter
+      # Getter
       results = []
       i = 0
       length = @length
-
       while i < length
-        results[i] = propertyFn.call( @nth( i ) )
+        results[i] = propertyFn.call @nth( i )
         i++
       results
     else
-            # Setter
+      # Setter
       i = 0
       length1 = @length
       length2 = values.length
-
       while i < length1 and i < length2
         propertyFn.call @nth( i ), values[i]  unless not values[i]
         i++
-      this
+      @
       
       
   ###
@@ -165,8 +161,8 @@ Control::extend
       length = @length
 
       while i < length
-        element = $( this[i] ).data( key )
-        elements.push element  if element isnt undefined
+        element = $( @[i] ).data key
+        elements.push element if element isnt undefined
         i++
       $result = Control( elements ).cast()
             # To make the element function $.end()-able, we want to call
@@ -175,16 +171,16 @@ Control::extend
             # AND b) ensure that the result of calling end() will be of
             # the proper class. So, we directly set the internal prevObject
             # member used by end().
-      $result.prevObject = this
+      $result.prevObject = @
       $result
     else
       i = 0
       length = @length
 
       while i < length
-        $( this[i] ).data key, elements[i]
+        $( @[i] ).data key, elements[i]
         i++
-      this
+      @
 
 
   ###

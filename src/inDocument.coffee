@@ -23,9 +23,10 @@ the chance to set themselves up.
 ###
 Control::inDocument = ( callback ) ->
   if callback is undefined
+
     # The empty condition is defined as being *not* in the document.
     return false if @length is 0
-    
+
     # See if controls are in document.
     i = 0
     while i < @length
@@ -33,17 +34,19 @@ Control::inDocument = ( callback ) ->
         # At least one control is not in the document.
         return false
       i++
+      
     # All controls are in the document.
     true
+    
   else
     # Invoke callback immediately for controls already in document,
     # queue a callback for those which are not.
     callbacks = []
     i = 0
     while i < @length
-      $element = @nth( i )
+      $element = @nth i
       element = $element[0]
-      if isElementInDocument( element )
+      if isElementInDocument element
         # Element already in document
         callback.call $element
       else
@@ -53,8 +56,8 @@ Control::inDocument = ( callback ) ->
           callback: callback
       i++
     if callbacks.length > 0
-      Control._elementInsertionCallbacks = callbacks.concat( Control._elementInsertionCallbacks )
-      Control._startListeningForElementInsertion()  unless Control._listeningForElementInsertion
+      Control._elementInsertionCallbacks = callbacks.concat Control._elementInsertionCallbacks
+      Control._startListeningForElementInsertion() unless Control._listeningForElementInsertion
     this
 
 
@@ -73,7 +76,7 @@ $.extend Control,
       if isElementInDocument element
         # The element has been inserted into the document. Move it
         # into the list of callbacks which we can now invoke.
-        callbacksReady = callbacksReady.concat( Control._elementInsertionCallbacks[i] )
+        callbacksReady = callbacksReady.concat Control._elementInsertionCallbacks[i]
         # Now remove it from the pending list. We remove it from the list
         # *beforewe invoke the callback -- because the callback
         # itself might do DOM manipulations that trigger more DOM

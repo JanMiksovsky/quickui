@@ -103,7 +103,7 @@ makeJQueryCompatible = ( classFn ) ->
   classFn::init = ( selector, context ) ->
     if ( context && context instanceof jQuery && !( context instanceof jQuerySub ) )
       context = jQuerySub( context )
-    return jQuery::init.call( this, selector, context, rootjQuerySub )
+    return jQuery::init.call this, selector, context, rootjQuerySub
   
   # jQuery classes use fn as a synonym for prototype.
   classFn.fn = classFn::

@@ -35,9 +35,12 @@ array of elements.
 $.fn.control = ( arg1, arg2 ) ->
   if arg1 is undefined
     # Return the controls bound to these element(s), cast to the correct class.
-    $cast = Control( this ).cast( jQuery )
-    ( if ( $cast instanceof Control ) then $cast else null )
-  else if $.isFunction( arg1 )
+    $cast = Control( this ).cast jQuery
+    if $cast instanceof Control
+      $cast
+    else
+      null
+  else if $.isFunction arg1
     # Create a new control around the element(s).
     controlClass = arg1
     properties = arg2
@@ -106,15 +109,16 @@ $.extend Control,
     oldContents = undefined
     if target is null
       # Create a default element.
-      $controls = this( defaultTarget )
+      $controls = @ defaultTarget
       oldContents = []
     else
       # Grab the existing contents of the target elements.
-      $controls = this( target )
+      $controls = @ target
       oldContents = $controls._significantContents()
       existingTag = $controls[0].nodeName.toLowerCase()
-      # Tags don't match; replace with elements with the right tag.
-      $controls = @_replaceElements( $controls, this( defaultTarget ) )  if existingTag isnt @::tag.toLowerCase() and existingTag isnt "body"
+      if existingTag isnt @::tag.toLowerCase() and existingTag isnt "body"
+        # Tags don't match; replace with elements with the right tag.
+        $controls = @_replaceElements $controls, @ defaultTarget
 
     if typeof properties is "string"
       # Plain string becomes control content
@@ -173,16 +177,16 @@ $.extend Control,
       (which go on the class). We use the remaining JSON values as
       "inherited" on the class' prototype for use by render(). 
       ###
-      inherited = copyExcludingKeys( json,
+      inherited = copyExcludingKeys json,
         className: true
         genericSupport: true
         prototype: true
         tag: true
-      )
       
       jQuery.extend newClass::, json::,
         inherited: inherited
         tag: json.tag
+        
     else
       # Clear copied or inherited values.
       newClass.className = undefined
@@ -205,15 +209,14 @@ $.extend Control,
   ###
   _replaceElements: ( $existing, $replacement ) ->
     # Gather the existing IDs.
-    ids = $existing.map( ( index, element ) ->
+    # TODO: Look for opportunities like this for list comprehensions.
+    ids = $existing.map ( index, element ) ->
       $( element ).prop "id"
-    )
     $new = $replacement.replaceAll( $existing )
     # Put IDs onto new elements.
     $new.each ( index, element ) ->
       id = ids[index]
-      $( element ).prop "id", ids[index]  if id and id.length > 0
-
+      $( element ).prop "id", ids[index] if id and id.length > 0
     $new
 
 
@@ -249,11 +252,11 @@ Control::extend
     classFn = @constructor
     if classFn isnt Control
       superclass = classFn.superclass
-      superclass( this )
+      superclass( @ )
         # Superclass renders first.
         .render()
         # Apply the class' settings using superclass's setters.
-        .json @inherited, this
+        .json @inherited, @
     @
 
 
@@ -282,13 +285,13 @@ Control::extend
   need to preserve existing content.
   ###
   transmute: ( newClass, preserveContent, preserveClasses, preserveEvents ) ->
-    classFn = Control.getClass( newClass )
+    classFn = Control.getClass newClass
     oldContents = ( if preserveContent then @_significantContents() else null )
     oldClasses = ( if preserveClasses then @prop( "class" ) else null )
     # Reset everything.
     @empty().removeClass().removeData()
     @off()  unless preserveEvents
-    $controls = classFn.createAt( this )
+    $controls = classFn.createAt this
     $controls.propertyVector "content", oldContents  if oldContents
     $controls.removeClass( "Control" ).addClass( oldClasses ).addClass "Control"  if oldClasses       # Ensures Control ends up rightmost
     $controls
@@ -322,7 +325,7 @@ Control::extend
   ###
   _significantContents: ->
     # Use base implementation of content().
-    contents = Control( this ).propertyVector( "content" )
+    contents = Control( this ).propertyVector "content"
     significantContents = $.map( contents, ( content ) ->
       return content  if $.trim( content ).length > 0  if typeof content is "string"                     # Found significant text
       # Content is an array
@@ -348,6 +351,7 @@ from the result.
 ###
 copyExcludingKeys = ( obj, excludeKeys ) ->
   copy = {}
+  # TODO: List comprehension
   for key of obj
-    copy[key] = obj[key]  unless excludeKeys[key]
+    copy[ key ] = obj[ key ]  unless excludeKeys[ key ]
   copy

@@ -35,9 +35,9 @@ $.extend Control,
     # Check for a side effect function as last parameter.
     args = arguments
     sideEffectFn = undefined
-    if $.isFunction( args[args.length - 1] )
+    if $.isFunction args[args.length - 1]
       # Convert arguments to a real array in order to grab last param.
-      args = [].slice.call( arguments )
+      args = [].slice.call arguments
       sideEffectFn = args.pop()
 
     # Identify function names and optional parameters.
@@ -45,28 +45,30 @@ $.extend Control,
     functionParams = []
     i = 0
     length = args.length
+    # TODO: Use destructuring
     while i < length
       # Check for optional parameter.
-      parts = arguments[i].split( "/" )
+      parts = arguments[i].split "/"
       functionNames[i] = parts.shift()
       functionParams[i] = parts
       i++
 
     # Generate a function that executes the chain.
     ( value ) ->
-      result = this
+      result = @
       i = 0
       length = functionNames.length
 
       while i < length
-        fn = result[functionNames[i]]
+        fn = result[ functionNames[i] ]
         params = functionParams[i]
                     # Invoke last function as setter.
-        params = params.concat( [ value ] )  if value isnt undefined and i is length - 1
+        params = params.concat( [ value ] ) if value isnt undefined and i is length - 1
         if fn is undefined
           message = "Control class \"" + @className() + "\" tried to chain to an undefined getter/setter function \"" + functionNames[i] + "\"."
           throw message
-        result = fn.apply( result, params )
+        # TODO: Use splat
+        result = fn.apply result, params
         i++
       if value is undefined
         # Chain invoked as getter.
@@ -90,7 +92,7 @@ $.extend Control,
       args = arguments
       iteratorResult = undefined
       @eachControl ( index, $control ) ->
-        result = fn.apply( $control, args )
+        result = fn.apply $control, args
         if result isnt undefined
           iteratorResult = result
           false
@@ -109,7 +111,7 @@ $.extend Control,
       result = undefined
       if value is undefined
         # Getter
-        result = @data( backingPropertyName )
+        result = @data backingPropertyName
         ( if ( result is undefined ) then defaultValue else result )
       else
         # Setter. Allow chaining.
@@ -127,7 +129,7 @@ $.extend Control.property,
   # A boolean property.
   bool: ( sideEffectFn, defaultValue ) ->
     # Convert either string or bool to bool.
-    Control.property sideEffectFn, defaultValue, convertToBool = ( value ) ->
+    Control.property sideEffectFn, defaultValue, ( value ) ->
       String( value ) == "true"
 
   ###
@@ -139,7 +141,7 @@ $.extend Control.property,
 
   # A date-valued property. Accepts a JavaScript date or parseable date string.
   date: ( sideEffectFn, defaultValue ) ->
-    Control.property sideEffectFn, defaultValue, convertToDate = ( value ) ->
+    Control.property sideEffectFn, defaultValue, ( value ) ->
       ( if ( value instanceof Date or not value? ) then value else new Date( Date.parse( value ) ) )
 
   # An integer property.
@@ -147,4 +149,5 @@ $.extend Control.property,
     Control.property sideEffectFn, defaultValue, parseInt
 
   # Used to generate symbols to back new properties.
+  # TODO: Use closure variable
   _symbolCounter: 0

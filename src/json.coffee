@@ -24,15 +24,15 @@ processing of the values.
 The logicalParent parameter is intended for internal use only.
 ###
 Control::json = ( json, logicalParent ) ->
-  logicalParent = logicalParent or this
+  logicalParent ?= @
   i = 0
   length = @length
-
   while i < length
-    control = @nth( i )
-    properties = evaluateControlJsonProperties( json, logicalParent.nth( i ) )
+    control = @nth i
+    properties = evaluateControlJsonProperties json, logicalParent.nth( i )
     control.properties properties
     i++
+  @
 
 
 ###
@@ -73,21 +73,23 @@ evaluateControlJson = ( json, logicalParent ) ->
   return json  if firstKey isnt "html" and firstKey isnt "control"  # Regular object, return as is.
   reservedKeys = {}
   reservedKeys[firstKey] = true
-  stripped = copyExcludingKeys( json, reservedKeys )
-  properties = evaluateControlJsonProperties( stripped, logicalParent )
+  stripped = copyExcludingKeys json, reservedKeys
+  properties = evaluateControlJsonProperties stripped, logicalParent
   control = undefined
   if firstKey is "html"
     html = json.html
-    html = "<" + html + ">"  if /^\w+$/.test( html )              # HTML tag singleton. Map tag like "div" to "<div>".
-    control = Control( html ).properties( properties )
+    if /^\w+$/.test html
+      # HTML tag singleton. Map tag like "div" to "<div>".
+      html = "<" + html + ">"
+    control = Control( html ).properties properties
   else
-    control = Control.getClass( json.control ).create( properties )
+    control = Control.getClass( json.control ).create properties
   if json.id
     # Create an element reference function on the parent's class.
     logicalParentClass = logicalParent.constructor
     elementReference = "$" + json.id
-    unless logicalParentClass::[elementReference]
-      logicalParentClass::[elementReference] = ( elements ) ->
+    unless logicalParentClass::[ elementReference ]
+      logicalParentClass::[ elementReference ] = ( elements ) ->
         @referencedElement elementReference, elements
     logicalParent.referencedElement elementReference, control
   control
@@ -124,22 +126,21 @@ created. The logical parent for a given element may not be the element's
 immediate parent in the DOM; it might be higher up.
 ###
 evaluateControlJsonValue = ( value, logicalParent ) ->
-  result = undefined
   if $.isArray value
     # Recursively process each member of the array.
     result = []
     i = 0
+    # TODO: Use list comprehension
     while i < value.length
       item = value[i]
       itemValue = evaluateControlJsonValue item, logicalParent
       itemValue = itemValue[0]  if itemValue instanceof jQuery            # When adding jQuery object to array, just add their element.
-
       result.push itemValue
       i++
+    result
   else if $.isPlainObject value
     # Process JSON sub-dictionary.
-    result = evaluateControlJson value, logicalParent
+    evaluateControlJson value, logicalParent
   else
     # Return other types of values as is.
-    result = value
-  result
+    value
