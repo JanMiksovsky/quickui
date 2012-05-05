@@ -10,7 +10,7 @@ Control::extend
   getter/setter.
   ###
   applyClass: ( classes, value ) ->
-    ( if ( value is `undefined` ) then @hasClass( classes ) else @toggleClass( classes, String( value ) is "true" ) )
+    ( if ( value is undefined ) then @hasClass( classes ) else @toggleClass( classes, String( value ) is "true" ) )
 
   ###
   The set of classes on the control's element.
@@ -22,16 +22,15 @@ Control::extend
   the control's class hierarchy: <div class="Foo Control bar">.
   ###
   class: ( classList ) ->
-    ( if ( classList is `undefined` ) then @attr( "class" ) else @toggleClass( classList, true ) )
+    ( if ( classList is undefined ) then @attr( "class" ) else @toggleClass( classList, true ) )
 
   ###
   Sets/gets whether the control is showing a generic appearance.
   We use a property with a side-effect, rather than a binding to
   applyClass/generic, in order for the default value to be "undefined".
   ###
-  generic: Control.property.bool( ( generic ) ->
+  generic: Control.property.bool ( generic ) ->
     @applyClass "generic", generic
-  )
   
   ###
   Sets the generic property to true if the control's most specific
@@ -47,7 +46,7 @@ Control::extend
   ###
   genericIfClassIs: ( classFn ) ->
     @eachControl ( index, $control ) ->
-      $control.generic true  if $control.constructor is classFn and $control.generic() is `undefined`
+      $control.generic true  if $control.constructor is classFn and $control.generic() is undefined
  
   ###
   Sets/gets the style of matching elements.
@@ -63,4 +62,4 @@ Control::extend
   (rather than toggling the element's visibility).
   ###
   visibility: ( value ) ->
-    ( if ( value is `undefined` ) then @is( ":visible" ) else @toggle( String( value ) is "true" ) )
+    ( if ( value is undefined ) then @is( ":visible" ) else @toggle( String( value ) is "true" ) )

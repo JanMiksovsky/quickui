@@ -90,6 +90,7 @@ member that references it. Returns null if the class was not found.
 ###
 findMethodImplementation = ( methodFn, classFn ) ->
   # See if this particular class defines the function.
+  # TODO: use hasOwnProperty
   prototype = classFn::
   for key of prototype
     if prototype[key] is methodFn

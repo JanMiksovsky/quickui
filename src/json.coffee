@@ -40,17 +40,17 @@ Create the control from the given JSON. This will be of three forms.
 The first form creates a control:
 
  {
-     control: "MyButton",
-     id: "foo",     
-     content: "Hello, world."
+   control: "MyButton",
+   id: "foo",     
+   content: "Hello, world."
  }
 
 The special "control" property determines the class of the control. 
 The second form creates a plain HTML element:
 
  {
-     html: "<div/>",
-     id: "foo"
+   html: "<div/>",
+   id: "foo"
  }
 
 The html can be any HTML string supported by jQuery. It can also be an HTML
@@ -102,10 +102,10 @@ the same as { content: "Hello" }.
 ###
 evaluateControlJsonProperties = ( json, logicalParent ) ->
   # Scalar value or array; take this as the content property.
-  json = content: json  unless $.isPlainObject( json )
+  json = content: json unless $.isPlainObject json
   properties = {}
   for key of json
-    properties[key] = evaluateControlJsonValue( json[key], logicalParent )
+    properties[ key ] = evaluateControlJsonValue json[key], logicalParent
   properties
   
   
@@ -125,22 +125,21 @@ immediate parent in the DOM; it might be higher up.
 ###
 evaluateControlJsonValue = ( value, logicalParent ) ->
   result = undefined
-  if $.isArray( value )
-        # Recursively process each member of the array.
+  if $.isArray value
+    # Recursively process each member of the array.
     result = []
     i = 0
-
     while i < value.length
       item = value[i]
-      itemValue = evaluateControlJsonValue( item, logicalParent )
+      itemValue = evaluateControlJsonValue item, logicalParent
       itemValue = itemValue[0]  if itemValue instanceof jQuery            # When adding jQuery object to array, just add their element.
 
       result.push itemValue
       i++
-  else if $.isPlainObject( value )
-        # Process JSON sub-dictionary.
-    result = evaluateControlJson( value, logicalParent )
+  else if $.isPlainObject value
+    # Process JSON sub-dictionary.
+    result = evaluateControlJson value, logicalParent
   else
-        # Return other types of values as is.
+    # Return other types of values as is.
     result = value
   result

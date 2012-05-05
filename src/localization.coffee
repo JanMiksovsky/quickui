@@ -18,7 +18,7 @@ Control::extend
   culture: ( culture ) ->
     cultureDataMember = "_culture"
     controlCulture = undefined
-    if culture is `undefined`
+    if culture is undefined
       controlCulture = @data( cultureDataMember )
       controlCulture or ( if window.Globalize then Globalize.culture() else null )
     else

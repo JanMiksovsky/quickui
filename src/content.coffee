@@ -31,54 +31,58 @@ Control::extend
   property. Controls can override this behavior.
   ###
   content: ( value ) ->
-    if value is `undefined`
-            # Getting contents. Just process first element.
+    if value is undefined
+      # Getting contents. Just process first element.
       $element = @nth( 0 )
       result = undefined
       if $element.isInputElement()
-                # Return input element value.
+        # Return input element value.
         result = $element.val()
       else
-                # Return HTML contents in a canonical form.
+        # Return HTML contents in a canonical form.
         resultContainsStrings = false
         result = $element.contents().map( ( index, item ) ->
           if item.nodeType is 3
-                        # Return text as simple string
+            # Return text as simple string
             resultContainsStrings = true
             item.nodeValue
           else
             item
         )
-                    # Return the single string instead of an array.
+        # Return the single string instead of an array.
         result = result[0]  if resultContainsStrings and result.length is 1
       result
     else
-            # Setting contents.
-            
-            # Cast arguments to an array.
-            
-                 # set of parameters
-                 
-                 # convert jQuery object to array 
-                 
-                 # single array parameter
-                 # singleton parameter
-      array = ( if ( arguments.length > 1 ) then arguments else ( if value instanceof jQuery then value.get() else ( if $.isArray( value ) then value else [ value ] ) ) )
+      # Setting contents.
+
+      # Cast arguments to an array.
+      array = if arguments.length > 1
+        arguments 
+      else
+        if value instanceof jQuery
+          value.get()           # convert jQuery object to array 
+        else
+          if $.isArray value
+            value               # single array parameter
+          else
+            [ value ]           # singleton parameter
+
       @each ( index, element ) ->
-        $element = Control( element )
+        $element = Control element
         if $element.isInputElement()
-                    # Set input element value.
+          # Set input element value.
           $element.val value
         else
-                    # Set HTML contents.
+          # Set HTML contents.
 
-                    # We're about to blow away the contents of the element
-                    # via $empty(), but the new content value might actually
-                    # already be deeper in the element's existing content.
-                    # To ensure that data, etc., get preserved, first detach
-                    # the existing contents.
+          # We're about to blow away the contents of the element
+          # via $empty(), but the new content value might actually
+          # already be deeper in the element's existing content.
+          # To ensure that data, etc., get preserved, first detach
+          # the existing contents.
           $element.children().detach()
-                    # Use apply() to feed array to $.append() as params.
+
+          # Use apply() to feed array to $.append() as params.
           $element.empty().append.apply $element, array
 
 

@@ -33,17 +33,17 @@ the control class wants a different root tag than the tag on the supplied
 array of elements.
 ###
 $.fn.control = ( arg1, arg2 ) ->
-  if arg1 is `undefined`
-        # Return the controls bound to these element( s ), cast to the correct class.
+  if arg1 is undefined
+    # Return the controls bound to these element(s), cast to the correct class.
     $cast = Control( this ).cast( jQuery )
     ( if ( $cast instanceof Control ) then $cast else null )
   else if $.isFunction( arg1 )
-        # Create a new control around the element( s ).
+    # Create a new control around the element(s).
     controlClass = arg1
     properties = arg2
     controlClass.createAt this, properties
   else
-        # Set properties on the control( s ).
+    # Set properties on the control(s).
     Control( this ).cast().properties arg1
 
 
@@ -97,43 +97,53 @@ $.extend Control,
   the controls' content() property.
   ###
   createAt: ( target, properties ) ->
+    
     defaultTarget = "<" + @::tag + "/>"
-        # Instantiate the control class.
+    
+    # Instantiate the control class.
     $controls = undefined
+    
     oldContents = undefined
     if target is null
-            # Create a default element.
+      # Create a default element.
       $controls = this( defaultTarget )
       oldContents = []
     else
-            # Grab the existing contents of the target elements.
+      # Grab the existing contents of the target elements.
       $controls = this( target )
       oldContents = $controls._significantContents()
       existingTag = $controls[0].nodeName.toLowerCase()
-                # Tags don't match; replace with elements with the right tag.
+      # Tags don't match; replace with elements with the right tag.
       $controls = @_replaceElements( $controls, this( defaultTarget ) )  if existingTag isnt @::tag.toLowerCase() and existingTag isnt "body"
-            # Plain string becomes control content
-    properties = content: properties  if typeof properties is "string"
-            # Save a reference to the controls' class.
 
-            # Apply all class names in the class hierarchy as style names.
-            # This lets the element pick up styles defined by those classes.
+    if typeof properties is "string"
+      # Plain string becomes control content
+      properties = content: properties
 
-            # Render controls as DOM elements.
+    $controls
+      # Save a reference to the controls' class.
+      ._controlClass( this )
+      # Apply all class names in the class hierarchy as style names.
+      # This lets the element pick up styles defined by those classes.
+      .addClass( @classHierarchy )
+      # Render controls as DOM elements.
+      .render()
+      # Pass in the target's old contents ( if any ).
+      .propertyVector( "content", oldContents )
+      # Set any requested properties.
+      .properties properties
 
-            # Pass in the target's old contents ( if any ).
-
-            # Set any requested properties.
-    $controls._controlClass( this ).addClass( @classHierarchy ).render().propertyVector( "content", oldContents ).properties properties
-        # Apply generic style if class supports that.
+    # Apply generic style if class supports that.
     $controls.generic true  if @genericIfClassIs is @className
-        # Tell the controls they're ready.
+
+    # Tell the controls they're ready.
     i = 0
     length = $controls.length
-
     while i < length
       $controls.nth( i ).initialize()
       i++
+
+    # Return the new controls
     $controls
 
   
@@ -141,22 +151,27 @@ $.extend Control,
   Create a subclass of this class.
   ###
   subclass: ( json ) ->
+
     superclass = this
     newClass = superclass.sub()
-        # $.sub uses $.extend to copy properties from super to subclass, so
-        # we have to blow away class properties that shouldn't have been copied.
+
+    # $.sub uses $.extend to copy properties from super to subclass, so
+    # we have to blow away class properties that shouldn't have been copied.
     delete newClass._initializeQueue
 
     if json
+      
       if json.className
         newClass.extend
           className: json.className
           classHierarchy: json.className + " " + superclass.classHierarchy
-      newClass.genericIfClassIs = json.className  if json.genericSupport        
+            
+      newClass.genericIfClassIs = json.className if json.genericSupport
+                
       ###
-           Create a copy of the JSON that doesn't include the reserved keys
-           (which go on the class). We use the remaining JSON values as
-           "inherited" on the class' prototype for use by render(). 
+      Create a copy of the JSON that doesn't include the reserved keys
+      (which go on the class). We use the remaining JSON values as
+      "inherited" on the class' prototype for use by render(). 
       ###
       inherited = copyExcludingKeys( json,
         className: true
@@ -164,13 +179,15 @@ $.extend Control,
         prototype: true
         tag: true
       )
+      
       jQuery.extend newClass::, json::,
         inherited: inherited
         tag: json.tag
     else
-            # Clear copied or inherited values.
-      newClass.className = `undefined`
+      # Clear copied or inherited values.
+      newClass.className = undefined
       newClass::inherited = null
+
     newClass
 
 
@@ -187,12 +204,12 @@ $.extend Control,
   This is used if, say, we need to convert a bunch of divs to buttons.
   ###
   _replaceElements: ( $existing, $replacement ) ->
-        # Gather the existing IDs.
+    # Gather the existing IDs.
     ids = $existing.map( ( index, element ) ->
       $( element ).prop "id"
     )
     $new = $replacement.replaceAll( $existing )
-        # Put IDs onto new elements.
+    # Put IDs onto new elements.
     $new.each ( index, element ) ->
       id = ids[index]
       $( element ).prop "id", ids[index]  if id and id.length > 0
@@ -232,11 +249,12 @@ Control::extend
     classFn = @constructor
     if classFn isnt Control
       superclass = classFn.superclass
-                # Superclass renders first.
-
-                # Apply the class' settings using superclass's setters.
-      superclass( this ).render().json @inherited, this
-    this
+      superclass( this )
+        # Superclass renders first.
+        .render()
+        # Apply the class' settings using superclass's setters.
+        .json @inherited, this
+    @
 
 
   ###
@@ -267,7 +285,7 @@ Control::extend
     classFn = Control.getClass( newClass )
     oldContents = ( if preserveContent then @_significantContents() else null )
     oldClasses = ( if preserveClasses then @prop( "class" ) else null )
-        # Reset everything.
+    # Reset everything.
     @empty().removeClass().removeData()
     @off()  unless preserveEvents
     $controls = classFn.createAt( this )

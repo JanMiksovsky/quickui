@@ -36,20 +36,21 @@ $.event.special.layout =
   Add a layout event handler.
   ###
   add: ( handleObj ) ->
-        # Add the element to the set of element being tracked.
+    # Add the element to the set of element being tracked.
     layout = $.event.special.layout
     layout._trackedElements = layout._trackedElements.add( this )
-        # Send an initial layout event when the element is in the document.
+    # Send an initial layout event when the element is in the document.
     Control( this ).inDocument ->
-       ###
-             Directly invoke the handler instead of triggering the event.
-             If add() is invoked on an element that's already in the document,
-             inDocument() will fire immediately, which means the handler won't
-             be wired up yet.
-        ###
+      ###
+      Directly invoke the handler instead of triggering the event.
+      If add() is invoked on an element that's already in the document,
+      inDocument() will fire immediately, which means the handler won't
+      be wired up yet.
+      ###
       handler = handleObj.handler
       event = new jQuery.Event( "layout" )
       handler.call this, event
+
 
   ###
   Handle the layout event.
@@ -61,18 +62,19 @@ $.event.special.layout =
     return unless control.checkForSizeChange()    # Size hasn't actually changed; no need for layout.
     event.handleObj.handler.apply this, arguments
 
+
   ###
   Called the first time the layout event is added to an element.
   ###
   setup: ->
-        # Are we already handling the window resize event?
+    # Are we already handling the window resize event?
     layout = $.event.special.layout
     unless layout._trackingResizeEvent
-            # Start handling window resize.
+      # Start handling window resize.
       $( window ).resize ->
         layout._windowResized()
-
       layout._trackingResizeEvent = true
+
 
   ###
   The last layout event handler for an element has been removed.
@@ -81,8 +83,12 @@ $.event.special.layout =
     # Remove the control from the set of controls being tracked.
     $.event.special.layout._trackedElements = $.event.special.layout._trackedElements.not( this )
 
-    # The set of elements receiving layout events.
+
+  ###
+  The set of elements receiving layout events.
+  ###
   _trackedElements: $()
+
 
   ###
   The window has been resized.

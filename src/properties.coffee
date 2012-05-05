@@ -31,27 +31,29 @@ $.extend Control,
   creates a curried setter/getter function equivalent to css( "display", value ).
   ###
   chain: ->
-        # Check for a side effect function as last parameter.
+
+    # Check for a side effect function as last parameter.
     args = arguments
     sideEffectFn = undefined
     if $.isFunction( args[args.length - 1] )
-            # Convert arguments to a real array in order to grab last param.
+      # Convert arguments to a real array in order to grab last param.
       args = [].slice.call( arguments )
       sideEffectFn = args.pop()
-        # Identify function names and optional parameters.
+
+    # Identify function names and optional parameters.
     functionNames = []
     functionParams = []
     i = 0
     length = args.length
-
     while i < length
-            # Check for optional parameter.
+      # Check for optional parameter.
       parts = arguments[i].split( "/" )
       functionNames[i] = parts.shift()
       functionParams[i] = parts
       i++
-        # Generate a function that executes the chain.
-    chain = ( value ) ->
+
+    # Generate a function that executes the chain.
+    ( value ) ->
       result = this
       i = 0
       length = functionNames.length
@@ -60,19 +62,19 @@ $.extend Control,
         fn = result[functionNames[i]]
         params = functionParams[i]
                     # Invoke last function as setter.
-        params = params.concat( [ value ] )  if value isnt `undefined` and i is length - 1
-        if fn is `undefined`
+        params = params.concat( [ value ] )  if value isnt undefined and i is length - 1
+        if fn is undefined
           message = "Control class \"" + @className() + "\" tried to chain to an undefined getter/setter function \"" + functionNames[i] + "\"."
           throw message
         result = fn.apply( result, params )
         i++
-      if value is `undefined`
-                # Chain invoked as getter.
+      if value is undefined
+        # Chain invoked as getter.
         result
       else
-                    # Carry out side effect.
-        sideEffectFn.call this, value  if sideEffectFn
-        this
+        # Carry out side effect.
+        sideEffectFn.call @, value if sideEffectFn
+        @
 
 
   ###
@@ -89,10 +91,10 @@ $.extend Control,
       iteratorResult = undefined
       @eachControl ( index, $control ) ->
         result = fn.apply( $control, args )
-        if result isnt `undefined`
+        if result isnt undefined
           iteratorResult = result
           false
-      if iteratorResult != `undefined`
+      if iteratorResult != undefined
         iteratorResult # Getter
       else
         this # Method or setter
@@ -105,10 +107,10 @@ $.extend Control,
     backingPropertyName = "_property" + Control.property._symbolCounter++
     ( value ) ->
       result = undefined
-      if value is `undefined`
+      if value is undefined
         # Getter
         result = @data( backingPropertyName )
-        ( if ( result is `undefined` ) then defaultValue else result )
+        ( if ( result is undefined ) then defaultValue else result )
       else
         # Setter. Allow chaining.
         @eachControl ( index, $control ) ->
@@ -122,11 +124,11 @@ Factories for getter/setters of various types.
 ###
 $.extend Control.property,
 
-    # A boolean property.
+  # A boolean property.
   bool: ( sideEffectFn, defaultValue ) ->
-                # Convert either string or bool to bool.
+    # Convert either string or bool to bool.
     Control.property sideEffectFn, defaultValue, convertToBool = ( value ) ->
-      String( value ) is "true"
+      String( value ) == "true"
 
   ###
   A class-valued property.

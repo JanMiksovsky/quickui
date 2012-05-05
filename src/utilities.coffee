@@ -29,7 +29,7 @@ $.extend Control,
   # Return true if the given element is a control.
   # TODO: Remove in favor of ":control"?
   isControl: ( element ) ->
-    Control( element ).control() isnt `undefined`
+    Control( element ).control() isnt undefined
 
 
 ###
@@ -67,7 +67,7 @@ Control::extend
     while i < length
       $element = @nth( i )
       elementClass = $element._controlClass() or defaultClass
-      setClass = elementClass  if setClass is `undefined` or ( setClass:: ) instanceof elementClass
+      setClass = elementClass  if setClass is undefined or ( setClass:: ) instanceof elementClass
       i++
     setClass = setClass or defaultClass  # In case "this" had no elements.
     setClass this
@@ -112,7 +112,7 @@ Control::extend
   ###
   properties: ( properties ) ->
     for propertyName of properties
-      if this[propertyName] is `undefined`
+      if this[propertyName] is undefined
         message = "Tried to set undefined property " + @className() + "." + propertyName + "()."
         throw message
       value = properties[propertyName]
@@ -129,7 +129,7 @@ Control::extend
   ###
   propertyVector: ( propertyName, values ) ->
     propertyFn = this[propertyName]
-    if values is `undefined`
+    if values is undefined
             # Getter
       results = []
       i = 0
@@ -157,7 +157,7 @@ Control::extend
   to a collection of the corresponding elements.
   ###
   referencedElement: ( key, elements ) ->
-    if elements is `undefined`
+    if elements is undefined
             # Map a collection of control instances to the given element
             # defined for each instance.
       elements = []
@@ -166,7 +166,7 @@ Control::extend
 
       while i < length
         element = $( this[i] ).data( key )
-        elements.push element  if element isnt `undefined`
+        elements.push element  if element isnt undefined
         i++
       $result = Control( elements ).cast()
             # To make the element function $.end()-able, we want to call
