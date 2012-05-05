@@ -62,14 +62,10 @@ Control::extend
   cast: ( defaultClass ) ->
     defaultClass = defaultClass or @constructor
     setClass = undefined
-    i = 0
-    length = @length
-    while i < length
-      $element = @nth( i )
-      elementClass = $element._controlClass() or defaultClass
-      setClass = elementClass  if setClass is undefined or ( setClass:: ) instanceof elementClass
-      i++
-    setClass = setClass or defaultClass  # In case "this" had no elements.
+    for $e in @.each()
+      elementClass = $e._controlClass() ? defaultClass
+      setClass = elementClass if setClass is undefined or ( setClass:: ) instanceof elementClass
+    setClass ?= defaultClass  # In case "this" had no elements.
     setClass @
 
 
@@ -105,21 +101,23 @@ Control::extend
   look like
   
     $controls.eachControl( function( index, control ) {
-      
+      ...
     });
     
   This is similar to $.each(), but preserves type, so "this" and the control
   parameter passed to the callback are of the correct control class.
+  
+  NB: Unlike Control.each(), this looks up the specific control class for each
+  element being processed, rather than assuming the containing control's class
+  is shared by all elements. If eachControl() is applied to a mixture of controls,
+  the callback will be invoked with each control in turn using that specific
+  control's class. 
   ###
   eachControl: ( fn ) ->
-    i = 0
-    length = @length
-    # TODO: for loop
-    while i < length
-      $control = @nth( i ).control()
-      result = fn.call $control, i, $control
-      break  if result is false
-      i++
+    for element, i in @
+      $c = Control( element ).cast()
+      result = fn.call $c, i, $c
+      break if result is false
     @
 
 
@@ -164,22 +162,15 @@ Control::extend
   propertyVector: ( propertyName, values ) ->
     propertyFn = @[ propertyName ]
     if values is undefined
-      # Getter
-      results = []
-      i = 0
-      length = @length
-      while i < length
-        results[i] = propertyFn.call @nth( i )
-        i++
-      results
+      # Collect results of invoking property getter on each control. 
+      ( propertyFn.call $control for $control in @each() )
     else
-      # Setter
-      i = 0
-      length1 = @length
-      length2 = values.length
-      while i < length1 and i < length2
-        propertyFn.call @nth( i ), values[i]  unless not values[i]
-        i++
+      # Invoke property setter on each control using corresponding value
+      length = @length
+      for $control, i in @each()
+        if i >= length
+          break # Didn't receive values for all the controls we have
+        propertyFn.call $control, values[i] if values[i] isnt undefined
       @
       
       
@@ -190,32 +181,21 @@ Control::extend
   ###
   referencedElement: ( key, elements ) ->
     if elements is undefined
-            # Map a collection of control instances to the given element
-            # defined for each instance.
-      elements = []
-      i = 0
-      length = @length
-
-      while i < length
-        element = $( @[i] ).data key
-        elements.push element if element isnt undefined
-        i++
+      # Map a collection of control instances to the given element
+      # defined for each instance.
+      elements = ( $control.data key for $control in @each() when ( $control.data key ) isnt undefined )
       $result = Control( elements ).cast()
-            # To make the element function $.end()-able, we want to call
-            # jQuery's public pushStack() API. Unfortunately, that call
-            # won't allow us to both a) return a result of the proper class
-            # AND b) ensure that the result of calling end() will be of
-            # the proper class. So, we directly set the internal prevObject
-            # member used by end().
+      # To make the element function $.end()-able, we want to call
+      # jQuery's public pushStack() API. Unfortunately, that call
+      # won't allow us to both a) return a result of the proper class
+      # AND b) ensure that the result of calling end() will be of
+      # the proper class. So, we directly set the internal prevObject
+      # member used by end().
       $result.prevObject = @
       $result
     else
-      i = 0
-      length = @length
-
-      while i < length
-        $( @[i] ).data key, elements[i]
-        i++
+      for $control, i in @each()
+        $control.data key, elements[i]
       @
 
 

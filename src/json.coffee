@@ -25,13 +25,9 @@ The logicalParent parameter is intended for internal use only.
 ###
 Control::json = ( json, logicalParent ) ->
   logicalParent ?= @
-  i = 0
-  length = @length
-  while i < length
-    control = @nth i
+  for control, i in @each()
     properties = evaluateControlJsonProperties json, logicalParent.nth( i )
     control.properties properties
-    i++
   @
 
 
@@ -134,14 +130,13 @@ evaluateControlJsonValue = ( value, logicalParent ) ->
   if $.isArray value
     # Recursively process each member of the array.
     result = []
-    i = 0
-    # TODO: Use list comprehension
-    while i < value.length
-      item = value[i]
+    # TODO: Use list comprehension?
+    for item in value
       itemValue = evaluateControlJsonValue item, logicalParent
-      itemValue = itemValue[0]  if itemValue instanceof jQuery            # When adding jQuery object to array, just add their element.
+      if itemValue instanceof jQuery
+         # Adding jQuery object to array; just add its element.
+        itemValue = itemValue[0]
       result.push itemValue
-      i++
     result
   else if $.isPlainObject value
     # Process JSON sub-dictionary.

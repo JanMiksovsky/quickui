@@ -28,37 +28,28 @@ Control::inDocument = ( callback ) ->
     return false if @length is 0
 
     # See if controls are in document.
-    i = 0
-    while i < @length
-      unless isElementInDocument this[i]
-        # At least one control is not in the document.
-        return false
-      i++
-      
-    # All controls are in the document.
-    true
+    for element in @
+      unless isElementInDocument element
+        return false  # At least one control is not in the document.
+    
+    true  # All controls are in the document.
     
   else
     # Invoke callback immediately for controls already in document,
     # queue a callback for those which are not.
     callbacks = []
-    i = 0
-    while i < @length
-      $element = @nth i
-      element = $element[0]
+    for element, i in @each
       if isElementInDocument element
-        # Element already in document
-        callback.call $element
+        callback.call @constructor element  # Element already in document
       else
         # Add element to the list we're waiting to see inserted.
         callbacks.push
           element: element
           callback: callback
-      i++
     if callbacks.length > 0
       Control._elementInsertionCallbacks = callbacks.concat Control._elementInsertionCallbacks
       Control._startListeningForElementInsertion() unless Control._listeningForElementInsertion
-    this
+    @
 
 
 # TODO: Move these to regular functions
@@ -78,7 +69,7 @@ $.extend Control,
         # into the list of callbacks which we can now invoke.
         callbacksReady = callbacksReady.concat Control._elementInsertionCallbacks[i]
         # Now remove it from the pending list. We remove it from the list
-        # *beforewe invoke the callback -- because the callback
+        # *before* we invoke the callback -- because the callback
         # itself might do DOM manipulations that trigger more DOM
         # mutation events.
         Control._elementInsertionCallbacks.splice i, 1
@@ -88,14 +79,10 @@ $.extend Control,
     if Control._elementInsertionCallbacks.length == 0
       # No more elements to wait for.
       Control._stopListeningForElementInsertion()
-      
-    i = 0
-    while i < callbacksReady.length
-      element = callbacksReady[i].element
-      $control = Control( element ).control()
-      callback = callbacksReady[i].callback
-      callback.call $control
-      i++
+    
+    for callback in callbacksReady
+      control = Control( callback.element ).control()
+      callback.callback.call control
 
     # Controls waiting (via an inDocument call) to be added to the body.
   _elementInsertionCallbacks: []

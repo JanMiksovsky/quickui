@@ -30,52 +30,36 @@ $.extend Control,
   string-valued parameter that will be passed in. So chain( "css/display" )
   creates a curried setter/getter function equivalent to css( "display", value ).
   ###
-  chain: ->
+  chain: ( args... ) ->
 
     # Check for a side effect function as last parameter.
-    args = arguments
-    sideEffectFn = undefined
-    if $.isFunction args[args.length - 1]
-      # Convert arguments to a real array in order to grab last param.
-      args = [].slice.call arguments
-      sideEffectFn = args.pop()
+    sideEffectFn = args.pop() if $.isFunction args[ args.length - 1 ]
 
     # Identify function names and optional parameters.
     functionNames = []
     functionParams = []
-    i = 0
-    length = args.length
-    # TODO: Use destructuring
-    while i < length
-      # Check for optional parameter.
-      parts = arguments[i].split "/"
+    for arg, i in args
+      parts = arg.split "/"
       functionNames[i] = parts.shift()
       functionParams[i] = parts
-      i++
 
     # Generate a function that executes the chain.
     ( value ) ->
       result = @
-      i = 0
       length = functionNames.length
-
-      while i < length
-        fn = result[ functionNames[i] ]
-        params = functionParams[i]
-                    # Invoke last function as setter.
-        params = params.concat( [ value ] ) if value isnt undefined and i is length - 1
+      for functionName, i in functionNames
+        fn = result[ functionName ]
         if fn is undefined
-          message = "Control class \"" + @className() + "\" tried to chain to an undefined getter/setter function \"" + functionNames[i] + "\"."
-          throw message
-        # TODO: Use splat
+          # TODO: Unit test for this case
+          throw "Control class #{@className()} tried to chain to an undefined getter/setter function #{functionNames[i]}."
+        params = functionParams[i]
+        if i == length - 1 and value isnt undefined
+          params = params.concat value  # Invoke last function as setter  
         result = fn.apply result, params
-        i++
       if value is undefined
-        # Chain invoked as getter.
-        result
+        result  # Chain was invoked as getter.
       else
-        # Carry out side effect.
-        sideEffectFn.call @, value if sideEffectFn
+        sideEffectFn.call @, value if sideEffectFn # Carry out side effect.
         @
 
 

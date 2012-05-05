@@ -322,21 +322,19 @@ Control::extend
   _significantContents: ->
     # Use base implementation of content().
     contents = Control( this ).propertyVector "content"
-    significantContents = $.map( contents, ( content ) ->
-      return content  if $.trim( content ).length > 0  if typeof content is "string"                     # Found significant text
-      # Content is an array
-      i = 0
-      length = content.length
-      while i < length
-        c = content[i]
-        if typeof c is "string"
-          return content  if $.trim( c ).length > 0                 # Found significant text
-        # Comment node
-        else return content  if c.nodeType isnt 8                     # Found some real element
-        i++
+    $.map contents, ( content ) ->
+      
+      if typeof content is "string" and $.trim( content ).length > 0
+        return content  # Found significant text
+      
+      # Content is an array  
+      for node in content
+        if typeof node is "string" and $.trim( node ).length > 0
+          return content # Found significant text
+        else if node.nodeType isnt 8 # Comment node
+          return content # Found some real element
+
       null  # Didn't find anything significant
-    )
-    significantContents
 
 
 ###
