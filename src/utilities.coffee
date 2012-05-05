@@ -22,6 +22,7 @@ $.extend Control,
       classFn = Control.subclass value
     else
       classFn = window[ value ]
+      # TODO: Use string replacements
       throw "Unable to find a class called \"" + value + "\"." unless classFn
     classFn
 
@@ -70,6 +71,33 @@ Control::extend
       i++
     setClass = setClass or defaultClass  # In case "this" had no elements.
     setClass @
+
+
+  ###
+  Overload of standard $.each() that adds support for a no-argument form.
+  If called with arguments, this each() will work as normal. When called with
+  no arguments, it will return the controls in "this" as an array of subarrays.
+  Each subarray has a single element of the same class as the current control.
+  E.g., if "this" contains a jQuery object with
+  
+    [ control1, control2, control3, ... ]
+    
+  Then calling segments() returns
+  
+    [ [control1], [control2], [control3], ... ]
+  
+  This is useful in for loops and list comprehensions, and avoids callbacks.
+  It is more sophisticated than simply looping over the control as a jQuery
+  object, because that just loops over plain DOM elements, where this each()
+  lets us loop over jQuery/Control objects that retain type information and,
+  thus, direct access to class members.
+  ###
+  each: ( args... ) ->
+    if args.length == 0
+      # Return the controls in this as an array of subarrays.
+      @constructor element for element in @
+    else
+      jQuery::each.apply this, args   # Defer to standard $.each()
 
 
   ###
@@ -189,25 +217,6 @@ Control::extend
         $( @[i] ).data key, elements[i]
         i++
       @
-
-
-  ###
-  Return the controls in "this" as an array of subarrays. Each subarray has a
-  single element of the same class as the current control. E.g., if "this"
-  contains a jQuery object with
-  
-    [ control1, control2, control3, ... ]
-    
-  Then calling segments() returns
-  
-    [ [control1], [control2], [control3], ... ]
-  
-  This is useful in CoffeeScript in "for" loops and comprehensions. Simply
-  iterating over the control's array members would loop over plain DOM elements,
-  whereas segments()  gives us an array of DOM elements wrapped by controls.
-  ###
-  segments: ->
-    @constructor element for element in @
 
 
   ###

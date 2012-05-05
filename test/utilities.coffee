@@ -4,9 +4,9 @@ Utilities unit tests
 
 window.utilitiesTests = ->
 
-  test "Utilities: segments", ->
+  test "Utilities: each", ->
     c = $( "<div>Ann</div><div>Bob</div>" ).control( Control );
-    segments = c.segments();
+    segments = c.each();
     ok segments instanceof Array
     equal segments.length, 2
     equal segments[0].content(), "Ann"

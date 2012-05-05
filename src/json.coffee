@@ -67,6 +67,11 @@ control.
 The third form is any other JSON dictionary object, returned as is.
 ###
 evaluateControlJson = ( json, logicalParent ) ->
+  ###
+  TODO: Use CoffeeScript idiom
+  # The first ten global properties.
+  globals = (name for name of window)[0...10]
+  ###
   # Get the first key in the JSON.
   for firstKey of json
     break
