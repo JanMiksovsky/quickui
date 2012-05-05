@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         coffee: {
             controls: {
                 src: "*.coffee",
-                dest: "tests.js"
+                dest: "unittests.js"
             }
         },
         watch: {

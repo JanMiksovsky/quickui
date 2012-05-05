@@ -73,12 +73,20 @@ Control::extend
 
 
   ###
-  Execute a function once for each control in the array.
-  Inside the function, "this" refers to the single control.
+  Execute a function once for each control in the array. The callback should
+  look like
+  
+    $controls.eachControl( function( index, control ) {
+      
+    });
+    
+  This is similar to $.each(), but preserves type, so "this" and the control
+  parameter passed to the callback are of the correct control class.
   ###
   eachControl: ( fn ) ->
     i = 0
     length = @length
+    # TODO: for loop
     while i < length
       $control = @nth( i ).control()
       result = fn.call $control, i, $control
@@ -181,6 +189,25 @@ Control::extend
         $( @[i] ).data key, elements[i]
         i++
       @
+
+
+  ###
+  Return the controls in "this" as an array of subarrays. Each subarray has a
+  single element of the same class as the current control. E.g., if "this"
+  contains a jQuery object with
+  
+    [ control1, control2, control3, ... ]
+    
+  Then calling segments() returns
+  
+    [ [control1], [control2], [control3], ... ]
+  
+  This is useful in CoffeeScript in "for" loops and comprehensions. Simply
+  iterating over the control's array members would loop over plain DOM elements,
+  whereas segments()  gives us an array of DOM elements wrapped by controls.
+  ###
+  segments: ->
+    @constructor element for element in @
 
 
   ###

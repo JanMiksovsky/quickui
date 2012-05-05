@@ -1,5 +1,5 @@
 ###
-CoffeeScript tests
+CoffeeScript support unit tests
 ###
 
 window.coffeeTests = ->

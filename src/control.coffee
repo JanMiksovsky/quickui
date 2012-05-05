@@ -138,7 +138,7 @@ $.extend Control,
       .properties properties
 
     # Apply generic style if class supports that.
-    $controls.generic true  if @genericIfClassIs is @className
+    $controls.generic true if @genericIfClassIs is @className
 
     # Tell the controls they're ready.
     i = 0
@@ -146,7 +146,7 @@ $.extend Control,
     while i < length
       $controls.nth( i ).initialize()
       i++
-
+    
     # Return the new controls
     $controls
 

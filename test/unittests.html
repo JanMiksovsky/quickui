@@ -12,8 +12,7 @@
 <script type="text/javascript" src="http://code.jquery.com/qunit/git/qunit.js"></script>
 <!-- <script type="text/javascript" src="http://quickui/release/quickui.js"></script> -->
 <script type="text/javascript" src="../src/quickui-pre.js"></script>
-<script type="text/javascript" src="http://quickui/plugins/quickui.coffee.js"></script>
-<script type="text/javascript" src="tests.js"></script>
+<script type="text/javascript" src="unittests.js"></script>
 
 <script>
 /*
@@ -577,7 +576,7 @@ function runTests() {
      * Utilities
      */
      
-    test( "Utility: eachControl", function() {
+    test( "Utilities: eachControl", function() {
         
         // Create two instances of different classes.
         var Foo = Control.subclass({ className: "Foo" });
@@ -596,7 +595,7 @@ function runTests() {
         deepEqual( results, [ "foo", "bar" ] );
     });
     
-    test( "Utility: applyClass", function() {
+    test( "Utilities: applyClass", function() {
         var $c = Control.create().toggleClass( "foo" );
         equal( $c.applyClass( "foo" ), true );
         equal( $c.applyClass( "enabled" ), false );
@@ -605,12 +604,12 @@ function runTests() {
         equal( $c.applyClass( "enabled" ), true );
     });
     
-    test( "Utility: visibility", function() {
+    test( "Utilities: visibility", function() {
         var $c = Control.create();
         equal( $c.visibility(), false ); // control isn't in DOM, so is not visible.
     });
     
-    test( "Utility: propertyVector", function() {
+    test( "Utilities: propertyVector", function() {
         var $a = Control.create( { content: "one" }); 
         var $b = Control.create( { content: "two" })
         var $c = $a.add( $b );
@@ -638,8 +637,8 @@ function createGreetClass() {
   
 $( function() {
     runTests();
-    // Also run CoffeeScript plugin tests.
     coffeeTests();
+    utilitiesTests();
 });
 </script>
 
