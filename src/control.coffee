@@ -200,19 +200,16 @@ $.extend Control,
   ###
   Replace the indicated existing element(s) with copies of the indicated
   replacement element. During this operation, preserve element IDs.
-  
   This is used if, say, we need to convert a bunch of divs to buttons.
   ###
   _replaceElements: ( $existing, $replacement ) ->
     # Gather the existing IDs.
-    # TODO: Look for opportunities like this for list comprehensions.
-    ids = $existing.map ( index, element ) ->
-      $( element ).prop "id"
+    ids = $( element ).prop "id" for element in $existing
     $new = $replacement.replaceAll( $existing )
     # Put IDs onto new elements.
-    $new.each ( index, element ) ->
-      id = ids[index]
-      $( element ).prop "id", ids[index] if id and id.length > 0
+    for element, i in $new
+      id = ids[i]
+      $( element ).prop "id", id if id and id.length > 0
     $new
 
 
@@ -322,6 +319,7 @@ Control::extend
   _significantContents: ->
     # Use base implementation of content().
     contents = Control( this ).propertyVector "content"
+    # REVIEW: Array handling looks off
     $.map contents, ( content ) ->
       
       if typeof content is "string" and $.trim( content ).length > 0

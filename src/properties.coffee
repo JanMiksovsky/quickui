@@ -75,12 +75,12 @@ $.extend Control,
     ->
       args = arguments
       iteratorResult = undefined
-      @eachControl ( index, $control ) ->
-        result = fn.apply $control, args
+      for control in @each()
+        result = fn.apply control, args
         if result isnt undefined
           iteratorResult = result
-          false
-      if iteratorResult != undefined
+          break
+      if iteratorResult isnt undefined
         iteratorResult # Getter
       else
         this # Method or setter
@@ -99,10 +99,10 @@ $.extend Control,
         ( if ( result is undefined ) then defaultValue else result )
       else
         # Setter. Allow chaining.
-        @eachControl ( index, $control ) ->
-          result = ( if ( converterFunction ) then converterFunction.call( $control, value ) else value )
-          $control.data backingPropertyName, result
-          sideEffectFn.call $control, result  if sideEffectFn
+        for control in @each()
+          result = ( if ( converterFunction ) then converterFunction.call( control, value ) else value )
+          control.data backingPropertyName, result
+          sideEffectFn.call control, result if sideEffectFn
 
 
 ###

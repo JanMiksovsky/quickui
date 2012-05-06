@@ -22,8 +22,7 @@ $.extend Control,
       classFn = Control.subclass value
     else
       classFn = window[ value ]
-      # TODO: Use string replacements
-      throw "Unable to find a class called \"" + value + "\"." unless classFn
+      throw "Unable to find a class called #{value}." unless classFn
     classFn
 
 
@@ -145,8 +144,7 @@ Control::extend
   properties: ( properties ) ->
     for propertyName of properties
       if @[ propertyName ] is undefined
-        message = "Tried to set undefined property " + @className() + "." + propertyName + "()."
-        throw message
+        throw "Tried to set undefined property #{@className()}.#{propertyName}()."
       value = properties[ propertyName ]
       @[ propertyName ].call @, value
     @

@@ -129,15 +129,13 @@ immediate parent in the DOM; it might be higher up.
 evaluateControlJsonValue = ( value, logicalParent ) ->
   if $.isArray value
     # Recursively process each member of the array.
-    result = []
-    # TODO: Use list comprehension?
-    for item in value
+    ((
       itemValue = evaluateControlJsonValue item, logicalParent
       if itemValue instanceof jQuery
-         # Adding jQuery object to array; just add its element.
-        itemValue = itemValue[0]
-      result.push itemValue
-    result
+        itemValue[0] # Just add element
+      else
+        itemValue
+    ) for item in value )
   else if $.isPlainObject value
     # Process JSON sub-dictionary.
     evaluateControlJson value, logicalParent

@@ -51,8 +51,8 @@ Control::extend
   function via this.genericIfClassIs( Bar ).
   ###
   genericIfClassIs: ( classFn ) ->
-    @eachControl ( index, $control ) ->
-      $control.generic true if $control.constructor is classFn and $control.generic() is undefined
+    for control in @each()
+      control.generic true if control.constructor is classFn and control.generic() is undefined
  
   ###
   Sets/gets the style of matching elements.
