@@ -34,24 +34,18 @@ Control::extend
     if value is undefined
       # Getting contents. Just process first element.
       $element = @nth 0
-      result = undefined
       if $element.isInputElement()
-        # Return input element value.
-        result = $element.val()
+        $element.val()  # Return input element value.
       else
         # Return HTML contents in a canonical form.
-        resultContainsStrings = false
-        # TODO: List comprehension
-        result = $element.contents().map ( index, item ) ->
-          if item.nodeType is 3
-            # Return text as simple string
-            resultContainsStrings = true
-            item.nodeValue
-          else
-            item
-        # Return the single string instead of an array.
-        result = result[0] if resultContainsStrings and result.length is 1
-      result
+        result = ((
+          # Return child text nodes as strings
+          if item.nodeType is 3 then item.nodeValue else item
+        ) for item in $element.contents() )
+        if result.length == 1 and typeof result[0] == "string"
+          result[0] # Return the single string instead of an array.
+        else
+          @constructor result
     else
       # Setting contents.
 
