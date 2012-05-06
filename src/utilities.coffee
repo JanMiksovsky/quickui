@@ -12,18 +12,17 @@ $.extend Control,
   - An object value returns a new anonymous class created from that JSON.
   ###
   getClass: ( value ) ->
-    classFn = undefined
-    if value is null or value is ""
-            # Special cases used to clear class-valued properties.
-      classFn = null
+    if value is null or value == ""
+      # Special cases used to clear class-valued properties.
+      null
     else if $.isFunction value
-      classFn = value
+      value
     else if $.isPlainObject value
-      classFn = Control.subclass value
+      Control.subclass value
     else
       classFn = window[ value ]
       throw "Unable to find a class called #{value}." unless classFn
-    classFn
+      classFn
 
 
   # Return true if the given element is a control.
@@ -114,8 +113,8 @@ Control::extend
   ###
   eachControl: ( fn ) ->
     for element, i in @
-      $c = Control( element ).cast()
-      result = fn.call $c, i, $c
+      control = Control( element ).cast()
+      result = fn.call control, i, control
       break if result is false
     @
 

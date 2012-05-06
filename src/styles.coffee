@@ -68,4 +68,7 @@ Control::extend
   (rather than toggling the element's visibility).
   ###
   visibility: ( value ) ->
-    ( if ( value is undefined ) then @is( ":visible" ) else @toggle( String( value ) is "true" ) )
+    if value is undefined
+      @is( ":visible" )
+    else
+      @toggle String( value ) == "true"

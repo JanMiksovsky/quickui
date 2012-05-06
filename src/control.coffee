@@ -342,8 +342,4 @@ Keys should be provided as a dictionary with true values. E.g., the dictionary
 from the result.
 ###
 copyExcludingKeys = ( obj, excludeKeys ) ->
-  copy = {}
-  # TODO: List comprehension
-  for key of obj
-    copy[ key ] = obj[ key ]  unless excludeKeys[ key ]
-  copy
+  ( obj[ key ] for key in obj when !excludeKeys[ key ] )
