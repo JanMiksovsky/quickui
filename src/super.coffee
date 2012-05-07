@@ -2,6 +2,9 @@
 Helper function by which a method can invoke the identically-named method
 on a base class. Signficantly, it is not necessary for the invoking method to
 pass in the current class, the base class, or the method name.
+
+This function exists for use in plain JavaScript controls. CoffeeScript-based
+controls have access to that langauge's "super" keyword.
 ###
 
 
@@ -63,47 +66,35 @@ Control::_super = ->
     # Find the class implementing this method.
     classInfo = findMethodImplementation callerFn, @constructor
     if classInfo
-      classFn = classInfo.classFn
-      callerFnName = classInfo.fnName
+      { classFn: classFn, fnName: callerFnName } = classInfo
       # Go up one level in the class hierarchy to get the superfunction.
       superFn = classFn.superclass::[ callerFnName ]
       # Memoize our answer, storing the value on the calling function,
       # to speed things up next time.
       callerFn._superFn = superFn
-
-  unless superFn
-    throw "Tried to invoke _super(), but couldn't find a function of the same name in the base class."
+    unless superFn
+      throw "Tried to invoke _super(), but couldn't find a function of the same name in the base class."
 
   # Invoke superfunction
-  superFn.apply( @, arguments )
+  superFn.apply @, arguments
 
 
 ###
-Find which class implements the given method, starting at the given
-point in the class hierarchy and walking up.
-
-At each level, we enumerate all class prototype members to search for a
-function identical to the method we're looking for.
-
-Returns the class that implements the function, and the name of the class
-member that references it. Returns null if the class was not found.
+Find which class implements the given method, starting at the given point in the
+class hierarchy and walking up. Returns the class that implements the function,
+and the name of the class member that references it. Returns null if the
+function's implementation could not be found.
 ###
 findMethodImplementation = ( methodFn, classFn ) ->
-  # See if this particular class defines the function.
-  # TODO: use hasOwnProperty
-  prototype = classFn::
-  for key of prototype
-    if prototype[ key ] is methodFn
-      # Found the function implementation.
-      # Check to see whether it's really defined by this class,
-      # or is actually inherited.
-      methodInherited = ( if classFn.superclass then prototype[ key ] is classFn.superclass::[ key ] else false )
-      unless methodInherited
-        # This particular class defines the function.
-        return (
-          classFn: classFn
-          fnName: key
-        )
-  # Didn't find the function in this class.
-  # Look in parent classes (if any).
-  ( if classFn.superclass then findMethodImplementation( methodFn, classFn.superclass ) else null )
+  for own key, value of classFn::
+    if value is methodFn
+      # This particular class defines the function.
+      return (
+        classFn: classFn
+        fnName: key
+      )
+  if classFn.superclass
+    # Look in parent class
+    findMethodImplementation methodFn, classFn.superclass
+  else
+    null # Didn't find the function

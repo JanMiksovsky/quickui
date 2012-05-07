@@ -60,7 +60,6 @@ $.event.special.layout =
     return unless control.inDocument()            # Not currently in document; no need for layout.
     # TODO: Shouldn't the line below invoke _updateSavedSize()?
     return unless control.checkForSizeChange()    # Size hasn't actually changed; no need for layout.
-    # TODO: Use splat (and search for other applys)
     event.handleObj.handler.apply @, arguments
 
 

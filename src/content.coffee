@@ -52,14 +52,12 @@ Control::extend
       # Cast arguments to an array.
       array = if arguments.length > 1
         arguments 
+      else if value instanceof jQuery
+        value.get()                       # convert jQuery object to array 
+      else if $.isArray value
+        value                             # single array parameter
       else
-        if value instanceof jQuery
-          value.get()           # convert jQuery object to array 
-        else
-          if $.isArray value
-            value               # single array parameter
-          else
-            [ value ]           # singleton parameter
+        [ value ]                         # singleton parameter
 
       @each ( index, element ) ->
         $element = Control element
@@ -67,17 +65,13 @@ Control::extend
           # Set input element value.
           $element.val value
         else
-          # Set HTML contents.
-
-          # We're about to blow away the contents of the element
-          # via $empty(), but the new content value might actually
-          # already be deeper in the element's existing content.
-          # To ensure that data, etc., get preserved, first detach
-          # the existing contents.
+          # The new content value might actually already be deeper in the
+          # element's existing content. To ensure that data, etc., get
+          # preserved, first detach the existing contents.
           $element.children().detach()
-
-          # Use apply() to feed array to $.append() as params.
-          $element.empty().append.apply $element, array
+          
+          # Set HTML contents.
+          $element.empty().append array...
 
 
   ###
