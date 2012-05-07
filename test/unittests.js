@@ -263,7 +263,7 @@ Shared sample classes used by unit tests.
       }
     });
     addControl = function(control) {
-      $("qunit-fixture").append(control);
+      $("#qunit-fixture").append(control);
       if (Control._elementInsertionInterval) {
         return Control._checkForElementInsertion();
       }

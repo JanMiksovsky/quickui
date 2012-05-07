@@ -25,7 +25,7 @@ $ ->
   
   # Add a control to force the raising of an inDocument event.
   addControl = ( control ) ->
-    $( "qunit-fixture" ).append control
+    $( "#qunit-fixture" ).append control
     if Control._elementInsertionInterval
       # A timer has been set up, which means we're in IE 8.
       # Simulate the timer ticking over.

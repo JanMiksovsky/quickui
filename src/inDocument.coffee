@@ -38,9 +38,9 @@ Control::inDocument = ( callback ) ->
     # Invoke callback immediately for controls already in document,
     # queue a callback for those which are not.
     callbacks = []
-    for element, i in @each()
+    for element, i in @
       if isElementInDocument element
-        callback.call @constructor element  # Element already in document
+        callback.call @constructor element  # Now in document; invoke callback.
       else
         # Add element to the list we're waiting to see inserted.
         callbacks.push
