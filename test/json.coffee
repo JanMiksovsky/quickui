@@ -25,7 +25,7 @@ $ ->
   
   test "json: control", ->
     createGreetClass()
-    Greet::extend name: Control.chain("$name", "content")
+    Greet::extend name: Control.chain "$name", "content"
     c = Control.create()
     c.json content:
       control: "Greet"

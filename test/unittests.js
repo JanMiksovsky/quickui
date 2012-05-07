@@ -239,7 +239,93 @@ Shared sample classes used by unit tests.
   */
 
 
-  $(function() {});
+  $(function() {
+    /*
+      test "inDocument: control created before document ready", ->
+        equal pendingCount(), 1
+        ok not $createdBeforeReady.inDocumentCalled()
+        addControl $createdBeforeReady
+        equal pendingCount(), 0
+        ok $createdBeforeReady.inDocumentCalled()
+        teardown()
+    */
+
+    var InDocumentSample, addControl, pendingCount;
+    InDocumentSample = Control.subclass({
+      className: "InDocumentSample",
+      prototype: {
+        inDocumentCalled: Control.property.bool(),
+        initialize: function() {
+          return this.inDocument(function() {
+            return this.inDocumentCalled(true);
+          });
+        }
+      }
+    });
+    addControl = function(control) {
+      $("qunit-fixture").append(control);
+      if (Control._elementInsertionInterval) {
+        return Control._checkForElementInsertion();
+      }
+    };
+    pendingCount = function() {
+      var _ref, _ref1;
+      return (_ref = (_ref1 = Control._elementInsertionCallbacks) != null ? _ref1.length : void 0) != null ? _ref : 0;
+    };
+    test("inDocument: typical invocation in control created outside document and then added", function() {
+      var $c;
+      equal(pendingCount(), 0);
+      $c = InDocumentSample.create();
+      equal(pendingCount(), 1);
+      ok(!$c.inDocumentCalled());
+      addControl($c);
+      equal(pendingCount(), 0);
+      return ok($c.inDocumentCalled());
+    });
+    test("inDocument: nested invocations outside document", function() {
+      var $c;
+      equal(pendingCount(), 0);
+      $c = InDocumentSample.create().content(InDocumentSample.create());
+      equal(pendingCount(), 2);
+      ok(!$c.inDocumentCalled());
+      addControl($c);
+      equal(pendingCount(), 0);
+      return ok($c.inDocumentCalled());
+    });
+    /*  
+    inDocument callbacks should get invoked in reverse document order, so
+    if we have a control containing two children A and B, in that order,
+    then B's callbacks should get invoked before A's.
+    */
+
+    test("inDocument: invocations happen in reverse document order", function() {
+      var $a, $b, $c;
+      equal(pendingCount(), 0);
+      $a = void 0;
+      $b = void 0;
+      $c = void 0;
+      $a = InDocumentSample.create("A").inDocument(function() {
+        return ok($b.inDocumentCalled());
+      });
+      $b = InDocumentSample.create("B").inDocument(function() {
+        return ok(!$a.inDocumentCalled());
+      });
+      $c = Control.create().content([$a, $b]);
+      equal(pendingCount(), 4);
+      addControl($c);
+      return equal(pendingCount(), 0);
+    });
+    return test("inDocument: create controls on element in document", function() {
+      var $c;
+      equal(pendingCount(), 0);
+      $c = $("<div/>");
+      addControl($c);
+      equal(pendingCount(), 0);
+      $c = $c.control(InDocumentSample);
+      equal(pendingCount(), 0);
+      return ok($c.inDocumentCalled());
+    });
+  });
 
   /*
   Control JSON unit tests
@@ -333,9 +419,7 @@ Shared sample classes used by unit tests.
     test("Properties: chain: root content", function() {
       var $c, result;
       createGreetClass();
-      Greet.prototype.extend({
-        foo: Control.chain("content")
-      });
+      Greet.prototype.foo = Control.chain("content");
       $c = Greet.create();
       result = $c.foo();
       equal(result[0], "Hello ");
@@ -346,9 +430,7 @@ Shared sample classes used by unit tests.
     test("Properties: chain: element", function() {
       var $c, $element;
       createGreetClass();
-      Greet.prototype.extend({
-        name: Control.chain("$name")
-      });
+      Greet.prototype.name = Control.chain("$name");
       $c = Greet.create();
       $element = $c.$name();
       equal($element[0], $c.find("#name")[0]);
@@ -357,9 +439,7 @@ Shared sample classes used by unit tests.
     test("Properties: chain: element content", function() {
       var $c;
       createGreetClass();
-      Greet.prototype.extend({
-        name: Control.chain("$name", "content")
-      });
+      Greet.prototype.name = Control.chain("$name", "content");
       $c = Greet.create();
       equal($c.name(), "Ann");
       $c.name("Bob");
@@ -368,9 +448,7 @@ Shared sample classes used by unit tests.
     test("Properties: chain: subcontrol property", function() {
       var $c, MyControl;
       createGreetClass();
-      Greet.prototype.extend({
-        name: Control.chain("$name", "content")
-      });
+      Greet.prototype.name = Control.chain("$name", "content");
       MyControl = Control.subclass({
         className: "MyControl",
         content: {
@@ -378,9 +456,7 @@ Shared sample classes used by unit tests.
           id: "greet"
         }
       });
-      MyControl.prototype.extend({
-        name: Control.chain("$greet", "name")
-      });
+      MyControl.prototype.name = Control.chain("$greet", "name");
       $c = MyControl.create();
       equal($c.name(), "Ann");
       $c.name("Bob");
@@ -389,9 +465,7 @@ Shared sample classes used by unit tests.
     test("Properties: chain: element content with iteration", function() {
       var $c, $g, $inner1, $inner2;
       createGreetClass();
-      Greet.prototype.extend({
-        name: Control.chain("$name", "content")
-      });
+      Greet.prototype.name = Control.chain("$name", "content");
       $inner1 = Greet.create({
         name: "Ann"
       });
@@ -410,10 +484,8 @@ Shared sample classes used by unit tests.
     test("Properties: chain: element content with side effect function", function() {
       var $c;
       createGreetClass();
-      Greet.prototype.extend({
-        name: Control.chain("$name", "content", function(name) {
-          return this.data("_name", name);
-        })
+      Greet.prototype.name = Control.chain("$name", "content", function(name) {
+        return this.data("_name", name);
       });
       $c = Greet.create();
       $c.name("Ann");
@@ -466,10 +538,8 @@ Shared sample classes used by unit tests.
       MyControl = Control.subclass({
         className: "MyControl"
       });
-      MyControl.prototype.extend({
-        foo: Control.iterator(function() {
-          return this.data("_calledFoo", true);
-        })
+      MyControl.prototype.foo = Control.iterator(function() {
+        return this.data("_calledFoo", true);
       });
       $elements = Control("<div/>").add("<div/>");
       $c = $elements.control(MyControl);
@@ -493,11 +563,11 @@ Shared sample classes used by unit tests.
       return equal($c.eq(1).control().data("_property"), "bar");
     });
     test("Properties: Define getter/setter with Control.property", function() {
-      var $c, $elements, c;
-      c = Control.subclass();
-      c.prototype.myProperty = Control.property();
+      var $c, $elements, MyControl;
+      MyControl = Control.subclass();
+      MyControl.prototype.myProperty = Control.property();
       $elements = Control("<div/>").add("<div/>");
-      $c = $elements.control(c);
+      $c = $elements.control(MyControl);
       equal($c.myProperty() === void 0, true);
       $c.myProperty("foo");
       equal($c.eq(0).myProperty(), "foo");
@@ -561,12 +631,18 @@ Shared sample classes used by unit tests.
   $(function() {
     return test("_super()", function() {
       var A, B, C, a, b, c;
-      A = Control.subclass("A");
-      B = A.subclass("B");
-      C = B.subclass("C");
+      A = Control.subclass({
+        className: "A"
+      });
+      B = A.subclass({
+        className: "B"
+      });
+      C = B.subclass({
+        className: "C"
+      });
       A.prototype.extend({
         decorate: function(s) {
-          return "(a: " + s + ")";
+          return "( a: " + s + " )";
         },
         calc: function(x) {
           return x * 2;
@@ -574,7 +650,7 @@ Shared sample classes used by unit tests.
       });
       B.prototype.extend({
         decorate: function(s) {
-          return "(b: " + this._super(s) + ")";
+          return "( b: " + (this._super(s)) + " )";
         },
         calc: function(x) {
           return this._super(x) + 1;
@@ -582,17 +658,17 @@ Shared sample classes used by unit tests.
       });
       C.prototype.extend({
         decorate: function(s) {
-          return "(c: " + this._super(s) + ")";
+          return "( c: " + (this._super(s)) + " )";
         }
       });
       c = C();
-      equal(c.decorate("Hello"), "(c: (b: (a: Hello)))");
+      equal(c.decorate("Hello"), "( c: ( b: ( a: Hello ) ) )");
       equal(c.calc(3), 7);
       b = B();
-      equal(b.decorate("Hello"), "(b: (a: Hello))");
+      equal(b.decorate("Hello"), "( b: ( a: Hello ) )");
       equal(b.calc(3), 7);
       a = A();
-      equal(a.decorate("Hello"), "(a: Hello)");
+      equal(a.decorate("Hello"), "( a: Hello )");
       return equal(a.calc(3), 6);
     });
   });
@@ -687,12 +763,8 @@ Shared sample classes used by unit tests.
     });
     return test("Utilities: propertyVector", function() {
       var $a, $b, $c, vector;
-      $a = Control.create({
-        content: "one"
-      });
-      $b = Control.create({
-        content: "two"
-      });
+      $a = Control.create("one");
+      $b = Control.create("two");
       $c = $a.add($b);
       vector = $c.propertyVector("content");
       deepEqual(vector, ["one", "two"]);

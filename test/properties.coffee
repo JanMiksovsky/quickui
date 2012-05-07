@@ -6,25 +6,25 @@ $ ->
   
   test "Properties: chain: root content", ->
     createGreetClass()
-    Greet::extend foo: Control.chain("content")
+    Greet::foo = Control.chain "content"
     $c = Greet.create()
     result = $c.foo()
     equal result[0], "Hello "
-    equal $(result[1]).html(), "Ann"
+    equal $( result[1] ).html(), "Ann"
     $c.foo "world"
     equal $c.html(), "world"
   
   test "Properties: chain: element", ->
     createGreetClass()
-    Greet::extend name: Control.chain("$name")
+    Greet::name = Control.chain "$name"
     $c = Greet.create()
     $element = $c.$name()
-    equal $element[0], $c.find("#name")[0]
+    equal $element[0], $c.find( "#name" )[0]
     equal $element.html(), "Ann"
   
   test "Properties: chain: element content", ->
     createGreetClass()
-    Greet::extend name: Control.chain("$name", "content")
+    Greet::name = Control.chain "$name", "content"
     $c = Greet.create()
     equal $c.name(), "Ann"
     $c.name "Bob"
@@ -32,14 +32,13 @@ $ ->
   
   test "Properties: chain: subcontrol property", ->
     createGreetClass()
-    Greet::extend name: Control.chain("$name", "content")
-    MyControl = Control.subclass(
+    Greet::name = Control.chain "$name", "content"
+    MyControl = Control.subclass
       className: "MyControl"
       content:
         control: "Greet"
         id: "greet"
-    )
-    MyControl::extend name: Control.chain("$greet", "name")
+    MyControl::name = Control.chain "$greet", "name"
     $c = MyControl.create()
     equal $c.name(), "Ann"
     $c.name "Bob"
@@ -47,90 +46,88 @@ $ ->
   
   test "Properties: chain: element content with iteration", ->
     createGreetClass()
-    Greet::extend name: Control.chain("$name", "content")
-    $inner1 = Greet.create(name: "Ann")
-    $inner2 = Greet.create(name: "Bob")
-    $c = Control.create(content: [ $inner1, "/", $inner2 ])
+    Greet::name = Control.chain "$name", "content"
+    $inner1 = Greet.create name: "Ann"
+    $inner2 = Greet.create name: "Bob"
+    $c = Control.create content: [ $inner1, "/", $inner2 ]
     equal $c.text(), "Hello Ann/Hello Bob"
-    $g = Greet($c.find(".Greet"))
+    $g = Greet $c.find ".Greet"
     equal $g.name(), "Ann"
     $g.name "Carol"
     equal $c.text(), "Hello Carol/Hello Carol"
   
   test "Properties: chain: element content with side effect function", ->
     createGreetClass()
-    Greet::extend name: Control.chain("$name", "content", (name) ->
+    Greet::name = Control.chain "$name", "content", ( name ) ->
       @data "_name", name
-    )
     $c = Greet.create()
     $c.name "Ann"
     equal $c.name(), "Ann"
-    equal $c.data("_name"), "Ann"
+    equal $c.data( "_name" ), "Ann"
   
   test "Properties: chain: chaining", ->
     createGreetClass()
     Greet::extend
-      foo: Control.chain("content")
-      bar: Control.chain("prop/display")
+      foo: Control.chain "content"
+      bar: Control.chain "prop/display"
   
     $c = Greet.create()
-    result = $c.foo("Hello").bar("inline")
+    result = $c.foo( "Hello" ).bar( "inline" )
     equal $c.content(), "Hello"
-    equal $c.prop("display"), "inline"
+    equal $c.prop( "display" ), "inline"
     equal result, $c
   
   test "Properties: chain: functions with parameters", ->
-    MyControl = Control.subclass(className: "MyControl")
-    MyControl::display = Control.chain("css/display")
+    MyControl = Control.subclass className: "MyControl"
+    MyControl::display = Control.chain "css/display"
     $c = MyControl.create()
     $c.css "display", "block"
     equal $c.display(), "block"
     $c.display "none"
-    equal $c.css("display"), "none"
+    equal $c.css( "display" ), "none"
     equal $c.display(), "none"
 
   test "Properties: Define method", ->
-    MyControl = Control.subclass(className: "MyControl")
+    MyControl = Control.subclass className: "MyControl"
     MyControl::foo = ->
       @data "_calledFoo", true
-    $elements = Control("<div/>").add("<div/>")
-    $c = $elements.control(MyControl)
+    $elements = Control( "<div/>" ).add( "<div/>" )
+    $c = $elements.control MyControl
     result = $c.foo()
     equal result, $c # returns "this"
-    equal $c.eq(0).data("_calledFoo"), true
-    equal $c.eq(1).data("_calledFoo"), true
+    equal $c.eq( 0 ).data( "_calledFoo" ), true
+    equal $c.eq( 1 ).data( "_calledFoo" ), true
   
   test "Properties: Define method with iterator()", ->
-    MyControl = Control.subclass(className: "MyControl")
-    MyControl::extend
-      foo: Control.iterator ->
+    MyControl = Control.subclass className: "MyControl"
+    MyControl::foo = Control.iterator ->
         @data "_calledFoo", true
-    $elements = Control("<div/>").add("<div/>")
-    $c = $elements.control(MyControl)
+    $elements = Control( "<div/>" ).add( "<div/>" )
+    $c = $elements.control MyControl
     methodResult = $c.foo()
     equal methodResult, $c # i.e., should return "this"
-    equal $c.eq(0).data("_calledFoo"), true
-    equal $c.eq(1).data("_calledFoo"), true
+    equal $c.eq( 0 ).data( "_calledFoo" ), true
+    equal $c.eq( 1 ).data( "_calledFoo" ), true
   
   test "Properties: Define getter/setter with iterator()", ->
-    MyControl = Control.subclass(className: "MyControl")
-    MyControl::foo = Control.iterator (value) ->
+    MyControl = Control.subclass className: "MyControl"
+    MyControl::foo = Control.iterator ( value ) ->
       @data "_property", value
-    $elements = Control("<div/>").add("<div/>")
-    $c = $elements.control( MyControl )
+    $elements = Control( "<div/>" ).add( "<div/>" )
+    $c = $elements.control MyControl
     $c.foo "bar"
-    equal $c.eq(0).control().data("_property"), "bar"
-    equal $c.eq(1).control().data("_property"), "bar"
+    equal $c.eq( 0 ).control().data( "_property" ), "bar"
+    equal $c.eq( 1 ).control().data( "_property" ), "bar"
   
   test "Properties: Define getter/setter with Control.property", ->
-    c = Control.subclass()
-    c::myProperty = Control.property()
-    $elements = Control("<div/>").add("<div/>")
-    $c = $elements.control(c)
+    MyControl = Control.subclass()
+    MyControl::myProperty = Control.property()
+    $elements = Control( "<div/>" ).add( "<div/>" )
+    $c = $elements.control MyControl
     equal $c.myProperty() is undefined, true
     $c.myProperty "foo"
-    equal $c.eq(0).myProperty(), "foo"
-    equal $c.eq(1).myProperty(), "foo"
+    equal $c.eq( 0 ).myProperty(), "foo"
+    equal $c.eq( 1 ).myProperty(), "foo"
   
   test "Properties: property", ->
     $c = Control.create()
