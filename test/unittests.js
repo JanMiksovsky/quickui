@@ -240,17 +240,7 @@ Shared sample classes used by unit tests.
 
 
   $(function() {
-    /*
-      test "inDocument: control created before document ready", ->
-        equal pendingCount(), 1
-        ok not $createdBeforeReady.inDocumentCalled()
-        addControl $createdBeforeReady
-        equal pendingCount(), 0
-        ok $createdBeforeReady.inDocumentCalled()
-        teardown()
-    */
-
-    var InDocumentSample, addControl, pendingCount;
+    var InDocumentSample, addControl, createdBeforeReady, pendingCount;
     InDocumentSample = Control.subclass({
       className: "InDocumentSample",
       prototype: {
@@ -272,6 +262,21 @@ Shared sample classes used by unit tests.
       var _ref, _ref1;
       return (_ref = (_ref1 = Control._elementInsertionCallbacks) != null ? _ref1.length : void 0) != null ? _ref : 0;
     };
+    /*
+      Create a control *before* the document body is ready. Any inDocument()
+      callbacks queued up here should still work.
+      
+      Note: This control creation effects the pending count, and so the execution
+      order of the tests can be affected by when QUnit runs this test. If
+      necessary, we could set QUnit.config.reorder = false.
+    */
+
+    createdBeforeReady = InDocumentSample.create();
+    test("inDocument: control created before document ready", function() {
+      addControl(createdBeforeReady);
+      equal(pendingCount(), 0);
+      return ok(createdBeforeReady.inDocumentCalled());
+    });
     test("inDocument: typical invocation in control created outside document and then added", function() {
       var $c;
       equal(pendingCount(), 0);
@@ -574,11 +579,12 @@ Shared sample classes used by unit tests.
       return equal($c.eq(1).myProperty(), "foo");
     });
     test("Properties: property", function() {
-      var $c;
+      var $c, result;
       $c = Control.create();
       $c.foo = Control.property();
       equal($c.foo() === void 0, true);
-      $c.foo("Hello");
+      result = $c.foo("Hello");
+      equal(result, $c);
       return equal($c.foo(), "Hello");
     });
     test("Properties: property: bool", function() {

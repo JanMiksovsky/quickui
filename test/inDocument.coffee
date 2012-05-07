@@ -4,16 +4,6 @@ inDocument unit tests
 
 $ ->
 
-  ###
-  test "inDocument: control created before document ready", ->
-    equal pendingCount(), 1
-    ok not $createdBeforeReady.inDocumentCalled()
-    addControl $createdBeforeReady
-    equal pendingCount(), 0
-    ok $createdBeforeReady.inDocumentCalled()
-    teardown()
-  ###
-  
   # InDocumentSample control that creates an inDocument callback request.
   InDocumentSample = Control.subclass
     className: "InDocumentSample"
@@ -34,7 +24,22 @@ $ ->
   # Return the number of controls waiting for an inDocument event.  
   pendingCount = ->
     Control._elementInsertionCallbacks?.length ? 0
+
+  ###
+  Create a control *before* the document body is ready. Any inDocument()
+  callbacks queued up here should still work.
   
+  Note: This control creation effects the pending count, and so the execution
+  order of the tests can be affected by when QUnit runs this test. If
+  necessary, we could set QUnit.config.reorder = false.
+  ### 
+  createdBeforeReady = InDocumentSample.create()  
+  
+  test "inDocument: control created before document ready", ->
+    addControl createdBeforeReady
+    equal pendingCount(), 0
+    ok createdBeforeReady.inDocumentCalled()
+
   test "inDocument: typical invocation in control created outside document and then added", ->
     equal pendingCount(), 0
     $c = InDocumentSample.create()
