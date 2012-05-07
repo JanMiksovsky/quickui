@@ -342,4 +342,7 @@ Keys should be provided as a dictionary with true values. E.g., the dictionary
 from the result.
 ###
 copyExcludingKeys = ( obj, excludeKeys ) ->
-  ( obj[ key ] for key in obj when !excludeKeys[ key ] )
+  result = {}
+  for key of obj when !excludeKeys[ key ]
+    result[ key ] = obj[ key ]
+  result
