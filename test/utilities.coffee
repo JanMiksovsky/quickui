@@ -6,7 +6,7 @@ $ ->
   
   test "Utilities: cast: control() on plain jQuery reference returns undefined", ->
     $element = $("<div/>")
-    equal $element.control(), `undefined`
+    equal $element.control(), undefined
   
   test "Utilities: cast: two control classes derive from same superclass", ->
     A = Control.subclass(className: "A")

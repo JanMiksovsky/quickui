@@ -96,7 +96,7 @@ $ ->
     $elements = Control("<div/>").add("<div/>")
     $c = $elements.control(MyControl)
     result = $c.foo()
-    equal result, undefined # No result returned
+    equal result, $c # returns "this"
     equal $c.eq(0).data("_calledFoo"), true
     equal $c.eq(1).data("_calledFoo"), true
   
@@ -105,47 +105,37 @@ $ ->
     MyControl::extend
       foo: Control.iterator ->
         @data "_calledFoo", true
-      bar: Control.iterator ->
-        @data "_calledBar", true
-        "Hello" # Force getter behavior.
-  
     $elements = Control("<div/>").add("<div/>")
     $c = $elements.control(MyControl)
     methodResult = $c.foo()
     equal methodResult, $c # i.e., should return "this"
     equal $c.eq(0).data("_calledFoo"), true
     equal $c.eq(1).data("_calledFoo"), true
-    # Function that returns result stops iteration.
-    getterResult = $c.bar()
-    equal getterResult, "Hello"
-    equal $c.eq(0).data("_calledBar"), true
-    equal $c.eq(1).data("_calledBar"), `undefined`
   
   test "Properties: Define getter/setter with iterator()", ->
-    c = Control.subclass()
-    c::extend myGetterSetter: Control.iterator((value) ->
+    MyControl = Control.subclass(className: "MyControl")
+    MyControl::foo = Control.iterator (value) ->
       @data "_property", value
-    )
     $elements = Control("<div/>").add("<div/>")
-    $c = $elements.control(c)
-    $c.myGetterSetter "foo"
-    equal $c.eq(0).control().data("_property"), "foo"
-    equal $c.eq(1).control().data("_property"), "foo"
+    $c = $elements.control( MyControl )
+    $c.foo "bar"
+    equal $c.eq(0).control().data("_property"), "bar"
+    equal $c.eq(1).control().data("_property"), "bar"
   
   test "Properties: Define getter/setter with Control.property", ->
     c = Control.subclass()
-    c::extend myProperty: Control.property()
+    c::myProperty = Control.property()
     $elements = Control("<div/>").add("<div/>")
     $c = $elements.control(c)
-    equal $c.myProperty() is `undefined`, true
+    equal $c.myProperty() is undefined, true
     $c.myProperty "foo"
-    equal $c.eq(0).control().myProperty(), "foo"
-    equal $c.eq(1).control().myProperty(), "foo"
+    equal $c.eq(0).myProperty(), "foo"
+    equal $c.eq(1).myProperty(), "foo"
   
   test "Properties: property", ->
     $c = Control.create()
     $c.foo = Control.property()
-    equal $c.foo() is `undefined`, true
+    equal $c.foo() is undefined, true
     $c.foo "Hello"
     equal $c.foo(), "Hello"
   

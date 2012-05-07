@@ -67,23 +67,16 @@ $.extend Control,
   Return a function that applies another function to each control in a
   jQuery array.
   
-  If the inner function returns a defined value, then the function is
-  assumed to be a property getter, and that result is return immediately.
+  If the inner function returns a defined value other than "this", the function
+  is assumed to be a property getter, and that result is returned immediately.
   Otherwise, "this" is returned to permit chaining.
   ###
   iterator: ( fn ) ->
     ->
-      args = arguments
-      iteratorResult = undefined
       for control in @each()
-        result = fn.apply control, args
-        if result isnt undefined
-          iteratorResult = result
-          break
-      if iteratorResult isnt undefined
-        iteratorResult # Getter
-      else
-        this # Method or setter
+        result = fn.apply control, arguments
+        return result if result isnt undefined and result isnt control # Getter
+      @ # Method or setter
 
 
   ###

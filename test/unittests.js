@@ -457,22 +457,18 @@ Shared sample classes used by unit tests.
       $elements = Control("<div/>").add("<div/>");
       $c = $elements.control(MyControl);
       result = $c.foo();
-      equal(result, void 0);
+      equal(result, $c);
       equal($c.eq(0).data("_calledFoo"), true);
       return equal($c.eq(1).data("_calledFoo"), true);
     });
     test("Properties: Define method with iterator()", function() {
-      var $c, $elements, MyControl, getterResult, methodResult;
+      var $c, $elements, MyControl, methodResult;
       MyControl = Control.subclass({
         className: "MyControl"
       });
       MyControl.prototype.extend({
         foo: Control.iterator(function() {
           return this.data("_calledFoo", true);
-        }),
-        bar: Control.iterator(function() {
-          this.data("_calledBar", true);
-          return "Hello";
         })
       });
       $elements = Control("<div/>").add("<div/>");
@@ -480,44 +476,38 @@ Shared sample classes used by unit tests.
       methodResult = $c.foo();
       equal(methodResult, $c);
       equal($c.eq(0).data("_calledFoo"), true);
-      equal($c.eq(1).data("_calledFoo"), true);
-      getterResult = $c.bar();
-      equal(getterResult, "Hello");
-      equal($c.eq(0).data("_calledBar"), true);
-      return equal($c.eq(1).data("_calledBar"), undefined);
+      return equal($c.eq(1).data("_calledFoo"), true);
     });
     test("Properties: Define getter/setter with iterator()", function() {
-      var $c, $elements, c;
-      c = Control.subclass();
-      c.prototype.extend({
-        myGetterSetter: Control.iterator(function(value) {
-          return this.data("_property", value);
-        })
+      var $c, $elements, MyControl;
+      MyControl = Control.subclass({
+        className: "MyControl"
+      });
+      MyControl.prototype.foo = Control.iterator(function(value) {
+        return this.data("_property", value);
       });
       $elements = Control("<div/>").add("<div/>");
-      $c = $elements.control(c);
-      $c.myGetterSetter("foo");
-      equal($c.eq(0).control().data("_property"), "foo");
-      return equal($c.eq(1).control().data("_property"), "foo");
+      $c = $elements.control(MyControl);
+      $c.foo("bar");
+      equal($c.eq(0).control().data("_property"), "bar");
+      return equal($c.eq(1).control().data("_property"), "bar");
     });
     test("Properties: Define getter/setter with Control.property", function() {
       var $c, $elements, c;
       c = Control.subclass();
-      c.prototype.extend({
-        myProperty: Control.property()
-      });
+      c.prototype.myProperty = Control.property();
       $elements = Control("<div/>").add("<div/>");
       $c = $elements.control(c);
-      equal($c.myProperty() === undefined, true);
+      equal($c.myProperty() === void 0, true);
       $c.myProperty("foo");
-      equal($c.eq(0).control().myProperty(), "foo");
-      return equal($c.eq(1).control().myProperty(), "foo");
+      equal($c.eq(0).myProperty(), "foo");
+      return equal($c.eq(1).myProperty(), "foo");
     });
     test("Properties: property", function() {
       var $c;
       $c = Control.create();
       $c.foo = Control.property();
-      equal($c.foo() === undefined, true);
+      equal($c.foo() === void 0, true);
       $c.foo("Hello");
       return equal($c.foo(), "Hello");
     });
@@ -616,7 +606,7 @@ Shared sample classes used by unit tests.
     test("Utilities: cast: control() on plain jQuery reference returns undefined", function() {
       var $element;
       $element = $("<div/>");
-      return equal($element.control(), undefined);
+      return equal($element.control(), void 0);
     });
     test("Utilities: cast: two control classes derive from same superclass", function() {
       var $a, $b, $c, $cast, $set, A, B, C;
