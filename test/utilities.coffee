@@ -2,7 +2,29 @@
 Utilities unit tests
 ###
 
-window.utilitiesTests = ->
+$ ->
+  
+  test "Utilities: cast: control() on plain jQuery reference returns undefined", ->
+    $element = $("<div/>")
+    equal $element.control(), `undefined`
+  
+  test "Utilities: cast: two control classes derive from same superclass", ->
+    A = Control.subclass(className: "A")
+    B = A.subclass(className: "B")
+    C = A.subclass(className: "C")
+    $a = A.create()
+    $b = B.create()
+    $c = C.create()
+    $set = Control("<div/>").append($b).append($a).append($c)
+    $cast = $set.children().cast()
+    equal $cast instanceof A, true
+  
+  test "Utilities: cast: control and jQuery mix", ->
+    A = Control.subclass(className: "A")
+    $a = A.create()
+    $set = Control("<div/>").append($a).append($("<div/>"))
+    $cast = $set.children().cast()
+    equal $cast instanceof Control, true
 
   test "Utilities: each", ->
     c = $( "<div>Ann</div><div>Bob</div>" ).control( Control );
@@ -11,3 +33,45 @@ window.utilitiesTests = ->
     equal segments.length, 2
     equal segments[0].content(), "Ann"
     equal segments[1].content(), "Bob"
+  
+  test "Utilities: eachControl", ->
+    # Create two instances of different classes.
+    Foo = Control.subclass(className: "Foo")
+    Foo::content = ->
+      "foo"
+    $foo = Foo.create()
+    Bar = Control.subclass(className: "Bar")
+    Bar::content = ->
+      "bar"
+    $bar = Bar.create()
+    $c = Control().add($foo).add($bar)
+    results = []
+    # eachControl should invoke the specific content functions.
+    $c.eachControl (index, $control) ->
+      results.push $control.content()
+    deepEqual results, [ "foo", "bar" ]
+
+  test "Utilities: referencedElement: Element function definition", ->
+    createGreetClass()
+    $c = Greet.create()
+    equal $c.$name().html(), "Ann"
+    $c.$name().html "Bob"
+    equal $c.text(), "Hello Bob"
+  
+  test "Utilities: referencedElement: Element functions $.end()-able", ->
+    createGreetClass()
+    $c = Greet.create()
+    $result = $c.$name().end()
+    equal $result, $c
+    ok $result instanceof Greet
+    ok $c.$name() instanceof Control
+  
+  test "Utilities: propertyVector", ->
+    $a = Control.create(content: "one")
+    $b = Control.create(content: "two")
+    $c = $a.add($b)
+    vector = $c.propertyVector("content")
+    deepEqual vector, [ "one", "two" ]
+    $c.propertyVector "content", [ "un", "deux" ]
+    equal $a.content(), "un"
+    equal $b.content(), "deux"

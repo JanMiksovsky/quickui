@@ -8,7 +8,20 @@ module.exports = function(grunt) {
     grunt.initConfig({
         coffee: {
             controls: {
-                src: "*.coffee",
+                src: [
+                    "sample.coffee",    // Creates sample classes used by other tests
+                    "control.coffee",   // Most basic, so helpful to have run first
+                    "coffee.coffee",
+                    "content.coffee",
+                    "inDocument.coffee",
+                    "json.coffee",
+                    "layout.coffee",
+                    "localization.coffee",
+                    "properties.coffee",
+                    "styles.coffee",
+                    "super.coffee",
+                    "utilities.coffee"
+                ],
                 dest: "unittests.js"
             }
         },
