@@ -53,7 +53,8 @@ Control::extend
   genericIfClassIs: ( classFn ) ->
     for control in @each()
       control.generic true if control.constructor is classFn and control.generic() is undefined
- 
+    @
+    
   ###
   Sets/gets the style of matching elements.
   This lets one specify a style attribute in QuickUI markup for a control instance;

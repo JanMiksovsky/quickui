@@ -11,7 +11,7 @@ that the control has changed its size, in case the ancestor will now
 need to update the layout.
 ###
 Control::checkForSizeChange = ->
-  @trigger "sizeChanged"  if @_updateSavedSize()
+  @trigger "sizeChanged" if _updateSavedSize @
   @
 
 
@@ -99,19 +99,19 @@ $.event.special.layout =
 
 
 ###
-Compare element's current size with its previously recorded size.
+Compare the control's current size with its previously recorded size.
 If the size has not changed, return false. If the size has changed,
 update the recorded size and return true.
 ###
-_updateSavedSize: ->
-  previousSize = @data( "_size" ) ? {}
+_updateSavedSize = ( control ) ->
+  previousSize = control.data( "_size" ) ? {}
   size =
-    height: @height()
-    width: @width()
+    height: control.height()
+    width: control.width()
   if size.height is previousSize.height and size.width is previousSize.width
     # Size hasn't changed.
     false
   else
     # Size changed; record the new size.
-    @data "_size", size
+    control.data "_size", size
     true

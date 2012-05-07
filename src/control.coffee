@@ -1,8 +1,8 @@
 ###
 QuickUI
-Version 0.8.9
+Version 0.9.0-pre
 Modular web control framework
-http:#quickui.org/
+http://quickui.org
 
 Copyright 2009-2012 Jan Miksovsky
 Licensed under the MIT license.
@@ -32,7 +32,7 @@ of elements other than the ones which were passed in. This occurs whenever
 the control class wants a different root tag than the tag on the supplied
 array of elements.
 ###
-$.fn.control = ( arg1, arg2 ) ->
+jQuery.fn.control = ( arg1, arg2 ) ->
   if arg1 is undefined
     # Return the controls bound to these element(s), cast to the correct class.
     $cast = Control( this ).cast jQuery
@@ -300,7 +300,7 @@ Control::extend
   ###
   The current version of QuickUI.
   ###
-  quickui: "0.8.9"
+  quickui: "0.9.0-pre"
 
 
   ###

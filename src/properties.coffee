@@ -96,7 +96,7 @@ $.extend Control,
           result = ( if ( converterFunction ) then converterFunction.call( control, value ) else value )
           control.data backingPropertyName, result
           sideEffectFn.call control, result if sideEffectFn
-
+        @
 
 ###
 Factories for getter/setters of various types.

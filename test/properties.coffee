@@ -133,7 +133,8 @@ $ ->
     $c = Control.create()
     $c.foo = Control.property()
     equal $c.foo() is undefined, true
-    $c.foo "Hello"
+    result = $c.foo "Hello"
+    equal result, $c
     equal $c.foo(), "Hello"
   
   test "Properties: property: bool", ->
