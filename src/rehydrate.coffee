@@ -35,14 +35,14 @@ rehydrateElement = ( element ) ->
   controlClass = Control.getClass className
   # Extract properties. Compound properties ( those defined in children )
   # will get removed from the control content at this point.
-  lowerCaseProperties = $.extend(
+  lowerCaseProperties = jQuery.extend(
     {},
     getPropertiesFromAttributes( element ),
     getCompoundPropertiesFromChildren( element )
   )
   properties = restorePropertyCase controlClass, lowerCaseProperties
   # Create the control.
-  $( element ).control controlClass, properties
+  jQuery( element ).control controlClass, properties
 
 
 ###
@@ -59,7 +59,7 @@ getPropertiesFromAttributes = ( element ) ->
   # Remove any data properties we've processed.
   # Removing during the loop above would complicate things, since
   # we also want to process the properties in the order they're defined.
-  $element = $ element
+  $element = jQuery element
   for key of properties
     $element.removeAttr "data-" + key
   properties
@@ -70,12 +70,12 @@ Return any compound properties found in the given element's children.
 ###
 getCompoundPropertiesFromChildren = ( element ) ->
   properties = {}
-  $compoundElements = Control( element ).children().filter( "[data-property]" ) 
+  $compoundElements = Control( element ).children().filter "[data-property]" 
   for $compound in $compoundElements.each()
     propertyName = $compound.attr "data-property"
     if propertyName isnt "control" # data-control means a control, not a property.
       $value = $compound.content()
-      properties[propertyName] = $value
+      properties[ propertyName ] = $value
       # Detach before removing so we preserve subcontrols.      
       $value.detach() if $value instanceof jQuery
   $compoundElements.remove()
@@ -88,14 +88,14 @@ lowercase, to the equivalent mixed case names. Properties which are not
 found in the control class are dropped.
 ###
 restorePropertyCase = ( controlClass, properties ) ->
-  return properties  if $.isEmptyObject( properties )
-  map = classPropertyNameMap( controlClass )
+  return properties if jQuery.isEmptyObject properties
+  map = classPropertyNameMap controlClass
   result = {}
   for propertyName of properties
-    mixedCaseName = map[propertyName.toLowerCase()]
-    result[mixedCaseName] = properties[propertyName]  if mixedCaseName
+    mixedCaseName = map[ propertyName.toLowerCase() ]
+    result[ mixedCaseName ] = properties[ propertyName ] if mixedCaseName
   result
-    
+
 
 ###
 Cached maps for property names in rehydrated control classes. See below.
@@ -109,14 +109,14 @@ its properties' names to their full mixed-case property names.
 ###
 classPropertyNameMap = ( controlClass ) ->
   className = controlClass.className
-  unless propertyNameMaps[className]
+  unless propertyNameMaps[ className ]
     map = {}
     # Use the names on the control class' prototype for reference.
     for mixedCaseName of controlClass::
       lowerCaseName = mixedCaseName.toLowerCase()
-      map[lowerCaseName] = mixedCaseName
-    propertyNameMaps[className] = map
-  propertyNameMaps[className]
+      map[ lowerCaseName ] = mixedCaseName
+    propertyNameMaps[ className ] = map
+  propertyNameMaps[ className ]
 
 
 ###
@@ -125,5 +125,5 @@ Set data-create-controls="true" on the body tag to have the current
 page automatically rehydrated on load.
 ###
 jQuery ->
-  $body = Control( "body" )
-  $body.rehydrate() if $body.data( "create-controls" )
+  $body = Control "body"
+  $body.rehydrate() if $body.data "create-controls"
