@@ -53,7 +53,7 @@ $.extend Control,
           throw "Control class #{@className()} tried to chain to an undefined getter/setter function #{functionNames[i]}."
         params = functionParams[i]
         if i == length - 1 and value isnt undefined
-          params = params.concat value  # Invoke last function as setter  
+          params = params.concat [ value ]  # Invoke last function as setter  
         result = fn.apply result, params
       if value is undefined
         result  # Chain was invoked as getter.
