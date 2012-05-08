@@ -1,9 +1,9 @@
-This is the source repo for QuickUI. The main QuickUI project home page is at http://quickui.org. 
+This is the source repo for QuickUI.
+The main QuickUI project home page is at http://quickui.org. 
 
-The tools directory contains instructions for building the QuickUI tools.
-
-To build as a debian package, first install git-buildpackage:
-> sudo apt-get install git-buildpackage
-
-Then to build:
-> git buildpackage
+/src contains the source for the QuickUI runtime.
+/test contains unit tests.
+/tools contains the optional QuickUI markup compiler.
+ 
+The runtime its associated unit tests can be built with Grunt.js
+(https://github.com/cowboy/grunt) by issuing the "grunt" command in this folder.
