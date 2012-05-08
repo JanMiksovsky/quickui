@@ -50,7 +50,6 @@ $.extend Control,
       for functionName, i in functionNames
         fn = result[ functionName ]
         if fn is undefined
-          # TODO: Unit test for this case
           throw "Control class #{@className()} tried to chain to an undefined getter/setter function #{functionNames[i]}."
         params = functionParams[i]
         if i == length - 1 and value isnt undefined

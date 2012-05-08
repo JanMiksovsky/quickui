@@ -86,6 +86,13 @@ $ ->
     $c.display "none"
     equal $c.css( "display" ), "none"
     equal $c.display(), "none"
+    
+  test "Properties: chain: function undefined", ->
+    MyControl = Control.subclass className: "MyControl"
+    MyControl::foo = Control.chain "bar" # Chains to undefined bar() function
+    $c = MyControl.create()
+    raises ->
+      $c.foo()
 
   test "Properties: Define method", ->
     MyControl = Control.subclass className: "MyControl"

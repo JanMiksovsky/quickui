@@ -523,6 +523,17 @@ Shared sample classes used by unit tests.
       equal($c.css("display"), "none");
       return equal($c.display(), "none");
     });
+    test("Properties: chain: function undefined", function() {
+      var $c, MyControl;
+      MyControl = Control.subclass({
+        className: "MyControl"
+      });
+      MyControl.prototype.foo = Control.chain("bar");
+      $c = MyControl.create();
+      return raises(function() {
+        return $c.foo();
+      });
+    });
     test("Properties: Define method", function() {
       var $c, $elements, MyControl, result;
       MyControl = Control.subclass({
@@ -635,7 +646,7 @@ Shared sample classes used by unit tests.
 
 
   $(function() {
-    return test("_super()", function() {
+    test("_super(): invoke superclass functions", function() {
       var A, B, C, a, b, c;
       A = Control.subclass({
         className: "A"
@@ -667,15 +678,31 @@ Shared sample classes used by unit tests.
           return "( c: " + (this._super(s)) + " )";
         }
       });
-      c = C();
+      c = C.create();
       equal(c.decorate("Hello"), "( c: ( b: ( a: Hello ) ) )");
       equal(c.calc(3), 7);
-      b = B();
+      b = B.create();
       equal(b.decorate("Hello"), "( b: ( a: Hello ) )");
       equal(b.calc(3), 7);
-      a = A();
+      a = A.create();
       equal(a.decorate("Hello"), "( a: Hello )");
       return equal(a.calc(3), 6);
+    });
+    return test("_super(): superclass function undefined", function() {
+      var A, B, b;
+      A = Control.subclass({
+        className: "A"
+      });
+      B = A.subclass({
+        className: "B"
+      });
+      B.prototype.foo = function() {
+        return this._super();
+      };
+      b = B.create();
+      return raises(function() {
+        return b.foo();
+      });
     });
   });
 
