@@ -18,6 +18,7 @@ module.exports = function(grunt) {
                     "src/layout.coffee",
                     "src/localization.coffee",
                     "src/properties.coffee",
+                    "src/rehydrate.coffee",
                     "src/styles.coffee",
                     "src/super.coffee",
                     "src/utilities.coffee"
@@ -35,6 +36,7 @@ module.exports = function(grunt) {
                     "test/layout.coffee",
                     "test/localization.coffee",
                     "test/properties.coffee",
+                    "test/rehydrate.coffee",
                     "test/styles.coffee",
                     "test/super.coffee",
                     "test/utilities.coffee"
@@ -44,11 +46,11 @@ module.exports = function(grunt) {
         },
         watch: {
             quickui: {
-                files: "<config:coffee.quickui.src",
+                files: "<config:coffee.quickui.src>",
                 tasks: "coffee:quickui"
             },
             test: {
-                files: "<config:coffee.test.src",
+                files: "<config:coffee.test.src>",
                 tasks: "coffee:test"
             }
         }

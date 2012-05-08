@@ -14,15 +14,22 @@
 <script type="text/javascript" src="../src/quickui-pre.js"></script>
 <script type="text/javascript" src="unittests.js"></script>
 
+<style>
+#rehydration-test {
+    display: none;
+}
+</style>
+
 </head>
 
-<body>
+<body data-create-controls="true">
     <h1 id="qunit-header">QuickUI Unit Tests</h1>
     <h2 id="qunit-banner"></h2>
     <div id="qunit-testrunner-toolbar"></div>
     <h2 id="qunit-userAgent"></h2>
     <ol id="qunit-tests"></ol>
     <div id="qunit-fixture">test markup, will be hidden</div>
+    <div id="rehydration-test" data-control="Control">Hello</div>
 </body>
 
 </html>

@@ -619,6 +619,70 @@ Shared sample classes used by unit tests.
   });
 
   /*
+  Rehydration unit tests
+  */
+
+
+  $(function() {
+    test("Rehydrate: simple element with content", function() {
+      var $c, $e;
+      $e = $("<div data-control='Control'>Hello</div>");
+      $c = Control($e).rehydrate();
+      ok($c instanceof Control);
+      equal($e.attr("data-control"), void 0);
+      ok($e.hasClass("Control"));
+      return equal($c.content(), "Hello");
+    });
+    test("Rehydrate: custom content property", function() {
+      var $c, $e;
+      createGreetClass();
+      Greet.prototype.content = Control.chain("$name", "content");
+      $e = Control("<div data-control='Greet'>Bob</div>");
+      $c = $e.rehydrate();
+      equal($c.text(), "Hello Bob");
+      return equal($c.content(), "Bob");
+    });
+    test("Rehydrate: data- property", function() {
+      var $c, $e;
+      createGreetClass();
+      Greet.prototype.name = Control.chain("$name", "content");
+      $e = Control("<div data-control='Greet' data-name='Bob'></div>");
+      $c = $e.rehydrate();
+      ok($c instanceof Greet);
+      equal($c.text(), "Hello Bob");
+      return equal($c.name(), "Bob");
+    });
+    test("Rehydrate: compound property", function() {
+      var $c, $e;
+      createGreetClass();
+      Greet.prototype.name = Control.chain("$name", "content");
+      $e = Control("<div data-control='Greet'><div data-property='name'>Bob</div></div>");
+      equal($e.find("[data-property]").length, 1);
+      $c = $e.rehydrate();
+      equal($e.find("[data-property]").length, 0);
+      equal($c.text(), "Hello Bob");
+      return equal($c.name(), "Bob");
+    });
+    test("Rehydrate: subcontrol", function() {
+      var $c, $e, $sub;
+      createGreetClass();
+      Greet.prototype.content = Control.chain("$name", "content");
+      $e = Control("<div data-control='Control'><div data-control='Greet'>Bob</div></div>");
+      $c = $e.rehydrate();
+      $sub = $c.content().control();
+      ok($sub instanceof Greet);
+      equal($sub.text(), "Hello Bob");
+      return equal($sub.content(), "Bob");
+    });
+    return test("Rehydrate: automatically rehydrate with data-create-controls", function() {
+      var $c;
+      $c = $("#rehydration-test").control();
+      ok($c instanceof Control);
+      return equal($c.content(), "Hello");
+    });
+  });
+
+  /*
   CSS helpers unit tests
   */
 
