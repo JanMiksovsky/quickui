@@ -114,7 +114,7 @@ $.extend Control,
     else
       # Grab the existing contents of the target elements.
       $controls = @ target
-      oldContents = $controls._significantContents()
+      oldContents = ( significantContent( element ) for element in $controls )
       existingTag = $controls[0].nodeName.toLowerCase()
       if existingTag isnt @::tag.toLowerCase() and existingTag isnt "body"
         # Tags don't match; replace with elements with the right tag.
@@ -279,7 +279,10 @@ Control::extend
   ###
   transmute: ( newClass, preserveContent, preserveClasses, preserveEvents ) ->
     classFn = Control.getClass newClass
-    oldContents = ( if preserveContent then @_significantContents() else null )
+    oldContents = if preserveContent
+      ( significantContent( element ) for element in @ )
+    else
+      null
     oldClasses = ( if preserveClasses then @prop( "class" ) else null )
     # Reset everything.
     @empty().removeClass().removeData()
@@ -311,33 +314,6 @@ Control::extend
     ( if classFn then @data( Control._controlClassData, classFn ) else @data( Control._controlClassData ) )
 
 
-  ###
-  Return the control's "significant" contents: contents which contain
-  at least one node that's something other than whitespace or comments.
-  If an element has no significant contents, return null for that element.
-  ###
-  _significantContents: ->
-    # Use base implementation of content().
-    contents = Control( this ).propertyVector "content"
-    # REVIEW: Array handling looks off
-    $.map contents, ( content ) ->
-      
-      if typeof content is "string" and $.trim( content ).length > 0
-        return content  # Found significant text
-      
-      # Content is an array
-      for node in content
-        if typeof node is "string"
-          if $.trim( node ).length > 0
-            return content # Found significant text
-          else
-            return null # Empty string, not significant
-        else if node.nodeType isnt 8 # Comment node
-          return content # Found some real element
-
-      null  # Didn't find anything significant
-
-
 ###
 Return a copy of the given object, skipping the indicated keys.
 Keys should be provided as a dictionary with true values. E.g., the dictionary
@@ -349,3 +325,19 @@ copyExcludingKeys = ( obj, excludeKeys ) ->
   for key of obj when !excludeKeys[ key ]
     result[ key ] = obj[ key ]
   result
+
+
+###
+Return an element's "significant" contents: contents which contain
+at least one child that's something other than whitespace or comments.
+If the element has no significant contents, return undefined.
+###
+significantContent = ( element ) ->
+  content = Control( element ).content() # Use base implementation.
+  if typeof content is "string" and $.trim( content ).length > 0
+    return content  # Element is text node with non-empty text  
+  # Content is an array
+  for node in content when node.nodeType != 8 # Comment
+    if typeof node != "string" or $.trim( node ).length > 0
+      return content # HTML element or text node with non-empty text
+  undefined # Didn't find anything significant
