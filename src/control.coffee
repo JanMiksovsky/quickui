@@ -325,10 +325,13 @@ Control::extend
       if typeof content is "string" and $.trim( content ).length > 0
         return content  # Found significant text
       
-      # Content is an array  
+      # Content is an array
       for node in content
-        if typeof node is "string" and $.trim( node ).length > 0
-          return content # Found significant text
+        if typeof node is "string"
+          if $.trim( node ).length > 0
+            return content # Found significant text
+          else
+            return null # Empty string, not significant
         else if node.nodeType isnt 8 # Comment node
           return content # Found some real element
 
