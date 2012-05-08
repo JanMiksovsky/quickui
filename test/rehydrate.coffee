@@ -54,3 +54,8 @@ $ ->
     $c = $( "#rehydration-test" ).control()
     ok $c instanceof Control
     equal $c.content(), "Hello"
+
+  test "Rehydrate: class not found", ->
+    $e = Control "<div data-control='Foo'></div>"
+    raises ->
+      $c = $e.rehydrate()

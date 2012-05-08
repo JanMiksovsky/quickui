@@ -674,11 +674,19 @@ Shared sample classes used by unit tests.
       equal($sub.text(), "Hello Bob");
       return equal($sub.content(), "Bob");
     });
-    return test("Rehydrate: automatically rehydrate with data-create-controls", function() {
+    test("Rehydrate: automatically rehydrate with data-create-controls", function() {
       var $c;
       $c = $("#rehydration-test").control();
       ok($c instanceof Control);
       return equal($c.content(), "Hello");
+    });
+    return test("Rehydrate: class not found", function() {
+      var $e;
+      $e = Control("<div data-control='Foo'></div>");
+      return raises(function() {
+        var $c;
+        return $c = $e.rehydrate();
+      });
     });
   });
 
