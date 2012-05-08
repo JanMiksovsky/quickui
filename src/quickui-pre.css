@@ -1,0 +1,26 @@
+/*
+ * Optional QuickUI CSS file to support use of the rehydrate() feature.
+ * This file is *not* required by the core quickui.js runtime. It can be
+ * included in cases where an app is rehydrating static HTML pages, and wants
+ * to avoid a flash of static content before that content is rehydrated. 
+ */
+
+/*
+ * Until a control has been rehydrated, we try to render the control and any
+ * subelements invisible by setting opacity to zero. This avoids a flash of
+ * dehydrated content before the rehydrate plugin can reconstitute the controls.
+ * Once the control has been rehydrated, the data-control attribute will
+ * automatically be removed, which in turn will remove these style overrides.
+ * 
+ * The purpose of dehydrated controls is to ensure that their contents can
+ * be made available as static HTML to web search engines, ideally to make
+ * the page content searchable. Presumably search engines like Google are
+ * highly skeptical of pages with content that's theoretically visible to
+ * the web crawling robots but (at least initially) invisible to people.
+ * Time will tell whether this approach to hiding dehydrated control content
+ * hinders the SEO value of the page. 
+ */
+*[data-control] {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; /* IE8 */
+    opacity: 0 !important;
+}
