@@ -1,3 +1,6 @@
+//
+// SampleProperties
+//
 var SampleProperties = Control.subclass({
     className: "SampleProperties",
     content: {
@@ -9,15 +12,24 @@ SampleProperties.prototype.extend({
     content: Control.chain("$SampleProperties_content", "content")
 });
 
+//
+// Simple
+//
 var Simple = Control.subclass({
     className: "Simple",
     content: "Hello, world!"
 });
 
+//
+// SimpleSpan
+//
 var SimpleSpan = Control.subclass({
     className: "SimpleSpan",
     tag: "span"});
 
+//
+// Test
+//
 var Test = Control.subclass({
     className: "Test",
     content: [
@@ -95,6 +107,9 @@ Test.prototype.extend({
     }
 });
 
+//
+// TestSuite
+//
 var TestSuite = Control.subclass({
     className: "TestSuite",
     content: [
