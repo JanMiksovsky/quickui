@@ -30,14 +30,14 @@ interval. However, a contained element that want to let their containers
 know about changes in the contained element's size can do so by triggering
 a layout event that will bubble up to the container.      
 ###
-$.event.special.layout =
+jQuery.event.special.layout =
 
   ###
   Add a layout event handler.
   ###
   add: ( handleObj ) ->
     # Add the element to the set of element being tracked.
-    layout = $.event.special.layout
+    layout = jQuery.event.special.layout
     layout._trackedElements = layout._trackedElements.add @
     # Send an initial layout event when the element is in the document.
     Control( this ).inDocument ->
@@ -68,7 +68,7 @@ $.event.special.layout =
   ###
   setup: ->
     # Are we already handling the window resize event?
-    layout = $.event.special.layout
+    layout = jQuery.event.special.layout
     unless layout._trackingResizeEvent
       # Start handling window resize.
       $( window ).resize ->
@@ -81,7 +81,7 @@ $.event.special.layout =
   ###    
   teardown: ->
     # Remove the control from the set of controls being tracked.
-    $.event.special.layout._trackedElements = $.event.special.layout._trackedElements.not @
+    jQuery.event.special.layout._trackedElements = jQuery.event.special.layout._trackedElements.not @
 
 
   ###
@@ -95,7 +95,7 @@ $.event.special.layout =
   ###
   _windowResized: ->
         # Trigger layout event for all elements being asked.
-    $.event.special.layout._trackedElements.trigger "layout"
+    jQuery.event.special.layout._trackedElements.trigger "layout"
 
 
 ###

@@ -4,7 +4,7 @@ QuickUI properties are jQuery-style getter/setter functions.
 ###
 
 
-$.extend Control,
+jQuery.extend Control,
 
   ###
   Given an array of functions, repeatedly invoke them as a chain.
@@ -33,7 +33,7 @@ $.extend Control,
   chain: ( args... ) ->
 
     # Check for a side effect function as last parameter.
-    sideEffectFn = args.pop() if $.isFunction args[ args.length - 1 ]
+    sideEffectFn = args.pop() if jQuery.isFunction args[ args.length - 1 ]
 
     # Identify function names and optional parameters.
     functionNames = []
@@ -100,7 +100,7 @@ $.extend Control,
 ###
 Factories for getter/setters of various types.
 ###
-$.extend Control.property,
+jQuery.extend Control.property,
 
   # A boolean property.
   bool: ( sideEffectFn, defaultValue ) ->

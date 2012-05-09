@@ -3,7 +3,7 @@ Utilities
 ###
 
 
-$.extend Control,
+jQuery.extend Control,
 
   ###
   Given a value, returns a corresponding class:
@@ -15,9 +15,9 @@ $.extend Control,
     if value is null or value == ""
       # Special cases used to clear class-valued properties.
       null
-    else if $.isFunction value
+    else if jQuery.isFunction value
       value
-    else if $.isPlainObject value
+    else if jQuery.isPlainObject value
       Control.subclass value
     else
       classFn = window[ value ]
@@ -38,7 +38,7 @@ which are controls.
 With this, $foo.is( ":control" ) returns true if at least one element in $foo
 is a control, and $foo.filter( ":control" ) returns just the controls in $foo.
 ###
-$.expr[":"].control = ( elem ) ->
+jQuery.expr[":"].control = ( elem ) ->
   controlClass = Control( elem )._controlClass()
   ( if controlClass then controlClass is Control or controlClass:: instanceof Control else false )
 

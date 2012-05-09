@@ -100,7 +100,7 @@ the same as { content: "Hello" }.
 ###
 evaluateControlJsonProperties = ( json, logicalParent ) ->
   # Scalar value or array; take this as the content property.
-  json = content: json unless $.isPlainObject json
+  json = content: json unless jQuery.isPlainObject json
   properties = {}
   for key of json
     properties[ key ] = evaluateControlJsonValue json[key], logicalParent
@@ -122,7 +122,7 @@ created. The logical parent for a given element may not be the element's
 immediate parent in the DOM; it might be higher up.
 ###
 evaluateControlJsonValue = ( value, logicalParent ) ->
-  if $.isArray value
+  if jQuery.isArray value
     # Recursively process each member of the array.
     ((
       itemValue = evaluateControlJsonValue item, logicalParent
@@ -131,7 +131,7 @@ evaluateControlJsonValue = ( value, logicalParent ) ->
       else
         itemValue
     ) for item in value )
-  else if $.isPlainObject value
+  else if jQuery.isPlainObject value
     # Process JSON sub-dictionary.
     evaluateControlJson value, logicalParent
   else

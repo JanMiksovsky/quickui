@@ -53,7 +53,7 @@ Control::inDocument = ( callback ) ->
 
 
 # TODO: Move these to regular functions
-$.extend Control,
+jQuery.extend Control,
 
   ###
   An element may have been added to the document; see if it's a control that's
@@ -96,7 +96,7 @@ $.extend Control,
     # mutation events is IE8, we just look for that. If need be, we
     # could programmatically detect support using something like
     # Diego Perini's NWMatcher approach.
-    not $.browser.msie or parseInt( $.browser.version ) >= 9
+    not jQuery.browser.msie or parseInt( jQuery.browser.version ) >= 9
 
   ###
   Start listening for insertions of elements into the document body.
@@ -152,4 +152,4 @@ Return true if the document body contains the indicated element, or if
 if the element *is* the document body.
 ###
 isElementInDocument = ( element ) ->
-  !!document.body and ( document.body is element or $.contains( document.body, element ) )
+  !!document.body and ( document.body is element or jQuery.contains( document.body, element ) )
