@@ -240,7 +240,7 @@ Shared sample classes used by unit tests.
 
 
   $(function() {
-    var InDocumentSample, addControl, createdBeforeReady, pendingCount;
+    var InDocumentSample, addControl, createdBeforeReady;
     InDocumentSample = Control.subclass({
       className: "InDocumentSample",
       prototype: {
@@ -253,14 +253,7 @@ Shared sample classes used by unit tests.
       }
     });
     addControl = function(control) {
-      $("#qunit-fixture").append(control);
-      if (Control._elementInsertionInterval) {
-        return Control._checkForElementInsertion();
-      }
-    };
-    pendingCount = function() {
-      var _ref, _ref1;
-      return (_ref = (_ref1 = Control._elementInsertionCallbacks) != null ? _ref1.length : void 0) != null ? _ref : 0;
+      return $("#qunit-fixture").append(control);
     };
     /*
       Create a control *before* the document body is ready. Any inDocument()
@@ -274,27 +267,20 @@ Shared sample classes used by unit tests.
     createdBeforeReady = InDocumentSample.create();
     test("inDocument: control created before document ready", function() {
       addControl(createdBeforeReady);
-      equal(pendingCount(), 0);
       return ok(createdBeforeReady.inDocumentCalled());
     });
     test("inDocument: typical invocation in control created outside document and then added", function() {
       var $c;
-      equal(pendingCount(), 0);
       $c = InDocumentSample.create();
-      equal(pendingCount(), 1);
       ok(!$c.inDocumentCalled());
       addControl($c);
-      equal(pendingCount(), 0);
       return ok($c.inDocumentCalled());
     });
     test("inDocument: nested invocations outside document", function() {
       var $c;
-      equal(pendingCount(), 0);
       $c = InDocumentSample.create().content(InDocumentSample.create());
-      equal(pendingCount(), 2);
       ok(!$c.inDocumentCalled());
       addControl($c);
-      equal(pendingCount(), 0);
       return ok($c.inDocumentCalled());
     });
     /*  
@@ -305,10 +291,6 @@ Shared sample classes used by unit tests.
 
     test("inDocument: invocations happen in reverse document order", function() {
       var $a, $b, $c;
-      equal(pendingCount(), 0);
-      $a = void 0;
-      $b = void 0;
-      $c = void 0;
       $a = InDocumentSample.create("A").inDocument(function() {
         return ok($b.inDocumentCalled());
       });
@@ -316,18 +298,13 @@ Shared sample classes used by unit tests.
         return ok(!$a.inDocumentCalled());
       });
       $c = Control.create().content([$a, $b]);
-      equal(pendingCount(), 4);
-      addControl($c);
-      return equal(pendingCount(), 0);
+      return addControl($c);
     });
     return test("inDocument: create controls on element in document", function() {
       var $c;
-      equal(pendingCount(), 0);
       $c = $("<div/>");
       addControl($c);
-      equal(pendingCount(), 0);
       $c = $c.control(InDocumentSample);
-      equal(pendingCount(), 0);
       return ok($c.inDocumentCalled());
     });
   });
