@@ -53,7 +53,7 @@ Control.coffee = ->
   # Figure out which class' constructor invoked us. Warning: this uses the
   # deprecated "caller" method, which is not permitted in strict mode.
   classFn = arguments.callee.caller
-  if not ( $.isFunction classFn ) and ( classFn:: ) instanceof Control
+  if not ( jQuery.isFunction classFn ) and ( classFn:: ) instanceof Control
     throw "Control.coffee was invoked some context other than a control class' constructor, which is unsupported."
   # Ensure the class has been treated to be jQuery- and QuickUI-compatible.
   makeCompatible classFn unless isCompatible classFn

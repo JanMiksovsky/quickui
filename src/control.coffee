@@ -40,7 +40,7 @@ jQuery.fn.control = ( arg1, arg2 ) ->
       $cast
     else
       null
-  else if $.isFunction arg1
+  else if jQuery.isFunction arg1
     # Create a new control around the element(s).
     controlClass = arg1
     properties = arg2
@@ -54,8 +54,8 @@ jQuery.fn.control = ( arg1, arg2 ) ->
 Control subclass of jQuery.
 This is used as the base class for all QuickUI controls.
 ###
-window.Control = $.sub()
-$.extend Control,
+window.Control = jQuery.sub()
+jQuery.extend Control,
 
 
   ###
@@ -155,7 +155,7 @@ $.extend Control,
     superclass = this
     newClass = superclass.sub()
 
-    # $.sub uses $.extend to copy properties from super to subclass, so
+    # jQuery.sub uses $.extend to copy properties from super to subclass, so
     # we have to blow away class properties that shouldn't have been copied.
     delete newClass._initializeQueue
 
@@ -334,10 +334,10 @@ If the element has no significant contents, return undefined.
 ###
 significantContent = ( element ) ->
   content = Control( element ).content() # Use base implementation.
-  if typeof content is "string" and $.trim( content ).length > 0
+  if typeof content is "string" and jQuery.trim( content ).length > 0
     return content  # Element is text node with non-empty text  
   # Content is an array
   for node in content when node.nodeType != 8 # Comment
-    if typeof node != "string" or $.trim( node ).length > 0
+    if typeof node != "string" or jQuery.trim( node ).length > 0
       return content # HTML element or text node with non-empty text
   undefined # Didn't find anything significant

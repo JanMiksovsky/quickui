@@ -54,7 +54,7 @@ Control::extend
         arguments 
       else if value instanceof jQuery
         value.get()                       # convert jQuery object to array 
-      else if $.isArray value
+      else if jQuery.isArray value
         value                             # single array parameter
       else
         [ value ]                         # singleton parameter
@@ -83,4 +83,4 @@ Control::extend
   # TODO: Make regular function
   isInputElement: ->
     inputTags = [ "input", "select", "textarea" ]
-    ( if @length is 0 then false else ( $.inArray( this[0].nodeName.toLowerCase(), inputTags ) >= 0 ) )
+    ( if @length is 0 then false else ( jQuery.inArray( this[0].nodeName.toLowerCase(), inputTags ) >= 0 ) )
