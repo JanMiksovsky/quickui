@@ -253,7 +253,10 @@ Shared sample classes used by unit tests.
       }
     });
     addControl = function(control) {
-      return $("#qunit-fixture").append(control);
+      $("#qunit-fixture").append(control);
+      if (jQuery.browser.msie && parseInt(jQuery.browser.version) < 9) {
+        return Control._elementInserted();
+      }
     };
     /*
       Create a control *before* the document body is ready. Any inDocument()

@@ -15,8 +15,9 @@ $ ->
   # Add a control to force the raising of an inDocument event.
   addControl = ( control ) ->
     $( "#qunit-fixture" ).append control
-    # TODO: IE 8. What should we do to force the inDocument() event?
-    # if jQuery.browser.msie and parseInt( jQuery.browser.version ) < 9
+    if jQuery.browser.msie and parseInt( jQuery.browser.version ) < 9
+      # IE 8 uses polling. Force a check for element insertion.
+      Control._elementInserted()
 
   ###
   Create a control *before* the document body is ready. Any inDocument()

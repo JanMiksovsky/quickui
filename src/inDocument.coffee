@@ -73,6 +73,11 @@ elementInserted = ( event ) ->
   for callback in callbacksReady
     control = Control( callback.element ).control()
     callback.callback.call control
+    
+    
+# Expose the elementInserted function so it can be reached from unit tests.
+# Otherwise, this is an internal function, and should not be called directly.
+Control._elementInserted = elementInserted
 
 
 # Used to poll for element insertion in IE 8.
