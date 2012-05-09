@@ -16,7 +16,7 @@ Shared sample classes used by unit tests.
       content: [
         "Hello ", {
           html: "<span>Ann</span>",
-          id: "name"
+          ref: "name"
         }
       ]
     });
@@ -73,7 +73,7 @@ Shared sample classes used by unit tests.
         content: [
           "*", {
             html: "<span/>",
-            id: "MyControl_content"
+            ref: "MyControl_content"
           }, "*"
         ]
       });
@@ -152,7 +152,7 @@ Shared sample classes used by unit tests.
         content: [
           "Hello ", {
             html: "<span>Ann</span>",
-            id: "GreetCoffee_content"
+            ref: "GreetCoffee_content"
           }
         ]
       };
@@ -430,7 +430,7 @@ Shared sample classes used by unit tests.
       Greet.prototype.name = Control.chain("$name");
       $c = Greet.create();
       $element = $c.$name();
-      equal($element[0], $c.find("#name")[0]);
+      equal($element[0], $c.find(".name")[0]);
       return equal($element.html(), "Ann");
     });
     test("Properties: chain: element content", function() {
@@ -450,7 +450,7 @@ Shared sample classes used by unit tests.
         className: "MyControl",
         content: {
           control: "Greet",
-          id: "greet"
+          ref: "greet"
         }
       });
       MyControl.prototype.name = Control.chain("$greet", "name");
@@ -837,6 +837,7 @@ Shared sample classes used by unit tests.
       createGreetClass();
       $c = Greet.create();
       equal($c.$name().html(), "Ann");
+      equal($c.referencedElement("name")[0], $c.find(".name")[0]);
       $c.$name().html("Bob");
       return equal($c.text(), "Hello Bob");
     });

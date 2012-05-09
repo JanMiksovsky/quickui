@@ -36,7 +36,7 @@ $ ->
       className: "MyControl"
       content: [ "*",
         html: "<span/>"
-        id: "MyControl_content"
+        ref: "MyControl_content"
       , "*" ]
     MyControl::content = Control.chain "$MyControl_content", "content"
     $original = $ "<div><div>Hello</div><div>world</div></div>"

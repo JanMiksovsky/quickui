@@ -45,6 +45,7 @@ $ ->
     createGreetClass()
     $c = Greet.create()
     equal $c.$name().html(), "Ann"
+    equal $c.referencedElement( "name" )[0], $c.find( ".name" )[0]
     $c.$name().html "Bob"
     equal $c.text(), "Hello Bob"
   

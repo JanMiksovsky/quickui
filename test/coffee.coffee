@@ -12,7 +12,7 @@ $ ->
     inherited:
       content: [
         "Hello ",
-        { html: "<span>Ann</span>", id: "GreetCoffee_content" }
+        { html: "<span>Ann</span>", ref: "GreetCoffee_content" }
       ]
     content: Control.chain "$GreetCoffee_content", "content"
   

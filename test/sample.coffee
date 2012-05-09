@@ -7,5 +7,5 @@ createGreetClass = ->
     className: "Greet"
     content: [
       "Hello "
-      { html: "<span>Ann</span>", id: "name" }
+      { html: "<span>Ann</span>", ref: "name" }
      ]

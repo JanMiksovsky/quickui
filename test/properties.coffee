@@ -19,7 +19,7 @@ $ ->
     Greet::name = Control.chain "$name"
     $c = Greet.create()
     $element = $c.$name()
-    equal $element[0], $c.find( "#name" )[0]
+    equal $element[0], $c.find( ".name" )[0]
     equal $element.html(), "Ann"
   
   test "Properties: chain: element content", ->
@@ -37,7 +37,7 @@ $ ->
       className: "MyControl"
       content:
         control: "Greet"
-        id: "greet"
+        ref: "greet"
     MyControl::name = Control.chain "$greet", "name"
     $c = MyControl.create()
     equal $c.name(), "Ann"

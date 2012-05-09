@@ -145,15 +145,23 @@ Control::extend
       
       
   ###
-  Save or retrieve an element associated with the control using the
-  given key. For a collection of controls, the getter maps the collection
-  to a collection of the corresponding elements.
+  Save or retrieve an element associated with the control using the given ref
+  key. The getter form of this maps the array of control(s) to a collection of
+  the corresponding element(s) that were previously saved under the given ref.
+  The setter form has several effects:
+  1. It saves a pointer to the indicated element in the control's data.
+  2. It adds the ref as a CSS class to the target element.
+  3. It generates an element reference function for the present control's class
+     that permits future access to referenced elements.
+  This function is generally for internal use, and is invoked during processing
+  of Control JSON, or (in its getter form) from the generated element reference
+  function mentioned in point #3.   
   ###
-  referencedElement: ( key, elements ) ->
+  referencedElement: ( ref, elements ) ->
     if elements is undefined
       # Map a collection of control instances to the given element
       # defined for each instance.
-      elements = ( $control.data key for $control in @segments() when ( $control.data key ) isnt undefined )
+      elements = ( $control.data ref for $control in @segments() when ( $control.data ref ) isnt undefined )
       $result = Control( elements ).cast()
       # To make the element function $.end()-able, we want to call
       # jQuery's public pushStack() API. Unfortunately, that call
@@ -164,8 +172,10 @@ Control::extend
       $result.prevObject = @
       $result
     else
+      createElementReferenceFunction this.constructor, ref
+      elements.addClass ref
       for $control, i in @segments()
-        $control.data key, elements[i]
+        $control.data ref, elements[i]
       @
 
 
@@ -199,3 +209,17 @@ Control::extend
   ###
   tabindex: ( tabindex ) ->
     @attr "tabindex", tabindex
+
+
+###
+Define a function on the given class that will retrieve elements with the given
+reference. Example: defining an element reference function on class Foo and
+reference "bar" will create Foo.prototype.$bar(), which returns the element(s)
+created with reference "bar".
+This has no effect if the class already has a function with the given name.
+###
+createElementReferenceFunction = ( classFn, ref ) ->
+  fnName = "$" + ref
+  unless classFn::[ fnName ]
+    classFn::[ fnName ] = ( elements ) ->
+      @referencedElement ref, elements

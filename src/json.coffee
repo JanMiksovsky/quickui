@@ -37,7 +37,7 @@ The first form creates a control:
 
  {
    control: "MyButton",
-   id: "foo",     
+   ref: "foo",     
    content: "Hello, world."
  }
 
@@ -46,7 +46,7 @@ The second form creates a plain HTML element:
 
  {
    html: "<div/>",
-   id: "foo"
+   ref: "foo"
  }
 
 The html can be any HTML string supported by jQuery. It can also be an HTML
@@ -55,10 +55,9 @@ tag singleton without braces: e.g., "div" instead of needing "<div>" or
 not create an element. But in the context of creating controls, it seems
 more useful to interpret this to create an element of the indicated type.
 
-The "id" property determines the ID *andhas the side effect of creating
-an element reference so the logical parent can find that control later.
-The remainder of the JSON properties are invoked as setters on the new
-control.
+The "ref" property is special, in that it is handled by the logical parent
+of the element being defined rather than by the element itself. The logical
+parent is the control whose definition included the JSON being processed here.
 
 The third form is any other JSON dictionary object, returned as is.
 ###
@@ -66,8 +65,8 @@ evaluateControlJson = ( json, logicalParent ) ->
   # Get the first key in the JSON.
   for firstKey of json
     break
-  return json  if firstKey isnt "html" and firstKey isnt "control"  # Regular object, return as is.
-  reservedKeys = {}
+  return json if firstKey isnt "html" and firstKey isnt "control"  # Regular object, return as is.
+  reservedKeys = { ref: true } # "ref" handled specially, see below.
   reservedKeys[firstKey] = true
   stripped = copyExcludingKeys json, reservedKeys
   properties = evaluateControlJsonProperties stripped, logicalParent
@@ -80,14 +79,9 @@ evaluateControlJson = ( json, logicalParent ) ->
     control = Control( html ).properties properties
   else
     control = Control.getClass( json.control ).create properties
-  if json.id
-    # Create an element reference function on the parent's class.
-    logicalParentClass = logicalParent.constructor
-    elementReference = "$" + json.id
-    unless logicalParentClass::[ elementReference ]
-      logicalParentClass::[ elementReference ] = ( elements ) ->
-        @referencedElement elementReference, elements
-    logicalParent.referencedElement elementReference, control
+  if json.ref
+    # The ref property is of interest to the logical parent, not the control itself.
+    logicalParent.referencedElement json.ref, control
   control
 
 
