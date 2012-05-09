@@ -204,7 +204,7 @@ jQuery.extend Control,
   ###
   _replaceElements: ( $existing, $replacement ) ->
     # Gather the existing IDs.
-    ids = $( element ).prop "id" for element in $existing
+    ids = ( $( element ).prop "id" for element in $existing )
     $new = $replacement.replaceAll( $existing )
     # Put IDs onto new elements.
     for element, i in $new
