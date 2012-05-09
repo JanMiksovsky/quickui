@@ -118,7 +118,7 @@ jQuery.extend Control,
       existingTag = $controls[0].nodeName.toLowerCase()
       if existingTag isnt @::tag.toLowerCase() and existingTag isnt "body"
         # Tags don't match; replace with elements with the right tag.
-        $controls = @_replaceElements $controls, @ defaultTarget
+        $controls = replaceElements $controls, @ defaultTarget
 
     if typeof properties is "string"
       # Plain string becomes control content
@@ -126,7 +126,7 @@ jQuery.extend Control,
 
     $controls
       # Save a reference to the controls' class.
-      ._controlClass( this )
+      .controlClass( this )
       # Apply all class names in the class hierarchy as style names.
       # This lets the element pick up styles defined by those classes.
       .addClass( @classHierarchy )
@@ -191,28 +191,6 @@ jQuery.extend Control,
     newClass
 
 
-  ###
-  The name of the data element used to store a reference to an element's control class.
-  ###
-  _controlClassData: "_controlClass"
-
-
-  ###
-  Replace the indicated existing element(s) with copies of the indicated
-  replacement element. During this operation, preserve element IDs.
-  This is used if, say, we need to convert a bunch of divs to buttons.
-  ###
-  _replaceElements: ( $existing, $replacement ) ->
-    # Gather the existing IDs.
-    ids = ( $( element ).prop "id" for element in $existing )
-    $new = $replacement.replaceAll( $existing )
-    # Put IDs onto new elements.
-    for element, i in $new
-      id = ids[i]
-      $( element ).prop "id", id if id and id.length > 0
-    $new
-
-
 ###
 Control instance methods.
 ###
@@ -225,6 +203,27 @@ Control::extend
   ###
   className: ->
     @constructor.className
+
+
+  ###
+  Get/set the reference for the actual class for these control( s ). This may
+  differ from the class of the jQuery object used to access this function:
+    
+    $e = Control "<button>"   # $e is now of type Control
+    e.control( BasicButton )  # Turns the element into a BasicButton 
+    $e.className()            # Returns "Control"
+    $e.controlClass()         # Returns the BasicButton class
+    
+  ###
+  controlClass: ( classFn ) ->
+    # A change in jQuery 1.7.1 made a difference in calling $.data() with an
+    # second parameter of "undefined" versus leaving leaving off the second
+    # parameter, so if classFn is undefined, we have to explicitly call $.data()
+    # with only one parameter.
+    if classFn
+      @data controlClassData, classFn
+    else
+      @data controlClassData
 
 
   ###
@@ -260,6 +259,13 @@ Control::extend
 
 
   ###
+  By default, the root tag of the control will be a div.
+  Control classes can override this: <Control name="Foo" tag="span">
+  ###
+  tag: "div"
+
+
+  ###
   Replace this control with an instance of the given class and properties.
   Unlike a normal Control.create() call, existing control contents are
   *not* preserved. Event handlers, however, remain attached;
@@ -292,13 +298,6 @@ Control::extend
     $controls.removeClass( "Control" ).addClass( oldClasses ).addClass "Control"  if oldClasses       # Ensures Control ends up rightmost
     $controls
 
-
-  ###
-  By default, the root tag of the control will be a div.
-  Control classes can override this: <Control name="Foo" tag="span">
-  ###
-  tag: "div"
-
   
   ###
   The current version of QuickUI.
@@ -306,14 +305,15 @@ Control::extend
   quickui: "0.9.0-pre"
 
 
-  ###
-  Get/set the reference for the class for these control( s ).
-  TODO: Promote to real utility.
-  ###
-  _controlClass: ( classFn ) ->
-    ( if classFn then @data( Control._controlClassData, classFn ) else @data( Control._controlClassData ) )
+###
+Private helpers
+###
 
 
+# Name of data element used to store a reference to an element's control class.
+controlClassData = "_controlClass"
+  
+  
 ###
 Return a copy of the given object, skipping the indicated keys.
 Keys should be provided as a dictionary with true values. E.g., the dictionary
@@ -327,6 +327,22 @@ copyExcludingKeys = ( obj, excludeKeys ) ->
   result
 
 
+###
+Replace the indicated existing element(s) with the indicated replacements and
+return the new elements. This is used if, say, we need to convert a bunch of
+divs to buttons. Significantly, this preserves element IDs.
+###
+replaceElements = ( $existing, $replacement ) ->
+  # Gather the existing IDs.
+  ids = ( $( element ).prop "id" for element in $existing )
+  $new = $replacement.replaceAll( $existing )
+  # Put IDs onto new elements.
+  for element, i in $new
+    id = ids[i]
+    $( element ).prop "id", id if id and id.length > 0
+  $new
+    
+    
 ###
 Return an element's "significant" contents: contents which contain
 at least one child that's something other than whitespace or comments.

@@ -34,7 +34,7 @@ Control::extend
     if value is undefined
       # Getting contents. Just process first element.
       $element = @nth 0
-      if $element.isInputElement()
+      if isInputElement $element[0]
         $element.val()  # Return input element value.
       else
         # Return HTML contents in a canonical form.
@@ -59,9 +59,8 @@ Control::extend
       else
         [ value ]                         # singleton parameter
 
-      @each ( index, element ) ->
-        $element = Control element
-        if $element.isInputElement()
+      for $element in @each()
+        if isInputElement $element[0]
           # Set input element value.
           $element.val value
         else
@@ -69,18 +68,16 @@ Control::extend
           # element's existing content. To ensure that data, etc., get
           # preserved, first detach the existing contents.
           $element.children().detach()
-          
           # Set HTML contents.
           $element.empty().append array...
+      @
 
-
-  ###
-  Return true if the (first) element is an input element (with a val).
-  Note that buttons are not considered input elements, because typically
-  when one is setting their contents, one wants to set their label, not
-  their "value".
-  ###
-  # TODO: Make regular function
-  isInputElement: ->
-    inputTags = [ "input", "select", "textarea" ]
-    ( if @length is 0 then false else ( jQuery.inArray( this[0].nodeName.toLowerCase(), inputTags ) >= 0 ) )
+###
+Return true if the given element is an input element with a val().
+Exception: buttons are not considered input elements, because typically
+when one is setting their contents, one wants to set their label, not
+their "value".
+###
+isInputElement = ( element ) ->
+  inputTags = [ "input", "select", "textarea" ]
+  ( jQuery.inArray element.nodeName.toLowerCase(), inputTags ) >= 0

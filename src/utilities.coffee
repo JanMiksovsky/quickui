@@ -39,7 +39,7 @@ With this, $foo.is( ":control" ) returns true if at least one element in $foo
 is a control, and $foo.filter( ":control" ) returns just the controls in $foo.
 ###
 jQuery.expr[":"].control = ( elem ) ->
-  controlClass = Control( elem )._controlClass()
+  controlClass = Control( elem ).controlClass()
   ( if controlClass then controlClass is Control or controlClass:: instanceof Control else false )
 
 
@@ -61,7 +61,7 @@ Control::extend
     defaultClass = defaultClass or @constructor
     setClass = undefined
     for $e in @.each()
-      elementClass = $e._controlClass() ? defaultClass
+      elementClass = $e.controlClass() ? defaultClass
       setClass = elementClass if setClass is undefined or ( setClass:: ) instanceof elementClass
     setClass ?= defaultClass  # In case "this" had no elements.
     setClass @

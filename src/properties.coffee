@@ -82,7 +82,7 @@ jQuery.extend Control,
   Generic factory for a property getter/setter.
   ###
   property: ( sideEffectFn, defaultValue, converterFunction ) ->
-    backingPropertyName = "_property" + Control.property._symbolCounter++
+    backingPropertyName = "_property" + symbolCounter++
     ( value ) ->
       result = undefined
       if value is undefined
@@ -96,6 +96,7 @@ jQuery.extend Control,
           control.data backingPropertyName, result
           sideEffectFn.call control, result if sideEffectFn
         @
+
 
 ###
 Factories for getter/setters of various types.
@@ -124,6 +125,6 @@ jQuery.extend Control.property,
   integer: ( sideEffectFn, defaultValue ) ->
     Control.property sideEffectFn, defaultValue, parseInt
 
-  # Used to generate symbols to back new properties.
-  # TODO: Use closure variable
-  _symbolCounter: 0
+
+# Used to generate symbols to back new properties.
+symbolCounter = 0

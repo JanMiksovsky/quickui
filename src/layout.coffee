@@ -11,7 +11,7 @@ that the control has changed its size, in case the ancestor will now
 need to update the layout.
 ###
 Control::checkForSizeChange = ->
-  @trigger "sizeChanged" if _updateSavedSize @
+  @trigger "sizeChanged" if updateSavedSize @
   @
 
 
@@ -58,7 +58,7 @@ jQuery.event.special.layout =
   handle: ( event ) ->
     control = Control @
     return unless control.inDocument()            # Not currently in document; no need for layout.
-    # TODO: Shouldn't the line below invoke _updateSavedSize()?
+    # TODO: Shouldn't the line below invoke updateSavedSize()?
     return unless control.checkForSizeChange()    # Size hasn't actually changed; no need for layout.
     event.handleObj.handler.apply @, arguments
 
@@ -103,7 +103,7 @@ Compare the control's current size with its previously recorded size.
 If the size has not changed, return false. If the size has changed,
 update the recorded size and return true.
 ###
-_updateSavedSize = ( control ) ->
+updateSavedSize = ( control ) ->
   previousSize = control.data( "_size" ) ? {}
   size =
     height: control.height()
