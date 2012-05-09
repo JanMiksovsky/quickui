@@ -806,15 +806,6 @@ Shared sample classes used by unit tests.
       $cast = $set.children().cast();
       return equal($cast instanceof Control, true);
     });
-    test("Utilities: each", function() {
-      var c, segments;
-      c = $("<div>Ann</div><div>Bob</div>").control(Control);
-      segments = c.each();
-      ok(segments instanceof Array);
-      equal(segments.length, 2);
-      equal(segments[0].content(), "Ann");
-      return equal(segments[1].content(), "Bob");
-    });
     test("Utilities: eachControl", function() {
       var $bar, $c, $foo, Bar, Foo, results;
       Foo = Control.subclass({
@@ -855,7 +846,7 @@ Shared sample classes used by unit tests.
       ok($result instanceof Greet);
       return ok($c.$name() instanceof Control);
     });
-    return test("Utilities: propertyVector", function() {
+    test("Utilities: propertyVector", function() {
       var $a, $b, $c, vector;
       $a = Control.create("one");
       $b = Control.create("two");
@@ -865,6 +856,15 @@ Shared sample classes used by unit tests.
       $c.propertyVector("content", ["un", "deux"]);
       equal($a.content(), "un");
       return equal($b.content(), "deux");
+    });
+    return test("Utilities: segments", function() {
+      var c, segments;
+      c = $("<div>Ann</div><div>Bob</div>").control(Control);
+      segments = c.segments();
+      ok(segments instanceof Array);
+      equal(segments.length, 2);
+      equal(segments[0].content(), "Ann");
+      return equal(segments[1].content(), "Bob");
     });
   });
 

@@ -25,7 +25,7 @@ The logicalParent parameter is intended for internal use only.
 ###
 Control::json = ( json, logicalParent ) ->
   logicalParent ?= @
-  for control, i in @each()
+  for control, i in @segments()
     properties = evaluateControlJsonProperties json, logicalParent.nth( i )
     control.properties properties
   @

@@ -59,7 +59,7 @@ Control::extend
       else
         [ value ]                         # singleton parameter
 
-      for $element in @each()
+      for $element in @segments()
         if isInputElement $element[0]
           # Set input element value.
           $element.val value

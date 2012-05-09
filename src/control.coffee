@@ -141,7 +141,7 @@ jQuery.extend Control,
     $controls.generic true if @genericIfClassIs is @className
 
     # Let each control initialize itself.
-    c.initialize() for c in $controls.each()
+    c.initialize() for c in $controls.segments()
     
     # Return the new controls
     $controls

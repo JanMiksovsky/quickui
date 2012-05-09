@@ -60,38 +60,11 @@ Control::extend
   cast: ( defaultClass ) ->
     defaultClass = defaultClass or @constructor
     setClass = undefined
-    for $e in @.each()
+    for $e in @.segments()
       elementClass = $e.controlClass() ? defaultClass
       setClass = elementClass if setClass is undefined or ( setClass:: ) instanceof elementClass
     setClass ?= defaultClass  # In case "this" had no elements.
     setClass @
-
-
-  ###
-  Overload of standard $.each() that adds support for a no-argument form.
-  If called with arguments, this each() will work as normal. When called with
-  no arguments, it will return the controls in "this" as an array of subarrays.
-  Each subarray has a single element of the same class as the current control.
-  E.g., if "this" contains a jQuery object with
-  
-    [ control1, control2, control3, ... ]
-    
-  Then calling segments() returns
-  
-    [ [control1], [control2], [control3], ... ]
-  
-  This is useful in for loops and list comprehensions, and avoids callbacks.
-  It is more sophisticated than simply looping over the control as a jQuery
-  object, because that just loops over plain DOM elements, where this each()
-  lets us loop over jQuery/Control objects that retain type information and,
-  thus, direct access to class members.
-  ###
-  each: ( args... ) ->
-    if args.length == 0
-      # Return the controls in this as an array of subarrays.
-      @constructor element for element in @
-    else
-      jQuery::each.apply this, args   # Defer to standard $.each()
 
 
   ###
@@ -105,7 +78,7 @@ Control::extend
   This is similar to $.each(), but preserves type, so "this" and the control
   parameter passed to the callback are of the correct control class.
   
-  NB: Unlike Control.each(), this looks up the specific control class for each
+  NB: Unlike Control.segments(), this looks up the specific control class for each
   element being processed, rather than assuming the containing control's class
   is shared by all elements. If eachControl() is applied to a mixture of controls,
   the callback will be invoked with each control in turn using that specific
@@ -160,11 +133,11 @@ Control::extend
     propertyFn = @[ propertyName ]
     if values is undefined
       # Collect results of invoking property getter on each control. 
-      ( propertyFn.call $control for $control in @each() )
+      ( propertyFn.call $control for $control in @segments() )
     else
       # Invoke property setter on each control using corresponding value
       length = @length
-      for $control, i in @each()
+      for $control, i in @segments()
         if i >= length
           break # Didn't receive values for all the controls we have
         propertyFn.call $control, values[i] if values[i] isnt undefined
@@ -180,7 +153,7 @@ Control::extend
     if elements is undefined
       # Map a collection of control instances to the given element
       # defined for each instance.
-      elements = ( $control.data key for $control in @each() when ( $control.data key ) isnt undefined )
+      elements = ( $control.data key for $control in @segments() when ( $control.data key ) isnt undefined )
       $result = Control( elements ).cast()
       # To make the element function $.end()-able, we want to call
       # jQuery's public pushStack() API. Unfortunately, that call
@@ -191,9 +164,34 @@ Control::extend
       $result.prevObject = @
       $result
     else
-      for $control, i in @each()
+      for $control, i in @segments()
         $control.data key, elements[i]
       @
+
+
+  ###
+  Return the controls in "this" as an array of subarrays, each of which holds
+  a single control of the same class as the current control. E.g., if "this"
+  contains a control object with
+  
+    [ control1, control2, control3, ... ]
+    
+  Then calling segments() returns
+  
+    [ [control1], [control2], [control3], ... ]
+  
+  This is useful in for loops and list comprehensions, and avoids callbacks.
+  It is more sophisticated than simply looping over the control as a jQuery
+  object, because that just loops over plain DOM elements, whereas segements()
+  lets us loop over jQuery/Control objects that retain type information and,
+  thus, direct access to class members.
+  ###
+  segments: ( args... ) ->
+    if args.length == 0
+      # Return the controls in this as an array of subarrays.
+      @constructor element for element in @
+    else
+      jQuery::each.apply this, args   # Defer to standard $.segments()
 
 
   ###

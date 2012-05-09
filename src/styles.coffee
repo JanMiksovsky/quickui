@@ -51,7 +51,7 @@ Control::extend
   function via this.genericIfClassIs( Bar ).
   ###
   genericIfClassIs: ( classFn ) ->
-    for control in @each()
+    for control in @segments()
       control.generic true if control.constructor is classFn and control.generic() is undefined
     @
     

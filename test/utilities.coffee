@@ -25,14 +25,6 @@ $ ->
     $set = Control( "<div/>" ).append( $a ).append(  $ "<div/>"  )
     $cast = $set.children().cast()
     equal $cast instanceof Control, true
-
-  test "Utilities: each", ->
-    c = $(  "<div>Ann</div><div>Bob</div>"  ).control Control;
-    segments = c.each();
-    ok segments instanceof Array
-    equal segments.length, 2
-    equal segments[0].content(), "Ann"
-    equal segments[1].content(), "Bob"
   
   test "Utilities: eachControl", ->
     # Create two instances of different classes.
@@ -73,3 +65,11 @@ $ ->
     $c.propertyVector "content", [ "un", "deux" ]
     equal $a.content(), "un"
     equal $b.content(), "deux"
+
+  test "Utilities: segments", ->
+    c = $(  "<div>Ann</div><div>Bob</div>"  ).control Control;
+    segments = c.segments();
+    ok segments instanceof Array
+    equal segments.length, 2
+    equal segments[0].content(), "Ann"
+    equal segments[1].content(), "Bob"
