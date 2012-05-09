@@ -415,6 +415,18 @@ Shared sample classes used by unit tests.
   */
 
 
+  $(function() {
+    return test("Localization: culture", function() {
+      var c;
+      c = Control.create();
+      equal(c.culture().language, "en");
+      c.culture("fr");
+      equal(c.culture().language, "fr");
+      c.culture("__");
+      return equal(c.culture().language, "en");
+    });
+  });
+
   /*
   Control property declaration unit tests
   */
