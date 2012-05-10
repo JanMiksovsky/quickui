@@ -82,7 +82,6 @@ evaluateControlJson = ( json, logicalParent ) ->
   if json.ref
     # The ref property is of interest to the logical parent, not the control itself.
     logicalParent.referencedElement json.ref, control
-    control.id json.ref # TODO: Remove
   control
 
 
