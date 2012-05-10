@@ -173,16 +173,30 @@ namespace qc
         /// </remarks>
         private string EmitBaseClassProperties(int indentLevel)
         {
-            if (Content != null)
-            {
-                return EmitProperty("content", Content.JavaScript(indentLevel), true, indentLevel);
-            }
-            if (Prototype == null)
+            if (Content == null && Prototype == null)
             {
                 return String.Empty;
             }
 
-            return EmitProperties(Prototype.Properties, indentLevel);
+            string properties;
+            if (Content != null)
+            {
+                properties = EmitProperty("content", Content.JavaScript(indentLevel + 1), true, indentLevel + 1);
+            }
+            else
+            {
+                properties = EmitProperties(Prototype.Properties, indentLevel + 1);
+            }
+
+            return Template.Format(
+                "{Tabs}inherited: {\n" +
+                "{Properties}" +
+                "{Tabs}}\n",
+                new
+                {
+                    Tabs = Tabs(indentLevel),
+                    Properties = properties
+                });
         }
 
         /// <summary>
