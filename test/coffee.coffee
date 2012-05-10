@@ -22,15 +22,15 @@ $ ->
     ok c instanceof Control
     ok c instanceof SimpleCoffee
     ok c instanceof SimpleCoffee::init
-    equal SimpleCoffee::className, "SimpleCoffee"
-    equal SimpleCoffee.classHierarchy, "SimpleCoffee Control"
+    equal c.className, "SimpleCoffee"
+    equal c.classes, "SimpleCoffee Control"
     equal c.content(), "Hello"
 
   test "CoffeeScript: create subclass", ->
     c = GreetCoffee.create "Ann"
     ok c instanceof SimpleCoffee
     ok c instanceof GreetCoffee
-    equal GreetCoffee::className, "GreetCoffee"
-    equal GreetCoffee.classHierarchy, "GreetCoffee SimpleCoffee Control"
+    equal c.className, "GreetCoffee"
+    equal c.classes, "GreetCoffee SimpleCoffee Control"
     equal c.content(), "Ann"
     equal c.text(), "Hello Ann"

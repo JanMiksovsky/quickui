@@ -57,17 +57,6 @@ This is used as the base class for all QuickUI controls.
 window.Control = jQuery.sub()
 jQuery.extend Control,
 
-
-  ###
-  A class' "classHierarchy" member reflects the names of all classes
-  in its class hierarchy, from most specific to most general class.
-  This member is automatically built by Control.subclass().
-  
-  Example: If a control class Foo has superclasses Bar and Control,
-  this member will be "Foo Bar Control".
-  ###
-  classHierarchy: "Control"
-
     
   ###
   Create an instance of this control class around a specific element (or
@@ -122,7 +111,7 @@ jQuery.extend Control,
       .controlClass( this )
       # Apply all class names in the class hierarchy as style names.
       # This lets the element pick up styles defined by those classes.
-      .addClass( @classHierarchy )
+      .addClass( cssClasses this )
       # Render controls as DOM elements.
       .render()
       # Pass in the target's old contents ( if any ).
@@ -144,11 +133,8 @@ jQuery.extend Control,
   Create a subclass of this class.
   ###
   subclass: ( json ) ->
-    superclass = this
     newClass = this.sub()
     newClass::extend json
-    if json?.className
-      newClass.classHierarchy = json.className + " " + superclass.classHierarchy
     newClass
 
 
@@ -156,6 +142,17 @@ jQuery.extend Control,
 Control instance methods.
 ###
 Control::extend
+
+
+  ###
+  The CSS classes that should be applied to new instances of this class. This is
+  normally not set directly, but a default value is automatically constructed
+  the first time the control class is instantiated. The default value for this
+  includes the names of all control classes in the class' inheritance
+  hierarchy. Example: If a control class Foo has superclasses Bar and Control,
+  this member will be "Foo Bar Control".
+  ###
+  classes: "Control"
 
 
   ###
@@ -185,7 +182,7 @@ Control::extend
     else
       @data controlClassData
 
-
+  
   ###
   Invoked when the control has finished rendering.
   Subclasses can override this to perform their own post-rendering work
@@ -267,6 +264,18 @@ Control::extend
 ###
 Private helpers
 ###
+
+
+###
+Return a class' "classes" member, which reflects the CSS classes that should be
+applied to new instances of that control class. If a class doesn't yet define
+this member for itself, a default value is calculated which includes the
+control class' own name, followed by the "classes" member of its superclass.
+###
+cssClasses = ( classFn ) ->
+  if !classFn::hasOwnProperty "classes"
+    classFn::classes = classFn::className + " " + classFn.superclass::classes
+  classFn::classes
 
 
 # Name of data element used to store a reference to an element's control class.
