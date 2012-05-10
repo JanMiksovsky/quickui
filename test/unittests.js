@@ -13,12 +13,14 @@ Shared sample classes used by unit tests.
   createGreetClass = function() {
     return window.Greet = Control.subclass({
       className: "Greet",
-      content: [
-        "Hello ", {
-          html: "<span>Ann</span>",
-          ref: "name"
-        }
-      ]
+      inherited: {
+        content: [
+          "Hello ", {
+            html: "<span>Ann</span>",
+            ref: "name"
+          }
+        ]
+      }
     });
   };
 
@@ -70,12 +72,14 @@ Shared sample classes used by unit tests.
       var $c, $children, $original, MyControl;
       MyControl = Control.subclass({
         className: "MyControl",
-        content: [
-          "*", {
-            html: "<span/>",
-            ref: "MyControl_content"
-          }, "*"
-        ]
+        inherited: {
+          content: [
+            "*", {
+              html: "<span/>",
+              ref: "MyControl_content"
+            }, "*"
+          ]
+        }
       });
       MyControl.prototype.content = Control.chain("$MyControl_content", "content");
       $original = $("<div><div>Hello</div><div>world</div></div>");
@@ -243,13 +247,11 @@ Shared sample classes used by unit tests.
     var InDocumentSample, addControl, createdBeforeReady;
     InDocumentSample = Control.subclass({
       className: "InDocumentSample",
-      prototype: {
-        inDocumentCalled: Control.property.bool(),
-        initialize: function() {
-          return this.inDocument(function() {
-            return this.inDocumentCalled(true);
-          });
-        }
+      inDocumentCalled: Control.property.bool(),
+      initialize: function() {
+        return this.inDocument(function() {
+          return this.inDocumentCalled(true);
+        });
       }
     });
     addControl = function(control) {
@@ -448,9 +450,11 @@ Shared sample classes used by unit tests.
       Greet.prototype.name = Control.chain("$name", "content");
       MyControl = Control.subclass({
         className: "MyControl",
-        content: {
-          control: "Greet",
-          ref: "greet"
+        inherited: {
+          content: {
+            control: "Greet",
+            ref: "greet"
+          }
         }
       });
       MyControl.prototype.name = Control.chain("$greet", "name");

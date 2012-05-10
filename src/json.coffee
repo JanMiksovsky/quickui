@@ -29,6 +29,19 @@ Control::json = ( json, logicalParent ) ->
     properties = evaluateControlJsonProperties json, logicalParent.nth( i )
     control.properties properties
   @
+  
+  
+###
+Return a copy of the given object, skipping the indicated keys.
+Keys should be provided as a dictionary with true values. E.g., the dictionary
+{ a: true, b: true } specifies that keys "a" and "b" should be excluded
+from the result.
+###
+copyExcludingKeys = ( obj, excludeKeys ) ->
+  result = {}
+  for key of obj when !excludeKeys[ key ]
+    result[ key ] = obj[ key ]
+  result
 
 
 ###

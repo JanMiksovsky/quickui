@@ -35,9 +35,10 @@ $ ->
     Greet::name = Control.chain "$name", "content"
     MyControl = Control.subclass
       className: "MyControl"
-      content:
-        control: "Greet"
-        ref: "greet"
+      inherited:
+        content:
+          control: "Greet"
+          ref: "greet"
     MyControl::name = Control.chain "$greet", "name"
     $c = MyControl.create()
     equal $c.name(), "Ann"

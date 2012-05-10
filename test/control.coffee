@@ -34,10 +34,11 @@ $ ->
   test "control() incorporate existing DOM content", ->
     MyControl = Control.subclass
       className: "MyControl"
-      content: [ "*",
-        html: "<span/>"
-        ref: "MyControl_content"
-      , "*" ]
+      inherited:
+        content: [ "*",
+          html: "<span/>"
+          ref: "MyControl_content"
+        , "*" ]
     MyControl::content = Control.chain "$MyControl_content", "content"
     $original = $ "<div><div>Hello</div><div>world</div></div>"
     $children = $original.children()

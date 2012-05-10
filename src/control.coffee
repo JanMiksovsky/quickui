@@ -151,43 +151,11 @@ jQuery.extend Control,
   Create a subclass of this class.
   ###
   subclass: ( json ) ->
-
     superclass = this
-    newClass = superclass.sub()
-
-    # jQuery.sub uses $.extend to copy properties from super to subclass, so
-    # we have to blow away class properties that shouldn't have been copied.
-    delete newClass._initializeQueue
-
-    if json
-      
-      if json.className
-        newClass.extend
-          className: json.className
-          classHierarchy: json.className + " " + superclass.classHierarchy
-            
-      newClass.genericIfClassIs = json.className if json.genericSupport
-                
-      ###
-      Create a copy of the JSON that doesn't include the reserved keys
-      (which go on the class). We use the remaining JSON values as
-      "inherited" on the class' prototype for use by render(). 
-      ###
-      inherited = copyExcludingKeys json,
-        className: true
-        genericSupport: true
-        prototype: true
-        tag: true
-      
-      jQuery.extend newClass::, json::,
-        inherited: inherited
-        tag: json.tag
-        
-    else
-      # Clear copied or inherited values.
-      newClass.className = undefined
-      newClass::inherited = null
-
+    newClass = this.sub()
+    newClass::extend json
+    if json?.className
+      newClass.classHierarchy = json.className + " " + superclass.classHierarchy
     newClass
 
 
@@ -195,14 +163,6 @@ jQuery.extend Control,
 Control instance methods.
 ###
 Control::extend
-
-  ###
-  The name of the control's class.
-  This shorthand is useful for quickly getting the name in the debugger
-  when one is holding a reference to a control.
-  ###
-  className: ->
-    @constructor.className
 
 
   ###
@@ -312,19 +272,6 @@ Private helpers
 
 # Name of data element used to store a reference to an element's control class.
 controlClassData = "_controlClass"
-  
-  
-###
-Return a copy of the given object, skipping the indicated keys.
-Keys should be provided as a dictionary with true values. E.g., the dictionary
-{ a: true, b: true } specifies that keys "a" and "b" should be excluded
-from the result.
-###
-copyExcludingKeys = ( obj, excludeKeys ) ->
-  result = {}
-  for key of obj when !excludeKeys[ key ]
-    result[ key ] = obj[ key ]
-  result
 
 
 ###

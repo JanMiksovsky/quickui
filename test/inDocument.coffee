@@ -7,10 +7,9 @@ $ ->
   # InDocumentSample control that creates an inDocument callback request.
   InDocumentSample = Control.subclass
     className: "InDocumentSample"
-    prototype:
-      inDocumentCalled: Control.property.bool()
-      initialize: ->
-        @inDocument -> @inDocumentCalled true
+    inDocumentCalled: Control.property.bool()
+    initialize: ->
+      @inDocument -> @inDocumentCalled true
   
   # Add a control to force the raising of an inDocument event.
   addControl = ( control ) ->
