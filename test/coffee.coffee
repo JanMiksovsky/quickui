@@ -22,7 +22,7 @@ $ ->
     ok c instanceof Control
     ok c instanceof SimpleCoffee
     ok c instanceof SimpleCoffee::init
-    equal SimpleCoffee.className, "SimpleCoffee"
+    equal SimpleCoffee::className, "SimpleCoffee"
     equal SimpleCoffee.classHierarchy, "SimpleCoffee Control"
     equal c.content(), "Hello"
 
@@ -30,7 +30,7 @@ $ ->
     c = GreetCoffee.create "Ann"
     ok c instanceof SimpleCoffee
     ok c instanceof GreetCoffee
-    equal GreetCoffee.className, "GreetCoffee"
+    equal GreetCoffee::className, "GreetCoffee"
     equal GreetCoffee.classHierarchy, "GreetCoffee SimpleCoffee Control"
     equal c.content(), "Ann"
     equal c.text(), "Hello Ann"

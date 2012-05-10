@@ -125,7 +125,7 @@ makeQuickUICompatible = ( classFn ) ->
 
   # Get class name from function in modern browser, otherwise parse constructor.
   className = classFn.name ? /function\s+( [^\( ]* )/.exec( classFn.toString() )[1]
-  classFn.className = className
+  classFn::className = className
   classFn.classHierarchy = className + " " + classFn.superclass.classHierarchy
   
   if classFn::genericSupport

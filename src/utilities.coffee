@@ -116,7 +116,7 @@ Control::extend
   properties: ( properties ) ->
     for propertyName of properties
       if @[ propertyName ] is undefined
-        throw "Tried to set undefined property #{@className()}.#{propertyName}()."
+        throw "Tried to set undefined property #{@className}.#{propertyName}()."
       value = properties[ propertyName ]
       @[ propertyName ].call @, value
     @

@@ -173,7 +173,7 @@ Shared sample classes used by unit tests.
       ok(c instanceof Control);
       ok(c instanceof SimpleCoffee);
       ok(c instanceof SimpleCoffee.prototype.init);
-      equal(SimpleCoffee.className, "SimpleCoffee");
+      equal(SimpleCoffee.prototype.className, "SimpleCoffee");
       equal(SimpleCoffee.classHierarchy, "SimpleCoffee Control");
       return equal(c.content(), "Hello");
     });
@@ -182,7 +182,7 @@ Shared sample classes used by unit tests.
       c = GreetCoffee.create("Ann");
       ok(c instanceof SimpleCoffee);
       ok(c instanceof GreetCoffee);
-      equal(GreetCoffee.className, "GreetCoffee");
+      equal(GreetCoffee.prototype.className, "GreetCoffee");
       equal(GreetCoffee.classHierarchy, "GreetCoffee SimpleCoffee Control");
       equal(c.content(), "Ann");
       return equal(c.text(), "Hello Ann");

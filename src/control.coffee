@@ -68,13 +68,6 @@ jQuery.extend Control,
   ###
   classHierarchy: "Control"
 
-
-  ###
-  Each control class knows its own name.
-  We'd prefer to use "name" for this, but this is a reserved word.
-  ###
-  className: "Control"
-
     
   ###
   Create an instance of this control class around a specific element (or
@@ -138,7 +131,7 @@ jQuery.extend Control,
       .properties properties
 
     # Apply generic style if class supports that.
-    $controls.generic true if @genericIfClassIs is @className
+    $controls.generic true if @genericIfClassIs is @::className
 
     # Let each control initialize itself.
     c.initialize() for c in $controls.segments()
@@ -166,12 +159,19 @@ Control::extend
 
 
   ###
+  Each control class knows its own name.
+  We'd prefer to use "name" for this, but this is a reserved word.
+  ###
+  className: "Control"
+
+
+  ###
   Get/set the reference for the actual class for these control( s ). This may
   differ from the class of the jQuery object used to access this function:
     
     $e = Control "<button>"   # $e is now of type Control
     e.control( BasicButton )  # Turns the element into a BasicButton 
-    $e.className()            # Returns "Control"
+    $e.className              # Returns "Control"
     $e.controlClass()         # Returns the BasicButton class
     
   ###
@@ -204,11 +204,10 @@ Control::extend
     classFn = @constructor
     if classFn isnt Control
       superclass = classFn.superclass
-      superclass( @ )
-        # Superclass renders first.
-        .render()
-        # Apply the class' settings using superclass's setters.
-        .json @inherited, @
+      rendered = superclass( @ ).render() # Superclass renders first.
+      if classFn::hasOwnProperty "inherited"
+        # Apply the class' desired values using superclass's setters.
+        rendered.json classFn::inherited, @
     @
 
 

@@ -35,10 +35,11 @@ $ ->
     MyControl = Control.subclass
       className: "MyControl"
       inherited:
-        content: [ "*",
-          html: "<span/>"
-          ref: "MyControl_content"
-        , "*" ]
+        content: [
+          "*"
+          { html: "<span/>", ref: "MyControl_content" }
+          "*"
+        ]
     MyControl::content = Control.chain "$MyControl_content", "content"
     $original = $ "<div><div>Hello</div><div>world</div></div>"
     $children = $original.children()
