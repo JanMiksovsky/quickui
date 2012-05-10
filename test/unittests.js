@@ -11,7 +11,7 @@ Shared sample classes used by unit tests.
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
   createGreetClass = function() {
-    return window.Greet = Control.subclass({
+    return window.Greet = Control.sub({
       className: "Greet",
       inherited: {
         content: [
@@ -34,7 +34,27 @@ Shared sample classes used by unit tests.
       var $c;
       $c = Control.create();
       equal($c.attr("class"), "Control");
+      equal($c.classes, "Control");
       return equal($c.control()[0] === $c[0], true);
+    });
+    test("Create: instantiate subclass", function() {
+      var $a, A;
+      A = Control.sub({
+        className: "A"
+      });
+      $a = A.create();
+      return equal($a.classes, "A Control");
+    });
+    test("Create: instantiate sub-subclass", function() {
+      var $b, A, B;
+      A = Control.sub({
+        className: "A"
+      });
+      B = A.sub({
+        className: "B"
+      });
+      $b = B.create();
+      return equal($b.classes, "B A Control");
     });
     test("Create: set properties on constructor", function() {
       var $c;
@@ -52,7 +72,7 @@ Shared sample classes used by unit tests.
     });
     test("control() on multiple divs", function() {
       var $c, $elements, MyControl;
-      MyControl = Control.subclass({
+      MyControl = Control.sub({
         className: "MyControl"
       });
       $elements = $().add("<div/>").add("<div/>");
@@ -70,7 +90,7 @@ Shared sample classes used by unit tests.
     });
     test("control() incorporate existing DOM content", function() {
       var $c, $children, $original, MyControl;
-      MyControl = Control.subclass({
+      MyControl = Control.sub({
         className: "MyControl",
         inherited: {
           content: [
@@ -89,7 +109,7 @@ Shared sample classes used by unit tests.
     });
     test("control() on existing content preserves existing control", function() {
       var $c, $original, $sub, $subcontrol, MyControl;
-      MyControl = Control.subclass({
+      MyControl = Control.sub({
         className: "MyControl"
       });
       $original = $("<div><div id='subcontrol'/></div>");
@@ -110,7 +130,7 @@ Shared sample classes used by unit tests.
     });
     return test("transmute: existing tag doesn't match desired tag", function() {
       var MyButton, c;
-      MyButton = Control.subclass({
+      MyButton = Control.sub({
         className: "MyButton",
         tag: "button"
       });
@@ -245,7 +265,7 @@ Shared sample classes used by unit tests.
 
   $(function() {
     var InDocumentSample, addControl, createdBeforeReady;
-    InDocumentSample = Control.subclass({
+    InDocumentSample = Control.sub({
       className: "InDocumentSample",
       inDocumentCalled: Control.property.bool(),
       initialize: function() {
@@ -448,7 +468,7 @@ Shared sample classes used by unit tests.
       var $c, MyControl;
       createGreetClass();
       Greet.prototype.name = Control.chain("$name", "content");
-      MyControl = Control.subclass({
+      MyControl = Control.sub({
         className: "MyControl",
         inherited: {
           content: {
@@ -508,7 +528,7 @@ Shared sample classes used by unit tests.
     });
     test("Properties: chain: functions with parameters", function() {
       var $c, MyControl;
-      MyControl = Control.subclass({
+      MyControl = Control.sub({
         className: "MyControl"
       });
       MyControl.prototype.display = Control.chain("css/display");
@@ -521,7 +541,7 @@ Shared sample classes used by unit tests.
     });
     test("Properties: chain: function undefined", function() {
       var $c, MyControl;
-      MyControl = Control.subclass({
+      MyControl = Control.sub({
         className: "MyControl"
       });
       MyControl.prototype.foo = Control.chain("bar");
@@ -532,7 +552,7 @@ Shared sample classes used by unit tests.
     });
     test("Properties: Define method", function() {
       var $c, $elements, MyControl, result;
-      MyControl = Control.subclass({
+      MyControl = Control.sub({
         className: "MyControl"
       });
       MyControl.prototype.foo = function() {
@@ -547,7 +567,7 @@ Shared sample classes used by unit tests.
     });
     test("Properties: Define method with iterator()", function() {
       var $c, $elements, MyControl, methodResult;
-      MyControl = Control.subclass({
+      MyControl = Control.sub({
         className: "MyControl"
       });
       MyControl.prototype.foo = Control.iterator(function() {
@@ -562,7 +582,7 @@ Shared sample classes used by unit tests.
     });
     test("Properties: Define getter/setter with iterator()", function() {
       var $c, $elements, MyControl;
-      MyControl = Control.subclass({
+      MyControl = Control.sub({
         className: "MyControl"
       });
       MyControl.prototype.foo = Control.iterator(function(value) {
@@ -576,7 +596,7 @@ Shared sample classes used by unit tests.
     });
     test("Properties: Define getter/setter with Control.property", function() {
       var $c, $elements, MyControl;
-      MyControl = Control.subclass();
+      MyControl = Control.sub();
       MyControl.prototype.myProperty = Control.property();
       $elements = Control("<div/>").add("<div/>");
       $c = $elements.control(MyControl);
@@ -716,13 +736,13 @@ Shared sample classes used by unit tests.
   $(function() {
     test("_super(): invoke superclass functions", function() {
       var A, B, C, a, b, c;
-      A = Control.subclass({
+      A = Control.sub({
         className: "A"
       });
-      B = A.subclass({
+      B = A.sub({
         className: "B"
       });
-      C = B.subclass({
+      C = B.sub({
         className: "C"
       });
       A.prototype.extend({
@@ -758,10 +778,10 @@ Shared sample classes used by unit tests.
     });
     return test("_super(): superclass function undefined", function() {
       var A, B, b;
-      A = Control.subclass({
+      A = Control.sub({
         className: "A"
       });
-      B = A.subclass({
+      B = A.sub({
         className: "B"
       });
       B.prototype.foo = function() {
@@ -787,13 +807,13 @@ Shared sample classes used by unit tests.
     });
     test("Utilities: cast: two control classes derive from same superclass", function() {
       var $a, $b, $c, $cast, $set, A, B, C;
-      A = Control.subclass({
+      A = Control.sub({
         className: "A"
       });
-      B = A.subclass({
+      B = A.sub({
         className: "B"
       });
-      C = A.subclass({
+      C = A.sub({
         className: "C"
       });
       $a = A.create();
@@ -805,7 +825,7 @@ Shared sample classes used by unit tests.
     });
     test("Utilities: cast: control and jQuery mix", function() {
       var $a, $cast, $set, A;
-      A = Control.subclass({
+      A = Control.sub({
         className: "A"
       });
       $a = A.create();
@@ -815,14 +835,14 @@ Shared sample classes used by unit tests.
     });
     test("Utilities: eachControl", function() {
       var $bar, $c, $foo, Bar, Foo, results;
-      Foo = Control.subclass({
+      Foo = Control.sub({
         className: "Foo"
       });
       Foo.prototype.content = function() {
         return "foo";
       };
       $foo = Foo.create();
-      Bar = Control.subclass({
+      Bar = Control.sub({
         className: "Bar"
       });
       Bar.prototype.content = function() {

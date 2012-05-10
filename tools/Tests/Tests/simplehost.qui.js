@@ -1,5 +1,5 @@
 ﻿/* A control whose prototype hosts other controls. */
-var SimpleHost = Control.subclass({
+var SimpleHost = Control.sub({
     className: "SimpleHost",
     inherited: {
         content: [

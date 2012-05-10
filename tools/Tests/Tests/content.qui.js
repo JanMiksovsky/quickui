@@ -1,5 +1,5 @@
 /* A control that shows several different ways of defining content. */
-var Content = Control.subclass({
+var Content = Control.sub({
     className: "Content",
     inherited: {
         content: [

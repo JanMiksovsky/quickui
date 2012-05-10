@@ -5,9 +5,9 @@ _super() method invocation unit tests
 $ ->
   
   test "_super(): invoke superclass functions", ->
-    A = Control.subclass className: "A"
-    B = A.subclass className: "B"
-    C = B.subclass className: "C"
+    A = Control.sub className: "A"
+    B = A.sub className: "B"
+    C = B.sub className: "C"
     A::extend
       decorate: ( s ) -> "( a: #{s} )"
       calc: ( x ) -> x * 2
@@ -31,8 +31,8 @@ $ ->
     equal a.calc( 3 ), 6
 
   test "_super(): superclass function undefined", ->
-    A = Control.subclass className: "A"
-    B = A.subclass className: "B"
+    A = Control.sub className: "A"
+    B = A.sub className: "B"
     B::foo = -> @_super()
     b = B.create()
     raises ->

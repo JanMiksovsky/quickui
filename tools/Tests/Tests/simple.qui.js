@@ -1,5 +1,5 @@
 ﻿/* Simple control. */
-var Simple = Control.subclass({
+var Simple = Control.sub({
     className: "Simple",
     inherited: {
         content: [

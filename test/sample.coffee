@@ -3,7 +3,7 @@ Shared sample classes used by unit tests.
 ###
 
 createGreetClass = ->
-  window.Greet = Control.subclass
+  window.Greet = Control.sub
     className: "Greet"
     inherited: 
       content: [

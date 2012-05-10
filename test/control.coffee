@@ -7,7 +7,19 @@ $ ->
   test "Create: from scratch", ->
     $c = Control.create()
     equal $c.attr( "class" ), "Control"
+    equal $c.classes, "Control"
     equal $c.control()[0] is $c[0], true
+    
+  test "Create: instantiate subclass", ->
+    A = Control.sub className: "A"
+    $a = A.create()
+    equal $a.classes, "A Control"
+    
+  test "Create: instantiate sub-subclass", ->
+    A = Control.sub className: "A"
+    B = A.sub className: "B"
+    $b = B.create()
+    equal $b.classes, "B A Control"
   
   test "Create: set properties on constructor", ->
     $c = Control.create text: "Hello"
@@ -20,7 +32,7 @@ $ ->
     equal $element.control()[0] is $c[0], true
   
   test "control() on multiple divs", ->
-    MyControl = Control.subclass className: "MyControl"
+    MyControl = Control.sub className: "MyControl"
     $elements = $().add( "<div/>" ).add( "<div/>" )
     $c = $elements.control MyControl
     equal $c.control().length, 2
@@ -32,7 +44,7 @@ $ ->
     equal $c.text(), "Hello"
   
   test "control() incorporate existing DOM content", ->
-    MyControl = Control.subclass
+    MyControl = Control.sub
       className: "MyControl"
       inherited:
         content: [
@@ -47,7 +59,7 @@ $ ->
     equal $c.text(), "*Hello**world*"
   
   test "control() on existing content preserves existing control", ->
-    MyControl = Control.subclass className: "MyControl"
+    MyControl = Control.sub className: "MyControl"
     $original = $( "<div><div id='subcontrol'/></div>" )
     $subcontrol = $original.find( "#subcontrol" ).control MyControl
     $c = $original.control Control
@@ -64,7 +76,7 @@ $ ->
     ok $combined.filter( ":control" ).length is 1 and $combined.filter( ":control" )[0] is $c[0]
   
   test "transmute: existing tag doesn't match desired tag", ->
-    MyButton = Control.subclass
+    MyButton = Control.sub
       className: "MyButton"
       tag: "button"
     c = Control.create "Hello"

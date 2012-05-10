@@ -9,9 +9,9 @@ $ ->
     equal $element.control(), undefined
   
   test "Utilities: cast: two control classes derive from same superclass", ->
-    A = Control.subclass className: "A"
-    B = A.subclass className: "B"
-    C = A.subclass className: "C"
+    A = Control.sub className: "A"
+    B = A.sub className: "B"
+    C = A.sub className: "C"
     $a = A.create()
     $b = B.create()
     $c = C.create()
@@ -20,7 +20,7 @@ $ ->
     equal $cast instanceof A, true
   
   test "Utilities: cast: control and jQuery mix", ->
-    A = Control.subclass className: "A"
+    A = Control.sub className: "A"
     $a = A.create()
     $set = Control( "<div/>" ).append( $a ).append(  $ "<div/>"  )
     $cast = $set.children().cast()
@@ -28,10 +28,10 @@ $ ->
   
   test "Utilities: eachControl", ->
     # Create two instances of different classes.
-    Foo = Control.subclass className: "Foo"
+    Foo = Control.sub className: "Foo"
     Foo::content = -> "foo"
     $foo = Foo.create()
-    Bar = Control.subclass className: "Bar"
+    Bar = Control.sub className: "Bar"
     Bar::content = -> "bar"
     $bar = Bar.create()
     $c = Control().add( $foo ).add( $bar )

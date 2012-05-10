@@ -2,7 +2,7 @@
 Comprehensive control:
 Tests a bunch of compiler features.
 */
-var Comprehensive = SampleBaseClass.subclass({
+var Comprehensive = SampleBaseClass.sub({
     className: "Comprehensive",
     tag: "div",
     inherited: {

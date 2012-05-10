@@ -71,7 +71,7 @@ namespace qc
 
             return Template.Format(
                 "{Comment}" +
-                "var {ClassName} = {BaseClassName}.subclass({\n" +
+                "var {ClassName} = {BaseClassName}.sub({\n" +
                 "{Tabs}className: \"{ClassName}\"{Comma1}\n" +
                 "{Tag}{Comma2}" +
                 "{BaseClassProperties}" +

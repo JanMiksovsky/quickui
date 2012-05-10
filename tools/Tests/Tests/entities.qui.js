@@ -1,7 +1,7 @@
 /*
 Control whose script contains characters ("&" and "<") that get interpreted as HTML entities.
 */
-var Entities = Control.subclass({
+var Entities = Control.sub({
     className: "Entities"
 });
 Entities.prototype.extend({

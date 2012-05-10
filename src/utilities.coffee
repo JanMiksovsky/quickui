@@ -18,7 +18,7 @@ jQuery.extend Control,
     else if jQuery.isFunction value
       value
     else if jQuery.isPlainObject value
-      Control.subclass value
+      Control.sub value
     else
       classFn = window[ value ]
       throw "Unable to find a class called #{value}." unless classFn

@@ -33,7 +33,7 @@ $ ->
   test "Properties: chain: subcontrol property", ->
     createGreetClass()
     Greet::name = Control.chain "$name", "content"
-    MyControl = Control.subclass
+    MyControl = Control.sub
       className: "MyControl"
       inherited:
         content:
@@ -79,7 +79,7 @@ $ ->
     equal result, $c
   
   test "Properties: chain: functions with parameters", ->
-    MyControl = Control.subclass className: "MyControl"
+    MyControl = Control.sub className: "MyControl"
     MyControl::display = Control.chain "css/display"
     $c = MyControl.create()
     $c.css "display", "block"
@@ -89,14 +89,14 @@ $ ->
     equal $c.display(), "none"
     
   test "Properties: chain: function undefined", ->
-    MyControl = Control.subclass className: "MyControl"
+    MyControl = Control.sub className: "MyControl"
     MyControl::foo = Control.chain "bar" # Chains to undefined bar() function
     $c = MyControl.create()
     raises ->
       $c.foo()
 
   test "Properties: Define method", ->
-    MyControl = Control.subclass className: "MyControl"
+    MyControl = Control.sub className: "MyControl"
     MyControl::foo = ->
       @data "_calledFoo", true
     $elements = Control( "<div/>" ).add( "<div/>" )
@@ -107,7 +107,7 @@ $ ->
     equal $c.eq( 1 ).data( "_calledFoo" ), true
   
   test "Properties: Define method with iterator()", ->
-    MyControl = Control.subclass className: "MyControl"
+    MyControl = Control.sub className: "MyControl"
     MyControl::foo = Control.iterator ->
         @data "_calledFoo", true
     $elements = Control( "<div/>" ).add( "<div/>" )
@@ -118,7 +118,7 @@ $ ->
     equal $c.eq( 1 ).data( "_calledFoo" ), true
   
   test "Properties: Define getter/setter with iterator()", ->
-    MyControl = Control.subclass className: "MyControl"
+    MyControl = Control.sub className: "MyControl"
     MyControl::foo = Control.iterator ( value ) ->
       @data "_property", value
     $elements = Control( "<div/>" ).add( "<div/>" )
@@ -128,7 +128,7 @@ $ ->
     equal $c.eq( 1 ).control().data( "_property" ), "bar"
   
   test "Properties: Define getter/setter with Control.property", ->
-    MyControl = Control.subclass()
+    MyControl = Control.sub()
     MyControl::myProperty = Control.property()
     $elements = Control( "<div/>" ).add( "<div/>" )
     $c = $elements.control MyControl

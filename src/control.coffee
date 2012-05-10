@@ -130,11 +130,13 @@ jQuery.extend Control,
 
   
   ###
-  Create a subclass of this class.
+  Create a subclass of this class. This overloads the standard jQuery $.sub()
+  to permit a single argument: an object that is used to extent the prototype
+  of the newly-created class.
   ###
-  subclass: ( json ) ->
-    newClass = this.sub()
-    newClass::extend json
+  sub: ( options ) ->
+    newClass = jQuery.sub.call this # Invoke base jQuery implementation.
+    newClass::extend options if options?
     newClass
 
 
@@ -274,7 +276,7 @@ control class' own name, followed by the "classes" member of its superclass.
 ###
 cssClasses = ( classFn ) ->
   if !classFn::hasOwnProperty "classes"
-    classFn::classes = classFn::className + " " + classFn.superclass::classes
+    classFn::classes = classFn::className + " " + ( cssClasses classFn.superclass )
   classFn::classes
 
 

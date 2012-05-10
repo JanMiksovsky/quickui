@@ -5,7 +5,7 @@ inDocument unit tests
 $ ->
 
   # InDocumentSample control that creates an inDocument callback request.
-  InDocumentSample = Control.subclass
+  InDocumentSample = Control.sub
     className: "InDocumentSample"
     inDocumentCalled: Control.property.bool()
     initialize: ->
