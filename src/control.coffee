@@ -112,15 +112,14 @@ jQuery.extend Control,
       # Apply all class names in the class hierarchy as style names.
       # This lets the element pick up styles defined by those classes.
       .addClass( cssClasses this )
+      # Apply generic style if class supports that.
+      .toggleClass( "generic", String( $controls.generic ) == "true" )
       # Render controls as DOM elements.
       .render()
       # Pass in the target's old contents ( if any ).
       .propertyVector( "content", oldContents )
       # Set any requested properties.
       .properties properties
-
-    # Apply generic style if class supports that.
-    $controls.generic true if @genericIfClassIs is @::className
 
     # Let each control initialize itself.
     c.initialize() for c in $controls.segments()

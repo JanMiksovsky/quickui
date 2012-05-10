@@ -4,6 +4,7 @@ Tests a bunch of compiler features.
 */
 var Comprehensive = SampleBaseClass.sub({
     className: "Comprehensive",
+    generic: "true",
     tag: "div",
     inherited: {
         content: [

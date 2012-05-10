@@ -29,14 +29,6 @@ Control::extend
       @attr "class"
     else
       @toggleClass classList, true
-
-  ###
-  Sets/gets whether the control is showing a generic appearance.
-  We use a property with a side-effect, rather than a binding to
-  applyClass/generic, in order for the default value to be "undefined".
-  ###
-  generic: Control.property.bool ( generic ) ->
-    @applyClass "generic", generic
   
   ###
   Sets the generic property to true if the control's most specific
@@ -49,10 +41,14 @@ Control::extend
   a class Foo could ask for generic appearance, but a subclass of Foo
   called Bar will not get the generic appearance unless it calls this
   function via this.genericIfClassIs( Bar ).
+  
+  TODO: Remove
   ###
   genericIfClassIs: ( classFn ) ->
+    ###
     for control in @segments()
       control.generic true if control.constructor is classFn and control.generic() is undefined
+    ###
     @
     
   ###
