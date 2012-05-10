@@ -29,7 +29,7 @@ namespace qc
         /// </summary>
         public MarkupHtmlElement(XElement element)
         {
-            XAttribute idAttribute = element.Attribute("id");
+            XAttribute idAttribute = element.Attribute("ref");
             if (idAttribute != null && IsPublicId(idAttribute.Value))
             {
                 Id = idAttribute.Value;

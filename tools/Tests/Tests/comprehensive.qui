@@ -8,11 +8,11 @@ Tests a bunch of compiler features.
 <prototype>
   <SampleBaseClass>
     <!-- Say hello -->
-    <Simple id="message">
+    <Simple ref="message">
       Hello, <i>world</i>!
     </Simple>
     <div>
-      <p id="Comprehensive_content" />
+      <p ref="Comprehensive_content" />
     </div>
   </SampleBaseClass>
 </prototype>

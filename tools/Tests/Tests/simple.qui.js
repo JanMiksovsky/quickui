@@ -5,7 +5,7 @@ var Simple = Control.subclass({
         " ",
         {
             html: "<span />",
-            id: "Simple_content"
+            ref: "Simple_content"
         },
         " "
     ]

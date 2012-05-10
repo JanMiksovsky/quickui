@@ -11,7 +11,7 @@ var Comprehensive = SampleBaseClass.subclass({
         " ",
         {
             control: "Simple",
-            id: "message",
+            ref: "message",
             content: " Hello, <i>world</i>! "
         },
         " ",
@@ -21,7 +21,7 @@ var Comprehensive = SampleBaseClass.subclass({
                 " ",
                 {
                     html: "<p />",
-                    id: "Comprehensive_content"
+                    ref: "Comprehensive_content"
                 },
                 " "
             ]

@@ -32,7 +32,7 @@ namespace qc
             // Take all tag attributes as properties.
             foreach (XAttribute attribute in element.Attributes())
             {
-                if (attribute.Name == "id" && IsPublicId(attribute.Value))
+                if (attribute.Name == "ref" && IsPublicId(attribute.Value))
                 {
                     // Promote the ID to the node.
                     Id = attribute.Value;

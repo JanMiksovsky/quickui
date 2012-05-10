@@ -21,7 +21,7 @@ namespace Tests
         public void Html()
         {
             XElement element = new XElement("div",
-                new XAttribute("id", "foo"),
+                new XAttribute("ref", "foo"),
                 new XText("Hi")
             );
             MarkupHtmlElement node = new MarkupHtmlElement(element);
@@ -30,7 +30,7 @@ namespace Tests
             Assert.AreEqual(
                 "{\n" +
                 "    html: \"<div>Hi</div>\",\n" + 
-                "    id: \"foo\"\n" +
+                "    ref: \"foo\"\n" +
                 "}",
                 node.JavaScript());
         }
@@ -73,7 +73,7 @@ namespace Tests
         {
             XElement element = new XElement("div",
                 new XElement("p",
-                    new XAttribute("id", "content")
+                    new XAttribute("ref", "content")
                 )
             );
             MarkupHtmlElement node = new MarkupHtmlElement(element);
@@ -93,7 +93,7 @@ namespace Tests
             XElement element = new XElement("div",
                 new XElement("h1"),
                 new XElement("p",
-                    new XAttribute("id", "content"),
+                    new XAttribute("ref", "content"),
                     new XText("Hello")
                 )
             );

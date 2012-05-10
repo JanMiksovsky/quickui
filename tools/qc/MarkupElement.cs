@@ -18,6 +18,10 @@ namespace qc
     /// A markup element can be one of the following classes:
     /// 1) HTMLElement: Plain HTML or text
     /// 2) ControlElement: An instance of a Quick control
+    /// 
+    /// NOTE: In QuickUI 0.9, the "id" property was changed to "ref". For the time
+    /// being, the code still refers to "Id" internally, but this is both parsed and
+    /// emitted as "ref".
     /// </remarks>
     public abstract class MarkupElement : MarkupNode
     {
@@ -68,7 +72,7 @@ namespace qc
         {
             return (Id == null)
                 ? String.Empty
-                : Tabs(indentLevel) + "id: \"" + Id + "\"";
+                : Tabs(indentLevel) + "ref: \"" + Id + "\"";
         }
     }
 }

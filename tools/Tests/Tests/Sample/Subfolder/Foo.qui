@@ -3,7 +3,7 @@
 <Control className="Foo">
 
 <content>
-    <span id="Simple_content" />
+    <span ref="Simple_content" />
 </content>
     
 <style>
