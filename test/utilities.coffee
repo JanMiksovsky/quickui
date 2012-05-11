@@ -40,14 +40,6 @@ $ ->
     $c.eachControl ( index, $control ) ->
       results.push $control.content()
     deepEqual results, [ "foo", "bar" ]
-    
-  test "Utilities: generic", ->
-    createGreetClass()
-    $c1 = Greet.create()
-    equal $c1.prop( "class" ), "Greet Control"
-    Greet::generic = true
-    $c2 = Greet.create()
-    equal $c2.prop( "class" ), "Greet Control generic"
 
   test "Utilities: referencedElement: Element function definition", ->
     createGreetClass()

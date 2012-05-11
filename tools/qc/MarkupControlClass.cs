@@ -84,7 +84,7 @@ namespace qc
                     CssClassName = EmitClassProperty( "className", Name, indentLevel + 1,
                         String.IsNullOrEmpty(Generic) && String.IsNullOrEmpty(Tag) && String.IsNullOrEmpty(baseClassProperties)
                     ),
-                    Generic = EmitClassProperty("generic", Generic, indentLevel + 1,
+                    Generic = EmitClassProperty("genericSupport", Generic, indentLevel + 1,
                         String.IsNullOrEmpty(Tag) && String.IsNullOrEmpty(baseClassProperties)
                     ),
                     Tag = EmitClassProperty("tag", Tag, indentLevel + 1,
@@ -156,7 +156,7 @@ namespace qc
                         this.Content = node;
                         break;
 
-                    case "generic":
+                    case "genericSupport":
                         VerifyPropertyIsNull(propertyName, this.Generic);
                         this.Generic = text;
                         break;

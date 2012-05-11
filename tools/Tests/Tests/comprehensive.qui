@@ -3,7 +3,7 @@ Comprehensive control:
 Tests a bunch of compiler features.
 -->
 
-<Control className="Comprehensive" tag="div" generic="true">
+<Control className="Comprehensive" tag="div" genericSupport="true">
 
 <prototype>
   <SampleBaseClass>

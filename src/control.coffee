@@ -113,7 +113,7 @@ jQuery.extend Control,
       # This lets the element pick up styles defined by those classes.
       .addClass( cssClasses this )
       # Apply generic style if class supports that.
-      .toggleClass( "generic", String( $controls.generic ) == "true" )
+      .generic( String( $controls.genericSupport ) == "true" )
       # Render controls as DOM elements.
       .render()
       # Pass in the target's old contents ( if any ).

@@ -31,25 +31,11 @@ Control::extend
       @toggleClass classList, true
   
   ###
-  Sets the generic property to true if the control's most specific
-  class (i.e., its constructor) is the indicated class. Controls that
-  want to define a generic appearance should invoke this in their
-  initialize handler, passing in the control class.
-  
-  The assumption is that subclasses want to define their own appearance,
-  and therefore do *notwant an inherited generic appearance. E.g.,
-  a class Foo could ask for generic appearance, but a subclass of Foo
-  called Bar will not get the generic appearance unless it calls this
-  function via this.genericIfClassIs( Bar ).
-  
-  TODO: Remove
+  True if the control wants its generic appearance. The default value of this
+  property is the control class' genericSupport member. 
   ###
-  genericIfClassIs: ( classFn ) ->
-    ###
-    for control in @segments()
-      control.generic true if control.constructor is classFn and control.generic() is undefined
-    ###
-    @
+  generic: ( generic ) ->
+    @applyClass "generic", generic
     
   ###
   Sets/gets the style of matching elements.
