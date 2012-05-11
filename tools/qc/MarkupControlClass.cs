@@ -12,6 +12,7 @@ namespace qc
         private const string DEFAULT_CLASS_NAME = "Control";
 
         public string Comments { get; set; }
+        public string Generic { get; set; }
         public string Name { get; set; }
         public string Script { get; set; }
         public string Style { get; set; }
@@ -64,16 +65,14 @@ namespace qc
             string comment = String.IsNullOrEmpty(Comments)
                 ? ""
                 : Tabs(indentLevel) + "/*" + Comments + "*/\n";
-            string tag = String.IsNullOrEmpty(Tag)
-                ? ""
-                : Tabs(indentLevel + 1) + "tag: \"" + Tag + "\"";
             string baseClassProperties = EmitBaseClassProperties(indentLevel + 1);
 
             return Template.Format(
                 "{Comment}" +
                 "var {ClassName} = {BaseClassName}.sub({\n" +
-                "{Tabs}className: \"{ClassName}\"{Comma1}\n" +
-                "{Tag}{Comma2}" +
+                "{CssClassName}" +
+                "{Generic}" +
+                "{Tag}" +
                 "{BaseClassProperties}" +
                 "});\n" + 
                 "{Script}\n", // Extra break at end helps delineate between successive controls in combined output.
@@ -82,12 +81,15 @@ namespace qc
                     Comment = comment,
                     ClassName = Name,
                     BaseClassName = BaseClassName,
-                    Tabs = Tabs(indentLevel + 1),
-                    Comma1 = (String.IsNullOrEmpty(tag) && String.IsNullOrEmpty(baseClassProperties))
-                        ? "" : ",",
-                    Tag = tag,
-                    Comma2 = String.IsNullOrEmpty(tag) || String.IsNullOrEmpty(baseClassProperties)
-                        ? "" : ",\n",
+                    CssClassName = EmitClassProperty( "className", Name, indentLevel + 1,
+                        String.IsNullOrEmpty(Generic) && String.IsNullOrEmpty(Tag) && String.IsNullOrEmpty(baseClassProperties)
+                    ),
+                    Generic = EmitClassProperty("generic", Generic, indentLevel + 1,
+                        String.IsNullOrEmpty(Tag) && String.IsNullOrEmpty(baseClassProperties)
+                    ),
+                    Tag = EmitClassProperty("tag", Tag, indentLevel + 1,
+                        String.IsNullOrEmpty(baseClassProperties)
+                    ),
                     BaseClassProperties = baseClassProperties,
                     Script = EmitScript()
                 });
@@ -99,6 +101,24 @@ namespace qc
             {
                 return (Prototype != null) ? Prototype.ClassName : DEFAULT_CLASS_NAME;
             }
+        }
+
+        private string EmitClassProperty(string propertyName, string propertyValue, int indentLevel, bool isLast)
+        {
+            if (propertyValue == null)
+            {
+                return String.Empty;
+            }
+
+            return Template.Format(
+                "{Tabs}{PropertyName}: \"{PropertyValue}\"{Comma}\n",
+                new
+                {
+                    Tabs = Tabs(indentLevel),
+                    PropertyName = propertyName,
+                    PropertyValue = propertyValue,
+                    Comma = isLast ? "" : ","
+                });
         }
 
         /// <summary>
@@ -134,6 +154,11 @@ namespace qc
                     case "content":
                         VerifyPropertyIsNull(propertyName, this.Content);
                         this.Content = node;
+                        break;
+
+                    case "generic":
+                        VerifyPropertyIsNull(propertyName, this.Generic);
+                        this.Generic = text;
                         break;
 
                     case "prototype":
