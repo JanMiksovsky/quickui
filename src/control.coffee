@@ -122,7 +122,7 @@ jQuery.extend Control,
       .properties properties
 
     # Let each control initialize itself.
-    c.initialize() for c in $controls.segments()
+    initialize this, $control for $control in $controls.segments()
     
     # Return the new controls
     $controls
@@ -281,6 +281,18 @@ cssClasses = ( classFn ) ->
 
 # Name of data element used to store a reference to an element's control class.
 controlClassData = "_controlClass"
+
+
+###
+Invoke the initialize() method of each class in the control's class hierarchy,
+starting with the base class and working down.
+###
+initialize = ( classFn, $control ) ->
+  # Initialize base class first.
+  superclass = classFn.superclass
+  initialize superclass, $control if superclass isnt jQuery
+  # Now do control class' own initialization (if present).
+  classFn::initialize.call $control if classFn::hasOwnProperty "initialize"
 
 
 ###

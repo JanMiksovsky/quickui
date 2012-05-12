@@ -65,6 +65,27 @@ $ ->
     $c = $original.control Control
     $sub = $c.find( "#subcontrol" ).control()
     equal $sub.attr( "class" ), "MyControl Control"
+      
+  test "initialize() called", ->
+    MyControl = Control.sub
+      className: "MyControl"
+      initialize: -> @initialized true
+      initialized: Control.property.bool()
+    $c = MyControl.create()
+    ok $c.initialized()
+    
+  test "initialize() implicityly invokes super's initialize()", ->
+    Base = Control.sub
+      className: "Base"
+      initialize: -> @baseInitialized true
+      baseInitialized: Control.property.bool()
+    Sub = Base.sub
+      className: "Sub"
+      initialize: -> @subInitialized true
+      subInitialized: Control.property.bool()
+    $c = Sub.create()
+    ok $c.subInitialized()
+    ok $c.baseInitialized()
     
   test ":control filter", ->
     $c = Control.create()
