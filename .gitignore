@@ -13,7 +13,7 @@ Release
 build
 plugins/quickui.coffee.js
 sandbox/sandbox.*
-src/quickui-pre.js
+src/quickui.js
 test/unittests.js
 
 release

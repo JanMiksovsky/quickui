@@ -20,14 +20,18 @@ import sys
 # Paths that reflect the folder/file structure of the quickui project.
 script_path = sys.path[0]
 project_path = os.path.normpath(os.path.join(script_path, ".."))
-lib_path = os.path.join(project_path, "lib")
+src_path = os.path.join(project_path, "src")
 exe_path = os.path.join(project_path,
                         os.path.normpath("tools/Setup/Setup/Release"))
 uploads_path = os.path.join(project_path, "release")
 
 runtime_name = "quickui.js"
-runtime_path = os.path.join(lib_path, runtime_name)
+runtime_path = os.path.join(src_path, runtime_name)
 versioned_runtime_template = os.path.join(uploads_path, "quickui-{0}.js")
+
+css_name = "quickui.css"
+css_path = os.path.join(src_path, css_name)
+versioned_css_template = os.path.join(uploads_path, "quickui-{0}.css")
 
 assembly_info_path = os.path.join(project_path,
                                   os.path.normpath("tools/qb/Properties/AssemblyInfo.cs"))
@@ -46,11 +50,19 @@ re_runtime_version = 'quickui: "([\d\.]+)"'
 re_setup_version = 'AssemblyVersion\("([\d\.]+)"\)'
 
 def build_deployment_files():
-    copyfile(runtime_path, os.path.join(uploads_path, runtime_name))    
+    
+    copyfile(runtime_path, os.path.join(uploads_path, runtime_name))
+    copyfile(css_path, os.path.join(uploads_path, css_name))
+    
     runtime_info = copy_versioned_file(runtime_path,
                                        runtime_path,
                                        re_runtime_version,
                                        versioned_runtime_template)
+    css_info = copy_versioned_file(css_path,
+                                       runtime_path,
+                                       re_runtime_version,
+                                       versioned_css_template)
+    
     setup_info = copy_versioned_file(setup_path,
                                      assembly_info_path,
                                      re_setup_version,
@@ -59,6 +71,7 @@ def build_deployment_files():
                                      assembly_info_path,
                                      re_setup_version,
                                      versioned_zip_template)
+    
     write_version_js_file(runtime_info, setup_info, zip_info)
 
 def copy_versioned_file(source_path, version_path, re_version, destination_template):

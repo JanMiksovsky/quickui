@@ -23,7 +23,7 @@ module.exports = function(grunt) {
                     "src/super.coffee",
                     "src/utilities.coffee"
                 ],
-                dest: "src/quickui-pre.js"
+                dest: "src/quickui.js"
             },
             test: {
                 src: [
