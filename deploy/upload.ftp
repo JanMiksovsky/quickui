@@ -1,13 +1,6 @@
 open quickui.org
 cd public_html/quickui
 
-lcd plugins
-cd plugins
-mput *.css
-mput *.js
-lcd ..
-cd ..
-
 lcd release
 cd release
 mput *

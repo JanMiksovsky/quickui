@@ -1,13 +1,15 @@
 #! /usr/bin/env python3.2
 
 # Builds the deployment files for QuickUI.
-# This includes versioned copies of:
-#     the quickui.js runtime
+# This includes versioned copies of quickui.js and quickui.css.
+#
+# For the time being, this also creates versioned copies of the QuickUI
+# markup compiler, which has been moved to the separate quickui-markup repo:
 #     the QuickUI Setup.msi installer
 #     the QuickUI.zip package
-# It also includes a version.js file that lets the versions be read at runtime.
+#     a version.js file that lets versions for the above be read on quickui.org.
+# These markup-related files are deprecated and will be removed to some point.
 #
-# This script needs to run AFTER building the Visual Studio Setup project.
 # After this script builds the deployment files, run the upload script to
 # deploy those files to quickui.org.
 
@@ -20,9 +22,10 @@ import sys
 # Paths that reflect the folder/file structure of the quickui project.
 script_path = sys.path[0]
 project_path = os.path.normpath(os.path.join(script_path, ".."))
+markup_path = "\\source\\quickui-markup"
 src_path = os.path.join(project_path, "src")
-exe_path = os.path.join(project_path,
-                        os.path.normpath("tools/Setup/Setup/Release"))
+exe_path = os.path.join(markup_path,
+                        os.path.normpath("Setup/Setup/Release"))
 uploads_path = os.path.join(project_path, "release")
 
 runtime_name = "quickui.js"
@@ -33,12 +36,12 @@ css_name = "quickui.css"
 css_path = os.path.join(src_path, css_name)
 versioned_css_template = os.path.join(uploads_path, "quickui-{0}.css")
 
-assembly_info_path = os.path.join(project_path,
-                                  os.path.normpath("tools/qb/Properties/AssemblyInfo.cs"))
+assembly_info_path = os.path.join(markup_path,
+                                  os.path.normpath("qb/Properties/AssemblyInfo.cs"))
 setup_path = os.path.join(exe_path, "QuickUI Setup.msi")
 versioned_setup_template = os.path.join(uploads_path, "QuickUI Setup-{0}.msi")
 
-zip_path = os.path.join(script_path, "QuickUI.zip")
+zip_path = os.path.join(markup_path, "deploy/QuickUI.zip")
 versioned_zip_template = os.path.join(uploads_path, "QuickUI-{0}.zip")
 
 version_js_path = os.path.join(uploads_path, "version.js")

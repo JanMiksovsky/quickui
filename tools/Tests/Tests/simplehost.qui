@@ -1,6 +1,0 @@
-<!-- A control whose prototype hosts other controls. -->
-
-<Control className="SimpleHost">
-  Text
-  <Simple>Hello, world!</Simple>
-</Control>
