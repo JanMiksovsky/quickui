@@ -1,1 +1,0 @@
-/* This plugin has been moved into the core quickui.js runtime. */
