@@ -17,7 +17,7 @@ $ ->
     $c1 = Greet.create()
     ok !$c1.generic()
     equal $c1.prop( "class" ), "Greet Control"
-    Greet::genericSupport = true
+    Greet::genericDefault = true
     $c2 = Greet.create()
     ok $c2.generic()
     equal $c2.prop( "class" ), "Greet Control generic"

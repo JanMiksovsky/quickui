@@ -32,7 +32,7 @@ Control::extend
   
   ###
   True if the control wants its generic appearance. The default value of this
-  property is the control class' genericSupport member. 
+  property is the control class' genericDefault member. 
   ###
   generic: ( generic ) ->
     @applyClass "generic", generic
