@@ -196,12 +196,8 @@ Control::extend
   lets us loop over jQuery/Control objects that retain type information and,
   thus, direct access to class members.
   ###
-  segments: ( args... ) ->
-    if args.length == 0
-      # Return the controls in this as an array of subarrays.
-      @constructor element for element in @
-    else
-      jQuery::each.apply this, args   # Defer to standard $.segments()
+  segments: ->
+    ( @constructor element for element in @ )
 
 
   ###
