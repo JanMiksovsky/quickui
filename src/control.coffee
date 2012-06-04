@@ -108,6 +108,7 @@ class window.Control extends jQuery
   ###
   Class methods
   ###
+  
     
   ###
   Create an instance of this control class around a specific element (or
@@ -317,6 +318,10 @@ Private helpers
 ###
 
 
+# Name of data element used to store a reference to an element's control class.
+controlClassData = "_controlClass"
+
+
 ###
 Return a class' "classes" member, which reflects the CSS classes that should be
 applied to new instances of that control class. If a class doesn't yet define
@@ -327,10 +332,6 @@ cssClasses = ( classFn ) ->
   if !classFn::hasOwnProperty "classes"
     classFn::classes = classFn::className + " " + ( cssClasses classFn.superclass )
   classFn::classes
-
-
-# Name of data element used to store a reference to an element's control class.
-controlClassData = "_controlClass"
 
 
 ###
