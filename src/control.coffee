@@ -140,6 +140,38 @@ jQuery.extend Control,
 
 
 ###
+Adding support for constructor-less CoffeeScript control classes.
+###
+class window.Control2 extends jQuery
+  constructor: ( args... ) ->
+    caller = arguments.callee.caller
+    # Figure out which class' constructor invoked us.
+    ###
+    classFn = if this is window
+        # In the (unfortunately) common case where the jQuery-style static
+        # constructor has been used, we'll need to use the deprecated "caller"
+        # method to find the constructor of the actual class that invoked this
+        # function. Warning: "caller" is not permitted in strict mode.
+        caller
+      else
+        # Simple case
+        this.constructor
+    ###
+    classFn = caller
+    if not ( jQuery.isFunction classFn ) and ( classFn:: ) instanceof Control
+      throw "Control.coffee was invoked some context other than a control class' constructor, which is unsupported."
+    # Ensure the class has been treated to be jQuery- and QuickUI-compatible.
+    makeCompatible classFn unless isCompatible classFn
+    # Get the arguments passed to the class' constructor. This is quite
+    # unorthodox, but lets us keep the required boilerplate as short as possible. 
+    args = caller.arguments
+    # Actually create an instance of the init helper class per standard jQuery.
+    new classFn::init args...
+
+# Trigger compatibility.
+Control2.extend Control
+
+###
 Control instance methods.
 ###
 Control::extend
