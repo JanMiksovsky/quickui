@@ -126,4 +126,6 @@ makeQuickUICompatible = ( classFn ) ->
   classFn::className = classFn.name ? /function\s+([^\( ]*)/.exec( classFn.toString() )[1]
 
 
-makeCompatible Control2
+# The Control class itself needs to be made jQuery compatible.
+# (It's already QuickUI compatible.)
+makeJQueryCompatible Control
