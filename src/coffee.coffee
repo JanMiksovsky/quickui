@@ -47,7 +47,7 @@ of instantiation:
   
 The static form will invoke the MyControl() constructor (and therefore this
 method) with "this" as the global window object. This means we have to jump
-through some hoops to figure out which class we're instantiating. 
+through some hoops to figure out which class we're instantiating.
 ###
 Control.coffee = ->
   # Figure out which class' constructor invoked us. Warning: this uses the
@@ -63,69 +63,3 @@ Control.coffee = ->
   # Actually create an instance of the init helper class per standard jQuery.
   new classFn::init args...
 
-
-###
-Return true if the given class is jQuery and QuickUI compatible.
-###
-isCompatible = ( classFn ) ->
-  # Quick check: look for the superclass member, which jQuery creates/expects.
-  classFn.superclass is classFn.__super__.constructor
-
-
-###
-Make the class compatibile with jQuery and QuickUI.
-###
-makeCompatible = ( classFn ) ->
-  makeJQueryCompatible classFn
-  makeQuickUICompatible classFn
-
-
-###
-Make the given CoffeeScript class compatible with jQuery.
-  
-CoffeeScript and jQuery have a roughly equivalent subclassing mechanism,
-although jQuery's is far more byzantine. Among other things, jQuery class
-constructors actually return an instance of a helper class called init. This
-method doctors up the CoffeeScript class to make it function the same as a
-class created with $.sub().
-###
-makeJQueryCompatible = ( classFn ) ->
-  
-  # CoffeeScript sets __super__ as a pointer to the superclass' prototype,
-  # but QuickUI wants superclass, a pointer to the superclass itself. 
-  classFn.superclass = superclass = classFn.__super__.constructor
-  
-  if superclass.__super__ and not isCompatible superclass
-    # Make CoffeeScript-based superclass compatible first.
-    makeCompatible superclass 
-
-  # This is the same init helper class that $.sub() creates.
-  classFn::init = ( selector, context ) ->
-    if ( context && context instanceof jQuery && !( context instanceof jQuerySub ) )
-      context = jQuerySub( context )
-    return jQuery::init.call this, selector, context, rootjQuerySub
-  
-  # jQuery classes use fn as a synonym for prototype.
-  classFn.fn = classFn::
-    
-  # The init object is what jQuery actually instantiates, so we need to make
-  # sure it's got the right prototype.
-  classFn::init.prototype = classFn::
-    
-  # This is used in the closure for the init() function defined above.
-  # Per jQuery.sub(), this must be declared *after* the init.prototype is
-  # set above, or else the this() constructor won't work.
-  rootjQuerySub = classFn document
-
-  
-###
-Make the given CoffeeScript class compatible with QuickUI.
-###
-makeQuickUICompatible = ( classFn ) ->
-  # Get class name from function in modern browser, otherwise parse constructor.
-  classFn::className = classFn.name ? /function\s+([^\( ]*)/.exec( classFn.toString() )[1]
-
-
-# The Control class itself needs to be made jQuery compatible.
-# (It's already QuickUI compatible.)
-makeJQueryCompatible Control

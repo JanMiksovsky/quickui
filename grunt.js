@@ -10,8 +10,8 @@ module.exports = function(grunt) {
         coffee: {
             quickui: {
                 src: [
-                    "src/control.coffee",   // Defines Control class, must come first.
-                    "src/coffee.coffee",
+                    "src/sub.coffee",       // Subclassing support; must come first.
+                    "src/control.coffee",   // Defines Control class; must come second.
                     "src/content.coffee",
                     "src/inDocument.coffee",
                     "src/json.coffee",
@@ -27,9 +27,13 @@ module.exports = function(grunt) {
             },
             test: {
                 src: [
-                    "test/sample.coffee",    // Creates sample classes used by other tests
-                    "test/control.coffee",   // Most basic, so helpful to have run first
-                    "test/coffee.coffee",
+                    // Basic facilities; helpful to put these first.
+                    "test/sub.coffee",
+                    /*
+                    "test/sample.coffee",
+                    "test/control.coffee",
+                    
+                    // Other services
                     "test/content.coffee",
                     "test/inDocument.coffee",
                     "test/json.coffee",
@@ -40,6 +44,7 @@ module.exports = function(grunt) {
                     "test/styles.coffee",
                     "test/super.coffee",
                     "test/utilities.coffee"
+                    */
                 ],
                 dest: "test/unittests.js"
             }
