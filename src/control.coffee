@@ -1,6 +1,6 @@
 ###
 QuickUI
-Version 0.9
+Version 0.9.1
 Modular web control framework
 http://quickui.org
 
@@ -269,7 +269,7 @@ Control::extend
   ###
   The current version of QuickUI.
   ###
-  quickui: "0.9"
+  quickui: "0.9.1"
 
 
 ###
