@@ -4,7 +4,7 @@ Test subclassing facilities
 
 $ ->
 
-  test "sub: CoffeeScript-style class", ->
+  test "sub: CoffeeScript class subclasses Control", ->
     class Sub extends Control
     # Before instantiation, class isn't compatible with jQuery.
     equal Sub.superclass, jQuery # When fixed, will be equal to Control
@@ -17,7 +17,7 @@ $ ->
     equal c.className, "Sub"
     equal c.classes, "Sub Control"
 
-  test "sub: JavaScript-style class", ->
+  test "sub: JavaScript class subclasses Control", ->
     Sub = `Control.sub({
       className: "Sub",
     })`
@@ -30,42 +30,59 @@ $ ->
     equal c.className, "Sub"
     equal c.classes, "Sub Control"
 
-  test "sub: CoffeeScript-style subclasses CoffeeScript-style", ->
+  test "sub: CoffeeScript class subclasses CoffeeScript subclass", ->
     class Sub extends Control
     class SubSub extends Sub
     c = SubSub.create()
     equal SubSub.superclass, Sub
     ok c instanceof jQuery
     ok c instanceof Control
-    ok c instanceof SubSub
     ok c instanceof Sub
+    ok c instanceof SubSub
     equal c.className, "SubSub"
     equal c.classes, "SubSub Sub Control"
 
 
-  ###
-  test "sub: CoffeeScript-style subclasses JavaScript-style"
+  test "sub: CoffeeScript subclass subclasses JavaScript class", ->
+    Sub = `Control.sub({
+      className: "Sub",
+    })`
+    class SubSub extends Sub
+    c = SubSub.create()
+    equal SubSub.superclass, Sub
+    ok c instanceof jQuery
+    ok c instanceof Control
+    ok c instanceof Sub
+    ok c instanceof SubSub
+    equal c.className, "SubSub"
+    equal c.classes, "SubSub Sub Control"
 
-  test "sub: JavaScript-style subclasses JavaScript-style"
+  test "sub: JavaScript class subclasses JavaScript class", ->
+    Sub = `Control.sub({
+      className: "Sub",
+    })`
+    SubSub = `Sub.sub({
+      className: "SubSub",
+    })`
+    c = SubSub.create()
+    equal SubSub.superclass, Sub
+    ok c instanceof jQuery
+    ok c instanceof Control
+    ok c instanceof Sub
+    ok c instanceof SubSub
+    equal c.className, "SubSub"
+    equal c.classes, "SubSub Sub Control"
 
-  test "sub: JavaScript-style subclasses CoffeeScript-style"
-
-
-  test "sub: create subclass", ->
-    c = GreetCoffee.create "Ann"
-    ok c instanceof SimpleCoffee
-    ok c instanceof GreetCoffee
-    equal c.className, "GreetCoffee"
-    equal c.classes, "GreetCoffee SimpleCoffee Control"
-    equal c.content(), "Ann"
-    equal c.text(), "Hello Ann"
-
-  test "sub: subclass a class created with $.sub()", ->
-    c = GreetSub.create "Ann"
-    ok c instanceof GreetSub
-    ok c instanceof Greet
-    equal c.className, "GreetSub"
-    equal c.classes, "GreetSub Greet Control"
-    equal c.content(), "Ann"
-    equal c.text(), "Hello Ann"
-  ###
+  test "sub: JavaScript class subclasses CoffeeScript class", ->
+    class Sub extends Control
+    SubSub = `Sub.sub({
+      className: "SubSub",
+    })`
+    c = SubSub.create()
+    equal SubSub.superclass, Sub
+    ok c instanceof jQuery
+    ok c instanceof Control
+    ok c instanceof Sub
+    ok c instanceof SubSub
+    equal c.className, "SubSub"
+    equal c.classes, "SubSub Sub Control"

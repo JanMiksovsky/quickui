@@ -56,7 +56,7 @@ Return true if the given class is already jQuery and QuickUI compatible.
 ###
 coffeeClassNeedsCompatibility = ( classFn ) ->
   # Look for __super__ member, which is created by CoffeeScript's class syntax.
-  if classFn.__super__
+  if classFn.hasOwnProperty "__super__"
     # Class was created by CoffeeScript. CoffeeScript will have copied all keys
     # from the base class to this present class. One of those keys is the
     # "superclass" member. If the class hasn't yet been made compatible, this
@@ -94,15 +94,32 @@ Return a jQuery-compatible subclass of the indicated superclass.
 # TODO: Comments
 ###
 createSubclass = ( superclass ) ->
+  
+  if coffeeClassNeedsCompatibility superclass
+    # Make CoffeeScript-based superclass compatible first.
+    makeCoffeeClassCompatible superclass 
+
   subclass = controlConstructor()
+
+  # Give the new class all the class methods of the superclass.
   jQuery.extend true, subclass, superclass
+
+  # jQuery classes define a "superclass" member that points to the superclass;
+  # CoffeeScript classes define a "__super__" member that points to the
+  # superclass' prototype. Both of these will have been copied by the call to
+  # $.extend() above. Now update them with the real values.
   subclass.superclass = superclass
+  subclass.__super__ = superclass::
+
+  # Create a prototype of the appropriate class, and update its constructor
+  # so that instanceof will work as expected.
   subclass:: = superclass()
   subclass::constructor = subclass
 
   # jQuery classes use fn as a synonym for prototype.
   subclass.fn = subclass::
 
+  # Create the init helper class which jQuery expects.
   createInitClass subclass
 
   subclass
