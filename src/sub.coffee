@@ -1,22 +1,67 @@
 ###
-Subclassing
+Subclassing: low-level internals for creating new control classes using either
+Control.sub() in JavaScript or CoffeeScript's built-in class syntax.
 
-# TODO: Comments
+QuickUI control classes are subclasses of the base jQuery class. jQuery supports
+the use of standard prototype-based classes such as are commonly found in
+JavaScript projects. However, it turns out that jQuery's class scheme is quite
+Byzantine. For conciseness, jQuery wants to support static constructors, that
+is, creation of a new jQuery object without actually needing to use the "new"
+keyword. So the following are equivalent:
+
+  var $elements = $("div");
+  var $elements = new $("div");
+
+To achieve this, the base jQuery() constructor doesn't actually return a new
+instance of the jQuery class. Rather, it returns a new instance of a helper
+class called jQuery.prototype.init. The constructor does this regardless of
+whether it's called with "new" or not, so it can produce the results above.
+
+Any subclasses of jQuery need to support this helper class arrangement. To make
+that easier, jQuery exposes an official plugin called $.sub() that returns a
+subclass of jQuery. This creates a new subclass of jQuery *and* a new companion
+helper class. The subclass' constructor actually returns a new instance of the
+corresponding helper class.
+
+That all works fine in JavaScript, but makes problems for CoffeeScript users.
+CoffeeScript classes include a default constructor that is unaware of jQuery's
+helper class shenanigans. QuickUI works around this problem in two ways:
+
+1. The Control() constructor works exactly like one created by $.sub(), with the
+   extra ability: whenever its invoked by a plain CoffeeScript subclass, it will
+   automatically modify that class to conform to jQuery's helper class scheme.
+   This allows you to create QuickUI subclasses with CoffeeScript's class
+   syntax, and still end up with a jQuery-compatible class.
+2. The Control.sub() function works just like jQuery's own $.sub() function,
+   but the class' constructor is similarly modified to detect and modify plain
+   CoffeeScript classes.
+
+The result is that you can create a subclass of Control in JavaScript via
+Control.sub(), or in CoffeeScript via the class syntax. Furthermore, you can
+create subclasses of *those* classes in either language.
 ###
 
 
-# TODO: Comments
+###
+Return a class constructor that's capable of detecting whether it's been invoked
+by a plain CoffeeScript class. If so, the class will be modified to be
+compatible with jQuery.
+
+The constructor needs to deal with two situations:
+1. The class itself is being instantiated.
+2. A CoffeeScript-based subclass of the class is being instantiated. The default
+   constructor for a CoffeeScript class just invokes the base class'
+   constructor. In that case, this constructor will ensure the subclass is
+   compatible with jQuery and QuickUI before going further.
+
+This is complicated by the fact the constructor may be invoked with "new", or in
+a static form (without "new").
+
+In all cases, the constructor ultimately returns an instance of an "init"
+helper class, as is usual for jQuery subclasses created via $.sub().
+###
 controlConstructor = ->
-  ###
-  The constructor needs to deal with two situations:
-  1. The Control class is being instantiated.
-  2. A CoffeeScript-based subclass of Control is being instantiated. The default
-     constructor for a CoffeeScript class invokes the base class' constructor.
-     In that case, this constructor will ensure the subclass is compatible with
-     jQuery and QuickUI before going further.
-  In either case, the constructor ultimately returns an instance of an "init"
-  helper class, as is usual for jQuery.
-  ###
+  # Return a jQuery constructor.
   ( selector, context ) ->
 
     # Figure out which class is being instantiated.
@@ -32,8 +77,7 @@ controlConstructor = ->
       # instantiating.
       classFn = arguments.callee
 
-      # See if we were invoked by the constructor of a subclass that was created
-      # by CoffeeScript. We use "__super__" to detect the latter criterion.
+      # See if we were invoked by the constructor of a subclass.
       while ( classFn.caller:: ) instanceof classFn and classFn.caller.__super__ isnt undefined
         # This function was invoked by the constructor of a subclass created by
         # CoffeeScript. That constructor, in all likelihood, is the default
@@ -52,7 +96,7 @@ controlConstructor = ->
 
 
 ###
-Return true if the given class is already jQuery and QuickUI compatible.
+Return true if the given class has already been made jQuery + QuickUI compatible.
 ###
 coffeeClassNeedsCompatibility = ( classFn ) ->
   # Look for __super__ member, which is created by CoffeeScript's class syntax.
@@ -69,7 +113,10 @@ coffeeClassNeedsCompatibility = ( classFn ) ->
     false
 
 
-# TODO: Comments:
+###
+Create an "init" helper class per jQuery's class scheme. The init helper class
+is the one that actually does the real work in jQuery.
+###
 createInitClass = ( classFn ) ->
 
   # This is the same init helper class that $.sub() creates.
@@ -78,20 +125,17 @@ createInitClass = ( classFn ) ->
       context = classFn( context )
     return jQuery::init.call this, selector, context, root
     
-  # The init object is what jQuery actually instantiates, so we need to make
-  # sure it's got the right prototype.
+  # The helper class inherits from the class exposed to the developer.
   classFn::init:: = classFn::
   
   # This is used in the closure for the init() function defined above.
   # Per jQuery.sub(), this must be declared *after* the init.prototype is
-  # set above, or else the this() constructor won't work.
+  # set above, or else the constructor below won't work.
   root = classFn document
 
 
 ###
 Return a jQuery-compatible subclass of the indicated superclass.
-
-# TODO: Comments
 ###
 createSubclass = ( superclass ) ->
   
@@ -126,13 +170,14 @@ createSubclass = ( superclass ) ->
 
 
 ###
-Make the class compatibile with jQuery and QuickUI.
-  
-CoffeeScript and jQuery have a roughly equivalent subclassing mechanism,
-although jQuery's is far more byzantine. Among other things, jQuery class
-constructors actually return an instance of a helper class called init. This
-method doctors up the CoffeeScript class to make it function the same as a
-class created with $.sub().
+Make the indicated CoffeeScript class compatible with jQuery + QuickUI. This
+entails fixing up the class so that it looks identical to one created via
+Control.sub().
+
+One extra bit of work is extracting a class name from the class constructor
+generated by CoffeeScript. JavaScript developers using Control.sub() have to
+explicitly specify a class name, but CoffeeScript developers can simply use the
+language's class syntax, which will give the constructor a meaningful name.
 ###
 makeCoffeeClassCompatible = ( classFn ) ->
   

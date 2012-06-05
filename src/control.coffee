@@ -56,8 +56,6 @@ Control class: the base class for all QuickUI controls.
 This is defined as a subclass of jQuery so that all control objects can also
 have jQuery methods applied to them.
 ###
-
-
 window.Control = createSubclass jQuery
 
 
