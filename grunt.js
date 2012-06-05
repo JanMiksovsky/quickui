@@ -29,8 +29,7 @@ module.exports = function(grunt) {
                 src: [
                     // Basic facilities; helpful to put these first.
                     "test/sub.coffee",
-                    /*
-                    "test/sample.coffee",
+                    "test/sample.coffee", // Sample classes used by following tests
                     "test/control.coffee",
                     
                     // Other services
@@ -44,7 +43,6 @@ module.exports = function(grunt) {
                     "test/styles.coffee",
                     "test/super.coffee",
                     "test/utilities.coffee"
-                    */
                 ],
                 dest: "test/unittests.js"
             }
