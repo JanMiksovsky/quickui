@@ -5,23 +5,6 @@ Subclassing
 ###
 
 
-createSubclass = ( superclass ) ->
-  subclass = controlConstructor()
-  jQuery.extend true, subclass, superclass
-  subclass.superclass = superclass
-  subclass:: = superclass()
-  subclass::constructor = subclass
-
-  # jQuery classes use fn as a synonym for prototype.
-  subclass.fn = subclass::
-
-  # TODO Confirm next line is unnecessary; covered by $.extend() call above.
-  #subclass.sub = @sub
-  createInitClass subclass
-
-  subclass
-
-
 # TODO: Comments
 controlConstructor = ->
   ###
@@ -68,6 +51,23 @@ controlConstructor = ->
     return new classFn::init selector, context
 
 
+###
+Return true if the given class is already jQuery and QuickUI compatible.
+###
+coffeeClassNeedsCompatibility = ( classFn ) ->
+  # Look for __super__ member, which is created by CoffeeScript's class syntax.
+  if classFn.__super__
+    # Class was created by CoffeeScript. CoffeeScript will have copied all keys
+    # from the base class to this present class. One of those keys is the
+    # "superclass" member. If the class hasn't yet been made compatible, this
+    # copied superclass member will still point to the super-superclass. So we
+    # can compare the __super__'s constructor to the superclass value to see if
+    # the class has been made compatible.
+    classFn.__super__.constructor isnt classFn.superclass
+  else
+    # Regular JavaScript class
+    false
+
 
 # TODO: Comments:
 createInitClass = ( classFn ) ->
@@ -89,21 +89,23 @@ createInitClass = ( classFn ) ->
 
 
 ###
-Return true if the given class is already jQuery and QuickUI compatible.
+Return a jQuery-compatible subclass of the indicated superclass.
+
+# TODO: Comments
 ###
-coffeeClassNeedsCompatibility = ( classFn ) ->
-  # Look for __super__ member, which is created by CoffeeScript's class syntax.
-  if classFn.__super__
-    # Class was created by CoffeeScript. CoffeeScript will have copied all keys
-    # from the base class to this present class. One of those keys is the
-    # "superclass" member. If the class hasn't yet been made compatible, this
-    # copied superclass member will still point to the super-superclass. So we
-    # can compare the __super__'s constructor to the superclass value to see if
-    # the class has been made compatible.
-    classFn.__super__.constructor isnt classFn.superclass
-  else
-    # Regular JavaScript class
-    false
+createSubclass = ( superclass ) ->
+  subclass = controlConstructor()
+  jQuery.extend true, subclass, superclass
+  subclass.superclass = superclass
+  subclass:: = superclass()
+  subclass::constructor = subclass
+
+  # jQuery classes use fn as a synonym for prototype.
+  subclass.fn = subclass::
+
+  createInitClass subclass
+
+  subclass
 
 
 ###

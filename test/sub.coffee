@@ -6,35 +6,44 @@ $ ->
 
   test "sub: CoffeeScript-style class", ->
     class Sub extends Control
-      property: "value"
     # Before instantiation, class isn't compatible with jQuery.
     equal Sub.superclass, jQuery # When fixed, will be equal to Control
-    sub = Sub.create()
+    c = Sub.create()
     equal Sub.superclass, Control
-    ok sub instanceof jQuery
-    ok sub instanceof Control
-    ok sub instanceof Sub
-    equal sub.className, "Sub"
-    equal sub.classes, "Sub Control"
-    equal sub.property, "value"
+    ok c instanceof jQuery
+    ok c instanceof Control
+    ok c instanceof Sub
+    ok ( c.init:: ) instanceof Control
+    equal c.className, "Sub"
+    equal c.classes, "Sub Control"
 
   test "sub: JavaScript-style class", ->
     Sub = `Control.sub({
       className: "Sub",
-      property: "value"
     })`
     equal Sub.superclass, Control
-    sub = Sub.create()
-    ok sub instanceof jQuery
-    ok sub instanceof Control
-    ok sub instanceof Sub
-    equal sub.className, "Sub"
-    equal sub.classes, "Sub Control"
-    equal sub.property, "value"
+    c = Sub.create()
+    ok c instanceof jQuery
+    ok c instanceof Control
+    ok c instanceof Sub
+    ok ( c.init:: ) instanceof Control
+    equal c.className, "Sub"
+    equal c.classes, "Sub Control"
+
+  test "sub: CoffeeScript-style subclasses CoffeeScript-style", ->
+    class Sub extends Control
+    class SubSub extends Sub
+    c = SubSub.create()
+    equal SubSub.superclass, Sub
+    ok c instanceof jQuery
+    ok c instanceof Control
+    ok c instanceof SubSub
+    ok c instanceof Sub
+    equal c.className, "SubSub"
+    equal c.classes, "SubSub Sub Control"
+
 
   ###
-  test "sub: CoffeeScript-style subclasses CoffeeScript-style"
-
   test "sub: CoffeeScript-style subclasses JavaScript-style"
 
   test "sub: JavaScript-style subclasses JavaScript-style"
