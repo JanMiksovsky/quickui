@@ -17,11 +17,21 @@ $ ->
     $c1 = Greet.create()
     ok !$c1.generic()
     equal $c1.prop( "class" ), "Greet Control"
-    Greet::genericDefault = true
+    Greet::inherited.generic = true
     $c2 = Greet.create()
     ok $c2.generic()
     equal $c2.prop( "class" ), "Greet Control generic"
-      
+
+  test "Utilities: generic override", ->
+    createGreetClass()
+    Greet::inherited.generic = true
+    class Sub extends Greet
+      inherited:
+        generic: false
+    $c = Sub.create()
+    ok !$c.generic()
+    equal $c.prop( "class" ), "Sub Greet Control"
+
   test "Utilities: visibility", ->
     $c = Control.create()
     equal $c.visibility(), false # Control isn't in DOM, so is not visible.

@@ -119,8 +119,6 @@ Control.extend
       # Apply all class names in the class hierarchy as style names.
       # This lets the element pick up styles defined by those classes.
       .addClass( cssClasses this )
-      # Apply generic style if class supports that.
-      .generic( String( $controls.genericDefault ) == "true" )
       # Render controls as DOM elements.
       .render()
       # Pass in the target's old contents ( if any ).
