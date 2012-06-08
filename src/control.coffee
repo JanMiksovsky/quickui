@@ -1,6 +1,6 @@
 ###
 QuickUI
-Version 0.9
+Version 0.9.1
 Modular web control framework
 http://quickui.org
 
@@ -51,11 +51,18 @@ jQuery.fn.control = ( arg1, arg2 ) ->
 
 
 ###
-Control subclass of jQuery.
-This is used as the base class for all QuickUI controls.
+Control class: the base class for all QuickUI controls.
+
+This is defined as a subclass of jQuery so that all control objects can also
+have jQuery methods applied to them.
 ###
-window.Control = jQuery.sub()
-jQuery.extend Control,
+window.Control = createSubclass jQuery
+
+
+###
+Class methods
+###
+Control.extend
 
     
   ###
@@ -112,8 +119,6 @@ jQuery.extend Control,
       # Apply all class names in the class hierarchy as style names.
       # This lets the element pick up styles defined by those classes.
       .addClass( cssClasses this )
-      # Apply generic style if class supports that.
-      .generic( String( $controls.genericDefault ) == "true" )
       # Render controls as DOM elements.
       .render()
       # Pass in the target's old contents ( if any ).
@@ -132,11 +137,14 @@ jQuery.extend Control,
   Create a subclass of this class. This overloads the standard jQuery $.sub()
   to permit a single argument: an object that is used to extent the prototype
   of the newly-created class.
+
+  TODO: Update comments. Mention: Intended for use by JavaScript; CoffeeScript
+  users can use "class".
   ###
   sub: ( options ) ->
-    newClass = jQuery.sub.call this # Invoke base jQuery implementation.
-    newClass::extend options if options?
-    newClass
+    subclass = createSubclass this
+    subclass::extend options if options?
+    subclass
 
 
 ###
@@ -183,6 +191,12 @@ Control::extend
     else
       @data controlClassData
 
+
+  ###
+  Control itself has no settings that need to be applied on render.
+  ###
+  inherited: null
+
   
   ###
   Invoked when the control has finished rendering.
@@ -207,12 +221,6 @@ Control::extend
         # Apply the class' desired values using superclass's setters.
         rendered.json classFn::inherited, @
     @
-
-
-  ###
-  Control itself has no settings that need to be applied on render.
-  ###
-  inherited: null
 
 
   ###
@@ -259,12 +267,16 @@ Control::extend
   ###
   The current version of QuickUI.
   ###
-  quickui: "0.9"
+  quickui: "0.9.1"
 
 
 ###
 Private helpers
 ###
+
+
+# Name of data element used to store a reference to an element's control class.
+controlClassData = "_controlClass"
 
 
 ###
@@ -277,10 +289,6 @@ cssClasses = ( classFn ) ->
   if !classFn::hasOwnProperty "classes"
     classFn::classes = classFn::className + " " + ( cssClasses classFn.superclass )
   classFn::classes
-
-
-# Name of data element used to store a reference to an element's control class.
-controlClassData = "_controlClass"
 
 
 ###
