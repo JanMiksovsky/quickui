@@ -1,6 +1,7 @@
 .externalToolBuilders
 .project
 .pydevproject
+*.sublime-*
 *.pyc
 *.csproj.user
 *.suo
