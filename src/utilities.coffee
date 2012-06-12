@@ -204,7 +204,21 @@ Control::extend
   The tabindex of the control.
   ###
   tabindex: ( tabindex ) ->
-    @attr "tabindex", tabindex
+    if tabindex is undefined
+      @prop "tabindex"
+    else
+      @prop "tabindex", tabindex
+
+
+  ###
+  Extra information about an element; e.g., to show as a ToolTip. This maps
+  to the standard HTML title property on the control's top-level element.
+  ###
+  title: ( title ) ->
+    if title is undefined
+      @prop "title"
+    else
+      @prop "title", title
 
 
 ###
