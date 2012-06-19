@@ -47,6 +47,12 @@ module.exports = function(grunt) {
                 dest: "test/unittests.js"
             }
         },
+        min: {
+            dist: {
+                src: [ "src/quickui.js" ],
+                dest: "src/quickui.min.js"
+            }
+        },
         watch: {
             quickui: {
                 files: "<config:coffee.quickui.src>",
