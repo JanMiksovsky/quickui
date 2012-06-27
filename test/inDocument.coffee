@@ -62,4 +62,9 @@ $ ->
     addControl $c
     $c = $c.control InDocumentSample
     ok $c.inDocumentCalled()
-    
+  
+  test "inDocument: element transmuted before being added to document", ->
+    expect 0
+    $c = InDocumentSample.create()
+    $c.transmute Control
+    addControl $c

@@ -1,6 +1,6 @@
 ###
 QuickUI
-Version 0.9.1
+Version 0.9.2
 Modular web control framework
 http://quickui.org
 
@@ -249,12 +249,17 @@ Control::extend
   need to preserve existing content.
   ###
   transmute: ( newClass, preserveContent, preserveClasses, preserveEvents ) ->
+    
     classFn = Control.getClass newClass
     oldContents = if preserveContent
       ( significantContent( element ) for element in @ )
     else
       null
     oldClasses = ( if preserveClasses then @prop( "class" ) else null )
+
+    # If the old class was listening to inDocument, stop listening now.
+    removeElementFromInDocumentCallbacks element for element in @
+
     # Reset everything.
     @empty().removeClass().removeData()
     @off()  unless preserveEvents
@@ -267,7 +272,7 @@ Control::extend
   ###
   The current version of QuickUI.
   ###
-  quickui: "0.9.1"
+  quickui: "0.9.2"
 
 
 ###

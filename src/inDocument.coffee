@@ -114,6 +114,19 @@ mutationEvents = ->
 
 
 ###
+Remove the given element from the list of callbacks, effectively canceling its
+inDocument behavior. If the element is not in the list, this has no effect.
+###
+removeElementFromInDocumentCallbacks = ( element ) ->
+  i = 0
+  while i < inDocumentCallbacks.length
+    if inDocumentCallbacks[i].element is element
+      inDocumentCallbacks.splice i, 1
+    else
+      i++
+
+
+###
 Start listening for insertions of elements into the document body.
 
 On modern browsers, we use the DOMNodeInserted mutation event (which, as of
