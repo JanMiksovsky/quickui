@@ -109,8 +109,8 @@ Control.extend
         # Tags don't match; replace with elements with the right tag.
         $controls = replaceElements $controls, @ defaultTarget
 
-    if typeof properties is "string"
-      # Plain string becomes control content
+    if !$.isPlainObject( properties )
+      # Property value implicitly handed to content() property.
       properties = content: properties
 
     $controls
