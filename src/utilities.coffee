@@ -14,15 +14,21 @@ jQuery.extend Control,
   getClass: ( value ) ->
     if value is null or value == ""
       # Special cases used to clear class-valued properties.
-      null
-    else if jQuery.isFunction value
-      value
+      return null
     else if jQuery.isPlainObject value
-      Control.sub value
+      # Create a new class from the supplied Control JSON.
+      return Control.sub value
+
+    classFn = if jQuery.isFunction value
+      value # Value is already a class
     else
-      classFn = window[ value ]
-      throw "Unable to find a class called #{value}." unless classFn
-      classFn
+      window[ value ] # Look up class using value as a string class name.
+    throw "Unable to find a class called #{value}." unless classFn
+
+    # Ensure class is compatible before returning it.
+    if coffeeClassNeedsCompatibility classFn
+      makeCoffeeClassCompatible classFn
+    classFn
 
 
   # Return true if the given element is a control.
