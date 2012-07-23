@@ -4,9 +4,9 @@ Utilities unit tests
 
 $ ->
   
-  test "Utilities: cast: control() on plain jQuery reference returns undefined", ->
+  test "Utilities: cast: control() on plain jQuery reference returns null", ->
     $element = $( "<div/>" )
-    equal $element.control(), undefined
+    equal $element.control(), null
   
   test "Utilities: cast: two control classes derive from same superclass", ->
     A = Control.sub className: "A"
