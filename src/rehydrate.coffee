@@ -20,7 +20,7 @@ Control::rehydrate = ->
   # Collect the processed controls, which may differ from the original
   # elements if the existing elements didn't have they right tags.
   controls = ( ( if $e.data "control" then rehydrateElement $e[0] else $e ) for $e in @segments() )
-  Control( controls ).cast()
+  ( new Control( controls ) ).cast()
 
 
 ###
@@ -70,7 +70,7 @@ Return any compound properties found in the given element's children.
 ###
 getCompoundPropertiesFromChildren = ( element ) ->
   properties = {}
-  $compoundElements = Control( element ).children().filter "[data-property]" 
+  $compoundElements = new Control( element ).children().filter "[data-property]" 
   for $compound in $compoundElements.segments()
     propertyName = $compound.attr "data-property"
     if propertyName isnt "control" # data-control means a control, not a property.
@@ -125,5 +125,5 @@ Set data-create-controls="true" on the body tag to have the current
 page automatically rehydrated on load.
 ###
 jQuery ->
-  $body = Control "body"
+  $body = new Control "body"
   $body.rehydrate() if $body.data "create-controls"

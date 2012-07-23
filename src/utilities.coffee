@@ -45,7 +45,7 @@ With this, $foo.is( ":control" ) returns true if at least one element in $foo
 is a control, and $foo.filter( ":control" ) returns just the controls in $foo.
 ###
 jQuery.expr[":"].control = ( elem ) ->
-  controlClass = Control( elem ).controlClass()
+  controlClass = ( new Control( elem ) ).controlClass()
   ( if controlClass then controlClass is Control or controlClass:: instanceof Control else false )
 
 
@@ -70,7 +70,7 @@ Control::extend
       elementClass = $e.controlClass() ? defaultClass
       setClass = elementClass if setClass is undefined or ( setClass:: ) instanceof elementClass
     setClass ?= defaultClass  # In case "this" had no elements.
-    setClass @
+    new setClass @
 
 
   ###
@@ -92,7 +92,7 @@ Control::extend
   ###
   eachControl: ( fn ) ->
     for element, i in @
-      control = Control( element ).cast()
+      control = ( new Control( element ) ).cast()
       result = fn.call control, i, control
       break if result is false
     @
@@ -168,7 +168,7 @@ Control::extend
       # Map a collection of control instances to the given element
       # defined for each instance.
       elements = ( $control.data ref for $control in @segments() when ( $control.data ref ) isnt undefined )
-      $result = Control( elements ).cast()
+      $result = ( new Control( elements ) ).cast()
       # To make the element function $.end()-able, we want to call
       # jQuery's public pushStack() API. Unfortunately, that call
       # won't allow us to both a) return a result of the proper class

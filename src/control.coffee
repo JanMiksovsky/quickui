@@ -35,7 +35,7 @@ array of elements.
 jQuery.fn.control = ( arg1, arg2 ) ->
   if arg1 is undefined
     # Return the controls bound to these element(s), cast to the correct class.
-    $cast = Control( this ).cast jQuery
+    $cast = ( new Control( this ) ).cast jQuery
     if $cast instanceof Control
       $cast
     else
@@ -47,7 +47,7 @@ jQuery.fn.control = ( arg1, arg2 ) ->
     controlClass.createAt this, properties
   else
     # Set properties on the control(s).
-    Control( this ).cast().properties arg1
+    ( new Control( this ) ).cast().properties arg1
 
 
 ###
@@ -98,16 +98,16 @@ Control.extend
     oldContents = undefined
     if target is null
       # Create a default element.
-      $controls = @ defaultTarget
+      $controls = new @ defaultTarget
       oldContents = []
     else
       # Grab the existing contents of the target elements.
-      $controls = @ target
+      $controls = new @ target
       oldContents = ( significantContent( element ) for element in $controls )
       existingTag = $controls[0].nodeName.toLowerCase()
       if existingTag isnt @::tag.toLowerCase() and existingTag isnt "body"
         # Tags don't match; replace with elements with the right tag.
-        $controls = replaceElements $controls, @ defaultTarget
+        $controls = replaceElements $controls, new @ defaultTarget
 
     if !$.isPlainObject( properties )
       # Property value implicitly handed to content() property.
@@ -216,7 +216,7 @@ Control::extend
     classFn = @constructor
     if classFn isnt Control
       superclass = classFn.superclass
-      rendered = superclass( @ ).render() # Superclass renders first.
+      rendered = ( new superclass( @ ) ).render() # Superclass renders first.
       if classFn::hasOwnProperty "inherited"
         # Apply the class' desired values using superclass's setters.
         rendered.json classFn::inherited, @
@@ -330,7 +330,7 @@ at least one child that's something other than whitespace or comments.
 If the element has no significant contents, return undefined.
 ###
 significantContent = ( element ) ->
-  content = Control( element ).content() # Use base implementation.
+  content = new Control( element ).content() # Use base implementation.
   if typeof content is "string" and jQuery.trim( content ).length > 0
     return content  # Element is text node with non-empty text  
   # Content is an array

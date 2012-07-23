@@ -71,7 +71,7 @@ elementInserted = ( event ) ->
   if inDocumentCallbacks.length == 0
     stopInDocumentListening()   # No more elements to wait for.
   for callback in callbacksReady
-    control = Control( callback.element ).control()
+    control = ( new Control( callback.element ) ).control()
     callback.callback.call control
     
     

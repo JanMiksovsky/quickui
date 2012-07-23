@@ -131,7 +131,7 @@ createInitClass = ( classFn ) ->
   # This is used in the closure for the init() function defined above.
   # Per jQuery.sub(), this must be declared *after* the init.prototype is
   # set above, or else the constructor below won't work.
-  root = classFn document
+  root = new classFn document
 
 
 ###
@@ -157,7 +157,7 @@ createSubclass = ( superclass ) ->
 
   # Create a prototype of the appropriate class, and update its constructor
   # so that instanceof will work as expected.
-  subclass:: = superclass()
+  subclass:: = new superclass()
   subclass::constructor = subclass
 
   # jQuery classes use fn as a synonym for prototype.

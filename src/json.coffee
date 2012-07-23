@@ -89,7 +89,7 @@ evaluateControlJson = ( json, logicalParent ) ->
     if /^\w+$/.test html
       # HTML tag singleton. Map tag like "div" to "<div>".
       html = "<" + html + ">"
-    control = Control( html ).properties properties
+    control = ( new Control( html ) ).properties properties
   else
     control = Control.getClass( json.control ).create properties
   if json.ref
