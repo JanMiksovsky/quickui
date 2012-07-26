@@ -251,21 +251,22 @@ Control::extend
   transmute: ( newClass, preserveContent, preserveClasses, preserveEvents ) ->
     
     classFn = Control.getClass newClass
-    oldContents = if preserveContent
-      ( significantContent( element ) for element in @ )
-    else
-      null
     oldClasses = ( if preserveClasses then @prop( "class" ) else null )
 
     # If the old class was listening to inDocument, stop listening now.
     removeElementFromInDocumentCallbacks element for element in @
 
     # Reset everything.
-    @empty().removeClass().removeData()
-    @off()  unless preserveEvents
+    @empty() unless preserveContent
+    @removeClass()
+    @removeData()
+    @off() unless preserveEvents
+
     $controls = classFn.createAt this
-    $controls.propertyVector "content", oldContents  if oldContents
-    $controls.removeClass( "Control" ).addClass( oldClasses ).addClass "Control"  if oldClasses       # Ensures Control ends up rightmost
+
+    if oldClasses
+      # Ensure Control class ends up rightmost
+      $controls.removeClass( "Control" ).addClass( oldClasses ).addClass "Control"
     $controls
 
   

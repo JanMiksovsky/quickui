@@ -105,3 +105,11 @@ $ ->
     c = c.transmute MyButton, true
     equal c[0].nodeName.toLowerCase(), "button"
     equal c.text(), "Hello"
+
+  test "transmute: content contains a subcontrol", ->
+    subcontrol = Control.create()
+    c = Control.create
+      content: subcontrol
+    equal subcontrol.controlClass(), Control
+    c.transmute Control, true
+    equal subcontrol.controlClass(), Control
