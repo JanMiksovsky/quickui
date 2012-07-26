@@ -109,7 +109,7 @@ Control.extend
         # Tags don't match; replace with elements with the right tag.
         $controls = replaceElements $controls, new @ defaultTarget
 
-    if !$.isPlainObject( properties )
+    if properties isnt undefined and !$.isPlainObject( properties )
       # Property value implicitly handed to content() property.
       properties = content: properties
 
