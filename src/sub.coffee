@@ -65,7 +65,14 @@ controlConstructor = ->
   ( selector, context ) ->
 
     # Figure out which class is being instantiated.
-    if @ isnt window
+    # The first check we make is to see whether "this" is the window. The simple
+    # check would be "this is window". However, due to a bizarre bug in IE8,
+    # when a Control() constructor is invoked during a jQuery ready() handler,
+    # "this" will *a* window but not *the* window, and the window check fails.
+    # An acceptable workaround for IE8 is to see whether "this" is an instance
+    # of Window. In normal browsers, the behavior of these two checks should be
+    # the same.
+    if !( @ instanceof Window )
       # Simple case, but also unfortunately rare. The constructor was invoked
       # in response to a "new Foo()" call on the control class Foo.
       classFn = @constructor

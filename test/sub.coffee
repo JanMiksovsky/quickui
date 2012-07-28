@@ -4,6 +4,14 @@ Test subclassing facilities
 
 $ ->
 
+  test "sub: static constructor (without 'new')", ->
+    c = Control()
+    ok c instanceof Control
+
+  test "sub: normal constructor (with 'new')", ->
+    c = new Control()
+    ok c instanceof Control
+
   test "sub: CoffeeScript class subclasses Control", ->
     class Sub extends Control
     # Before instantiation, class isn't compatible with jQuery.
