@@ -160,3 +160,22 @@ $ ->
     equal $c.foo(), 123
     $c.foo 0 # Set as integer
     equal $c.foo(), 0
+
+  test "Properties: side-effect function", ->
+    $c = Control.create()
+    $c.foo = Control.property ( newFoo ) ->
+      equal arguments.length, 1
+      equal newFoo, "Hello"
+    equal $c.foo(), undefined
+    $c.foo "Hello"
+    equal $c.foo(), "Hello"
+
+  test "Properties: side effect function with old value", ->
+    $c = Control.create()
+    $c.foo = Control.property ( newFoo, oldFoo ) ->
+      equal arguments.length, 2
+      equal oldFoo, expectedOldValue
+    expectedOldValue = undefined
+    $c.foo "Hello"
+    expectedOldValue = "Hello"
+    $c.foo "world"

@@ -91,10 +91,19 @@ jQuery.extend Control,
         ( if ( result is undefined ) then defaultValue else result )
       else
         # Setter. Allow chaining.
+        sideEffectWantsOldValue = sideEffectFn?.length > 1
         for control in @segments()
-          result = ( if ( converterFunction ) then converterFunction.call( control, value ) else value )
-          control.data backingPropertyName, result
-          sideEffectFn.call control, result if sideEffectFn
+          oldValue = control.data backingPropertyName if sideEffectWantsOldValue
+          result = if converterFunction
+            converterFunction.call( control, value )
+          else
+            value
+          control.data backingPropertyName, result  # Set
+          if sideEffectFn
+            args = [ result ]
+            if sideEffectWantsOldValue
+              args.push oldValue
+            sideEffectFn.apply control, args
         @
 
 
