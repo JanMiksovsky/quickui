@@ -10,9 +10,15 @@ var path = require( "path" );
  * name of a class that depends on base class Bar, such that the files for
  * base classes come before the files for their dependent subclasses.
  */
-exports.sortClassFiles = function( patterns ) {
+exports.sortClassFiles = function() {
 
-    var classFileNames = glob.glob( patterns );
+    var patterns = flatten( arguments );
+
+    var classFileNames = [];
+    for ( var i in patterns ) {
+        var fileNames = glob.glob( patterns[i] );
+        classFileNames = classFileNames.concat( fileNames );
+    }
 
     var dependencies = [];
     for ( var i = 0; i < classFileNames.length; i++ ) {
@@ -98,4 +104,20 @@ function sortDependencies( dependencies ) {
     }
 
     return sorted;
+}
+
+/* Flatten the given array. */
+function flatten( a ) {
+    var results;
+    var isArray = ( a.length !== undefined && typeof a !== "string" );
+    if ( isArray ) {
+        results = []
+        for ( var i = 0; i < a.length; i++ ) {
+            var result = flatten( a[i] );
+            results = results.concat( result );
+        }
+    } else {
+        results = [ a ];
+    }
+    return results;
 }
