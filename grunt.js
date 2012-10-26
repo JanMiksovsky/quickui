@@ -1,7 +1,7 @@
 /*
  * Build QuickUI runtime, tests, etc. using Grunt.js
  */
-module.exports = function(grunt) {
+module.exports = function( grunt ) {
 
     grunt.loadNpmTasks( "grunt-contrib-coffee" );
 
@@ -42,8 +42,9 @@ module.exports = function(grunt) {
         concat: {
             quickui: {
                 src: [
-                    "build/sub.js",       // Subclassing support; must come first.
-                    "build/control.js",   // Defines Control class; must come second.
+                    "src/intro.js",         // Start of function wrapper
+                    "build/sub.js",         // Subclassing support; must come first.
+                    "build/control.js",     // Defines Control class; must come second.
                     "build/content.js",
                     "build/inDocument.js",
                     "build/json.js",
@@ -53,15 +54,16 @@ module.exports = function(grunt) {
                     "build/rehydrate.js",
                     "build/styles.js",
                     "build/super.js",
-                    "build/utilities.js"
+                    "build/utilities.js",
+                    "src/outro.js"          // End of function wrapper.
                 ],
                 dest: "quickui.js"
             }
         },
         min: {
             dist: {
-                src: [ "src/quickui.js" ],
-                dest: "src/quickui.min.js"
+                src: [ "quickui.js" ],
+                dest: "quickui.min.js"
             }
         }
     });
