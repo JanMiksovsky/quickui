@@ -1,11 +1,5 @@
 ###
-QuickUI
-Version 0.9.2
-Modular web control framework
-http://quickui.org
-
-Copyright 2009-2012 Jan Miksovsky
-Licensed under the MIT license.
+Main Control class definition and jQuery plugin.
 ###
 
     
@@ -276,7 +270,7 @@ Control::extend
   ###
   The current version of QuickUI.
   ###
-  quickui: "0.9.2"
+  quickui: "0.9.3-pre"
 
 
 ###
