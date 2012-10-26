@@ -2,7 +2,7 @@
 Shared sample classes used by unit tests.
 ###
 
-createGreetClass = ->
+window.createGreetClass = ->
   window.Greet = Control.sub
     className: "Greet"
     inherited: 

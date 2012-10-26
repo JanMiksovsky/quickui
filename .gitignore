@@ -1,5 +1,6 @@
 *.sublime-*
-node_modules
-src/quickui.js
-src/quickui.min.js
-test/unittests.js
+/build/
+/node_modules/
+/quickui.js
+/quickui.min.js
+/test/unittests.js

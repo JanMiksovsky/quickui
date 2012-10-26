@@ -3,48 +3,59 @@
  */
 module.exports = function(grunt) {
 
-    grunt.loadTasks( "grunt" );
+    grunt.loadNpmTasks( "grunt-contrib-coffee" );
 
     // Project configuration.
     grunt.initConfig({
         coffee: {
             quickui: {
-                src: [
-                    "src/sub.coffee",       // Subclassing support; must come first.
-                    "src/control.coffee",   // Defines Control class; must come second.
-                    "src/content.coffee",
-                    "src/inDocument.coffee",
-                    "src/json.coffee",
-                    "src/layout.coffee",
-                    "src/localization.coffee",
-                    "src/properties.coffee",
-                    "src/rehydrate.coffee",
-                    "src/styles.coffee",
-                    "src/super.coffee",
-                    "src/utilities.coffee"
-                ],
-                dest: "src/quickui.js"
+                files: {
+                    "build/*.js": "src/*.coffee"
+                },
+                options: {
+                    bare: true
+                }
             },
             test: {
+                files: {
+                    "test/unittests.js": [
+                        // Basic facilities; helpful to put these first.
+                        "test/sub.coffee",
+                        "test/sample.coffee", // Sample classes used by following tests
+                        "test/control.coffee",
+                        
+                        // Other services
+                        "test/content.coffee",
+                        "test/inDocument.coffee",
+                        "test/json.coffee",
+                        "test/layout.coffee",
+                        "test/localization.coffee",
+                        "test/properties.coffee",
+                        "test/rehydrate.coffee",
+                        "test/styles.coffee",
+                        "test/super.coffee",
+                        "test/utilities.coffee"
+                    ]
+                }
+            }
+        },
+        concat: {
+            quickui: {
                 src: [
-                    // Basic facilities; helpful to put these first.
-                    "test/sub.coffee",
-                    "test/sample.coffee", // Sample classes used by following tests
-                    "test/control.coffee",
-                    
-                    // Other services
-                    "test/content.coffee",
-                    "test/inDocument.coffee",
-                    "test/json.coffee",
-                    "test/layout.coffee",
-                    "test/localization.coffee",
-                    "test/properties.coffee",
-                    "test/rehydrate.coffee",
-                    "test/styles.coffee",
-                    "test/super.coffee",
-                    "test/utilities.coffee"
+                    "build/sub.js",       // Subclassing support; must come first.
+                    "build/control.js",   // Defines Control class; must come second.
+                    "build/content.js",
+                    "build/inDocument.js",
+                    "build/json.js",
+                    "build/layout.js",
+                    "build/localization.js",
+                    "build/properties.js",
+                    "build/rehydrate.js",
+                    "build/styles.js",
+                    "build/super.js",
+                    "build/utilities.js"
                 ],
-                dest: "test/unittests.js"
+                dest: "quickui.js"
             }
         },
         min: {
@@ -52,20 +63,10 @@ module.exports = function(grunt) {
                 src: [ "src/quickui.js" ],
                 dest: "src/quickui.min.js"
             }
-        },
-        watch: {
-            quickui: {
-                files: "<config:coffee.quickui.src>",
-                tasks: "coffee:quickui"
-            },
-            test: {
-                files: "<config:coffee.test.src>",
-                tasks: "coffee:test"
-            }
         }
     });
 
     // Default task.
-    grunt.registerTask( "default", "coffee" );
+    grunt.registerTask( "default", "coffee concat" );
     
 };
