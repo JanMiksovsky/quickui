@@ -75,16 +75,17 @@ parent is the control whose definition included the JSON being processed here.
 The third form is any other JSON dictionary object, returned as is.
 ###
 evaluateControlJson = ( json, logicalParent ) ->
-  # Get the first key in the JSON.
-  for firstKey of json
-    break
-  return json if firstKey isnt "html" and firstKey isnt "control"  # Regular object, return as is.
-  reservedKeys = { ref: true } # "ref" handled specially, see below.
-  reservedKeys[firstKey] = true
+  if json.html?
+    reservedKeys = html: true
+  else if json.control?
+    reservedKeys = control: true
+  else
+    return # Regular object, return as is.
+  reservedKeys.ref = true # "ref" handled specially, see below.
   stripped = copyExcludingKeys json, reservedKeys
   properties = evaluateControlJsonProperties stripped, logicalParent
   control = undefined
-  if firstKey is "html"
+  if json.html?
     html = json.html
     if /^\w+$/.test html
       # HTML tag singleton. Map tag like "div" to "<div>".
