@@ -80,7 +80,7 @@ evaluateControlJson = ( json, logicalParent ) ->
   else if json.control?
     reservedKeys = control: true
   else
-    return # Regular object, return as is.
+    return json # Regular object, return as is.
   reservedKeys.ref = true # "ref" handled specially, see below.
   stripped = copyExcludingKeys json, reservedKeys
   properties = evaluateControlJsonProperties stripped, logicalParent
