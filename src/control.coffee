@@ -209,7 +209,7 @@ Control::extend
   property setters on that class' superclass. That is, each class defines
   itself in the semantics of its superclass.
   ###    
-  render: render = ->
+  render: ->
     classFn = @constructor
     if classFn isnt Control
       superclass = classFn.superclass
