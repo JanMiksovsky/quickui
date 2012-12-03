@@ -103,32 +103,15 @@ isElementInDocument = ( element ) ->
 
 
 ###
-Return true in Microsoft Internet Explorer. This is used to determine whether
-we can rely on mutation events, which aren't supported in IE 8. As of this
-writing, jQuery 1.8.2 supports browser agent detection, but that support is
-dropped in jQuery 1.9, so proactively we're picking up the bits of that
-detection which QuickUI actually needs. (Mutation event detection isn't
-available via jQuery's $.support facility, and probably never will be.)
-###
-userAgentMatch = /(msie) ([\w.]+)/.exec navigator.userAgent.toLowerCase()
-browser = if userAgentMatch?
-  {
-    msie: true
-    version: userAgentMatch[2]
-  }
-else
-  {}
-
-###
 Return true if we can rely on DOM mutation events to detect DOM changes.
 ### 
-mutationEvents =
+mutationEvents = ->
   # Since the only QuickUI-supported browser that doesn't support
   # mutation events is IE 8, we just look for that. If need be, we
   # could programmatically detect support using something like
   # Diego Perini's NWMatcher approach.
-  not browser.msie or parseInt( browser.version ) >= 9
-# console?.log "mutationEvents: #{mutationEvents}"
+  not Control.browser.msie or parseInt( Control.browser.version ) >= 9
+
 
 ###
 Remove the given element from the list of callbacks, effectively canceling its
@@ -159,7 +142,7 @@ doing this at all costs, but this apparently is the only way we can
 determine when elements have been added in IE8.
 ###    
 startInDocumentListening = ->
-  if mutationEvents
+  if mutationEvents()
     # Use mutation events.
     if document.body
       # The document's ready for us to wire up mutation event handlers.
@@ -188,7 +171,7 @@ startInDocumentListening = ->
 Stop listening for element insertion events.
 ###
 stopInDocumentListening = ->
-  if mutationEvents
+  if mutationEvents()
     jQuery( "body" ).off "DOMNodeInserted", Control.elementInserted
     inDocumentListening = false
   else

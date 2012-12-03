@@ -45,6 +45,7 @@ module.exports = function( grunt ) {
                     "src/intro.js",         // Start of function wrapper
                     "build/sub.js",         // Subclassing support; must come first.
                     "build/control.js",     // Defines Control class; must come second.
+                    "build/browser.js",
                     "build/content.js",
                     "build/inDocument.js",
                     "build/json.js",
