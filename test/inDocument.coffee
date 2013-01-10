@@ -14,7 +14,7 @@ $ ->
   # Add a control to force the raising of an inDocument event.
   addControl = ( control ) ->
     $( "#qunit-fixture" ).append control
-    if jQuery.browser.msie and parseInt( jQuery.browser.version ) < 9
+    if Control.browser.msie and parseInt( Control.browser.version ) < 9
       # IE 8 uses polling. Force a check for element insertion.
       Control._elementInserted()
 
