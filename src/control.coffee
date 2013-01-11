@@ -270,7 +270,7 @@ Control::extend
   ###
   The current version of QuickUI.
   ###
-  quickui: "0.9.3-pre"
+  quickui: "0.9.3"
 
 
 ###
