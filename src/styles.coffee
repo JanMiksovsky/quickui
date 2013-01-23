@@ -39,7 +39,7 @@ Control::extend
     
   ###
   Sets/gets the style of matching elements.
-  This lets one specify a style attribute in QuickUI markup for a control instance;
+  This lets one specify a style attribute in Control JSON for a control instance;
   the style will apply to the control's root element.
   ###
   style: ( style ) ->

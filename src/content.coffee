@@ -11,7 +11,7 @@ Control::extend
   Like $.contents(), but you can also set content, not just get it.
   You can set content to a single item, an array of items, or a set
   of items listed as parameters. Setting multiple items at a time
-  is an important case in compiled QuickUI markup. Input elements
+  is an important case in rehydrating HTML controls. Input elements
   are also handled specially: their value ( val ) is their content.
   
   This function attempts to return contents in a canonical form, so
