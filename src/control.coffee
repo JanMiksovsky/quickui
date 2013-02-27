@@ -85,7 +85,7 @@ class Control extends jQuery
     else
       # Invoke the base jQuery constructor to get an intermediate result.
       result = super args...
-      if result.length > 1
+      if result.length > 0
         # Copy the values from the intermediate result to this object. jQuery
         # provides a helper function to do exactly what we need here.
         jQuery.merge @, result
@@ -161,7 +161,8 @@ class Control extends jQuery
   
   ###
   Create a subclass of this class. The new class' prototype is extended with
-  the indicated members in the options parameter.
+  the indicated members in the options parameter. This method is provided for
+  plain JavaScript users -- CoffeeScript users can use its "class" syntax.
 
   Normally, jQuery subclasses must be created with the $.sub() plugin. However,
   the Control constructor already works around the most common case that plugin
@@ -182,8 +183,8 @@ class Control extends jQuery
     # CoffeeScript classes define a "__super__" member that points to the
     # superclass' prototype. Both of these will have been copied by the call to
     # $.extend() above. Now update them with the real values.
-    subclass.superclass = superclass
-    subclass.__super__ = superclass::
+    # subclass.superclass = superclass
+    # subclass.__super__ = superclass::
 
     # jQuery classes use fn as a synonym for prototype.
     subclass.fn = subclass::
@@ -334,8 +335,12 @@ this member for itself, a default value is calculated which includes the
 control class' own name, followed by the "classes" member of its superclass.
 ###
 cssClasses = ( classFn ) ->
-  if !classFn::hasOwnProperty "classes"
-    classFn::classes = classFn::className + " " + ( cssClasses classFn.superclass )
+  unless classFn::hasOwnProperty "className"
+    # Get class name from function in modern browser, otherwise parse constructor.
+    classFn::className = classFn.name ? /function\s+([^\( ]*)/.exec( classFn.toString() )[1]
+  unless classFn::hasOwnProperty "classes"
+    superclass = classFn.__super__.constructor
+    classFn::classes = classFn::className + " " + ( cssClasses superclass )
   classFn::classes
 
 

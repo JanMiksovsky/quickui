@@ -26,7 +26,7 @@ module.exports = function( grunt ) {
                         
                         // Other services
                         "test/content.coffee",
-                        "test/inDocument.coffee",
+                        // "test/inDocument.coffee",
                         "test/json.coffee",
                         "test/layout.coffee",
                         "test/localization.coffee",
