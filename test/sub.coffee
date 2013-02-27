@@ -4,24 +4,17 @@ Test subclassing facilities
 
 $ ->
 
-  test "sub: static constructor (without 'new')", ->
-    c = Control()
-    ok c instanceof Control
-
   test "sub: normal constructor (with 'new')", ->
     c = new Control()
     ok c instanceof Control
 
   test "sub: CoffeeScript class subclasses Control", ->
     class Sub extends Control
-    # Before instantiation, class isn't compatible with jQuery.
-    equal Sub.superclass, jQuery # When fixed, will be equal to Control
     c = Sub.create()
     equal Sub.superclass, Control
     ok c instanceof jQuery
     ok c instanceof Control
     ok c instanceof Sub
-    ok ( c.init:: ) instanceof Control
     equal c.className, "Sub"
     equal c.classes, "Sub Control"
 

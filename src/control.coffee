@@ -50,23 +50,52 @@ Control class: the base class for all QuickUI controls.
 This is defined as a subclass of jQuery so that all control objects can also
 have jQuery methods applied to them.
 ###
-Control = createSubclass jQuery
+class Control extends jQuery
 
-# Explicitly define Control as a window member if we have a window.
-# The check is in case we're running in a headless state, e.g., Node.
-window?.Control = Control
 
-###
-Class methods
-###
-Control.extend
+  ###
+  The Control constructor has to accommodate the fact that Control subclasses
+  jQuery, which happens to have a rather unusual constructor. jQuery raises two
+  issues, one of which we can work around, the other we can't.
+
+  First issue: The base jQuery() constructor doesn't actually return a new
+  instance of the jQuery class, but instead returns a new instance of a helper
+  class called jQuery.prototype.init. That is, the jQuery constructor is an
+  "other typed" constructor: it returns something other than an instance of the
+  class which was requested. Such constructors are not supported in CoffeeScript
+  as of CoffeeScript 1.5. To work around that, we invoke jQuery's constructor,
+  get back an instance of the helper class, then copy the values from that
+  intermediate result to the new object we're constructing.
+
+  Second issue: For conciseness, jQuery wants to support static constructors,
+  that is, creation of a new jQuery object without actually needing to use the
+  "new" keyword. So the following are equivalent:
+
+    var $elements = $("div");
+    var $elements = new $("div");
+
+  The constructor does this regardless of whether it's called with "new" or not,
+  so it can produce the results above. The problem is that the above technique
+  is similarly prohibited by CoffeeScript. As a result, Control classes should
+  always be instantiated with the formal use of "new".
+  ###
+  constructor: ( args... ) ->
+    if @ is window
+      throw "Control constructor must be invoked with 'new'."
+    else
+      # Invoke the base jQuery constructor to get an intermediate result.
+      result = super args...
+      if result.length > 1
+        # Copy the values from the intermediate result to this object. jQuery
+        # provides a helper function to do exactly what we need here.
+        jQuery.merge @, result
 
     
   ###
   Create an instance of this control class around a specific element (or
   multiple instances around a set of elements).
   ###
-  create: ( properties ) ->
+  @create: ( properties ) ->
     @createAt null, properties
 
 
@@ -85,7 +114,7 @@ Control.extend
   If the properties argument is a single string, it will be passed to
   the controls' content() property.
   ###
-  createAt: ( target, properties ) ->
+  @createAt: ( target, properties ) ->
     
     defaultTarget = "<" + @::tag + "/>"
     
@@ -131,23 +160,39 @@ Control.extend
 
   
   ###
-  Create a subclass of this class. This overloads the standard jQuery $.sub()
-  to permit a single argument: an object that is used to extent the prototype
-  of the newly-created class.
+  Create a subclass of this class. The new class' prototype is extended with
+  the indicated members in the options parameter.
 
-  TODO: Update comments. Mention: Intended for use by JavaScript; CoffeeScript
-  users can use "class".
+  Normally, jQuery subclasses must be created with the $.sub() plugin. However,
+  the Control constructor already works around the most common case that plugin
+  handles, and the other case that plugin handles (static instantations without
+  the "new" keyword) is not supported for Control.
   ###
-  sub: ( options ) ->
-    subclass = createSubclass this
+  @sub: ( options ) ->
+
+    superclass = this
+    class subclass extends superclass
+
     subclass::extend options if options?
+
+    # Give the new class all the class methods of the superclass.
+    jQuery.extend true, subclass, superclass
+
+    # jQuery classes define a "superclass" member that points to the superclass;
+    # CoffeeScript classes define a "__super__" member that points to the
+    # superclass' prototype. Both of these will have been copied by the call to
+    # $.extend() above. Now update them with the real values.
+    subclass.superclass = superclass
+    subclass.__super__ = superclass::
+
+    # jQuery classes use fn as a synonym for prototype.
+    subclass.fn = subclass::
+
     subclass
 
 
-###
-Control instance methods.
-###
-Control::extend
+  # jQuery wants its subclasses to have a "superclass" member.
+  @superclass: jQuery
 
 
   ###
@@ -336,3 +381,9 @@ significantContent = ( element ) ->
     if typeof node != "string" or jQuery.trim( node ).length > 0
       return content # HTML element or text node with non-empty text
   undefined # Didn't find anything significant
+
+
+# Explicitly define Control as a window member if we have a window.
+# The check is in case we're running in a headless state, e.g., Node.
+window?.Control = Control
+
