@@ -15,14 +15,15 @@ $ ->
     $a = A.create()
     $b = B.create()
     $c = C.create()
-    $set = Control( "<div/>" ).append( $b ).append( $a ).append( $c )
+    $set = ( new Control( "<div/>" )).append( $b ).append( $a ).append( $c )
     $cast = $set.children().cast()
     equal $cast instanceof A, true
   
   test "Utilities: cast: control and jQuery mix", ->
     A = Control.sub className: "A"
     $a = A.create()
-    $set = Control( "<div/>" ).append( $a ).append(  $ "<div/>"  )
+    $set = new Control "<div/>"
+    $set.append( $a ).append(  $ "<div/>"  )
     $cast = $set.children().cast()
     equal $cast instanceof Control, true
   
@@ -34,7 +35,7 @@ $ ->
     Bar = Control.sub className: "Bar"
     Bar::content = -> "bar"
     $bar = Bar.create()
-    $c = Control().add( $foo ).add( $bar )
+    $c = ( new Control()).add( $foo ).add( $bar )
     results = []
     # eachControl should invoke the specific content functions.
     $c.eachControl ( index, $control ) ->

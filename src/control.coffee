@@ -218,10 +218,10 @@ class Control extends jQuery
   Get/set the reference for the actual class for these control( s ). This may
   differ from the class of the jQuery object used to access this function:
     
-    $e = Control "<button>"   # $e is now of type Control
-    e.control( BasicButton )  # Turns the element into a BasicButton 
-    $e.className              # Returns "Control"
-    $e.controlClass()         # Returns the BasicButton class
+    $e = new Control "<button>"   # $e is now of type Control
+    e.control( BasicButton )      # Turns the element into a BasicButton 
+    $e.className                  # Returns "Control"
+    $e.controlClass()             # Returns the BasicButton class
     
   ###
   controlClass: ( classFn ) ->

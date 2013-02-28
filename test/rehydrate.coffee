@@ -6,7 +6,7 @@ $ ->
   
   test "Rehydrate: simple element with content", ->
     $e = $ "<div data-control='Control'>Hello</div>"
-    $c = Control( $e ).rehydrate()
+    $c = ( new Control( $e )).rehydrate()
     ok $c instanceof Control
     equal $e.attr( "data-control" ), undefined
     ok $e.hasClass "Control"
@@ -15,7 +15,7 @@ $ ->
   test "Rehydrate: custom content property", ->
     createGreetClass()
     Greet::content = Control.chain "$name", "content"
-    $e = Control "<div data-control='Greet'>Bob</div>"
+    $e = new Control "<div data-control='Greet'>Bob</div>"
     $c = $e.rehydrate()
     equal $c.text(), "Hello Bob"
     equal $c.content(), "Bob"
@@ -23,7 +23,7 @@ $ ->
   test "Rehydrate: data- property", ->
     createGreetClass()
     Greet::name = Control.chain "$name", "content"
-    $e = Control "<div data-control='Greet' data-name='Bob'></div>"
+    $e = new Control "<div data-control='Greet' data-name='Bob'></div>"
     $c = $e.rehydrate()
     ok $c instanceof Greet
     equal $c.text(), "Hello Bob"
@@ -32,7 +32,7 @@ $ ->
   test "Rehydrate: compound property", ->
     createGreetClass()
     Greet::name = Control.chain "$name", "content"
-    $e = Control "<div data-control='Greet'><div data-property='name'>Bob</div></div>"
+    $e = new Control "<div data-control='Greet'><div data-property='name'>Bob</div></div>"
     equal $e.find( "[data-property]" ).length, 1
     $c = $e.rehydrate()
     equal $e.find( "[data-property]" ).length, 0
@@ -42,7 +42,7 @@ $ ->
   test "Rehydrate: subcontrol", ->
     createGreetClass()
     Greet::content = Control.chain "$name", "content"
-    $e = Control "<div data-control='Control'><div data-control='Greet'>Bob</div></div>"
+    $e = new Control "<div data-control='Control'><div data-control='Greet'>Bob</div></div>"
     $c = $e.rehydrate()
     $sub = $c.content().control()
     ok $sub instanceof Greet
@@ -56,6 +56,6 @@ $ ->
     equal $c.content(), "Hello"
 
   test "Rehydrate: class not found", ->
-    $e = Control "<div data-control='Foo'></div>"
+    $e = new Control "<div data-control='Foo'></div>"
     raises ->
       $c = $e.rehydrate()

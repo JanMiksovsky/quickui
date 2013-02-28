@@ -27,7 +27,7 @@ $ ->
     equal content[2], "world"
   
   test "Content: input element", ->
-    $c = Control("<input type='text'/>")
+    $c = new Control "<input type='text'/>"
     $c.content "Hello"
     equal $c.content(), "Hello"
     equal $c.val(), "Hello"

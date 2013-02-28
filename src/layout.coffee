@@ -56,7 +56,7 @@ jQuery.event.special.layout =
   Handle the layout event.
   ###
   handle: ( event ) ->
-    control = Control @
+    control = new Control @
     return unless control.inDocument()            # Not currently in document; no need for layout.
     # TODO: Shouldn't the line below invoke updateSavedSize()?
     return unless control.checkForSizeChange()    # Size hasn't actually changed; no need for layout.

@@ -52,7 +52,7 @@ $ ->
     $inner2 = Greet.create name: "Bob"
     $c = Control.create content: [ $inner1, "/", $inner2 ]
     equal $c.text(), "Hello Ann/Hello Bob"
-    $g = Greet $c.find ".Greet"
+    $g = new Greet $c.find ".Greet"
     equal $g.name(), "Ann"
     $g.name "Carol"
     equal $c.text(), "Hello Carol/Hello Carol"
@@ -99,7 +99,7 @@ $ ->
     MyControl = Control.sub className: "MyControl"
     MyControl::foo = ->
       @data "_calledFoo", true
-    $elements = Control( "<div/>" ).add( "<div/>" )
+    $elements = new Control( "<div/>" ).add( "<div/>" )
     $c = $elements.control MyControl
     result = $c.foo()
     equal result, $c # returns "this"
@@ -110,7 +110,7 @@ $ ->
     MyControl = Control.sub className: "MyControl"
     MyControl::foo = Control.iterator ->
         @data "_calledFoo", true
-    $elements = Control( "<div/>" ).add( "<div/>" )
+    $elements = new Control( "<div/>" ).add( "<div/>" )
     $c = $elements.control MyControl
     methodResult = $c.foo()
     equal methodResult, $c # i.e., should return "this"
@@ -121,7 +121,8 @@ $ ->
     MyControl = Control.sub className: "MyControl"
     MyControl::foo = Control.iterator ( value ) ->
       @data "_property", value
-    $elements = Control( "<div/>" ).add( "<div/>" )
+    $elements = new Control "<div/>"
+    $elements.add "<div/>"
     $c = $elements.control MyControl
     $c.foo "bar"
     equal $c.eq( 0 ).control().data( "_property" ), "bar"
