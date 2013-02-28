@@ -84,7 +84,7 @@ class Control extends jQuery
       throw "Control constructor must be invoked with 'new'."
     else
       # Invoke the base jQuery constructor to get an intermediate result.
-      result = super args...
+      result = jQuery args...
       if result.length > 0
         # Copy the values from the intermediate result to this object. jQuery
         # provides a helper function to do exactly what we need here.

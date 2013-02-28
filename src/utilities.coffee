@@ -204,7 +204,7 @@ Control::extend
   thus, direct access to class members.
   ###
   segments: ->
-    ( @constructor element for element in @ )
+    ( new @constructor element for element in @ )
 
 
   ###
