@@ -122,7 +122,7 @@ $ ->
     MyControl::foo = Control.iterator ( value ) ->
       @data "_property", value
     $elements = new Control "<div/>"
-    $elements.add "<div/>"
+    $elements = $elements.add "<div/>"
     $c = $elements.control MyControl
     $c.foo "bar"
     equal $c.eq( 0 ).control().data( "_property" ), "bar"
@@ -131,7 +131,8 @@ $ ->
   test "Properties: Define getter/setter with Control.property", ->
     MyControl = Control.sub()
     MyControl::myProperty = Control.property()
-    $elements = Control( "<div/>" ).add( "<div/>" )
+    $elements = new Control "<div/>"
+    $elements = $elements.add "<div/>"
     $c = $elements.control MyControl
     equal $c.myProperty() is undefined, true
     $c.myProperty "foo"
