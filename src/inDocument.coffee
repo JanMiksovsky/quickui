@@ -36,7 +36,7 @@ Control::inDocument = ( callback ) ->
     newCallbacks = []
     for element, i in @
       if isElementInDocument element
-        callback.call @constructor element  # Now in document; invoke callback.
+        callback.call new @constructor element  # Now in document; invoke callback.
       else
         # Add element to the list we're waiting to see inserted.
         newCallbacks.push

@@ -27,7 +27,7 @@ $ ->
     ok c instanceof jQuery
     ok c instanceof Control
     ok c instanceof Sub
-    ok ( c.init:: ) instanceof Control
+    # ok ( c.init:: ) instanceof Control
     equal c.className, "Sub"
     equal c.classes, "Sub Control"
 

@@ -109,7 +109,7 @@ Control::extend
   the selector stack.
   ###
   nth: ( index ) ->
-    @constructor @[ index ]
+    new @constructor @[ index ]
 
 
   ###

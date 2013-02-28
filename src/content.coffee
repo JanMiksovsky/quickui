@@ -45,7 +45,7 @@ Control::extend
         if result.length == 1 and typeof result[0] == "string"
           result[0] # Return the single string instead of an array.
         else
-          @constructor result
+          new @constructor result
     else
       # Setting contents.
 
