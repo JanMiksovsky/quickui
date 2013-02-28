@@ -11,7 +11,7 @@ $ ->
   test "sub: CoffeeScript class subclasses Control", ->
     class Sub extends Control
     c = Sub.create()
-    equal Sub.superclass, Control
+    equal Sub.superclass(), Control
     ok c instanceof jQuery
     ok c instanceof Control
     ok c instanceof Sub
@@ -22,7 +22,7 @@ $ ->
     Sub = `Control.sub({
       className: "Sub",
     })`
-    equal Sub.superclass, Control
+    equal Sub.superclass(), Control
     c = Sub.create()
     ok c instanceof jQuery
     ok c instanceof Control
@@ -35,7 +35,7 @@ $ ->
     class Sub extends Control
     class SubSub extends Sub
     c = SubSub.create()
-    equal SubSub.superclass, Sub
+    equal SubSub.superclass(), Sub
     ok c instanceof jQuery
     ok c instanceof Control
     ok c instanceof Sub
@@ -50,7 +50,7 @@ $ ->
     })`
     class SubSub extends Sub
     c = SubSub.create()
-    equal SubSub.superclass, Sub
+    equal SubSub.superclass(), Sub
     ok c instanceof jQuery
     ok c instanceof Control
     ok c instanceof Sub
@@ -66,7 +66,7 @@ $ ->
       className: "SubSub",
     })`
     c = SubSub.create()
-    equal SubSub.superclass, Sub
+    equal SubSub.superclass(), Sub
     ok c instanceof jQuery
     ok c instanceof Control
     ok c instanceof Sub
@@ -80,7 +80,7 @@ $ ->
       className: "SubSub",
     })`
     c = SubSub.create()
-    equal SubSub.superclass, Sub
+    equal SubSub.superclass(), Sub
     ok c instanceof jQuery
     ok c instanceof Control
     ok c instanceof Sub

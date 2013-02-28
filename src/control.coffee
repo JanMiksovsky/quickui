@@ -184,7 +184,7 @@ class Control extends jQuery
     # superclass' prototype. Both of these will have been copied by the call to
     # $.extend() above. Now update them with the real values.
     # subclass.superclass = superclass
-    # subclass.__super__ = superclass::
+    subclass.__super__ = superclass::
 
     # jQuery classes use fn as a synonym for prototype.
     subclass.fn = subclass::
@@ -193,7 +193,7 @@ class Control extends jQuery
 
 
   # jQuery wants its subclasses to have a "superclass" member.
-  @superclass: jQuery
+  # @superclass: jQuery
 
 
   ###
@@ -258,7 +258,7 @@ class Control extends jQuery
   render: ->
     classFn = @constructor
     if classFn isnt Control
-      superclass = classFn.superclass
+      superclass = classFn.superclass()
       rendered = ( new superclass( @ ) ).render() # Superclass renders first.
       if classFn::hasOwnProperty "inherited"
         # Apply the class' desired values using superclass's setters.
@@ -279,6 +279,10 @@ class Control extends jQuery
     
     # Return the newly-formed element set
     ret
+
+
+  @superclass: ->
+    @__super__.constructor
   
 
   ###
@@ -354,8 +358,7 @@ cssClasses = ( classFn ) ->
     # Get class name from function in modern browser, otherwise parse constructor.
     classFn::className = classFn.name ? /function\s+([^\( ]*)/.exec( classFn.toString() )[1]
   unless classFn::hasOwnProperty "classes"
-    superclass = classFn.__super__.constructor
-    classFn::classes = classFn::className + " " + ( cssClasses superclass )
+    classFn::classes = classFn::className + " " + cssClasses classFn.superclass()
   classFn::classes
 
 
@@ -365,7 +368,7 @@ starting with the base class and working down.
 ###
 initialize = ( classFn, $control ) ->
   # Initialize base class first.
-  superclass = classFn.superclass
+  superclass = classFn.superclass()
   initialize superclass, $control if superclass isnt jQuery
   # Now do control class' own initialization (if present).
   classFn::initialize.call $control if classFn::hasOwnProperty "initialize"

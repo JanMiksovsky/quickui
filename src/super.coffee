@@ -68,7 +68,7 @@ Control::_super = ->
     if classInfo
       { classFn: classFn, fnName: callerFnName } = classInfo
       # Go up one level in the class hierarchy to get the superfunction.
-      superFn = classFn.superclass::[ callerFnName ]
+      superFn = classFn.__super__[ callerFnName ]
       # Memoize our answer, storing the value on the calling function,
       # to speed things up next time.
       callerFn._superFn = superFn
@@ -93,8 +93,8 @@ findMethodImplementation = ( methodFn, classFn ) ->
         classFn: classFn
         fnName: key
       )
-  if classFn.superclass
+  if classFn.__super__?
     # Look in parent class
-    findMethodImplementation methodFn, classFn.superclass
+    findMethodImplementation methodFn, classFn.__super__.constructor
   else
     null # Didn't find the function
