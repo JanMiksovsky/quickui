@@ -26,8 +26,9 @@ jQuery.extend Control,
     throw "Unable to find a class called #{value}." unless classFn
 
     # Ensure class is compatible before returning it.
-    if coffeeClassNeedsCompatibility classFn
-      makeCoffeeClassCompatible classFn
+    # if coffeeClassNeedsCompatibility classFn
+    #   makeCoffeeClassCompatible classFn
+
     classFn
 
 

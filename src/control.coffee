@@ -266,6 +266,21 @@ class Control extends jQuery
     @
 
 
+  # Take an array of elements and push it onto the stack
+  # (returning the new matched element set)
+  pushStack: ( elems ) ->
+    
+    # Build a new jQuery matched element set
+    ret = jQuery.merge new @constructor(), elems
+    
+    # Add the old object onto the stack (as a reference)
+    ret.prevObject = this
+    ret.context = @context
+    
+    # Return the newly-formed element set
+    ret
+  
+
   ###
   By default, the root tag of the control will be a div.
   Control classes can override this: <Control name="Foo" tag="span">
