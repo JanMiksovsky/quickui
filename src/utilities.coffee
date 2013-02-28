@@ -25,10 +25,6 @@ jQuery.extend Control,
       window[ value ] # Look up class using value as a string class name.
     throw "Unable to find a class called #{value}." unless classFn
 
-    # Ensure class is compatible before returning it.
-    # if coffeeClassNeedsCompatibility classFn
-    #   makeCoffeeClassCompatible classFn
-
     classFn
 
 

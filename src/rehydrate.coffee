@@ -42,7 +42,6 @@ rehydrateElement = ( element ) ->
   )
   properties = restorePropertyCase controlClass, lowerCaseProperties
   # Create the control.
-  # jQuery( element ).control controlClass, properties
   controlClass.createAt element, properties
 
 ###
