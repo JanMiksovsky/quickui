@@ -158,43 +158,6 @@ class Control extends jQuery
     # Return the new controls
     $controls
 
-  
-  ###
-  Create a subclass of this class. The new class' prototype is extended with
-  the indicated members in the options parameter. This method is provided for
-  plain JavaScript users -- CoffeeScript users can use its "class" syntax.
-
-  Normally, jQuery subclasses must be created with the $.sub() plugin. However,
-  the Control constructor already works around the most common case that plugin
-  handles, and the other case that plugin handles (static instantations without
-  the "new" keyword) is not supported for Control.
-  ###
-  @sub: ( options ) ->
-
-    superclass = this
-    class subclass extends superclass
-
-    subclass::extend options if options?
-
-    # Give the new class all the class methods of the superclass.
-    jQuery.extend true, subclass, superclass
-
-    # jQuery classes define a "superclass" member that points to the superclass;
-    # CoffeeScript classes define a "__super__" member that points to the
-    # superclass' prototype. Both of these will have been copied by the call to
-    # $.extend() above. Now update them with the real values.
-    # subclass.superclass = superclass
-    subclass.__super__ = superclass::
-
-    # jQuery classes use fn as a synonym for prototype.
-    subclass.fn = subclass::
-
-    subclass
-
-
-  # jQuery wants its subclasses to have a "superclass" member.
-  # @superclass: jQuery
-
 
   ###
   The CSS classes that should be applied to new instances of this class. This is
@@ -266,21 +229,60 @@ class Control extends jQuery
     @
 
 
-  # Take an array of elements and push it onto the stack
-  # (returning the new matched element set)
+  # jQuery's standard pushStack() function invokes its own static constructor,
+  # which breaks the requirement that Control constructors not return a value.
+  # (See the discussion of the Control constructor above.) To work around this
+  # problem, we patch pushStack(), preserving the exact same behavior, only
+  # taking care to invoke the constructor with "new".
   pushStack: ( elems ) ->
-    
     # Build a new jQuery matched element set
     ret = jQuery.merge new @constructor(), elems
-    
     # Add the old object onto the stack (as a reference)
     ret.prevObject = this
     ret.context = @context
-    
     # Return the newly-formed element set
     ret
 
+  
+  ###
+  The current version of QuickUI.
+  ###
+  quickui: "0.9.4-pre"
 
+  
+  ###
+  Create a subclass of this class. The new class' prototype is extended with
+  the indicated members in the options parameter. This method is provided for
+  plain JavaScript users -- CoffeeScript users can use its "class" syntax.
+
+  Normally, jQuery subclasses must be created with the $.sub() plugin. However,
+  the Control constructor already works around the most common case that plugin
+  handles, and the other case that plugin handles (static instantations without
+  the "new" keyword) is not supported for Control.
+  ###
+  @sub: ( options ) ->
+
+    superclass = this
+    class subclass extends superclass
+
+    # Give the new class all the class methods of the superclass.
+    jQuery.extend true, subclass, superclass
+
+    # Extend the new class' prototype.
+    subclass::extend options if options?
+
+    # CoffeeScript classes define a "__super__" member that points to the
+    # superclass' prototype. This value will have been copied by the call to
+    # $.extend() above; update it with the real value.
+    subclass.__super__ = superclass::
+
+    # jQuery classes use fn as a synonym for prototype.
+    subclass.fn = subclass::
+
+    subclass
+
+
+  # Shorthand to return a class' superclass.
   @superclass: ->
     @__super__.constructor
   
@@ -330,12 +332,6 @@ class Control extends jQuery
       # Ensure Control class ends up rightmost
       $controls.removeClass( "Control" ).addClass( oldClasses ).addClass "Control"
     $controls
-
-  
-  ###
-  The current version of QuickUI.
-  ###
-  quickui: "0.9.3"
 
 
 ###

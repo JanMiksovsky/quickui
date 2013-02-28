@@ -1,6 +1,6 @@
 /*
  * QuickUI
- * Version 0.9.3
+ * Version 0.9.4-pre
  * Modular web control framework
  * http://quickui.org
  *
