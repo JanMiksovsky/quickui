@@ -15,14 +15,14 @@ $ ->
     $a = A.create()
     equal $a.classes, "A Control"
     $a.text "Hello"
-    equal $a.text "Hello"
+    equal $a.text(), "Hello"
     
   test "Create: instantiate CoffeeScript subclass", ->
     class A extends Control
     $a = A.create()
     equal $a.classes, "A Control"
     $a.text "Hello"
-    equal $a.text "Hello"
+    equal $a.text(), "Hello"
     
   test "Create: instantiate sub-subclass", ->
     A = Control.sub className: "A"
