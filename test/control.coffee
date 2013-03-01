@@ -10,10 +10,19 @@ $ ->
     equal $c.classes, "Control"
     equal $c.control()[0] is $c[0], true
     
-  test "Create: instantiate subclass", ->
+  test "Create: instantiate JavaScript subclass", ->
     A = Control.sub className: "A"
     $a = A.create()
     equal $a.classes, "A Control"
+    $a.text "Hello"
+    equal $a.text "Hello"
+    
+  test "Create: instantiate CoffeeScript subclass", ->
+    class A extends Control
+    $a = A.create()
+    equal $a.classes, "A Control"
+    $a.text "Hello"
+    equal $a.text "Hello"
     
   test "Create: instantiate sub-subclass", ->
     A = Control.sub className: "A"
