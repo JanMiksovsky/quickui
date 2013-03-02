@@ -12,8 +12,14 @@ module.exports = ->
 
     coffee:
       quickui:
-        files:
-          "build/*.js": "src/*.coffee"
+        files: [
+          # "build/*.js": "src/*.coffee"
+          expand: true
+          cwd: "src/"
+          src: "*.coffee"
+          dest: "build/"
+          ext: ".js"
+        ]
       test:
         files:
           "test/unittests.js": [
@@ -59,7 +65,7 @@ module.exports = ->
 
     min:
       dist:
-        src: ["quickui.js"]
+        src: [ "quickui.js" ]
         dest: "quickui.min.js"
   
   # Default task.
