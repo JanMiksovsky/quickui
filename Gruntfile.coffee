@@ -20,6 +20,8 @@ module.exports = ->
           dest: "build/"
           ext: ".js"
         ]
+        options:
+          bare: true
       test:
         files:
           "test/unittests.js": [
