@@ -40,7 +40,7 @@ jQuery.event.special.layout =
     layout = jQuery.event.special.layout
     layout._trackedElements = layout._trackedElements.add @
     # Send an initial layout event when the element is in the document.
-    Control( this ).inDocument ->
+    ( new Control( this )).inDocument ->
       ###
       Directly invoke the handler instead of triggering the event.
       If add() is invoked on an element that's already in the document,
