@@ -23,12 +23,12 @@ their size changes. The layout contract is weak: it's generally triggered
 when the window size changes AND the element's size has actually changed in
 response.
  
-The layout event will *notautomatically fire if the element's size has
+The layout event will *not* automatically fire if the element's size has
 changed in response to other activity, such as a child element growing in
 size. Supporting that generally would require setting up an expensive poll
 interval. However, a contained element that want to let their containers
 know about changes in the contained element's size can do so by triggering
-a layout event that will bubble up to the container.      
+a layout event that will bubble up to the container.
 ###
 jQuery.event.special.layout =
 
