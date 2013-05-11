@@ -139,12 +139,14 @@ class Control extends jQuery
       # Property value implicitly handed to content() property.
       properties = content: properties
 
+    @initialize()
+
     $controls
       # Save a reference to the controls' class.
-      .controlClass( this )
+      .controlClass( @ )
       # Apply all class names in the class hierarchy as style names.
       # This lets the element pick up styles defined by those classes.
-      .addClass( cssClasses this )
+      .addClass( @::classes )
       # Render controls as DOM elements.
       .render()
       # Pass in the target's old contents ( if any ).
@@ -153,7 +155,7 @@ class Control extends jQuery
       .properties properties
 
     # Let each control initialize itself.
-    initialize this, $control for $control in $controls.segments()
+    initialize @, $control for $control in $controls.segments()
     
     # Return the new controls
     $controls
@@ -211,6 +213,26 @@ class Control extends jQuery
   ###    
   initialize: ->
 
+
+  ###
+  A *class* method to force initialization of the data associated with a class.
+  A class will be implicitly initialized if an attempt is made to instantiate
+  it. However, if a tool wants to statically inspect a class without
+  instantiating it, this method can be called to ensure the class is properly
+  set up. Invoking this method more than once does no harm.
+
+  The class members set up in this method are:
+  .className: the name of the class
+  .classes: all CSS class names applied to new instances of that control class
+  ###
+  @initialize: ->
+    unless @::hasOwnProperty "className"
+      # Get class name from function in modern browser, otherwise parse constructor.
+      @::className = @name ? /function\s+([^\( ]*)/.exec( @toString() )[1]
+    unless @::hasOwnProperty "classes"
+      superclass = @superclass()
+      superclass.initialize() # Initialize superclass first.
+      @::classes = @::className + " " + superclass::classes
 
   ###
   Rendering a control lets each class in the control class' hierarchy,
@@ -344,21 +366,6 @@ controlClassData = "_controlClass"
 
 
 ###
-Return a class' "classes" member, which reflects the CSS classes that should be
-applied to new instances of that control class. If a class doesn't yet define
-this member for itself, a default value is calculated which includes the
-control class' own name, followed by the "classes" member of its superclass.
-###
-cssClasses = ( classFn ) ->
-  unless classFn::hasOwnProperty "className"
-    # Get class name from function in modern browser, otherwise parse constructor.
-    classFn::className = classFn.name ? /function\s+([^\( ]*)/.exec( classFn.toString() )[1]
-  unless classFn::hasOwnProperty "classes"
-    classFn::classes = classFn::className + " " + cssClasses classFn.superclass()
-  classFn::classes
-
-
-###
 Invoke the initialize() method of each class in the control's class hierarchy,
 starting with the base class and working down.
 ###
@@ -405,4 +412,3 @@ significantContent = ( element ) ->
 # Explicitly define Control as a window member if we have a window.
 # The check is in case we're running in a headless state, e.g., Node.
 window?.Control = Control
-
