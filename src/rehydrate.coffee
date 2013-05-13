@@ -107,6 +107,8 @@ Return a dictionary for the given class which maps the lowercase forms of
 its properties' names to their full mixed-case property names.
 ###
 classPropertyNameMap = ( controlClass ) ->
+  # Ensure class has been initialized before we inspect its className.
+  controlClass.initialize()
   className = controlClass::className
   unless propertyNameMaps[ className ]
     map = {}
