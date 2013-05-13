@@ -2,7 +2,7 @@
     "name": "quickui",
     "title": "QuickUI",
     "description": "Web user interface component framework",
-    "version": "0.9.3",
+    "version": "0.9.4",
     "homepage": "http://quickui.org",
     "repository": {
         "type": "git",

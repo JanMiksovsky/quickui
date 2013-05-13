@@ -269,7 +269,7 @@ class Control extends jQuery
   ###
   The current version of QuickUI.
   ###
-  quickui: "0.9.4-pre"
+  quickui: "0.9.4"
 
   
   ###
