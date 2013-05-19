@@ -18,6 +18,7 @@
         "grunt": "~0.4",
         "grunt-contrib-coffee": "~0.6",
         "grunt-contrib-concat": "~0.3",
-        "grunt-contrib-less": "~0.5"
+        "grunt-contrib-less": "~0.5",
+        "grunt-contrib-uglify": "~0.2"
     }
 }

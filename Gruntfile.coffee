@@ -6,6 +6,7 @@ module.exports = ->
   @loadNpmTasks "grunt-contrib-coffee"
   @loadNpmTasks "grunt-contrib-concat"
   @loadNpmTasks "grunt-contrib-less"
+  @loadNpmTasks "grunt-contrib-uglify"
   
   @initConfig
     pkg: @file.readJSON "package.json"
@@ -65,10 +66,12 @@ module.exports = ->
         ]
         dest: "quickui.js"
 
-    min:
+    uglify:
       dist:
-        src: [ "quickui.js" ]
-        dest: "quickui.min.js"
+        files:
+          "quickui.min.js": "quickui.js"
   
   # Default task.
   @registerTask "default", [ "coffee", "concat" ]
+
+  @registerTask "all", [ "default", "uglify" ]
