@@ -4,7 +4,7 @@ QuickUI is no longer under active development.
 Many thanks to all who have supported this project. People interested in
 component-based web user interface design and development should look at
 HTML web components, for example those possible in the
-[Polymer](http://polymer-project.org) framework.
+[Elix](https://github.com/elix/elix) project.
 
 About
 -----
